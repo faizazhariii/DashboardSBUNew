@@ -2005,6 +2005,8 @@
       <div class="table-card" style="overflow-x:auto;">
         <table class="pivot-table"><thead><tr id="rekapPt3CommitHead"></tr></thead><tbody id="rekapPt3CommitBody"></tbody></table>
       </div>
+      <p class="section-title" style="font-size:13px;margin-top:16px;" id="rekapPt3TrendTitle">Chart Komitmen Golive Harian</p>
+      <div class="table-card" style="padding:14px 16px;"><div style="height:280px;"><canvas id="rekapPt3TrendChart"></canvas></div></div>
     </div>
     <hr class="rekap-divider">
     <div class="section">
@@ -2022,6 +2024,8 @@
       <div class="table-card" style="overflow-x:auto;">
         <table class="pivot-table"><thead><tr id="rekapPt3fhCommitHead"></tr></thead><tbody id="rekapPt3fhCommitBody"></tbody></table>
       </div>
+      <p class="section-title" style="font-size:13px;margin-top:16px;" id="rekapPt3fhTrendTitle">Chart Komitmen Golive Harian</p>
+      <div class="table-card" style="padding:14px 16px;"><div style="height:280px;"><canvas id="rekapPt3fhTrendChart"></canvas></div></div>
     </div>
 
     <hr class="rekap-divider">
@@ -2308,7 +2312,11 @@ const MONTH_ABBR = {jan:0,feb:1,mar:2,apr:3,mei:4,may:4,jun:5,jul:6,agu:7,aug:7,
 function parseDMY(str){
   if(!str || str === '-') return null;
   str = str.toString().trim();
-  const parts = str.split(/[\/\-\s]+/);
+  let parts = str.split(/[\/\-\s]+/).filter(Boolean);
+  // Format tanpa tahun, misal "29 Oct" / "4-Okt" -> pakai tahun berjalan
+  if(parts.length === 2 && /^\d{1,2}$/.test(parts[0]) && isNaN(parseInt(parts[1])) && MONTH_ABBR[parts[1].slice(0,3).toLowerCase()] !== undefined){
+    parts.push(String(new Date().getFullYear()));
+  }
   if(parts.length !== 3) return null;
   let [d,m,y] = parts.map(p=>p.trim());
   // Format dengan nama bulan, misal "4-Feb-2026"
@@ -5798,10 +5806,64 @@ document.addEventListener('click', (e)=>{
   if(td && td.dataset.rekapKey) renderRekapDetailOutput(td.dataset.rekapKey);
 });
 
+
+/* Chart harian Komitmen Golive (bulan mengikuti dropdown) — stacked OA / OGP / DROP, klik batang = Detail Data */
+const _resumeCharts = {};
+function renderResumeKomitmenChart(program, pre, rows, getFn, categoryFn, commitField){
+  const canvas = document.getElementById(pre + 'TrendChart');
+  const monthSel = document.getElementById(pre + 'CommitMonth');
+  if(!canvas || !monthSel || !rows || typeof Chart === 'undefined') return;
+  const year = new Date().getFullYear();
+  const month = parseInt(monthSel.value, 10);
+  const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'][month];
+  const days = new Date(year, month+1, 0).getDate();
+  const names = ['golive','ogp','drop'];
+  const buckets = {}; names.forEach(n=> buckets[n] = Array.from({length:days}, ()=>[]));
+  rows.forEach(row=>{
+    const d = parseDMY(getFn(row, commitField));
+    if(!d || d.getFullYear() !== year || d.getMonth() !== month) return;
+    const c = categoryFn(row);
+    const b = (c === 'golive' || c === 'gl') ? 'golive' : (c === 'drop' ? 'drop' : 'ogp');
+    buckets[b][d.getDate()-1].push(row);
+  });
+  const tot = n => buckets[n].reduce((a,x)=> a + x.length, 0);
+  const titleEl = document.getElementById(pre + 'TrendTitle');
+  if(titleEl) titleEl.textContent = `Chart Komitmen Golive Harian — ${bulan} ${year}`;
+  const labels = Array.from({length:days}, (_,i)=> String(i+1).padStart(2,'0'));
+  if(_resumeCharts[pre]) _resumeCharts[pre].destroy();
+  _resumeCharts[pre] = new Chart(canvas, {
+    type:'bar',
+    data:{ labels, datasets:[
+      { label:'OA', data: buckets.golive.map(a=>a.length), backgroundColor:'#167A4B', borderRadius:3, stack:'s' },
+      { label:'OGP', data: buckets.ogp.map(a=>a.length), backgroundColor:'#0B5CAB', borderRadius:3, stack:'s' },
+      { label:'DROP', data: buckets.drop.map(a=>a.length), backgroundColor:'#D7141A', borderRadius:3, stack:'s' },
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      onClick:(evt, els)=>{
+        if(!els.length) return;
+        const e = els[0], list = buckets[names[e.datasetIndex]][e.index];
+        if(!list.length) return;
+        const key = 'rk' + (rekapCellCounter++);
+        rekapCellRegistry[key] = { program, rows:list, label:`${program} — Komitmen ${labels[e.index]} ${bulan} — ${['OA','OGP','DROP'][e.datasetIndex]}`, targetPrefix:'rekap' };
+        renderRekapDetailOutput(key);
+      },
+      onHover:(evt, els)=>{ evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
+      plugins:{
+        legend:{ position:'top', align:'end', labels:{ usePointStyle:true, pointStyle:'circle', boxWidth:10, boxHeight:10, font:{family:'Inter', size:11.5, weight:'600'} } },
+        datalabels:{ display:(ctx)=> ctx.dataset.data[ctx.dataIndex] > 0, color:'#fff', font:{size:9, weight:'700'} },
+        title:{ display:true, position:'bottom', align:'start', text:`Total ${bulan} — OA ${tot('golive')} · OGP ${tot('ogp')} · DROP ${tot('drop')}`, font:{family:'Inter', size:11, weight:'500'}, color:'#5B6478' }
+      },
+      scales:{ x:{ stacked:true, grid:{display:false} }, y:{ stacked:true, beginAtZero:true, ticks:{precision:0} } }
+    }
+  });
+}
+
 function renderResumePT3TA(){
   if(!pt3AGG) return;
   renderRekapPivotGeneric('PT3 TA', 'rekapPt3KpiRow', 'rekapPt3PivotHead', 'rekapPt3PivotBody', pt3AGG, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
   renderRekapKomitmenBulanan('PT3 TA', 'rekapPt3CommitMonth', 'rekapPt3CommitHead', 'rekapPt3CommitBody', pt3AGG, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')), 'KOMITMEN GOLIVE', 'BRANCH FMC');
+  renderResumeKomitmenChart('PT3 TA', 'rekapPt3', pt3AGG.rows, pt3Get, pt3Category, 'KOMITMEN GOLIVE');
   const p1Rows = pt3AGG.rows.filter(row => (pt3Get(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().includes('TSEL PRIORITY'));
   renderRekapPivotGeneric('PT3 TA', 'rekapPt3P1KpiRowDUMMY', 'rekapPt3P1PivotHead', 'rekapPt3P1PivotBody', {rows:p1Rows}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
 }
@@ -5809,10 +5871,13 @@ function renderResumePT3FH(){
   if(!pt3fhAGG) return;
   renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhKpiRow', 'rekapPt3fhPivotHead', 'rekapPt3fhPivotBody', pt3fhAGG, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
   renderRekapKomitmenBulanan('PT3 FH', 'rekapPt3fhCommitMonth', 'rekapPt3fhCommitHead', 'rekapPt3fhCommitBody', pt3fhAGG, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')), 'KOMITMEN GOLIVE', 'BRANCH FMC');
+  renderResumeKomitmenChart('PT3 FH', 'rekapPt3fh', pt3fhAGG.rows, pt3fhGet, pt3fhCategory, 'KOMITMEN GOLIVE');
   const p1Rows = pt3fhAGG.rows.filter(row => (pt3fhGet(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim() === 'P1');
   renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhP1KpiRowDUMMY', 'rekapPt3fhP1PivotHead', 'rekapPt3fhP1PivotBody', {rows:p1Rows}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
 }
 
+document.getElementById('rekapPt3CommitMonth').addEventListener('change', ()=>{ if(pt3AGG) renderResumeKomitmenChart('PT3 TA','rekapPt3',pt3AGG.rows,pt3Get,pt3Category,'KOMITMEN GOLIVE'); });
+document.getElementById('rekapPt3fhCommitMonth').addEventListener('change', ()=>{ if(pt3fhAGG) renderResumeKomitmenChart('PT3 FH','rekapPt3fh',pt3fhAGG.rows,pt3fhGet,pt3fhCategory,'KOMITMEN GOLIVE'); });
 document.getElementById('tabBtnResume').onclick = ()=> { switchTab('resume'); renderResumePT3TA(); renderResumePT3FH(); };
 document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
 const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
