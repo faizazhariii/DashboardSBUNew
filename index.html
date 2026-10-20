@@ -1023,7 +1023,7 @@
         <p class="section-desc">Cari dan filter untuk melihat detail tiap order. Kolom "Catatan" bisa langsung diedit — otomatis tersimpan ke kolom T di Google Sheets.</p>
         <div id="oloActiveFilterBadge" class="active-filter-badge" style="display:none;"></div>
         <div class="filters">
-          <input type="text" id="oloSearchInput" placeholder="Cari IHLD, Nama Proyek, STO...">
+          <input type="text" id="oloSearchInput" placeholder="Cari IHLD, No Order, Nama Proyek, STO...">
           <div class="multiselect" id="oloFilterWitelWrap">
             <button type="button" class="multiselect-btn" id="oloFilterWitelBtn">Semua Witel <span class="chev">▾</span></button>
             <div class="multiselect-panel" id="oloFilterWitelPanel" style="display:none;"></div>
@@ -5381,7 +5381,7 @@ function oloGetFilteredRows(){
     if(progressFilters.length && !progressFilters.includes(oloGet(row,'Progress Lapangan'))) return false;
     if(subStatusFilters.length && !subStatusFilters.includes(oloGet(row,'SUB STATUS'))) return false;
     if(q){
-      const hay = [oloGet(row,'IHLD'), oloGet(row,'NAMA PROYEK'), oloGet(row,'STO'), oloGet(row,'DISTRICT')].join(' ').toLowerCase();
+      const hay = [oloGet(row,'IHLD'), oloGet(row,'NO ORDER'), oloGet(row,'NAMA PROYEK'), oloGet(row,'STO'), oloGet(row,'DISTRICT')].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
