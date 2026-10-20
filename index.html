@@ -407,7 +407,7 @@
     <button class="page-tab" id="tabBtnChecklist" type="button">☑️ Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">🔧 Need Modul OLT</button>
     <button class="page-tab" id="tabBtnGolive" type="button">🟢 Golive</button>
-    <button class="page-tab" id="tabBtnNodeB" type="button">📡 Node B SBU</button>
+    <button class="page-tab" id="tabBtnNodeB" type="button">📡 L0 Kendala MBB</button>
     <button class="page-tab" id="tabBtnBrt" type="button">🚇 BRT Medan</button>
   </div>
 
@@ -2047,7 +2047,7 @@
       <div class="section" style="margin-top:0;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
           <div>
-            <p class="section-title" style="margin-bottom:2px;">Node B Terkendala — SBU</p>
+            <p class="section-title" style="margin-bottom:2px;">L0 Kendala MBB — SBU</p>
             <p class="section-desc" style="margin:0;" id="nodebSource">Sumber: Detail 62 Site (REGION = SBU).</p>
           </div>
           <button type="button" class="download-btn capture-hide" id="nodebDownloadBtn" style="margin-top:0;">📥 Download CSV</button>
@@ -6033,7 +6033,7 @@ document.getElementById('nodebDownloadBtn').onclick = ()=>{
   const rows = nodebFiltered(), cols = Object.keys(NODEB_SNAPSHOT[0]);
   const q = (v)=> '"' + (v||'').toString().replace(/"/g,'""') + '"';
   const csv = [cols.map(q).join(',')].concat(rows.map(r=> cols.map(c=>q(r[c])).join(','))).join('\n');
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download = 'NodeB_SBU.csv'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download = 'L0_Kendala_MBB_SBU.csv'; a.click();
 };
 document.getElementById('tabBtnNodeB').onclick = ()=>{ switchTab('nodeb'); nodebLoad(); };
 document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
