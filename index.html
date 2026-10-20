@@ -374,6 +374,51 @@
   .rekap-clickable:hover{background:var(--panel-2)!important;text-decoration:underline;}
   .kpi.rekap-clickable:hover{background:var(--panel)!important;text-decoration:none;border-color:var(--text-faint);box-shadow:0 2px 8px rgba(27,35,51,0.12);}
   #rekapDetailSection{scroll-margin-top:20px;}
+
+  /* ============ LAYOUT SIDEBAR + TEMA CORPORATE (v87) ============ */
+  :root{
+    --bg:#F3F5F9; --panel:#FFFFFF; --panel-2:#EDF1F7; --line:#DCE3ED;
+    --text:#0F1B2D; --text-dim:#4A5568; --text-faint:#8793A6;
+    --navy:#0B1F3A; --navy-2:#16406F; --brand-red:#D9202B;
+    --cyan:#16406F; --cyan-dim:rgba(22,64,111,.10);
+    --side-w:244px;
+  }
+  body{background:var(--bg);}
+  .wrap{max-width:none;margin:0 0 0 var(--side-w);padding:26px 32px 80px;}
+  .page-tabs{
+    position:fixed;left:0;top:0;bottom:0;width:var(--side-w);margin:0;z-index:50;
+    display:flex;flex-direction:column;flex-wrap:nowrap;gap:2px;overflow-y:auto;
+    padding:78px 12px 20px;border:none;border-right:1px solid rgba(255,255,255,.06);
+    background:linear-gradient(180deg,#0B1F3A 0%,#0E2A4D 100%);box-shadow:4px 0 18px rgba(11,31,58,.18);
+  }
+  .page-tabs::before{
+    content:'ED REG SUMBAGUT';position:absolute;left:0;right:0;top:0;height:62px;display:flex;align-items:center;padding:0 20px;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;letter-spacing:.14em;color:#fff;
+    border-bottom:1px solid rgba(255,255,255,.10);border-left:4px solid var(--brand-red);
+  }
+  .page-tab{
+    width:100%;text-align:left;white-space:normal;border:none;border-left:3px solid transparent;border-radius:8px;margin:0;
+    padding:10px 14px;font-size:13.5px;font-weight:500;color:#B9C7DB;background:transparent;box-shadow:none;
+  }
+  .page-tab:hover{background:rgba(255,255,255,.07);color:#fff;}
+  .page-tab.active{background:rgba(255,255,255,.12);color:#fff;font-weight:700;border-left-color:var(--brand-red);box-shadow:none;}
+  .page-tab:focus-visible{outline:2px solid #7FB0E8;outline-offset:-2px;}
+  .page-tabs::-webkit-scrollbar{width:6px;} .page-tabs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:3px;}
+  .topbar{border-radius:12px 12px 0 0;padding:14px 22px;background:linear-gradient(110deg,#0B1F3A 0%,#16406F 100%);}
+  .fiber-line{margin-bottom:20px;}
+  h1{font-size:28px;}
+  .kpi{border-top:3px solid var(--navy-2);box-shadow:0 1px 3px rgba(11,31,58,.06);}
+  .chart-card,.table-card{box-shadow:0 1px 3px rgba(11,31,58,.06);}
+  .section-title{border-left-color:var(--brand-red);}
+  .multiselect-panel label{justify-content:flex-start;text-align:left;}
+  .multiselect-panel input[type="checkbox"]{flex:0 0 15px!important;width:15px!important;min-width:15px!important;max-width:15px!important;padding:0!important;margin:0!important;}
+  @media (max-width:900px){
+    .wrap{margin-left:0;padding:16px 14px 60px;}
+    .page-tabs{position:sticky;top:0;bottom:auto;width:auto;flex-direction:row;overflow-x:auto;overflow-y:hidden;padding:8px 10px;margin:0 -14px 12px;gap:4px;}
+    .page-tabs::before{display:none;}
+    .page-tab{width:auto;white-space:nowrap;flex:0 0 auto;border-left:none;border-bottom:3px solid transparent;border-radius:6px;}
+    .page-tab.active{border-bottom-color:var(--brand-red);}
+  }
 </style>
 </head>
 <body>
@@ -3714,6 +3759,67 @@ function setupFilters(){
   document.getElementById('filterStatus').onchange = ()=>{ currentPage=1; renderTable(); };
   document.getElementById('filterJenis').onchange = ()=>{ currentPage=1; renderTable(); };
   document.getElementById('filterBranch').onchange = ()=>{ currentPage=1; renderTable(); };
+  ['filterStatus','filterJenis','filterBranch'].forEach(msUpgrade);
+}
+
+/* ---- Multi-select generik: ubah <select> biasa jadi dropdown centang (bisa pilih banyak).
+   <select> aslinya disembunyikan & tetap dipakai sebagai "pemicu" event change.
+   Ambil pilihan lewat msVals(id) -> array ([] = semua). ---- */
+function msUpgrade(id){
+  const sel = document.getElementById(id);
+  if(!sel) return;
+  const first = sel.options[0];
+  const allLabel = (first && first.value === '') ? first.textContent : 'Semua';
+  const opts = [...sel.options].filter(o=> o.value !== '').map(o=> o.value);
+  let st = sel._ms;
+  if(!st){
+    const wrap = document.createElement('div'); wrap.className = 'multiselect';
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'multiselect-btn';
+    const panel = document.createElement('div'); panel.className = 'multiselect-panel'; panel.style.display = 'none';
+    wrap.appendChild(btn); wrap.appendChild(panel);
+    sel.style.display = 'none';
+    sel.parentNode.insertBefore(wrap, sel.nextSibling);
+    st = sel._ms = { wrap, btn, panel, selected:new Set(), allLabel };
+    btn.onclick = (e)=>{
+      e.stopPropagation();
+      document.querySelectorAll('.multiselect-panel').forEach(p=>{ if(p !== panel) p.style.display = 'none'; });
+      panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    };
+    document.addEventListener('click', (e)=>{ if(!wrap.contains(e.target)) panel.style.display = 'none'; });
+  }
+  st.allLabel = allLabel;
+  [...st.selected].forEach(v=>{ if(!opts.includes(v)) st.selected.delete(v); });
+  const label = ()=>{
+    const n = st.selected.size;
+    st.btn.innerHTML = (n === 0 ? st.allLabel : (n === 1 ? [...st.selected][0] : n + ' dipilih')).replace(/</g,'&lt;') + ' <span class="chev">▾</span>';
+  };
+  const fire = ()=>{ label(); sel.dispatchEvent(new Event('change')); };
+  st.panel.innerHTML = '';
+  const mk = (text, checked, isAll, onChange)=>{
+    const l = document.createElement('label'); if(isAll) l.className = 'msel-all';
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = checked; cb.onchange = ()=> onChange(cb);
+    l.appendChild(cb); l.appendChild(document.createTextNode(' ' + text));
+    st.panel.appendChild(l); return cb;
+  };
+  const allCb = mk('Semua', st.selected.size === 0, true, ()=>{
+    st.selected.clear();
+    st.panel.querySelectorAll('input[data-opt]').forEach(c=> c.checked = false);
+    allCb.checked = true; fire();
+  });
+  opts.forEach(v=>{
+    const cb = mk(v, st.selected.has(v), false, (c)=>{
+      if(c.checked) st.selected.add(v); else st.selected.delete(v);
+      allCb.checked = st.selected.size === 0; fire();
+    });
+    cb.dataset.opt = '1';
+  });
+  label();
+}
+function msVals(id){
+  const sel = document.getElementById(id);
+  if(!sel) return [];
+  if(sel._ms) return [...sel._ms.selected];
+  return sel.value ? [sel.value] : [];
 }
 function fillSelect(id, set, defaultLabel){
   const el = document.getElementById(id);
@@ -3726,13 +3832,13 @@ function fillSelect(id, set, defaultLabel){
 
 function getFilteredRows(){
   const search = document.getElementById('searchInput').value.toLowerCase();
-  const fStatus = document.getElementById('filterStatus').value;
-  const fJenis = document.getElementById('filterJenis').value;
-  const fBranch = document.getElementById('filterBranch').value;
+  const fStatus = msVals('filterStatus');
+  const fJenis = msVals('filterJenis');
+  const fBranch = msVals('filterBranch');
   return rows.filter(r=>{
-    if(fStatus && deriveStatus(get(r,'STAT FINAL')) !== fStatus) return false;
-    if(fJenis && get(r,'JENIS PROGRAM CEK') !== fJenis) return false;
-    if(fBranch && get(r,'Telkomsel Branch') !== fBranch) return false;
+    if(fStatus.length && !fStatus.includes(deriveStatus(get(r,'STAT FINAL')))) return false;
+    if(fJenis.length && !fJenis.includes(get(r,'JENIS PROGRAM CEK'))) return false;
+    if(fBranch.length && !fBranch.includes(get(r,'Telkomsel Branch'))) return false;
     if(search){
       const hay = (get(r,'Nama Proyek') + ' ' + get(r,'iHLD LoP ID')).toLowerCase();
       if(!hay.includes(search)) return false;
@@ -6018,6 +6124,7 @@ function nodebFillSelect(id, allLabel, key){
   const vals = [...new Set(nodebRows.map(r=> nodebV(r,key) || '(kosong)'))].sort();
   el.innerHTML = `<option value="">${allLabel}</option>` + vals.map(v=> `<option>${nodebEsc(v)}</option>`).join('');
   el.value = vals.includes(cur) ? cur : '';
+  msUpgrade(id);
 }
 function nodebInitFilters(){
   nodebFillSelect('nodebFKendala','Semua Kendala','Status Progres Kendala2');
@@ -6028,7 +6135,7 @@ function nodebInitFilters(){
 }
 function nodebFiltered(){
   const q = document.getElementById('nodebSearch').value.trim().toLowerCase();
-  const f = (id,key)=>{ const v=document.getElementById(id).value; return v ? (r)=> (nodebV(r,key)||'(kosong)')===v : null; };
+  const f = (id,key)=>{ const v=msVals(id); return v.length ? (r)=> v.includes(nodebV(r,key)||'(kosong)') : null; };
   const fs = [f('nodebFKendala','Status Progres Kendala2'), f('nodebFPlan','PLAN'), f('nodebFMitra','MITRA'), f('nodebFStatus','Status Progres Kendala'), f('nodebFOrder','Klasifikasi order')].filter(Boolean);
   return nodebRows.filter(r=> fs.every(fn=>fn(r)) && (!q || Object.values(r).join(' ').toLowerCase().includes(q)));
 }
@@ -6142,6 +6249,7 @@ function qeFill(id, allLabel, fn){
   const vals = [...new Set(qeRows.map(r=> fn(r) || '(kosong)'))].sort();
   el.innerHTML = `<option value="">${allLabel}</option>` + vals.map(v=> `<option>${qeEsc(v)}</option>`).join('');
   el.value = vals.includes(cur) ? cur : '';
+  msUpgrade(id);
 }
 function qeInitFilters(){
   qeFill('qeFStatus','Semua Status', qeStatusLabel);
@@ -6152,7 +6260,7 @@ function qeInitFilters(){
 }
 function qeFiltered(){
   const q = document.getElementById('qeSearch').value.trim().toLowerCase();
-  const f = (id,fn)=>{ const v=document.getElementById(id).value; return v ? (r)=> (fn(r)||'(kosong)')===v : null; };
+  const f = (id,fn)=>{ const v=msVals(id); return v.length ? (r)=> v.includes(fn(r)||'(kosong)') : null; };
   const fs = [f('qeFStatus',qeStatusLabel), f('qeFDistrict',r=>qeGet(r,'DISTRICT TIF')), f('qeFBatch',r=>qeGet(r,'BATCH')), f('qeFTahun',r=>qeGet(r,'TAHUN PENGERJAAN')), f('qeFSubcon',r=>qeGet(r,'SUBCON TA'))].filter(Boolean);
   return qeRows.filter(r=> fs.every(fn=>fn(r)) && (!q || r.join(' ').toLowerCase().includes(q)));
 }
@@ -7275,7 +7383,7 @@ mbbLoadDataAuto();
 let pt3Rows = [];
 let pt3HeaderMap = {};
 let pt3AGG = null;
-let pt3BranchPageFilter = ''; // '' = semua branch; kalau diisi, filter SELURUH halaman (KPI/chart/pivot/tabel)
+let pt3BranchPageFilter = []; // '' = semua branch; kalau diisi, filter SELURUH halaman (KPI/chart/pivot/tabel)
 let pt3CurrentPage = 1;
 let pt3SortField = null;
 let pt3SortDir = 'asc';
@@ -7391,8 +7499,8 @@ function pt3GetPeriodRows(){
   } else {
     baseRows = pt3Rows;
   }
-  if(pt3BranchPageFilter){
-    baseRows = baseRows.filter(row => (pt3Get(row,'BRANCH FMC')||'Tidak Diketahui') === pt3BranchPageFilter);
+  if(pt3BranchPageFilter.length){
+    baseRows = baseRows.filter(row => pt3BranchPageFilter.includes(pt3Get(row,'BRANCH FMC')||'Tidak Diketahui'));
   }
   return baseRows;
 }
@@ -7409,9 +7517,10 @@ function pt3SetupBranchPageFilter(){
     sel.appendChild(opt);
   });
   sel.onchange = ()=>{
-    pt3BranchPageFilter = sel.value;
+    pt3BranchPageFilter = msVals('pt3BranchPageFilter');
     pt3BuildDashboard();
   };
+  msUpgrade('pt3BranchPageFilter');
 }
 
 function pt3SetupPeriodFilter(){
@@ -8630,17 +8739,18 @@ function lapPt2SetupFilters(){
   document.getElementById('lapPt2SearchInput').oninput = ()=>{ lapPt2CurrentPage=1; lapPt2RenderTable(); };
   branchSel.onchange = ()=>{ lapPt2CurrentPage=1; lapPt2RenderTable(); };
   statusSel.onchange = ()=>{ lapPt2CurrentPage=1; lapPt2RenderTable(); };
+  msUpgrade('lapPt2FilterBranch'); msUpgrade('lapPt2FilterStatus');
 }
 
 function lapPt2GetFilteredRows(){
   const q = document.getElementById('lapPt2SearchInput').value.trim().toLowerCase();
-  const branchFilter = document.getElementById('lapPt2FilterBranch').value;
-  const statusFilter = document.getElementById('lapPt2FilterStatus').value;
+  const branchFilter = msVals('lapPt2FilterBranch');
+  const statusFilter = msVals('lapPt2FilterStatus');
 
   const baseRows = lapPt2FilterCtl.apply(rows);
   const filtered = baseRows.filter(row=>{
-    if(branchFilter && get(row,'Telkomsel Branch') !== branchFilter) return false;
-    if(statusFilter && get(row,'STAT FINAL') !== statusFilter) return false;
+    if(branchFilter.length && !branchFilter.includes(get(row,'Telkomsel Branch'))) return false;
+    if(statusFilter.length && !statusFilter.includes(get(row,'STAT FINAL'))) return false;
     if(q){
       const hay = [get(row,'iHLD LoP ID'), get(row,'Nama Proyek'), get(row,'LABEL ODP'), get(row,'Telkomsel Branch')].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
@@ -8832,12 +8942,12 @@ async function pt3fhLoadDataAuto(){
 }
 
 /* PT3 FH tidak punya kolom "Tgl Order", jadi tidak ada filter YTD/MTD — selalu semua data. */
-let pt3fhBranchPageFilter = ''; // '' = semua branch; kalau diisi, filter SELURUH halaman (KPI/chart/pivot/tabel)
+let pt3fhBranchPageFilter = []; // '' = semua branch; kalau diisi, filter SELURUH halaman (KPI/chart/pivot/tabel)
 
 function pt3fhGetPeriodRows(){
   let baseRows = pt3fhRows;
-  if(pt3fhBranchPageFilter){
-    baseRows = baseRows.filter(row => (pt3fhGet(row,'BRANCH FMC')||'Tidak Diketahui') === pt3fhBranchPageFilter);
+  if(pt3fhBranchPageFilter.length){
+    baseRows = baseRows.filter(row => pt3fhBranchPageFilter.includes(pt3fhGet(row,'BRANCH FMC')||'Tidak Diketahui'));
   }
   return baseRows;
 }
@@ -8856,9 +8966,10 @@ function pt3fhSetupBranchPageFilter(){
     sel.appendChild(opt);
   });
   sel.onchange = ()=>{
-    pt3fhBranchPageFilter = sel.value;
+    pt3fhBranchPageFilter = msVals('pt3fhBranchPageFilter');
     pt3fhBuildDashboard();
   };
+  msUpgrade('pt3fhBranchPageFilter');
 }
 
 function pt3fhBuildDashboard(){
