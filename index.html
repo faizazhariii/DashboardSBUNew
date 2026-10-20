@@ -419,6 +419,23 @@
     .page-tab{width:auto;white-space:nowrap;flex:0 0 auto;border-left:none;border-bottom:3px solid transparent;border-radius:6px;}
     .page-tab.active{border-bottom-color:var(--brand-red);}
   }
+
+  .tab-group{display:flex;align-items:center;gap:10px;margin:14px 6px 6px;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#7F95B3;}
+  .tab-group::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(255,255,255,0));}
+  .tab-group:first-child{margin-top:4px;}
+  .side-toggle{position:fixed;top:14px;left:calc(var(--side-w) - 42px);z-index:60;width:30px;height:30px;border-radius:8px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff;font-size:18px;line-height:1;cursor:pointer;transition:left .25s,background .15s;}
+  .side-toggle:hover{background:rgba(255,255,255,.2);}
+  .page-tabs{transition:transform .25s ease;}
+  .wrap{transition:margin-left .25s ease;}
+  body.side-collapsed .page-tabs{transform:translateX(-100%);box-shadow:none;}
+  body.side-collapsed .wrap{margin-left:0;}
+  body.side-collapsed .side-toggle{left:12px;background:var(--navy);border-color:var(--navy);}
+  body.side-collapsed .tagline{padding-left:34px;}
+  @media (max-width:900px){
+    .side-toggle{display:none;}
+    body.side-collapsed .page-tabs{transform:none;}
+    .tab-group{display:none;}
+  }
 </style>
 </head>
 <body>
@@ -440,7 +457,9 @@
     </div>
   </header>
 
+  <button type="button" id="sideToggle" class="side-toggle" title="Sembunyikan / tampilkan menu" aria-label="Sembunyikan menu">‹</button>
   <div class="page-tabs">
+    <div class="tab-group">Tematik</div>
     <button class="page-tab active" id="tabBtnPT2" type="button">Feeding PT2</button>
     <button class="page-tab" id="tabBtnLapPt2" type="button">PT2</button>
     <button class="page-tab" id="tabBtnPt3" type="button">PT3 TA</button>
@@ -449,6 +468,7 @@
     <button class="page-tab" id="tabBtnHem" type="button">HEM</button>
     <button class="page-tab" id="tabBtnOlo" type="button">OLO</button>
     <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
+    <div class="tab-group">Residential</div>
     <button class="page-tab" id="tabBtnChecklist" type="button">☑️ Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">🔧 Need Modul OLT</button>
     <button class="page-tab" id="tabBtnQe" type="button">🛠️ QE</button>
@@ -6317,6 +6337,17 @@ document.getElementById('qeDownloadBtn').onclick = ()=>{
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'})); a.download = 'QE_SBU.csv'; a.click();
 };
 document.getElementById('tabBtnQe').onclick = ()=>{ switchTab('qe'); qeLoad(); };
+
+/* Sembunyikan / tampilkan sidebar (ingat pilihan terakhir) */
+(function(){
+  const btn = document.getElementById('sideToggle');
+  if(!btn) return;
+  const apply = (c)=>{ document.body.classList.toggle('side-collapsed', c); btn.textContent = c ? '☰' : '‹'; btn.setAttribute('aria-label', c ? 'Tampilkan menu' : 'Sembunyikan menu'); };
+  let c = false;
+  try{ c = localStorage.getItem('sideCollapsed') === '1'; }catch(e){}
+  apply(c);
+  btn.onclick = ()=>{ c = !c; apply(c); try{ localStorage.setItem('sideCollapsed', c ? '1' : '0'); }catch(e){} setTimeout(()=> window.dispatchEvent(new Event('resize')), 300); };
+})();
 document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
 const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
 let brtCurrentZona = '1', brtLoadedZona = null;
