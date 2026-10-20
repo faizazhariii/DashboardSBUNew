@@ -406,6 +406,7 @@
     <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
     <button class="page-tab" id="tabBtnChecklist" type="button">☑️ Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">🔧 Need Modul OLT</button>
+    <button class="page-tab" id="tabBtnQe" type="button">🛠️ QE</button>
     <button class="page-tab" id="tabBtnGolive" type="button">🟢 Golive</button>
     <button class="page-tab" id="tabBtnNodeB" type="button">📡 L0 Kendala MBB</button>
     <button class="page-tab" id="tabBtnBrt" type="button">🚇 BRT Medan</button>
@@ -2082,6 +2083,47 @@
               <th>Remarks</th><th>History</th><th>Detail</th>
             </tr></thead>
             <tbody id="nodebTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="pageQe" style="display:none;">
+      <div class="section" style="margin-top:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div>
+            <p class="section-title" style="margin-bottom:2px;">QE — SBU</p>
+            <p class="section-desc" style="margin:0;" id="qeSource">Sumber: sheet QE, filter REGION = SBU.</p>
+          </div>
+          <button type="button" class="download-btn capture-hide" id="qeDownloadBtn" style="margin-top:0;">📥 Download CSV</button>
+        </div>
+        <div id="qeError" style="display:none;margin-top:14px;padding:12px 14px;border:1px solid var(--red);border-radius:10px;color:var(--red);font-size:13px;"></div>
+        <div class="kpi-row" id="qeKpis"></div>
+        <div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
+          <div class="chart-card"><h3>Status Progres</h3><div class="canvas-wrap" style="height:270px;"><canvas id="qeChartStatus"></canvas></div></div>
+          <div class="chart-card"><h3>Status per District</h3><div class="canvas-wrap" style="height:270px;"><canvas id="qeChartDistrict"></canvas></div></div>
+        </div>
+        <div class="table-card" style="overflow-x:auto;margin-top:18px;">
+          <table class="mbb-report-table"><thead><tr id="qePivotHead"></tr></thead><tbody id="qePivotBody"></tbody></table>
+        </div>
+        <p class="section-title" style="margin:22px 0 4px;font-size:15px;">Detail LoP QE</p>
+        <div class="filters">
+          <input type="text" id="qeSearch" placeholder="Cari Nama LoP, ID DIGASSS, STO, detail...">
+          <select id="qeFStatus" class="period-select"></select>
+          <select id="qeFDistrict" class="period-select"></select>
+          <select id="qeFBatch" class="period-select"></select>
+          <select id="qeFTahun" class="period-select"></select>
+          <select id="qeFSubcon" class="period-select"></select>
+          <span class="count" id="qeCount"></span>
+        </div>
+        <div class="table-card" style="overflow-x:auto;">
+          <table class="mbb-report-table">
+            <thead><tr>
+              <th>ID DIGASSS</th><th>Nama LoP</th><th>District</th><th>STO</th><th>Batch</th><th>Tahun</th>
+              <th>Nilai Plan</th><th>Nilai Realisasi</th><th>Status</th><th>Detail Status</th><th>Tgt Instansi</th>
+              <th>Tim Waspang</th><th>Tim UT</th><th>Subcon TA</th>
+            </tr></thead>
+            <tbody id="qeTableBody"></tbody>
           </table>
         </div>
       </div>
@@ -4087,7 +4129,7 @@ function hemRenderCommitTable(){
   body.innerHTML = (entries.map(([label,count])=>{
       const spec = JSON.stringify({month:hemCommitMonth, status:label, label:`Komitmen Golive — ${label}`}).replace(/"/g,'&quot;');
       return `<tr><td class="name clickable-cell" data-flt="${spec}">${label}</td><td class="clickable-cell" data-flt="${spec}">${count}</td></tr>`;
-    }).join('') || `<tr><td colspan="2" style="text-align:center;padding:10px;">Tidak ada komitmen di bulan ini.</td></tr>`)
+    }).join('') || `<tr><td colspan="3" style="text-align:center;padding:10px;">Tidak ada komitmen di bulan ini.</td></tr>`)
     + `<tr class="total-row"><td class="name clickable-cell" data-flt="${totalSpec}">TOTAL</td><td class="clickable-cell" data-flt="${totalSpec}">${matching.length}</td></tr>`;
 
   if(!hemCommitTableWired){
@@ -5594,7 +5636,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -5687,7 +5729,7 @@ function renderRekapPivotGeneric(program, kpiRowId, headId, bodyId, agg, getFn, 
   branchOrder.sort();
 
   if(branchOrder.length === 0 || columns.length === 0){
-    headEl.innerHTML = `<th>Branch</th><th>Total</th>`;
+    headEl.innerHTML = `<th>Branch</th><th>Total</th><th>% Achievement</th>`;
     bodyEl.innerHTML = `<tr><td colspan="2" style="text-align:center;padding:10px;">Tidak ada data.</td></tr>`;
     return;
   }
@@ -5782,9 +5824,16 @@ function renderRekapKomitmenBulanan(program, monthSelId, headId, bodyId, agg, ge
   });
   branchOrder.sort();
 
-  headEl.innerHTML = `<th class="pivot-sticky-col">Branch</th>` + columns.map(c=>`<th>${c}</th>`).join('') + `<th>Total</th>`;
+  headEl.innerHTML = `<th class="pivot-sticky-col">Branch</th>` + columns.map(c=>`<th>${c}</th>`).join('') + `<th>Total</th><th title="OA / total komitmen bulan ini (berdasarkan jumlah Port)">% Achievement</th>`;
 
   const sumVal = (arr)=> arr.reduce((s,r)=> s + valueFn(r), 0);
+  const isOA = (r)=>{ const c = categoryFn(r); return c === 'golive' || c === 'gl'; };
+  const achTd = (arr)=>{
+    const tot = sumVal(arr), oa = arr.filter(isOA);
+    const pct = tot > 0 ? Math.round(sumVal(oa) / tot * 100) : (arr.length ? Math.round(oa.length / arr.length * 100) : 0);
+    const col = pct >= 100 ? '#167A4B' : (pct >= 50 ? '#B7791F' : '#D7141A');
+    return `<td style="white-space:nowrap;"><strong style="color:${col};">${pct}%</strong> <span style="font-size:10.5px;color:var(--text-faint);">(${oa.length}/${arr.length} LoP)</span></td>`;
+  };
   const colAllRows = Object.fromEntries(columns.map(c=>[c,[]]));
   let grandAllRows = [];
 
@@ -5800,7 +5849,7 @@ function renderRekapKomitmenBulanan(program, monthSelId, headId, bodyId, agg, ge
     grandAllRows = grandAllRows.concat(branchAllRows);
     const rowTotalVal = sumVal(branchAllRows);
     const totalTd = rekapTd(program, branchAllRows, `<strong>${rowTotalVal.toLocaleString('id-ID')}</strong>`, `${program} — Komitmen ${bulanLabel} — ${b} — Semua Status`);
-    return `<tr><td class="name pivot-sticky-col">${b}</td>${cells}${totalTd}</tr>`;
+    return `<tr><td class="name pivot-sticky-col">${b}</td>${cells}${totalTd}${achTd(branchAllRows)}</tr>`;
   }).join('');
 
   const totalCellsHtml = columns.map(c=>{
@@ -5815,6 +5864,7 @@ function renderRekapKomitmenBulanan(program, monthSelId, headId, bodyId, agg, ge
       <td class="name pivot-sticky-col">TOTAL</td>
       ${totalCellsHtml}
       ${grandTotalTd}
+      ${achTd(grandAllRows)}
     </tr>`;
 }
 
@@ -5898,7 +5948,7 @@ function renderResumeKomitmenChart(program, pre, rows, getFn, categoryFn, commit
       plugins:{
         legend:{ position:'top', align:'end', labels:{ usePointStyle:true, pointStyle:'circle', boxWidth:10, boxHeight:10, font:{family:'Inter', size:11.5, weight:'600'} } },
         datalabels:{ display:(ctx)=> ctx.dataset.data[ctx.dataIndex] > 0, color:'#fff', font:{size:9, weight:'700'} },
-        title:{ display:true, position:'bottom', align:'start', text:`Total ${bulan} — OA ${tot('golive')} · OGP ${tot('ogp')} · DROP ${tot('drop')}`, font:{family:'Inter', size:11, weight:'500'}, color:'#5B6478' }
+        title:{ display:true, position:'bottom', align:'start', text:`Total ${bulan} — OA ${tot('golive')} · OGP ${tot('ogp')} · DROP ${tot('drop')} · Achievement ${(tot('golive')+tot('ogp')+tot('drop')) ? Math.round(tot('golive')/(tot('golive')+tot('ogp')+tot('drop'))*100) : 0}%`, font:{family:'Inter', size:11, weight:'500'}, color:'#5B6478' }
       },
       scales:{ x:{ stacked:true, grid:{display:false} }, y:{ stacked:true, beginAtZero:true, ticks:{precision:0} } }
     }
@@ -6036,6 +6086,129 @@ document.getElementById('nodebDownloadBtn').onclick = ()=>{
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download = 'L0_Kendala_MBB_SBU.csv'; a.click();
 };
 document.getElementById('tabBtnNodeB').onclick = ()=>{ switchTab('nodeb'); nodebLoad(); };
+
+/* ============================================================
+   Halaman QE — sheet "QE" (gid 2018392112), filter kolom B (REGION) = SBU
+   ============================================================ */
+const QE_CSV_URLS = [
+  'https://docs.google.com/spreadsheets/d/1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM/gviz/tq?tqx=out:csv&gid=2018392112',
+  'https://docs.google.com/spreadsheets/d/1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM/export?format=csv&gid=2018392112'
+];
+let qeRows = [], qeHeaderMap = {}, qeCharts = {};
+const qeNorm = (s)=> (s||'').toString().replace(/\s+/g,' ').trim().toUpperCase();
+const qeEsc = (t)=> (t==null?'':String(t)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function qeGet(r,name){ const i = qeHeaderMap[qeNorm(name)]; return i===undefined ? '' : ((r[i]||'')+'').trim(); }
+function qeNum(v){ const n = parseFloat((v||'').toString().replace(/[^\d.-]/g,'')); return isNaN(n) ? 0 : n; }
+function qeStatusLabel(r){ return qeGet(r,'STATUS PROGRES').replace(/^(\d{2}|XX)\s+/i,'').toUpperCase() || 'TIDAK DIKETAHUI'; }
+function qeStatusOrder(r){ const m = qeGet(r,'STATUS PROGRES').match(/^(\d{2}|XX)/i); return m ? (m[1].toUpperCase()==='XX' ? 99 : parseInt(m[1],10)) : 100; }
+function qeStatusColor(label){
+  if(label==='CLOSED') return '#167A4B';
+  if(label==='DROP') return '#D7141A';
+  if(label==='HOLD ISSUE') return '#B7791F';
+  if(label==='FINISH INSTALASI') return '#2F855A';
+  if(label==='INSTALASI') return '#0B5CAB';
+  return '#718096';
+}
+const qeFmtIDR = (n)=> n ? 'Rp' + Math.round(n).toLocaleString('id-ID') : '—';
+
+async function qeLoad(){
+  const errEl = document.getElementById('qeError');
+  let lastErr = null, text = null;
+  for(const url of QE_CSV_URLS){
+    try{
+      const res = await universalFetch(url + (url.includes('?')?'&':'?') + '_=' + Date.now(), {cache:'no-store'});
+      if(!res.ok){ lastErr = new Error('HTTP ' + res.status); continue; }
+      const t = await res.text();
+      if(!t || t.trim().startsWith('<')){ lastErr = new Error('Respons kosong/bukan CSV'); continue; }
+      text = t; break;
+    }catch(e){ lastErr = e; }
+  }
+  if(text === null){
+    errEl.style.display = 'block';
+    errEl.textContent = 'Gagal memuat sheet QE: ' + (lastErr ? lastErr.message : 'tidak diketahui') + '. Pastikan sheet bisa diakses (publish / siapa pun dengan link).';
+    return;
+  }
+  errEl.style.display = 'none';
+  const data = Papa.parse(text, {skipEmptyLines:true}).data;
+  const hi = data.findIndex(r=> r.some(c=> qeNorm(c)==='NAMA LOP'));
+  if(hi < 0){ errEl.style.display='block'; errEl.textContent='Header "NAMA LOP" tidak ditemukan di sheet QE.'; return; }
+  qeHeaderMap = {}; data[hi].forEach((h,i)=>{ qeHeaderMap[qeNorm(h)] = i; });
+  qeRows = data.slice(hi+1).filter(r=> qeGet(r,'NAMA LOP') && qeGet(r,'REGION').toUpperCase()==='SBU');
+  document.getElementById('qeSource').textContent = 'Sumber: sheet QE, filter REGION = SBU · ' + qeRows.length + ' LoP · dimuat ' + new Date().toLocaleString('id-ID');
+  qeInitFilters(); qeRender();
+}
+function qeFill(id, allLabel, fn){
+  const el = document.getElementById(id), cur = el.value;
+  const vals = [...new Set(qeRows.map(r=> fn(r) || '(kosong)'))].sort();
+  el.innerHTML = `<option value="">${allLabel}</option>` + vals.map(v=> `<option>${qeEsc(v)}</option>`).join('');
+  el.value = vals.includes(cur) ? cur : '';
+}
+function qeInitFilters(){
+  qeFill('qeFStatus','Semua Status', qeStatusLabel);
+  qeFill('qeFDistrict','Semua District', r=> qeGet(r,'DISTRICT TIF'));
+  qeFill('qeFBatch','Semua Batch', r=> qeGet(r,'BATCH'));
+  qeFill('qeFTahun','Semua Tahun', r=> qeGet(r,'TAHUN PENGERJAAN'));
+  qeFill('qeFSubcon','Semua Subcon', r=> qeGet(r,'SUBCON TA'));
+}
+function qeFiltered(){
+  const q = document.getElementById('qeSearch').value.trim().toLowerCase();
+  const f = (id,fn)=>{ const v=document.getElementById(id).value; return v ? (r)=> (fn(r)||'(kosong)')===v : null; };
+  const fs = [f('qeFStatus',qeStatusLabel), f('qeFDistrict',r=>qeGet(r,'DISTRICT TIF')), f('qeFBatch',r=>qeGet(r,'BATCH')), f('qeFTahun',r=>qeGet(r,'TAHUN PENGERJAAN')), f('qeFSubcon',r=>qeGet(r,'SUBCON TA'))].filter(Boolean);
+  return qeRows.filter(r=> fs.every(fn=>fn(r)) && (!q || r.join(' ').toLowerCase().includes(q)));
+}
+function qeChart(id, type, labels, datasets, opts){
+  if(typeof Chart==='undefined') return;
+  if(qeCharts[id]) qeCharts[id].destroy();
+  qeCharts[id] = new Chart(document.getElementById(id), {type, data:{labels, datasets}, options:Object.assign({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}},datalabels:{color:'#fff',font:{weight:'bold',size:10},formatter:(v)=>v||''}}}, opts||{})});
+}
+function qeRender(){
+  const all = qeRows, rows = qeFiltered();
+  const cnt = (lab)=> all.filter(r=> lab.includes(qeStatusLabel(r))).length;
+  const sum = (arr,k)=> arr.reduce((s,r)=> s + qeNum(qeGet(r,k)), 0);
+  const kpi = [
+    ['Total LoP', all.length, '#0a2342'],
+    ['Closed', cnt(['CLOSED']), '#167A4B'],
+    ['Instalasi / Finish', cnt(['INSTALASI','FINISH INSTALASI']), '#2b6cb0'],
+    ['Persiapan s/d Matdel', cnt(['NEW ORDER','PERSIAPAN','AANWIJZING','PERIZINAN','MATDEL']), '#d69e2e'],
+    ['Drop / Hold', cnt(['DROP','HOLD ISSUE']), '#c8102e'],
+    ['% Closed', all.length ? Math.round(cnt(['CLOSED'])/all.length*100)+'%' : '0%', '#805ad5'],
+    ['Nilai Plan', qeFmtIDR(sum(all,'NILAI PLAN')), '#0a2342'],
+    ['Nilai Realisasi', qeFmtIDR(sum(all,'NILAI REALISASI')), '#2f855a']
+  ];
+  document.getElementById('qeKpis').innerHTML = kpi.map(k=> `<div class="kpi"><div class="accent" style="background:${k[2]}"></div><p class="kpi-label">${k[0]}</p><p class="kpi-value" style="${String(k[1]).length>9?'font-size:18px;':''}">${k[1]}</p></div>`).join('');
+
+  const stMap = {}; rows.forEach(r=>{ const l=qeStatusLabel(r); stMap[l] = stMap[l] || {n:0, o:qeStatusOrder(r)}; stMap[l].n++; });
+  const sts = Object.keys(stMap).sort((a,b)=> stMap[a].o - stMap[b].o);
+  qeChart('qeChartStatus','doughnut',sts,[{data:sts.map(s=>stMap[s].n),backgroundColor:sts.map(qeStatusColor)}]);
+  const dists = [...new Set(rows.map(r=> qeGet(r,'DISTRICT TIF') || '(kosong)'))].sort();
+  qeChart('qeChartDistrict','bar',dists,sts.map(s=>({label:s,backgroundColor:qeStatusColor(s),data:dists.map(d=> rows.filter(r=> (qeGet(r,'DISTRICT TIF')||'(kosong)')===d && qeStatusLabel(r)===s).length)})),{scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true,ticks:{precision:0}}}});
+
+  document.getElementById('qePivotHead').innerHTML = '<th>District</th>' + sts.map(s=>`<th>${qeEsc(s)}</th>`).join('') + '<th>Total</th><th>Nilai Plan</th><th>% Closed</th>';
+  const pr = (arr)=> { const c = arr.filter(r=> qeStatusLabel(r)==='CLOSED').length; return arr.length ? Math.round(c/arr.length*100) : 0; };
+  document.getElementById('qePivotBody').innerHTML = dists.map(d=>{
+    const dr = rows.filter(r=> (qeGet(r,'DISTRICT TIF')||'(kosong)')===d);
+    return `<tr><td class="name">${qeEsc(d)}</td>${sts.map(s=>{ const n = dr.filter(r=>qeStatusLabel(r)===s).length; return `<td>${n||'—'}</td>`; }).join('')}<td><b>${dr.length}</b></td><td>${qeFmtIDR(sum(dr,'NILAI PLAN'))}</td><td>${pr(dr)}%</td></tr>`;
+  }).join('') + `<tr class="pivot-total"><td><b>TOTAL</b></td>${sts.map(s=>`<td><b>${rows.filter(r=>qeStatusLabel(r)===s).length}</b></td>`).join('')}<td><b>${rows.length}</b></td><td><b>${qeFmtIDR(sum(rows,'NILAI PLAN'))}</b></td><td><b>${pr(rows)}%</b></td></tr>`;
+
+  document.getElementById('qeCount').textContent = rows.length + ' LoP';
+  const long = (t)=> `<td style="min-width:260px;max-width:340px;"><div style="max-height:90px;overflow-y:auto;white-space:pre-wrap;font-size:11.5px;color:var(--text-dim);line-height:1.4;">${qeEsc(t)||'—'}</div></td>`;
+  document.getElementById('qeTableBody').innerHTML = rows.slice().sort((a,b)=> qeStatusOrder(a)-qeStatusOrder(b)).map(r=>{
+    const lab = qeStatusLabel(r);
+    return `<tr><td>${qeEsc(qeGet(r,'ID DIGASSS'))||'—'}</td><td class="name">${qeEsc(qeGet(r,'NAMA LOP'))}</td><td>${qeEsc(qeGet(r,'DISTRICT TIF'))||'—'}</td><td>${qeEsc(qeGet(r,'STO'))||'—'}</td><td>${qeEsc(qeGet(r,'BATCH'))||'—'}</td><td>${qeEsc(qeGet(r,'TAHUN PENGERJAAN'))||'—'}</td>
+      <td>${qeFmtIDR(qeNum(qeGet(r,'NILAI PLAN')))}</td><td>${qeFmtIDR(qeNum(qeGet(r,'NILAI REALISASI')))}</td>
+      <td><span style="font-weight:700;color:${qeStatusColor(lab)};">${qeEsc(lab)}</span></td>${long(qeGet(r,'DETAIL STATUS'))}<td>${qeEsc(qeGet(r,'TGT DARI INSTANSI'))||'—'}</td>
+      <td>${qeEsc(qeGet(r,'Tim Waspang'))||'—'}</td><td>${qeEsc(qeGet(r,'Tim UT'))||'—'}</td><td>${qeEsc(qeGet(r,'SUBCON TA'))||'—'}</td></tr>`;
+  }).join('') || '<tr><td colspan="14" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>';
+}
+['qeFStatus','qeFDistrict','qeFBatch','qeFTahun','qeFSubcon'].forEach(id=> document.getElementById(id).onchange = qeRender);
+document.getElementById('qeSearch').oninput = qeRender;
+document.getElementById('qeDownloadBtn').onclick = ()=>{
+  const rows = qeFiltered(), cols = Object.keys(qeHeaderMap);
+  const q = (v)=> '"' + (v||'').toString().replace(/"/g,'""') + '"';
+  const csv = [cols.map(q).join(',')].concat(rows.map(r=> cols.map(c=> q(r[qeHeaderMap[c]])).join(','))).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'})); a.download = 'QE_SBU.csv'; a.click();
+};
+document.getElementById('tabBtnQe').onclick = ()=>{ switchTab('qe'); qeLoad(); };
 document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
 const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
 let brtCurrentZona = '1', brtLoadedZona = null;
