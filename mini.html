@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Mini Web ED REG Sumbagut</title>
+<meta name="theme-color" content="#0B1F3A">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3F5F9; --panel:#fff; --line:#DCE3ED; --text:#0F1B2D; --dim:#4A5568; --faint:#8793A6;
+    --navy:#0B1F3A; --navy2:#16406F; --red:#D9202B;
+    --ok:#167A4B; --ogp:#0B5CAB; --drop:#D7141A; --warn:#B7791F;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  body{min-height:100vh;padding-bottom:calc(72px + env(safe-area-inset-bottom));}
+  .app{max-width:560px;margin:0 auto;}
+  header{position:sticky;top:0;z-index:20;background:linear-gradient(110deg,var(--navy),var(--navy2));color:#fff;padding:14px 16px 12px;border-bottom:3px solid var(--red);}
+  .hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9CC0EA;font-weight:600;margin:0;}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:18px;margin:2px 0 0;font-weight:700;}
+  .rbtn{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 12px;font-size:12.5px;font-weight:600;cursor:pointer;}
+  .rbtn:active{background:rgba(255,255,255,.25);}
+  .stamp{font-size:11px;color:#B9C7DB;margin-top:6px;}
+  main{padding:14px 14px 20px;}
+  .view{display:none;} .view.on{display:block;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 1px 3px rgba(11,31,58,.06);margin-bottom:12px;}
+  .sec{font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:700;margin:18px 2px 8px;padding-left:8px;border-left:4px solid var(--red);color:var(--navy);}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--navy2);border-radius:12px;padding:10px 8px;text-align:center;}
+  .kpi b{display:block;font-family:'Space Grotesk',sans-serif;font-size:21px;}
+  .kpi span{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+  .cat{cursor:pointer;} .cat:active{background:#F7F9FC;}
+  .cat .top{display:flex;justify-content:space-between;align-items:baseline;}
+  .cat .nm{font-weight:700;font-size:15px;color:var(--navy);}
+  .cat .tot{font-size:12px;color:var(--faint);}
+  .bar{display:flex;height:10px;border-radius:6px;overflow:hidden;background:#E8EDF4;margin:10px 0 8px;}
+  .bar i{display:block;height:100%;}
+  .legend{display:flex;gap:12px;font-size:12px;color:var(--dim);flex-wrap:wrap;}
+  .legend em{font-style:normal;font-weight:700;}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;}
+  .kom{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);}
+  .kom:last-child{border-bottom:none;}
+  .kom .n{width:68px;font-weight:700;font-size:13.5px;color:var(--navy);}
+  .kom .m{flex:1;}
+  .kom .t{font-size:11.5px;color:var(--dim);margin-bottom:4px;}
+  .pbar{height:8px;border-radius:5px;background:#E8EDF4;overflow:hidden;}
+  .pbar i{display:block;height:100%;background:var(--ok);}
+  .kom .p{width:52px;text-align:right;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;}
+  .search{position:sticky;top:76px;z-index:15;background:var(--bg);padding:4px 0 8px;}
+  .search input{width:100%;font:inherit;font-size:15px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;outline:none;}
+  .search input:focus{border-color:var(--navy2);box-shadow:0 0 0 3px rgba(22,64,111,.12);}
+  .chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none;}
+  .chips::-webkit-scrollbar{display:none;}
+  .chip{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--dim);border-radius:99px;padding:7px 13px;font-size:12.5px;font-weight:600;cursor:pointer;}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .count{font-size:12px;color:var(--faint);margin:6px 2px;}
+  .item{display:block;width:100%;text-align:left;font:inherit;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--ogp);border-radius:12px;padding:11px 12px;margin-bottom:8px;cursor:pointer;}
+  .item:active{background:#F7F9FC;}
+  .item.golive{border-left-color:var(--ok);} .item.drop{border-left-color:var(--drop);}
+  .item .t{font-weight:700;font-size:14px;line-height:1.3;color:var(--text);}
+  .item .s{font-size:12px;color:var(--faint);margin-top:3px;}
+  .item .b{display:flex;gap:6px;align-items:center;margin-top:7px;flex-wrap:wrap;}
+  .tag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:#EAF0F8;color:var(--navy2);}
+  .tag.golive{background:#E3F4EB;color:var(--ok);} .tag.drop{background:#FBE5E6;color:var(--drop);} .tag.src{background:var(--navy);color:#fff;}
+  .more{display:block;width:100%;padding:12px;border:1px dashed var(--faint);background:transparent;border-radius:12px;color:var(--navy2);font-weight:600;font-size:13.5px;cursor:pointer;margin:6px 0 10px;}
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 14px rgba(11,31,58,.08);}
+  nav button{flex:1;border:none;background:none;font:inherit;padding:11px 6px 12px;font-size:12.5px;font-weight:600;color:var(--faint);cursor:pointer;border-top:3px solid transparent;}
+  nav button.on{color:var(--navy);border-top-color:var(--red);}
+  .sheet-bg{position:fixed;inset:0;background:rgba(11,31,58,.5);z-index:40;display:none;}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;max-width:560px;margin:0 auto;background:#fff;border-radius:18px 18px 0 0;max-height:86vh;display:none;flex-direction:column;box-shadow:0 -10px 30px rgba(0,0,0,.25);}
+  .sheet.on,.sheet-bg.on{display:flex;} .sheet-bg.on{display:block;}
+  .sh-h{padding:14px 16px 10px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start;justify-content:space-between;}
+  .sh-h .t{font-weight:700;font-size:15px;line-height:1.3;}
+  .sh-h .x{border:none;background:#EDF1F7;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;flex:0 0 auto;}
+  .sh-b{padding:12px 16px calc(18px + env(safe-area-inset-bottom));overflow-y:auto;}
+  .kv{display:grid;grid-template-columns:112px 1fr;gap:6px 10px;font-size:13px;margin-bottom:12px;}
+  .kv dt{color:var(--faint);font-weight:600;} .kv dd{margin:0;word-break:break-word;}
+  .det{white-space:pre-wrap;font-size:13px;line-height:1.5;background:#F7F9FC;border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+  .err{background:#FBE5E6;color:var(--drop);border-radius:10px;padding:10px 12px;font-size:12.5px;margin-bottom:10px;}
+  .empty{text-align:center;color:var(--faint);padding:30px 10px;font-size:13.5px;}
+  .loading{text-align:center;color:var(--faint);padding:40px 10px;font-size:14px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="hrow">
+      <div><p class="eyebrow">ED REG Sumbagut</p><h1>Mini Web Deployment</h1></div>
+      <button class="rbtn" id="btnRefresh" type="button">Segarkan</button>
+    </div>
+    <div class="stamp" id="stamp">Memuat data...</div>
+  </header>
+
+  <main>
+    <div id="errBox"></div>
+
+    <section class="view on" id="vSum"><div class="loading">Memuat ringkasan...</div></section>
+
+    <section class="view" id="vCek">
+      <div class="search">
+        <input id="q" type="search" placeholder="Cari ID, nama LoP, STO, branch..." autocomplete="off">
+        <div class="chips" id="chipsSrc"></div>
+        <div class="chips" id="chipsCat"></div>
+      </div>
+      <div class="count" id="cnt"></div>
+      <div id="list"></div>
+    </section>
+  </main>
+</div>
+
+<nav>
+  <button id="navSum" class="on" type="button">Ringkasan</button>
+  <button id="navCek" type="button">Cek Progress</button>
+</nav>
+
+<div class="sheet-bg" id="bg"></div>
+<div class="sheet" id="sheet">
+  <div class="sh-h"><div class="t" id="shT"></div><button class="x" id="shX" type="button" aria-label="Tutup">✕</button></div>
+  <div class="sh-b" id="shB"></div>
+</div>
+
+<script>
+(function(){
+const SS = '1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM';
+const PUB = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRY6Kk4y76AknMk8g7e9i-vp1aUnrDoyixjs0QtdBoeO82X8zyJjpNoemMFAmAHUXSEdv3Upaj4otlh/pub';
+const gviz = (gid)=> `https://docs.google.com/spreadsheets/d/${SS}/gviz/tq?tqx=out:csv&gid=${gid}`;
+const exp = (gid)=> `https://docs.google.com/spreadsheets/d/${SS}/export?format=csv&gid=${gid}`;
+
+const tg = window.Telegram && window.Telegram.WebApp;
+if(tg){ try{ tg.ready(); tg.expand(); tg.setHeaderColor('#0B1F3A'); tg.setBackgroundColor('#F3F5F9'); }catch(e){} }
+
+const MON = {jan:0,feb:1,mar:2,apr:3,mei:4,may:4,jun:5,jul:6,agu:7,agt:7,aug:7,sep:8,okt:9,oct:9,nov:10,des:11,dec:11};
+function parseDMY(str){
+  if(!str || str === '-') return null;
+  let p = str.toString().trim().split(/[\/\-\s]+/).filter(Boolean);
+  if(p.length === 2 && /^\d{1,2}$/.test(p[0]) && isNaN(parseInt(p[1])) && MON[p[1].slice(0,3).toLowerCase()] !== undefined) p.push(String(new Date().getFullYear()));
+  if(p.length !== 3) return null;
+  let [d,m,y] = p;
+  if(isNaN(parseInt(m))){
+    const mi = MON[m.slice(0,3).toLowerCase()]; if(mi === undefined) return null;
+    let yr = parseInt(y); if(y.length === 2) yr += 2000;
+    const dt = new Date(yr, mi, parseInt(d)); return isNaN(dt) ? null : dt;
+  }
+  if(y.length === 2) y = '20' + y;
+  const dt = new Date(parseInt(y), parseInt(m)-1, parseInt(d)); return isNaN(dt) ? null : dt;
+}
+const strip = (l)=> (l||'').replace(/^\s*\d+[\.\-\)]?\s*/, '').trim() || (l||'');
+const isDropNum = (l)=> /^\s*0\b/.test(l||'');
+
+/* ---------- Konfigurasi tiap sumber ---------- */
+const SOURCES = [
+  { key:'PT3 TA', urls:[gviz(1041674095), exp(1041674095)], req:'ID-IHLD',
+    f:{ id:'ID-IHLD', nama:'NAMA LOP', branch:'BRANCH FMC', sto:'STO', status:'Status', komit:'KOMITMEN GOLIVE', detail:'DETAIL STATUS' },
+    extra:[['Mitra','MITRA'],['Port Plan','PORT PLAN'],['Prioritas Tsel','PRIORITAS 1 BY TSEL'],['Status Golive','STATUS GOLIVE']],
+    cat:(g)=>{ const st = g('Status'); if(isDropNum(st)) return 'drop'; if(strip(st).toUpperCase()==='UJI TERIMA' || g('STATUS GOLIVE').toUpperCase()==='GOLIVE') return 'golive'; return 'ogp'; } },
+  { key:'PT3 FH', urls:[gviz(745436831), exp(745436831)], req:'ID-IHLD',
+    f:{ id:'ID-IHLD', nama:'NAMA LOP', branch:'BRANCH FMC', sto:'STO', status:'Status', komit:'KOMITMEN GOLIVE', detail:'DETAIL STATUS' },
+    extra:[['Mitra','MITRA'],['Port Plan','PORT PLAN'],['Prioritas Tsel','PRIORITAS 1 BY TSEL']],
+    cat:(g)=>{ const st = g('Status'); if(isDropNum(st)) return 'drop'; const s = strip(st).toUpperCase(); if(s==='GOLIVE'||s==='UJI TERIMA'||s==='REKON') return 'golive'; return 'ogp'; } },
+  { key:'HEM', urls:[PUB+'?gid=277538737&single=true&output=csv', PUB+'?output=csv'], req:'IHLD',
+    f:{ id:'IHLD', nama:'NAMA LOP', branch:'DISTRICT', sto:'STO', status:'Progress Lapangan', komit:'Komitmen Golive', detail:'Detail Progres' },
+    extra:[['Witel','WITEL'],['Tgl Submit NDE','Tanggal submit order nde'],['Catatan','CATATAN']],
+    cat:(g)=>{ const s = strip(g('Progress Lapangan')).toUpperCase(); if(['GOLIVE','UJI TERIMA','ON AIR'].includes(s)) return 'golive'; if(['DROP','PROPOSED DROP','APPROVED DROP'].includes(s)) return 'drop'; return 'ogp'; } },
+  { key:'OLO', urls:[PUB+'?gid=1782023053&single=true&output=csv'], req:'IHLD',
+    f:{ id:'IHLD', nama:'NAMA PROYEK', branch:'DISTRICT', sto:'STO', status:'Progress Lapangan', komit:'Komitmen Golive', detail:'Detail Progres' },
+    extra:[['No Order','NO ORDER'],['Service','SERVICE'],['BW','BW'],['Catatan','CATATAN']], search:['NO ORDER'],
+    cat:(g)=>{ const s = strip(g('Progress Lapangan')).toUpperCase(); if(['GOLIVE','UJI TERIMA','ON AIR'].includes(s)) return 'golive'; if(['DROP','PROPOSED DROP','APPROVED DROP'].includes(s)) return 'drop'; return 'ogp'; } },
+  { key:'MBB', urls:[gviz(264409897), exp(264409897)], req:'SITE ID',
+    f:{ id:'ID', nama:'SITE NAME', branch:'BRANCH', sto:'STO', status:'STATUS', komit:'TGL COMMIT OA FIX', detail:'DETIL PROGRESS' },
+    extra:[['Site ID','SITE ID'],['Tipe Order','TIPE ORDER'],['Sub Status','SUB STATUS'],['Mitra','MITRA'],['Catatan','CATATAN']], search:['SITE ID'],
+    cat:(g)=>{ const m = (g('STATUS')||'').match(/^\s*(\d+)/); const n = m ? parseInt(m[1],10) : -1; if(n===0) return 'drop'; if(n===6||n===7) return 'golive'; return 'ogp'; } },
+  { key:'QE', urls:[gviz(2018392112), exp(2018392112)], req:'NAMA LOP', region:{col:'REGION', val:'SBU'},
+    f:{ id:'ID DIGASSS', nama:'NAMA LOP', branch:'DISTRICT TIF', sto:'STO', status:'STATUS PROGRES', komit:null, detail:'DETAIL STATUS' },
+    extra:[['Batch','BATCH'],['Nilai Plan','NILAI PLAN'],['Nilai Realisasi','NILAI REALISASI'],['Subcon TA','SUBCON TA'],['Tim Waspang','Tim Waspang']],
+    cat:(g)=>{ const s = strip(g('STATUS PROGRES')).toUpperCase(); if(s==='CLOSED') return 'golive'; if(s==='DROP') return 'drop'; return 'ogp'; } }
+];
+const CATLBL = { golive:'OA / Golive', ogp:'OGP', drop:'Drop' };
+const norm = (s)=> (s||'').toString().replace(/\s+/g,' ').trim().toUpperCase();
+
+let DATA = {};   // key -> [records]
+let ERRS = {};
+let loadedAt = null;
+
+async function fetchText(urls){
+  let last = null;
+  for(const u of urls){
+    try{
+      const r = await fetch(u + (u.includes('?')?'&':'?') + '_=' + Date.now(), {cache:'no-store'});
+      if(!r.ok){ last = new Error('HTTP ' + r.status); continue; }
+      const t = await r.text();
+      if(!t || t.trim().startsWith('<')){ last = new Error('Respons bukan CSV (sheet belum dibagikan?)'); continue; }
+      return t;
+    }catch(e){ last = e; }
+  }
+  throw last || new Error('gagal');
+}
+function build(src, text){
+  const data = Papa.parse(text, {skipEmptyLines:true}).data;
+  const hi = data.findIndex(r=> r.some(c=> norm(c) === src.req));
+  if(hi < 0) throw new Error('header "' + src.req + '" tidak ditemukan');
+  const map = {}; data[hi].forEach((h,i)=>{ if(!(norm(h) in map)) map[norm(h)] = i; });
+  const out = [];
+  data.slice(hi+1).forEach(row=>{
+    const g = (n)=>{ const i = map[norm(n)]; return i === undefined ? '' : ((row[i]||'')+'').trim(); };
+    if(src.region && g(src.region.col).toUpperCase() !== src.region.val) return;
+    const nama = g(src.f.nama); if(!nama && !g(src.f.id)) return;
+    const rec = {
+      src: src.key, id: g(src.f.id), nama: nama || '(tanpa nama)', branch: g(src.f.branch), sto: g(src.f.sto),
+      status: strip(g(src.f.status)) || 'Tidak diketahui', komit: src.f.komit ? g(src.f.komit) : '', detail: g(src.f.detail),
+      cat: src.cat(g), extra: src.extra.map(([l,c])=>[l, g(c)]).filter(x=>x[1])
+    };
+    rec.hay = [rec.id, rec.nama, rec.sto, rec.branch, rec.status].concat((src.search||[]).map(g)).join(' ').toLowerCase();
+    out.push(rec);
+  });
+  return out;
+}
+async function loadAll(){
+  document.getElementById('btnRefresh').disabled = true;
+  document.getElementById('stamp').textContent = 'Memuat data...';
+  ERRS = {};
+  await Promise.all(SOURCES.map(async s=>{
+    try{ DATA[s.key] = build(s, await fetchText(s.urls)); }
+    catch(e){ ERRS[s.key] = e.message || String(e); if(!DATA[s.key]) DATA[s.key] = []; }
+  }));
+  loadedAt = new Date();
+  document.getElementById('btnRefresh').disabled = false;
+  document.getElementById('stamp').textContent = 'Diperbarui ' + loadedAt.toLocaleString('id-ID', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  const keys = Object.keys(ERRS);
+  document.getElementById('errBox').innerHTML = keys.length ? `<div class="err">Gagal memuat: ${keys.map(k=>k+' ('+ERRS[k]+')').join(', ')}. Cek apakah sheet sudah dibagikan / dipublish.</div>` : '';
+  renderSum(); renderCek();
+}
+
+/* ---------- Ringkasan ---------- */
+const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+function renderSum(){
+  const now = new Date(), ym = [now.getFullYear(), now.getMonth()];
+  let all = [];
+  SOURCES.forEach(s=> all = all.concat(DATA[s.key]||[]));
+  const c = (arr,k)=> arr.filter(r=> r.cat === k).length;
+  let h = `<div class="kpis">
+    <div class="kpi"><b>${all.length}</b><span>Total LoP</span></div>
+    <div class="kpi"><b style="color:var(--ok)">${c(all,'golive')}</b><span>OA</span></div>
+    <div class="kpi"><b style="color:var(--ogp)">${c(all,'ogp')}</b><span>OGP</span></div>
+    <div class="kpi"><b style="color:var(--drop)">${c(all,'drop')}</b><span>Drop</span></div></div>`;
+  h += `<div class="sec">Per Kategori</div>`;
+  SOURCES.forEach(s=>{
+    const a = DATA[s.key]||[], t = a.length || 1;
+    const g = c(a,'golive'), o = c(a,'ogp'), d = c(a,'drop');
+    h += `<div class="card cat" data-src="${s.key}">
+      <div class="top"><span class="nm">${s.key}</span><span class="tot">${a.length} LoP · ketuk untuk detail</span></div>
+      <div class="bar"><i style="width:${g/t*100}%;background:var(--ok)"></i><i style="width:${o/t*100}%;background:var(--ogp)"></i><i style="width:${d/t*100}%;background:var(--drop)"></i></div>
+      <div class="legend"><span><i class="dot" style="background:var(--ok)"></i>OA <em>${g}</em></span><span><i class="dot" style="background:var(--ogp)"></i>OGP <em>${o}</em></span><span><i class="dot" style="background:var(--drop)"></i>Drop <em>${d}</em></span></div></div>`;
+  });
+  h += `<div class="sec">Komitmen Golive — ${BULAN[ym[1]]} ${ym[0]}</div><div class="card">`;
+  let any = false;
+  SOURCES.filter(s=> s.f.komit).forEach(s=>{
+    const km = (DATA[s.key]||[]).filter(r=>{ const d = parseDMY(r.komit); return d && d.getFullYear()===ym[0] && d.getMonth()===ym[1]; });
+    if(!km.length){ return; }
+    any = true;
+    const oa = km.filter(r=> r.cat==='golive').length, pct = Math.round(oa/km.length*100);
+    const col = pct >= 100 ? 'var(--ok)' : (pct >= 50 ? 'var(--warn)' : 'var(--drop)');
+    h += `<div class="kom"><div class="n">${s.key}</div><div class="m"><div class="t">${oa} OA dari ${km.length} komitmen</div><div class="pbar"><i style="width:${Math.min(pct,100)}%"></i></div></div><div class="p" style="color:${col}">${pct}%</div></div>`;
+  });
+  if(!any) h += `<div class="empty">Belum ada komitmen golive di bulan ini.</div>`;
+  h += `</div>`;
+  const el = document.getElementById('vSum'); el.innerHTML = h;
+  el.querySelectorAll('.cat').forEach(x=> x.onclick = ()=>{ state.src = x.dataset.src; state.cat = ''; show('cek'); renderCek(); });
+}
+
+/* ---------- Cek Progress ---------- */
+const state = { src:'', cat:'', q:'', limit:30 };
+function chipRow(id, items, cur, onPick){
+  const el = document.getElementById(id);
+  el.innerHTML = items.map(([v,l])=> `<button type="button" class="chip${v===cur?' on':''}" data-v="${v}">${l}</button>`).join('');
+  el.querySelectorAll('.chip').forEach(b=> b.onclick = ()=> onPick(b.dataset.v));
+}
+const esc = (t)=> (t==null?'':String(t)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+let FILTERED = [];
+function renderCek(){
+  chipRow('chipsSrc', [['','Semua']].concat(SOURCES.map(s=>[s.key,s.key])), state.src, v=>{ state.src = v; state.limit = 30; renderCek(); });
+  chipRow('chipsCat', [['','Semua Status'],['golive','OA / Golive'],['ogp','OGP'],['drop','Drop']], state.cat, v=>{ state.cat = v; state.limit = 30; renderCek(); });
+  const q = state.q.trim().toLowerCase();
+  let pool = [];
+  SOURCES.forEach(s=>{ if(!state.src || state.src === s.key) pool = pool.concat(DATA[s.key]||[]); });
+  FILTERED = pool.filter(r=> (!state.cat || r.cat === state.cat) && (!q || r.hay.includes(q)));
+  document.getElementById('cnt').textContent = FILTERED.length + ' LoP' + (q ? ' cocok' : '');
+  const shown = FILTERED.slice(0, state.limit);
+  let h = shown.map((r,i)=> `<button type="button" class="item ${r.cat}" data-i="${i}">
+      <div class="t">${esc(r.nama)}</div>
+      <div class="s">${esc([r.id, r.sto, r.branch].filter(Boolean).join(' · '))}</div>
+      <div class="b"><span class="tag src">${r.src}</span><span class="tag ${r.cat}">${esc(r.status)}</span>${r.komit ? `<span class="tag">Komit ${esc(r.komit)}</span>` : ''}</div></button>`).join('');
+  if(!shown.length) h = `<div class="empty">Tidak ada LoP yang cocok.</div>`;
+  if(FILTERED.length > shown.length) h += `<button type="button" class="more" id="more">Tampilkan lebih banyak (${FILTERED.length - shown.length} lagi)</button>`;
+  const el = document.getElementById('list'); el.innerHTML = h;
+  el.querySelectorAll('.item').forEach(b=> b.onclick = ()=> openSheet(shown[+b.dataset.i]));
+  const m = document.getElementById('more'); if(m) m.onclick = ()=>{ state.limit += 30; renderCek(); };
+}
+document.getElementById('q').oninput = (e)=>{ state.q = e.target.value; state.limit = 30; renderCek(); };
+
+/* ---------- Detail ---------- */
+function openSheet(r){
+  document.getElementById('shT').textContent = r.nama;
+  const rows = [['Sumber', r.src],['ID', r.id],['Branch / District', r.branch],['STO', r.sto],['Status', r.status],['Kategori', CATLBL[r.cat]],['Komitmen Golive', r.komit]].concat(r.extra).filter(x=>x[1]);
+  document.getElementById('shB').innerHTML = `<dl class="kv">${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>` +
+    `<div class="sec" style="margin-top:4px">Detail Progres</div><div class="det">${esc(r.detail) || 'Belum ada detail progres.'}</div>`;
+  document.getElementById('bg').classList.add('on'); document.getElementById('sheet').classList.add('on');
+}
+function closeSheet(){ document.getElementById('bg').classList.remove('on'); document.getElementById('sheet').classList.remove('on'); }
+document.getElementById('bg').onclick = closeSheet; document.getElementById('shX').onclick = closeSheet;
+
+/* ---------- Navigasi ---------- */
+function show(v){
+  document.getElementById('vSum').classList.toggle('on', v === 'sum');
+  document.getElementById('vCek').classList.toggle('on', v === 'cek');
+  document.getElementById('navSum').classList.toggle('on', v === 'sum');
+  document.getElementById('navCek').classList.toggle('on', v === 'cek');
+  window.scrollTo(0,0);
+}
+document.getElementById('navSum').onclick = ()=> show('sum');
+document.getElementById('navCek').onclick = ()=> show('cek');
+document.getElementById('btnRefresh').onclick = loadAll;
+loadAll();
+})();
+</script>
+</body>
+</html>
