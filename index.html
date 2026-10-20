@@ -364,6 +364,9 @@
   .pivot-table thead th,.mbb-report-table th{background:var(--navy);color:#fff;}
   tbody tr:hover td{background:rgba(11,92,171,.05);}
   footer{border-top:3px solid var(--navy-2);padding-top:14px;}
+  .brt-zona-btn{background:#fff;border:1px solid var(--line);color:var(--navy);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13.5px;padding:8px 18px;border-radius:99px;cursor:pointer;transition:all .15s;}
+  .brt-zona-btn:hover{border-color:var(--navy-2);}
+  .brt-zona-btn.active{background:linear-gradient(110deg,var(--navy),var(--navy-2));color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(10,35,66,.25);}
 </style>
 </head>
 <body>
@@ -396,6 +399,7 @@
     <button class="page-tab" id="tabBtnChecklist" type="button">☑️ Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">🔧 Need Modul OLT</button>
     <button class="page-tab" id="tabBtnGolive" type="button">🟢 Golive</button>
+    <button class="page-tab" id="tabBtnBrt" type="button">🚇 BRT Medan</button>
   </div>
 
   <div id="pagePT2">
@@ -1953,6 +1957,21 @@
 
     </div>
 
+    <div id="pageBrt" style="display:none;">
+      <div class="section" style="margin-top:0;">
+        <p class="section-title" style="margin-bottom:2px;">BRT Medan — Cek Update Progress</p>
+        <p class="section-desc" style="margin:0 0 12px;">Update aktual lapangan beserta peta, per zona.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+          <button type="button" class="brt-zona-btn active" data-zona="1">Zona 1</button>
+          <button type="button" class="brt-zona-btn" data-zona="2">Zona 2</button>
+          <button type="button" class="brt-zona-btn" data-zona="3">Zona 3</button>
+          <a id="brtOpenNew" class="refresh-btn" target="_blank" rel="noopener noreferrer" href="https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=1" style="margin:0 0 0 auto;text-decoration:none;display:inline-block;">↗ Buka di tab baru</a>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(10,35,66,.07);">
+          <iframe id="brtFrame" title="Cek Update BRT Medan" loading="lazy" style="width:100%;height:80vh;min-height:560px;border:0;display:block;"></iframe>
+        </div>
+      </div>
+    </div>
     <div id="pageGolive" style="display:none;">
 
     <div id="goliveCaptureArea">
@@ -5441,7 +5460,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -5459,6 +5478,16 @@ document.getElementById('tabBtnLapPt2').onclick = ()=> switchTab('lapPt2');
 document.getElementById('tabBtnChecklist').onclick = ()=> switchTab('checklist');
 document.getElementById('tabBtnNeedOlt').onclick = ()=> switchTab('needOlt');
 document.getElementById('tabBtnGolive').onclick = ()=> switchTab('golive');
+document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
+const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
+let brtCurrentZona = '1', brtLoadedZona = null;
+function brtLoadZona(z){
+  brtCurrentZona = z;
+  document.querySelectorAll('.brt-zona-btn').forEach(b=> b.classList.toggle('active', b.dataset.zona === z));
+  document.getElementById('brtOpenNew').href = BRT_BASE + z;
+  if(brtLoadedZona !== z){ document.getElementById('brtFrame').src = BRT_BASE + z; brtLoadedZona = z; }
+}
+document.querySelectorAll('.brt-zona-btn').forEach(b=> b.onclick = ()=> brtLoadZona(b.dataset.zona));
 
 const hemStageDetailCloseBtn = document.getElementById('hemStageDetailCloseBtn');
 if(hemStageDetailCloseBtn) hemStageDetailCloseBtn.onclick = hemHideStageDetail;
