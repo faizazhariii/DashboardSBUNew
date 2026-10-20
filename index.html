@@ -1271,6 +1271,7 @@
                 <th>CAT SLA HO</th>
                 <th class="sortable" data-field="TGL COMMIT OA FIX">TGL Commit OA Fix<span class="sort-arrow">▲▼</span></th>
                 <th>Detil Progress</th>
+                <th>Catatan</th>
               </tr>
             </thead>
             <tbody id="mbbTableBody"></tbody>
@@ -6914,7 +6915,9 @@ function mbbRenderTable(){
       <td>${mbbGet(row,'CAT SLA HO')||'—'}</td>
       <td>${mbbGet(row,'TGL COMMIT OA FIX')||'—'}</td>
       <td style="min-width:260px;max-width:340px;"><div style="max-height:52px;overflow-y:auto;white-space:normal;font-size:11.5px;color:var(--text-dim);line-height:1.4;" title="${(mbbGet(row,'DETIL PROGRESS')||'').replace(/"/g,'&quot;')}">${mbbGet(row,'DETIL PROGRESS')||'—'}</div></td>
-    </tr>`).join('') || `<tr><td colspan="16" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
+    <td style="min-width:230px;">${renderCatatanCell('mbb', mbbGet(row,'ID'), mbbGet(row,'CATATAN'))}</td>
+    </tr>`).join('') || `<tr><td colspan="17" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
+  wireCatatanUI('mbb', 'MBB');
 
   document.getElementById('mbbPageInfo').textContent = `Halaman ${mbbCurrentPage} dari ${totalPages}`;
   document.getElementById('mbbPrevPage').disabled = mbbCurrentPage <= 1;
