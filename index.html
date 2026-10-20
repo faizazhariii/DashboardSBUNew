@@ -384,7 +384,7 @@
     <div class="sync-box">
       <div><span class="sync-dot"></span><span id="syncStatus">Menyambungkan...</span></div>
       <button class="refresh-btn" id="refreshBtn">↻ SEGARKAN DATA</button>
-      <a class="refresh-btn" id="openSheetBtn" href="https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/edit?gid=1563055842" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-block;">🔗 BUKA GOOGLE SHEET</a>
+      <a class="refresh-btn" id="openSheetBtn" href="https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/edit?gid=817384998" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-block;">🔗 BUKA GOOGLE SHEET</a>
     </div>
   </header>
 
@@ -2079,9 +2079,8 @@ function downloadRowsAsCsv(filename, columns, rows){
 }
 
 const CSV_URLS = [
-  "https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/gviz/tq?tqx=out:csv&gid=1563055842",
-  "https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/export?format=csv&gid=1563055842",
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7-kfadqORsY1YbF9_eL7oD58BM1EwmjdMU7zWpx0z0yVoOQCT7l90Az2EgP3UGF1CbOb-usZc3mgf/pub?gid=1563055842&single=true&output=csv"
+  "https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/gviz/tq?tqx=out:csv&gid=817384998",
+  "https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/export?format=csv&gid=817384998"
 ];
 
 const COLORS = { golive: '#2F5233', godeploy: '#3B6E86', drop: '#7A2E2A', other: '#8992A8' };
@@ -2096,7 +2095,7 @@ const LANJUT_GO_PAGE_SIZE = 12;
 
 function normKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
 /**
- * Kolom ODC di sheet utama (gid 1563055842) sering tidak konsisten diisi.
+ * Kolom ODC di sheet utama (gid 817384998) sering tidak konsisten diisi.
  * Data ODC yang benar & lengkap ada di tab "RESUMEE SBU" (gid 487592778).
  * Di-fetch terpisah, di-join ke baris utama pakai IHLD LoP ID.
  */
