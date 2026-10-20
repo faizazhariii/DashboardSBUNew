@@ -5864,7 +5864,7 @@ function renderResumePT3TA(){
   renderRekapPivotGeneric('PT3 TA', 'rekapPt3KpiRow', 'rekapPt3PivotHead', 'rekapPt3PivotBody', pt3AGG, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
   renderRekapKomitmenBulanan('PT3 TA', 'rekapPt3CommitMonth', 'rekapPt3CommitHead', 'rekapPt3CommitBody', pt3AGG, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')), 'KOMITMEN GOLIVE', 'BRANCH FMC');
   renderResumeKomitmenChart('PT3 TA', 'rekapPt3', pt3AGG.rows, pt3Get, pt3Category, 'KOMITMEN GOLIVE');
-  const p1Rows = pt3AGG.rows.filter(row => (pt3Get(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().includes('TSEL PRIORITY'));
+  const p1Rows = pt3AGG.rows.filter(row => { const v=(pt3Get(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim(); return v.startsWith('PRIO') && !v.startsWith('NON'); });
   renderRekapPivotGeneric('PT3 TA', 'rekapPt3P1KpiRowDUMMY', 'rekapPt3P1PivotHead', 'rekapPt3P1PivotBody', {rows:p1Rows}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
 }
 function renderResumePT3FH(){
