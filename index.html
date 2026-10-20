@@ -1202,8 +1202,8 @@
 
       <div class="section">
         <p class="section-title">Progres × Batch — Semua Kategori</p>
-        <p class="section-desc">Order yang masih berjalan (OGP) per tahap progres dan Batch WO, dipisah per kategori SOW (New Infra, New Link, Dual Homing, dll). Klik angka untuk melihat detail order di Daftar Work Order di bawah.</p>
-        <div id="mbbProgresBatchArea" class="mbb-report-grid"></div>
+        <p class="section-desc">Semua order (termasuk On Air, Uji Terima, Drop, dan Order Baru) per status dan Batch WO lengkap, dipisah per kategori SOW (New Infra, New Link, Dual Homing, dll). Klik angka untuk melihat detail order di Daftar Work Order di bawah.</p>
+        <div id="mbbProgresBatchArea" class="mbb-report-grid" style="grid-template-columns:1fr;"></div>
       </div>
       </div>
 
@@ -6119,8 +6119,7 @@ function mbbReportPredicateBuilder(spec){
     };
   }
   if(spec.type === 'progres_batch_sow'){
-    return row => mbbSowKey(row) === spec.sow && mbbFiOaOgp(row) === 'ogp'
-      && mbbProgresRowLabel(row) === spec.stage && mbbBatchLabel(row) === spec.batch;
+    return row => mbbSowKey(row) === spec.sow && mbbPbStage(row) === spec.stage && mbbPbBatch(row) === spec.batch;
   }
   return null;
 }
@@ -6302,7 +6301,9 @@ function mbbSetupCommitDropdowns(){
 }
 
 
-/* ===== Progres x Batch — semua kategori SOW (New Infra, New Link, Dual Homing, dll) ===== */
+/* ===== Progres x Batch — semua kategori SOW (New Infra, New Link, Dual Homing, dll) =====
+   Mencakup SEMUA status (Order Baru, Aanwijzing ... On Air, Uji Terima, Drop) dan SEMUA batch
+   (label lengkap, mis. "TIF Batch 02" / "PST Batch4"). Tag HOLD/TSEL/REDESIGN hanya untuk order OGP. */
 function mbbSowKey(row){ return (mbbGet(row,'SOW PRE ORDER') || 'LAINNYA').trim().toUpperCase(); }
 function mbbSowOrderIdx(k){
   if(k.includes('INFRA')) return 0;
@@ -6310,23 +6311,33 @@ function mbbSowOrderIdx(k){
   if(k.includes('DUAL')) return 2;
   return 3;
 }
+function mbbPbStage(row){
+  if(mbbFiOaOgp(row) === 'ogp') return mbbProgresRowLabel(row);
+  const raw = (mbbGet(row,'STATUS') || '').trim();
+  if(!raw) return 'ORDER BARU';
+  return hemStripStatusPrefix(raw).toUpperCase() || 'ORDER BARU';
+}
+function mbbPbBatch(row){
+  return (mbbGet(row,'BATCH WO') || '').replace(/\s+/g,' ').trim().toUpperCase() || 'TANPA BATCH';
+}
+const MBB_PB_STAGE_ORDER = ['ORDER BARU','AANWIJZING','PERIZINAN','MATDEL','INSTALASI','XX HOLD ISSUE','XX ISSUE TSEL','XX REDESIGN','FINISH INSTALL','ON AIR','UJI TERIMA','DROP'];
+function mbbPbBatchSort(a,b){
+  const pa = a.replace(/\d+.*$/,'').trim(), pb = b.replace(/\d+.*$/,'').trim();
+  if(pa !== pb) return pa.localeCompare(pb);
+  const na = parseInt((a.match(/\d+/)||[0])[0]), nb = parseInt((b.match(/\d+/)||[0])[0]);
+  return na - nb || a.localeCompare(b);
+}
 function mbbProgresBatchPanelHTML(sowKey, rows){
-  const ogp = rows.filter(r=> mbbFiOaOgp(r) === 'ogp');
   const agg = {}, batchSet = new Set();
-  ogp.forEach(row=>{
-    const p = mbbProgresRowLabel(row), b = mbbBatchLabel(row);
+  rows.forEach(row=>{
+    const p = mbbPbStage(row), b = mbbPbBatch(row);
     batchSet.add(b);
     (agg[p] = agg[p] || {})[b] = (agg[p][b]||0) + 1;
   });
-  const batches = [...batchSet].sort((a,b)=>{
-    const na = parseInt(a), nb = parseInt(b);
-    if(!isNaN(na) && !isNaN(nb)) return na-nb;
-    return a.localeCompare(b);
-  });
-  const pref = ['AANWIJZING','PERIZINAN','MATDEL','INSTALASI','XX HOLD ISSUE','XX ISSUE TSEL','XX REDESIGN'];
+  const batches = [...batchSet].sort(mbbPbBatchSort);
   const labels = Object.keys(agg).sort((a,b)=>{
-    const ia = pref.indexOf(a), ib = pref.indexOf(b);
-    return (ia===-1?999:ia) - (ib===-1?999:ib);
+    const ia = MBB_PB_STAGE_ORDER.indexOf(a), ib = MBB_PB_STAGE_ORDER.indexOf(b);
+    return (ia===-1?999:ia) - (ib===-1?999:ib) || a.localeCompare(b);
   });
   const colTot = Object.fromEntries(batches.map(b=>[b,0]));
   let grand = 0;
@@ -6334,20 +6345,22 @@ function mbbProgresBatchPanelHTML(sowKey, rows){
     let rt = 0;
     const cells = batches.map(b=>{
       const v = agg[p][b]||0; colTot[b]+=v; rt+=v;
-      return mbbMakeClickTd(v, v||'—', {type:'progres_batch_sow', sow:sowKey, stage:p, batch:b, label:`${sowKey} — ${p} — Batch ${b}`});
+      return mbbMakeClickTd(v, v||'—', {type:'progres_batch_sow', sow:sowKey, stage:p, batch:b, label:`${sowKey} — ${p} — ${b}`});
     }).join('');
     grand += rt;
     return `<tr><td class="name">${p}</td>${cells}<td><strong>${rt}</strong></td></tr>`;
   }).join('');
   const badge = sowKey.includes('INFRA') ? 'infra' : sowKey.includes('LINK') ? 'link' : '';
+  const th = b=>`<th style="white-space:nowrap;">${b.replace(/^(TIF|PST)\s*/,'$1<br>')}</th>`;
   const table = batches.length ? `
+    <div style="overflow-x:auto;">
     <table class="mbb-report-table">
-      <thead><tr><th>Progres</th>${batches.map(b=>`<th>${b}</th>`).join('')}<th>Total</th></tr></thead>
+      <thead><tr><th>Status</th>${batches.map(th).join('')}<th>Total</th></tr></thead>
       <tbody>${bodyHTML}
         <tr class="total-row"><td class="name">TOTAL</td>${batches.map(b=>`<td>${colTot[b]}</td>`).join('')}<td>${grand}</td></tr>
       </tbody>
-    </table>` : `<p class="kpi-sub" style="text-align:center;">Belum ada data OGP.</p>`;
-  return `<div class="mbb-report-panel ${badge}"><div class="mbb-report-badge" style="${badge?'':'background:#0A2342;'}">${sowKey}</div>${table}</div>`;
+    </table></div>` : `<p class="kpi-sub" style="text-align:center;">Belum ada data.</p>`;
+  return `<div class="mbb-report-panel ${badge}"><div class="mbb-report-badge" style="${badge?'':'background:#0A2342;'}">${sowKey} · ${rows.length} order</div>${table}</div>`;
 }
 let mbbProgresBatchWired = false;
 function mbbRenderProgresBatchAll(){
