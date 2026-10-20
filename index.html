@@ -361,13 +361,10 @@
     <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
     <button class="page-tab" id="tabBtnPt3" type="button">PT3 TA</button>
     <button class="page-tab" id="tabBtnPt3Fh" type="button">PT3 FH</button>
-    <button class="page-tab" id="tabBtnQeRelok" type="button">QE Relok</button>
     <button class="page-tab" id="tabBtnLapPt2" type="button">PT2</button>
-    <button class="page-tab" id="tabBtnKomitmenGL" type="button">🎯 Komitmen GL</button>
     <button class="page-tab" id="tabBtnChecklist" type="button">☑️ Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">🔧 Need Modul OLT</button>
     <button class="page-tab" id="tabBtnGolive" type="button">🟢 Golive</button>
-    <button class="page-tab" id="tabBtnWisa" type="button">🖼️ WISA</button>
   </div>
 
   <div id="pagePT2">
@@ -1646,123 +1643,6 @@
 
   </div>
 
-    <div id="pageQeRelok" style="display:none;">
-
-    <div id="qeRelokErrorState" class="state-msg" style="display:none;">
-      <p>⚠ <span id="qeRelokErrDetail"></span></p>
-    </div>
-
-    <div id="qeRelokDashboard" style="display:none;">
-      <div id="qeRelokPptCaptureArea">
-      <div class="section" style="margin-top:0;padding-bottom:0;">
-        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-          <span class="kpi-sub" style="margin:0;">Data QE Relok (tidak ada filter periode — sheet ini tidak punya kolom tanggal order tunggal).</span>
-          <button type="button" class="capture-hide ppt-capture-btn" id="qeRelokPptCaptureBtn" title="Capture untuk PPT">📷</button>
-        </div>
-      </div>
-
-      <div class="kpi-row" id="qeRelokKpiRow"></div>
-
-      <div class="section">
-        <p class="section-title">Breakdown Status Progres</p>
-        <p class="section-desc">Jumlah order berdasarkan tahapan status saat ini (Closed tidak ikut, sudah ada di kotak KPI). <span class="capture-hide">Klik kotak/panah untuk lihat detail order-nya.</span></p>
-        <div class="flow-chevron-row" id="qeRelokProgressFlow"></div>
-
-        <div id="qeRelokStageDetailWrap" class="capture-hide" style="display:none;margin-top:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
-            <p class="section-title" style="font-size:14px;margin:0;" id="qeRelokStageDetailTitle"></p>
-            <div style="display:flex;gap:8px;">
-              <button type="button" class="ppt-capture-btn capture-hide" id="qeRelokStageDetailCaptureBtn" title="Capture untuk PPT">📷</button>
-              <button type="button" class="download-lanjut-btn" id="qeRelokStageDetailCloseBtn" style="width:auto;padding:7px 14px;border-top:none;border-radius:6px;">✕ Tutup</button>
-            </div>
-          </div>
-          <div class="table-card">
-            <table class="bordered-table">
-              <thead>
-                <tr id="qeRelokStageDetailHead">
-                  <th class="sortable" data-field="id">ID<span class="sort-arrow">▲▼</span></th>
-                  <th class="sortable" data-field="site">Nama LOP<span class="sort-arrow">▲▼</span></th>
-                  <th class="sortable" data-field="district">District<span class="sort-arrow">▲▼</span></th>
-                  <th class="sortable" data-field="sto">STO<span class="sort-arrow">▲▼</span></th>
-                  <th class="sortable" data-field="status">Status Progres<span class="sort-arrow">▲▼</span></th>
-                  <th class="sortable" data-field="batch">Batch<span class="sort-arrow">▲▼</span></th>
-                </tr>
-              </thead>
-              <tbody id="qeRelokStageDetailBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <p class="section-title">Pivot District TIF × Status Progres</p>
-        <p class="section-desc">Jumlah order per district, dipecah per tahapan status.</p>
-        <div class="table-card" style="overflow-x:auto;">
-          <table class="pivot-table">
-            <thead>
-              <tr id="qeRelokPivotDistrictHead"></tr>
-            </thead>
-            <tbody id="qeRelokPivotDistrictBody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="section">
-        <p class="section-title">Pivot Progres × Batch</p>
-        <p class="section-desc">Jumlah order per tahapan status, dipecah per batch.</p>
-        <div class="table-card" style="overflow-x:auto;">
-          <table class="pivot-table">
-            <thead>
-              <tr id="qeRelokPivotBatchHead"></tr>
-            </thead>
-            <tbody id="qeRelokPivotBatchBody"></tbody>
-          </table>
-        </div>
-        <div class="kpi-row capture-hide" id="qeRelokSecondaryKpiRow" style="margin-top:14px;"></div>
-      </div>
-      </div>
-
-      <div class="section" id="qeRelokWorkOrderSection">
-        <p class="section-title">Daftar Work Order QE Relok</p>
-        <p class="section-desc">Semua order QE Relok, bisa dicari &amp; difilter.</p>
-        <div id="qeRelokActiveFilterBadge" class="active-filter-badge" style="display:none;"></div>
-        <div class="filters">
-          <input type="text" id="qeRelokSearchInput" placeholder="Cari ID / Nama LOP / STO...">
-          <select id="qeRelokFilterDistrict"><option value="">Semua District</option></select>
-          <select id="qeRelokFilterStatus"><option value="">Semua Status</option></select>
-          <span class="count" id="qeRelokResultCount"></span>
-          <button type="button" class="download-btn" id="qeRelokDownloadBtn" style="margin-top:0;margin-left:auto;">📥 Download CSV</button>
-        </div>
-        <div class="table-card">
-          <table>
-            <thead>
-              <tr id="qeRelokTableHead">
-                <th class="sortable" data-field="ID DIGASSS">ID<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="DISTRICT TIF">District<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="STO">STO<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="NAMA LOP">Nama LOP<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="BATCH">Batch<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="STATUS PROGRES">Status Progres<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="NILAI PLAN" data-numeric="true">Nilai Plan<span class="sort-arrow">▲▼</span></th>
-                <th>Tim Waspang</th>
-                <th>Tim UT</th>
-              </tr>
-            </thead>
-            <tbody id="qeRelokTableBody"></tbody>
-          </table>
-        </div>
-        <div class="pager">
-          <span id="qeRelokPageInfo"></span>
-          <div style="margin-left:auto;display:flex;gap:8px;">
-            <button id="qeRelokPrevPage">← Sebelumnya</button>
-            <button id="qeRelokNextPage">Selanjutnya →</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    </div>
-
     <div id="pageLapPt2" style="display:none;">
       <div id="lapPt2ReportCaptureArea">
       <div class="section" style="margin-top:0;">
@@ -1851,158 +1731,6 @@
       </div>
       </div>
     </div>
-    <div id="pageKomitmenGL" style="display:none;">
-
-    <div id="komitmenGLPageCaptureArea">
-      <div class="section" style="margin-top:0;padding-bottom:0;">
-        <p class="section-title" style="margin-bottom:2px;">Komitmen GL Bulan Ini</p>
-        <p class="section-desc" style="margin:0;">Rekap komitmen golive bulan berjalan dari semua tematik, ditampilkan terpisah per tematik.</p>
-      </div>
-
-      <div class="section">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div>
-            <p class="section-title" style="margin-bottom:2px;">HEM</p>
-            <p class="section-desc" style="margin:0;" id="hemGLMonthLabel"></p>
-          </div>
-          <button type="button" class="ppt-capture-btn capture-hide" id="hemGLCaptureBtn" title="Capture untuk PPT">📷</button>
-        </div>
-        <div id="hemGLCaptureArea" style="background:#fff;margin-top:12px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <span style="width:8px;height:8px;border-radius:50%;background:var(--cyan);display:inline-block;"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--text-faint);text-transform:uppercase;">Dashboard ED Sumbagut — HEM</span>
-          </div>
-          <div class="mbb-report-subgrid" style="grid-template-columns:1fr 1.4fr;">
-            <div class="table-card">
-              <table class="mbb-report-table">
-                <thead><tr><th>Status</th><th>Total</th></tr></thead>
-                <tbody id="hemGLTableBody"></tbody>
-              </table>
-            </div>
-            <div class="table-card" style="padding:16px;">
-              <div id="hemGLTrendSummary" style="margin-bottom:8px;"></div>
-              <div style="height:240px;"><canvas id="hemGLTrendChart"></canvas></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div>
-            <p class="section-title" style="margin-bottom:2px;">OLO</p>
-            <p class="section-desc" style="margin:0;" id="oloGLMonthLabel"></p>
-          </div>
-          <button type="button" class="ppt-capture-btn capture-hide" id="oloGLCaptureBtn" title="Capture untuk PPT">📷</button>
-        </div>
-        <div id="oloGLCaptureArea" style="background:#fff;margin-top:12px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <span style="width:8px;height:8px;border-radius:50%;background:#3FA7B0;display:inline-block;"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--text-faint);text-transform:uppercase;">Dashboard ED Sumbagut — OLO</span>
-          </div>
-          <div class="mbb-report-subgrid" style="grid-template-columns:1fr 1.4fr;">
-            <div class="table-card">
-              <table class="mbb-report-table">
-                <thead><tr><th>Status</th><th>Total</th></tr></thead>
-                <tbody id="oloGLTableBody"></tbody>
-              </table>
-            </div>
-            <div class="table-card" style="padding:16px;">
-              <div id="oloGLTrendSummary" style="margin-bottom:8px;"></div>
-              <div style="height:240px;"><canvas id="oloGLTrendChart"></canvas></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div>
-            <p class="section-title" style="margin-bottom:2px;">MBB</p>
-            <p class="section-desc" style="margin:0;" id="mbbGLMonthLabel"></p>
-          </div>
-          <button type="button" class="ppt-capture-btn capture-hide" id="mbbGLCaptureBtn" title="Capture untuk PPT">📷</button>
-        </div>
-        <div id="mbbGLCaptureArea" style="background:#fff;margin-top:12px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <span style="width:8px;height:8px;border-radius:50%;background:#B5305A;display:inline-block;"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--text-faint);text-transform:uppercase;">Dashboard ED Sumbagut — MBB</span>
-          </div>
-          <div class="mbb-report-subgrid" style="grid-template-columns:1fr 1.4fr;">
-            <div class="table-card">
-              <table class="mbb-report-table">
-                <thead><tr><th>Status</th><th>Total</th></tr></thead>
-                <tbody id="mbbGLTableBody"></tbody>
-              </table>
-            </div>
-            <div class="table-card" style="padding:16px;">
-              <div id="mbbGLTrendSummary" style="margin-bottom:8px;"></div>
-              <div style="height:240px;"><canvas id="mbbGLTrendChart"></canvas></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div>
-            <p class="section-title" style="margin-bottom:2px;">PT3 TA</p>
-            <p class="section-desc" style="margin:0;" id="pt3GLMonthLabel"></p>
-          </div>
-          <button type="button" class="ppt-capture-btn capture-hide" id="pt3GLCaptureBtn" title="Capture untuk PPT">📷</button>
-        </div>
-        <div id="pt3GLCaptureArea" style="background:#fff;margin-top:12px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <span style="width:8px;height:8px;border-radius:50%;background:#5B8C51;display:inline-block;"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--text-faint);text-transform:uppercase;">Dashboard ED Sumbagut — PT3 TA</span>
-          </div>
-          <div class="mbb-report-subgrid" style="grid-template-columns:1fr 1.4fr;">
-            <div class="table-card">
-              <table class="mbb-report-table">
-                <thead><tr><th>Status</th><th>Total</th></tr></thead>
-                <tbody id="pt3GLTableBody"></tbody>
-              </table>
-            </div>
-            <div class="table-card" style="padding:16px;">
-              <div id="pt3GLTrendSummary" style="margin-bottom:8px;"></div>
-              <div style="height:240px;"><canvas id="pt3GLTrendChart"></canvas></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div>
-            <p class="section-title" style="margin-bottom:2px;">PT3 FH</p>
-            <p class="section-desc" style="margin:0;" id="pt3fhGLMonthLabel"></p>
-          </div>
-          <button type="button" class="ppt-capture-btn capture-hide" id="pt3fhGLCaptureBtn" title="Capture untuk PPT">📷</button>
-        </div>
-        <div id="pt3fhGLCaptureArea" style="background:#fff;margin-top:12px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-            <span style="width:8px;height:8px;border-radius:50%;background:#8858B0;display:inline-block;"></span>
-            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--text-faint);text-transform:uppercase;">Dashboard ED Sumbagut — PT3 FH</span>
-          </div>
-          <div class="mbb-report-subgrid" style="grid-template-columns:1fr 1.4fr;">
-            <div class="table-card">
-              <table class="mbb-report-table">
-                <thead><tr><th>Status</th><th>Total</th></tr></thead>
-                <tbody id="pt3fhGLTableBody"></tbody>
-              </table>
-            </div>
-            <div class="table-card" style="padding:16px;">
-              <div id="pt3fhGLTrendSummary" style="margin-bottom:8px;"></div>
-              <div style="height:240px;"><canvas id="pt3fhGLTrendChart"></canvas></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    </div>
-
     <div id="pageChecklist" style="display:none;">
 
     <div id="oloChecklistCaptureArea">
@@ -2245,32 +1973,6 @@
     </div>
 
     </div>
-
-    <div id="pageWisa" style="display:none;">
-
-    <div class="section" style="margin-top:0;">
-      <p class="section-title" style="margin-bottom:2px;">WISA</p>
-      <p class="section-desc" style="margin:0 0 16px;">Upload foto, otomatis tersimpan &amp; tampil buat semua orang yang buka dashboard ini.</p>
-
-      <div class="table-card" style="padding:20px;max-width:640px;">
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <input type="file" id="wisaFileInput" accept="image/*" style="flex:1;min-width:200px;">
-          <button type="button" class="download-btn" id="wisaUploadBtn" style="margin-top:0;">📤 Upload</button>
-        </div>
-        <p class="kpi-sub" id="wisaUploadStatus" style="margin:10px 0 0;"></p>
-      </div>
-
-      <div class="table-card" style="padding:20px;margin-top:16px;max-width:640px;text-align:center;">
-        <p class="kpi-sub" id="wisaPhotoMeta" style="margin:0 0 12px;"></p>
-        <img id="wisaPhotoImg" src="" alt="Foto WISA" style="max-width:100%;border-radius:10px;display:none;">
-        <p class="kpi-sub" id="wisaEmptyState" style="margin:0;">Belum ada foto yang di-upload.</p>
-      </div>
-    </div>
-
-    </div>
-
-
-    
 
 </div>
 
@@ -4180,7 +3882,6 @@ function hemBuildDashboard(){
   hemHideStageDetail(); // reset detail table tiap kali data/filter periode berubah
   hemSetupCommitDropdown();
   renderKomitmenTrendChart('hemKomitmenTrendChart', null, hemAGG.rows, hemGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(hemRowProgressLabel(row)), hemFilterCtl, 'hemKomitmenTrendTitle');
-  renderKomitmenGLPage();
   renderHemChecklistPage();
 }
 
@@ -5326,7 +5027,6 @@ function oloBuildDashboard(){
   oloHideStageDetail();
   oloSetupCommitDropdown();
   renderKomitmenTrendChart('oloKomitmenTrendChart', null, oloAGG.rows, oloGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(oloRowProgressLabel(row)), oloFilterCtl, 'oloKomitmenTrendTitle');
-  renderKomitmenGLPage();
   renderOloChecklistPage();
   renderOloNeedOltPage();
 }
@@ -5710,7 +5410,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], qeRelok:['tabBtnQeRelok','pageQeRelok'], lapPt2:['tabBtnLapPt2','pageLapPt2'], komitmenGL:['tabBtnKomitmenGL','pageKomitmenGL'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], wisa:['tabBtnWisa','pageWisa'] };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -5724,13 +5424,10 @@ document.getElementById('tabBtnOlo').onclick = ()=> switchTab('olo');
 document.getElementById('tabBtnMbb').onclick = ()=> switchTab('mbb');
 document.getElementById('tabBtnPt3').onclick = ()=> switchTab('pt3');
 document.getElementById('tabBtnPt3Fh').onclick = ()=> switchTab('pt3fh');
-document.getElementById('tabBtnQeRelok').onclick = ()=> switchTab('qeRelok');
 document.getElementById('tabBtnLapPt2').onclick = ()=> switchTab('lapPt2');
-document.getElementById('tabBtnKomitmenGL').onclick = ()=> switchTab('komitmenGL');
 document.getElementById('tabBtnChecklist').onclick = ()=> switchTab('checklist');
 document.getElementById('tabBtnNeedOlt').onclick = ()=> switchTab('needOlt');
 document.getElementById('tabBtnGolive').onclick = ()=> switchTab('golive');
-document.getElementById('tabBtnWisa').onclick = ()=> { switchTab('wisa'); wisaLoadPhoto(); };
 
 const hemStageDetailCloseBtn = document.getElementById('hemStageDetailCloseBtn');
 if(hemStageDetailCloseBtn) hemStageDetailCloseBtn.onclick = hemHideStageDetail;
@@ -5973,7 +5670,6 @@ function mbbBuildDashboard(){
   mbbRenderTable();
   mbbHideStageDetail();
   renderKomitmenTrendChart('mbbKomitmenTrendChart', null, mbbAGG.rows, mbbGet, 'TGL COMMIT OA FIX', (row)=> mbbFiOaOgp(row), mbbFilterCtl, 'mbbKomitmenTrendTitle');
-  renderKomitmenGLPage();
   renderMbbNeedOltPage();
 }
 
@@ -6930,7 +6626,6 @@ function pt3BuildDashboard(){
   pt3HideStageDetail();
   renderKomitmenTrendChart('pt3KomitmenTrendChart', null, pt3AGG.rows, pt3Get, 'KOMITMEN GOLIVE', (row)=> pt3Category(row), pt3FilterCtl, 'pt3KomitmenTrendTitle');
   renderOverdueTable('pt3OverdueTableBody', 'pt3OverdueCount', pt3AGG.rows, pt3Get, pt3Category);
-  renderKomitmenGLPage();
   renderPt3NeedOltPage();
 }
 
@@ -8333,7 +8028,6 @@ function pt3fhBuildDashboard(){
   pt3fhHideStageDetail();
   renderKomitmenTrendChart('pt3fhKomitmenTrendChart', null, pt3fhAGG.rows, pt3fhGet, 'KOMITMEN GOLIVE', (row)=> pt3fhCategory(row), pt3fhFilterCtl, 'pt3fhKomitmenTrendTitle');
   renderOverdueTable('pt3fhOverdueTableBody', 'pt3fhOverdueCount', pt3fhAGG.rows, pt3fhGet, pt3fhCategory);
-  renderKomitmenGLPage();
 }
 
 const PT3FH_CATEGORY_LABELS = { all:'All Order', drop:'Drop', golive:'Golive', ogp:'OGP' };
@@ -9109,487 +8803,6 @@ if(pt3fhReportCaptureBtn) pt3fhReportCaptureBtn.onclick = ()=> captureAreaForPpt
 pt3fhLoadDataAuto();
 
 /* ============================================================
-   QE Relok — halaman baru, sumber data sheet "QE Relok".
-   Satuan hitung: JUMLAH BARIS ORDER (bukan nilai uang).
-   ============================================================ */
-let qeRelokRows = [];
-let qeRelokHeaderMap = {};
-let qeRelokAGG = null;
-let qeRelokCurrentPage = 1;
-let qeRelokSortField = null;
-let qeRelokSortDir = 'asc';
-const QE_RELOK_PAGE_SIZE = 15;
-
-function qeRelokNormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
-function qeRelokGet(row, name){
-  const key = qeRelokHeaderMap[qeRelokNormKey(name)];
-  if(key === undefined) return '';
-  const v = row[key];
-  return (v === undefined || v === null) ? '' : v.toString().trim();
-}
-function qeRelokParseNum(str){
-  if(!str) return 0;
-  const n = parseFloat(str.toString().replace(/[,Rp\s]/g,'').replace(/\.(?=\d{3})/g,''));
-  return isNaN(n) ? 0 : n;
-}
-function qeRelokRowStatusLabel(row){
-  return qeRelokGet(row,'STATUS PROGRES') || 'Tidak Diketahui';
-}
-/* closed | drop | ogp */
-function qeRelokCategory(row){
-  const stage = hemStripStatusPrefix(qeRelokRowStatusLabel(row)).toUpperCase();
-  if(stage.includes('DROP') || stage.includes('CANCEL') || stage.includes('REJECT')) return 'drop';
-  if(stage === 'CLOSED') return 'closed';
-  return 'ogp';
-}
-/* Urutan resmi tahap QE Relok (khusus dipakai buat sortir chevron/pivot). */
-const QE_RELOK_STAGE_RANK = {
-  'BELUM ADA NDE':0, 'NEW ORDER':1, 'PERSIAPAN':2, 'AANWIJZING':3,
-  'MATDEL':5, 'INSTALASI':6, 'FINISH INSTALASI':7, 'CLOSED':8,
-};
-function qeRelokStageOrderIndex(label){
-  return QE_RELOK_STAGE_RANK[(label||'').toUpperCase()] ?? 999;
-}
-
-function qeRelokProcessCSVText(text){
-  const parsed = Papa.parse(text, { header:false, skipEmptyLines:true });
-  const data = parsed.data;
-  if(data.length < 2){ qeRelokShowError('File CSV kosong atau formatnya tidak sesuai.'); return; }
-  // Baris pertama kadang cuma banner "JANGAN DI EDIT", bukan header asli — deteksi & lewati.
-  let headerRowIdx = 0;
-  if(data[0] && data[0][0] && data[0][0].toString().trim().toUpperCase().includes('JANGAN DI EDIT')){
-    headerRowIdx = 1;
-  }
-  const headers = data[headerRowIdx];
-  qeRelokHeaderMap = {};
-  headers.forEach((h,i)=>{ qeRelokHeaderMap[qeRelokNormKey(h)] = i; });
-
-  qeRelokRows = data.slice(headerRowIdx + 1)
-    .map(r=>{ const o={}; headers.forEach((h,i)=>{ o[i]=r[i]; }); return o; })
-    .filter(r => Object.values(r).some(v => (v||'').toString().trim() !== ''))
-    .filter(r => qeRelokGet(r,'NAMA LOP') !== ''); // buang baris kosong di ekor sheet
-
-  if(qeRelokRows.length === 0){ qeRelokShowError('Tidak ada baris data yang valid ditemukan di CSV ini.'); return; }
-
-  document.getElementById('qeRelokErrorState').style.display = 'none';
-  document.getElementById('qeRelokDashboard').style.display = 'block';
-  qeRelokBuildDashboard();
-}
-
-function qeRelokShowError(msg){
-  document.getElementById('qeRelokDashboard').style.display = 'none';
-  document.getElementById('qeRelokErrorState').style.display = 'block';
-  document.getElementById('qeRelokErrDetail').textContent = msg;
-}
-
-const QE_RELOK_CSV_URLS = [
-  "https://docs.google.com/spreadsheets/d/1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM/gviz/tq?tqx=out:csv&gid=2022199532",
-  "https://docs.google.com/spreadsheets/d/1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM/export?format=csv&gid=2022199532"
-];
-
-async function qeRelokLoadDataAuto(){
-  let lastErr = null;
-  for(const url of QE_RELOK_CSV_URLS){
-    try{
-      const res = await universalFetch(url, {cache:'no-store'});
-      if(!res.ok){ lastErr = new Error('HTTP ' + res.status); continue; }
-      const text = await res.text();
-      if(!text || text.trim().length === 0 || text.trim().startsWith('<')){ lastErr = new Error('Respons kosong/bukan CSV'); continue; }
-      qeRelokProcessCSVText(text);
-      return;
-    }catch(err){ lastErr = err; }
-  }
-  if(qeRelokRows.length === 0){
-    qeRelokShowError('Auto-fetch gagal: ' + (lastErr ? lastErr.message : 'tidak diketahui'));
-  }
-}
-
-function qeRelokBuildDashboard(){
-  const statusAgg = {};
-  const districtAgg = {};
-  let totalNilaiPlan = 0;
-
-  qeRelokRows.forEach(row=>{
-    const status = qeRelokRowStatusLabel(row);
-    statusAgg[status] = (statusAgg[status]||0) + 1;
-    const district = qeRelokGet(row,'DISTRICT TIF') || 'Tidak Diketahui';
-    districtAgg[district] = (districtAgg[district]||0) + 1;
-    totalNilaiPlan += qeRelokParseNum(qeRelokGet(row,'NILAI PLAN'));
-  });
-
-  qeRelokAGG = { statusAgg, districtAgg, totalNilaiPlan, rows: qeRelokRows, totalCount: qeRelokRows.length };
-
-  qeRelokRenderKPIs();
-  qeRelokRenderSecondaryKpis();
-  qeRelokRenderProgressChart();
-  qeRelokRenderPivotDistrict();
-  qeRelokRenderPivotBatch();
-  qeRelokSetupFilters();
-  qeRelokSetupSortableHeaders();
-  qeRelokCurrentPage = 1;
-  qeRelokRenderTable();
-  qeRelokHideStageDetail();
-}
-
-const QE_RELOK_CATEGORY_LABELS = { all:'All Order', closed:'Closed', ogp:'OGP', drop:'Drop' };
-
-function qeRelokRenderKPIs(){
-  const cat = { closed:0, ogp:0, drop:0 };
-  qeRelokAGG.rows.forEach(row=>{ cat[qeRelokCategory(row)] += 1; });
-
-  const kpis = [
-    { key:'all', label:'All Order', value: qeRelokAGG.totalCount.toLocaleString('id-ID'), color:'var(--cyan)' },
-    { key:'closed', label:'Closed', value: cat.closed.toLocaleString('id-ID'), color:'var(--emerald)' },
-    { key:'ogp', label:'OGP', value: cat.ogp.toLocaleString('id-ID'), color:'var(--text-faint)' },
-    { key:'drop', label:'Drop', value: cat.drop.toLocaleString('id-ID'), color:'var(--red)' },
-  ];
-  document.getElementById('qeRelokKpiRow').innerHTML = kpis.map(k=>`
-    <div class="kpi clickable" data-category="${k.key}">
-      <div class="accent" style="background:${k.color}"></div>
-      <p class="kpi-label">${k.label}</p>
-      <p class="kpi-value">${k.value}</p>
-    </div>`).join('');
-
-  document.querySelectorAll('#qeRelokKpiRow .kpi.clickable').forEach(card=>{
-    card.onclick = ()=>{
-      const key = card.dataset.category;
-      const matching = key === 'all' ? qeRelokAGG.rows : qeRelokAGG.rows.filter(r => qeRelokCategory(r) === key);
-      qeRelokShowStageDetail(QE_RELOK_CATEGORY_LABELS[key], matching, card, '#qeRelokKpiRow .kpi.clickable');
-    };
-  });
-}
-
-function qeRelokRenderSecondaryKpis(){
-  const fmtIDR = (n)=> 'Rp' + Math.round(n).toLocaleString('id-ID');
-  const kpis = [
-    { label:'Total Nilai Plan', value: fmtIDR(qeRelokAGG.totalNilaiPlan), color:'var(--amber)' },
-  ];
-  document.getElementById('qeRelokSecondaryKpiRow').innerHTML = kpis.map(k=>`
-    <div class="kpi">
-      <div class="accent" style="background:${k.color}"></div>
-      <p class="kpi-label">${k.label}</p>
-      <p class="kpi-value">${k.value}</p>
-    </div>`).join('');
-}
-
-function qeRelokRenderProgressChart(){
-  // Tampilkan tahap proses (tanpa Closed & Drop, karena sudah ada di KPI)
-  const flowAgg = {};
-  Object.entries(qeRelokAGG.statusAgg).forEach(([label,count])=>{
-    const stage = hemStripStatusPrefix(label).toUpperCase();
-    if(stage !== 'CLOSED' && !stage.includes('DROP') && !stage.includes('CANCEL') && !stage.includes('REJECT')) flowAgg[label] = count;
-  });
-  const el = document.getElementById('qeRelokProgressFlow');
-  if(!el) return;
-  const entries = Object.entries(flowAgg).sort((a,b)=> qeRelokStageOrderIndex(hemStripStatusPrefix(a[0])) - qeRelokStageOrderIndex(hemStripStatusPrefix(b[0])));
-  if(entries.length === 0){ el.innerHTML = '<p class="kpi-sub">Belum ada data.</p>'; return; }
-  const n = entries.length;
-  el.innerHTML = entries.map(([label, count], i)=>{
-    const hue = Math.round(200 + (i * (250 / Math.max(n-1,1))));
-    const color = `hsl(${hue % 360}, 42%, 38%)`;
-    const cleanLabel = hemStripStatusPrefix(label);
-    return `
-    <div class="flow-chevron" style="background:${color}" data-raw-label="${label.replace(/"/g,'&quot;')}">
-      <div class="flow-chevron-label">${cleanLabel}</div>
-      <div class="flow-chevron-value">${count.toLocaleString('id-ID')}</div>
-    </div>`;
-  }).join('');
-  el.querySelectorAll('.flow-chevron').forEach(box=>{
-    box.onclick = ()=>{
-      const rawLabel = box.dataset.rawLabel;
-      const matching = qeRelokAGG.rows.filter(r => qeRelokRowStatusLabel(r) === rawLabel);
-      qeRelokShowStageDetail(hemStripStatusPrefix(rawLabel), matching, box, '#qeRelokProgressFlow .flow-chevron');
-    };
-  });
-}
-
-const qeRelokStageDetail = makeStageDetailController('qeRelok', [
-  { field:'id', get: r => qeRelokGet(r,'ID DIGASSS') },
-  { field:'site', name:true, get: r => qeRelokGet(r,'NAMA LOP') },
-  { field:'district', get: r => qeRelokGet(r,'DISTRICT TIF') },
-  { field:'sto', get: r => qeRelokGet(r,'STO') },
-  { field:'status', get: r => qeRelokGet(r,'STATUS PROGRES') },
-  { field:'batch', get: r => qeRelokGet(r,'BATCH') },
-]);
-function qeRelokShowStageDetail(title, matchingRows, activeEl, siblingSelector){
-  qeRelokStageDetail.show(title, matchingRows, activeEl, siblingSelector);
-}
-function qeRelokHideStageDetail(){
-  qeRelokStageDetail.hide();
-  document.querySelectorAll('#qeRelokKpiRow .kpi.clickable, #qeRelokProgressFlow .flow-chevron').forEach(x=>x.classList.remove('active'));
-}
-
-function qeRelokRenderPivotDistrict(){
-  const headEl = document.getElementById('qeRelokPivotDistrictHead');
-  const bodyEl = document.getElementById('qeRelokPivotDistrictBody');
-  if(!headEl || !bodyEl) return;
-
-  const rows = qeRelokAGG.rows || [];
-  const stagesPresent = new Set();
-  rows.forEach(r => stagesPresent.add(hemStripStatusPrefix(qeRelokRowStatusLabel(r)).toUpperCase()));
-  const columns = [...stagesPresent].sort((a,b)=> qeRelokStageOrderIndex(a) - qeRelokStageOrderIndex(b));
-
-  const pivot = {};
-  const districtTotals = {};
-  rows.forEach(row=>{
-    const district = qeRelokGet(row,'DISTRICT TIF') || 'Tidak Diketahui';
-    const stage = hemStripStatusPrefix(qeRelokRowStatusLabel(row)).toUpperCase();
-    if(!pivot[district]) pivot[district] = {};
-    pivot[district][stage] = (pivot[district][stage]||0) + 1;
-    districtTotals[district] = (districtTotals[district]||0) + 1;
-  });
-  const districts = Object.keys(pivot).sort((a,b)=> districtTotals[b]-districtTotals[a]);
-
-  if(districts.length === 0 || columns.length === 0){
-    headEl.innerHTML = `<th>District</th><th>Total</th>`;
-    bodyEl.innerHTML = `<tr><td colspan="2" style="text-align:center;padding:24px;">Belum ada data.</td></tr>`;
-    return;
-  }
-
-  headEl.innerHTML = `<th class="pivot-sticky-col">District</th>` + columns.map(c=>`<th>${c}</th>`).join('') + `<th>Total</th>`;
-
-  const colTotals = Object.fromEntries(columns.map(c=>[c,0]));
-  let grandTotal = 0;
-  bodyEl.innerHTML = districts.map(d=>{
-    const rowTotal = districtTotals[d] || 0;
-    grandTotal += rowTotal;
-    const cells = columns.map(c=>{
-      const v = (pivot[d][c]||0);
-      colTotals[c] += v;
-      const spec = JSON.stringify({district:d, stage:c, label:`${d} — ${c}`}).replace(/"/g,'&quot;');
-      const clickable = v ? `clickable-cell" data-flt="${spec}` : '';
-      return `<td class="${clickable}">${v ? v.toLocaleString('id-ID') : '—'}</td>`;
-    }).join('');
-    return `<tr><td class="name pivot-sticky-col">${d}</td>${cells}<td><strong>${rowTotal.toLocaleString('id-ID')}</strong></td></tr>`;
-  }).join('') + `
-    <tr class="pivot-total">
-      <td class="name pivot-sticky-col">TOTAL</td>
-      ${columns.map(c=>`<td>${colTotals[c].toLocaleString('id-ID')}</td>`).join('')}
-      <td>${grandTotal.toLocaleString('id-ID')}</td>
-    </tr>`;
-
-  wireClickableCells('qeRelokPivotDistrictBody', qeRelokFilterCtl, (spec)=>{
-    return row => (qeRelokGet(row,'DISTRICT TIF')||'Tidak Diketahui') === spec.district
-      && hemStripStatusPrefix(qeRelokRowStatusLabel(row)).toUpperCase() === spec.stage;
-  });
-}
-
-function qeRelokRenderPivotBatch(){
-  const headEl = document.getElementById('qeRelokPivotBatchHead');
-  const bodyEl = document.getElementById('qeRelokPivotBatchBody');
-  if(!headEl || !bodyEl) return;
-
-  const rows = qeRelokAGG.rows || [];
-  const batchesPresent = new Set();
-  rows.forEach(r => batchesPresent.add(qeRelokGet(r,'BATCH') || 'Tidak Diketahui'));
-  const batches = [...batchesPresent].sort((a,b)=> a.localeCompare(b,'id',{numeric:true}));
-
-  const pivot = {};
-  const stageTotals = {};
-  rows.forEach(row=>{
-    const stage = hemStripStatusPrefix(qeRelokRowStatusLabel(row)).toUpperCase();
-    const batch = qeRelokGet(row,'BATCH') || 'Tidak Diketahui';
-    if(!pivot[stage]) pivot[stage] = {};
-    pivot[stage][batch] = (pivot[stage][batch]||0) + 1;
-    stageTotals[stage] = (stageTotals[stage]||0) + 1;
-  });
-  const stages = Object.keys(pivot).sort((a,b)=> qeRelokStageOrderIndex(a) - qeRelokStageOrderIndex(b));
-
-  if(stages.length === 0 || batches.length === 0){
-    headEl.innerHTML = `<th>Progres</th><th>Total</th>`;
-    bodyEl.innerHTML = `<tr><td colspan="2" style="text-align:center;padding:24px;">Belum ada data.</td></tr>`;
-    return;
-  }
-
-  headEl.innerHTML = `<th class="pivot-sticky-col">Progres</th>` + batches.map(b=>`<th>${b}</th>`).join('') + `<th>Total</th>`;
-
-  const colTotals = Object.fromEntries(batches.map(b=>[b,0]));
-  let grandTotal = 0;
-  bodyEl.innerHTML = stages.map(stage=>{
-    const rowTotal = stageTotals[stage] || 0;
-    grandTotal += rowTotal;
-    const cells = batches.map(b=>{
-      const v = (pivot[stage][b]||0);
-      colTotals[b] += v;
-      const spec = JSON.stringify({stage, batch:b, label:`${stage} — Batch ${b}`}).replace(/"/g,'&quot;');
-      const clickable = v ? `clickable-cell" data-flt="${spec}` : '';
-      return `<td class="${clickable}">${v ? v.toLocaleString('id-ID') : '—'}</td>`;
-    }).join('');
-    return `<tr><td class="name pivot-sticky-col">${stage}</td>${cells}<td><strong>${rowTotal.toLocaleString('id-ID')}</strong></td></tr>`;
-  }).join('') + `
-    <tr class="pivot-total">
-      <td class="name pivot-sticky-col">TOTAL</td>
-      ${batches.map(b=>`<td>${colTotals[b].toLocaleString('id-ID')}</td>`).join('')}
-      <td>${grandTotal.toLocaleString('id-ID')}</td>
-    </tr>`;
-
-  wireClickableCells('qeRelokPivotBatchBody', qeRelokFilterCtl, (spec)=>{
-    return row => hemStripStatusPrefix(qeRelokRowStatusLabel(row)).toUpperCase() === spec.stage
-      && (qeRelokGet(row,'BATCH') || 'Tidak Diketahui') === spec.batch;
-  });
-}
-
-function qeRelokSetupFilters(){
-  const districtSel = document.getElementById('qeRelokFilterDistrict');
-  const statusSel = document.getElementById('qeRelokFilterStatus');
-  const districts = [...new Set(qeRelokRows.map(r=>qeRelokGet(r,'DISTRICT TIF')).filter(Boolean))].sort();
-  const statuses = [...new Set(qeRelokRows.map(r=>qeRelokGet(r,'STATUS PROGRES')).filter(Boolean))].sort();
-
-  districtSel.innerHTML = '<option value="">Semua District</option>' + districts.map(d=>`<option value="${d}">${d}</option>`).join('');
-  statusSel.innerHTML = '<option value="">Semua Status</option>' + statuses.map(s=>`<option value="${s}">${s}</option>`).join('');
-
-  document.getElementById('qeRelokSearchInput').oninput = ()=>{ qeRelokCurrentPage=1; qeRelokRenderTable(); };
-  districtSel.onchange = ()=>{ qeRelokCurrentPage=1; qeRelokRenderTable(); };
-  statusSel.onchange = ()=>{ qeRelokCurrentPage=1; qeRelokRenderTable(); };
-}
-
-function qeRelokGetFilteredRows(){
-  const q = document.getElementById('qeRelokSearchInput').value.trim().toLowerCase();
-  const districtFilter = document.getElementById('qeRelokFilterDistrict').value;
-  const statusFilter = document.getElementById('qeRelokFilterStatus').value;
-
-  const baseRows = qeRelokFilterCtl.apply(qeRelokAGG && qeRelokAGG.rows ? qeRelokAGG.rows : qeRelokRows);
-  const filtered = baseRows.filter(row=>{
-    if(districtFilter && qeRelokGet(row,'DISTRICT TIF') !== districtFilter) return false;
-    if(statusFilter && qeRelokGet(row,'STATUS PROGRES') !== statusFilter) return false;
-    if(q){
-      const hay = [qeRelokGet(row,'ID DIGASSS'), qeRelokGet(row,'NAMA LOP'), qeRelokGet(row,'STO'), qeRelokGet(row,'DISTRICT TIF')].join(' ').toLowerCase();
-      if(!hay.includes(q)) return false;
-    }
-    return true;
-  });
-
-  if(!qeRelokSortField) return filtered;
-  const th = document.querySelector(`#qeRelokTableHead th[data-field="${qeRelokSortField}"]`);
-  const numeric = th && th.dataset.numeric === 'true';
-  const sorted = filtered.slice().sort((a,b)=>{
-    if(numeric) return qeRelokParseNum(qeRelokGet(a,qeRelokSortField)) - qeRelokParseNum(qeRelokGet(b,qeRelokSortField));
-    return qeRelokGet(a,qeRelokSortField).localeCompare(qeRelokGet(b,qeRelokSortField), 'id', {numeric:true, sensitivity:'base'});
-  });
-  return qeRelokSortDir === 'asc' ? sorted : sorted.reverse();
-}
-
-function qeRelokSetupSortableHeaders(){
-  document.querySelectorAll('#qeRelokTableHead th.sortable').forEach(th=>{
-    th.onclick = ()=>{
-      const field = th.dataset.field;
-      if(qeRelokSortField === field){ qeRelokSortDir = qeRelokSortDir === 'asc' ? 'desc' : 'asc'; }
-      else{ qeRelokSortField = field; qeRelokSortDir = 'asc'; }
-      document.querySelectorAll('#qeRelokTableHead th.sortable').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
-      th.classList.add(qeRelokSortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-      qeRelokCurrentPage = 1;
-      qeRelokRenderTable();
-    };
-  });
-}
-
-function qeRelokRenderTable(){
-  const filtered = qeRelokGetFilteredRows();
-  document.getElementById('qeRelokResultCount').textContent = `${filtered.length.toLocaleString('id-ID')} order`;
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / QE_RELOK_PAGE_SIZE));
-  if(qeRelokCurrentPage > totalPages) qeRelokCurrentPage = totalPages;
-  const pageRows = filtered.slice((qeRelokCurrentPage-1)*QE_RELOK_PAGE_SIZE, qeRelokCurrentPage*QE_RELOK_PAGE_SIZE);
-
-  const fmtIDR = (n)=> n ? 'Rp' + Math.round(n).toLocaleString('id-ID') : '—';
-
-  document.getElementById('qeRelokTableBody').innerHTML = pageRows.map(row=>`
-    <tr>
-      <td>${qeRelokGet(row,'ID DIGASSS')||'—'}</td>
-      <td>${qeRelokGet(row,'DISTRICT TIF')||'—'}</td>
-      <td>${qeRelokGet(row,'STO')||'—'}</td>
-      <td class="name">${qeRelokGet(row,'NAMA LOP')||'—'}</td>
-      <td>${qeRelokGet(row,'BATCH')||'—'}</td>
-      <td>${qeRelokGet(row,'STATUS PROGRES')||'—'}</td>
-      <td>${fmtIDR(qeRelokParseNum(qeRelokGet(row,'NILAI PLAN')))}</td>
-      <td>${qeRelokGet(row,'Tim Waspang')||'—'}</td>
-      <td>${qeRelokGet(row,'Tim UT')||'—'}</td>
-    </tr>`).join('') || `<tr><td colspan="9" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
-
-  document.getElementById('qeRelokPageInfo').textContent = `Halaman ${qeRelokCurrentPage} dari ${totalPages}`;
-  document.getElementById('qeRelokPrevPage').disabled = qeRelokCurrentPage <= 1;
-  document.getElementById('qeRelokNextPage').disabled = qeRelokCurrentPage >= totalPages;
-}
-
-const qeRelokFilterCtl = makeAdvancedFilterController('qeRelokWorkOrderSection', 'qeRelokActiveFilterBadge', ()=>qeRelokRenderTable(), ()=>{ qeRelokCurrentPage = 1; });
-
-document.getElementById('qeRelokPrevPage').onclick = ()=>{ if(qeRelokCurrentPage>1){ qeRelokCurrentPage--; qeRelokRenderTable(); } };
-document.getElementById('qeRelokNextPage').onclick = ()=>{ qeRelokCurrentPage++; qeRelokRenderTable(); };
-const qeRelokStageDetailCloseBtn = document.getElementById('qeRelokStageDetailCloseBtn');
-if(qeRelokStageDetailCloseBtn) qeRelokStageDetailCloseBtn.onclick = qeRelokHideStageDetail;
-const qeRelokStageDetailCaptureBtn = document.getElementById('qeRelokStageDetailCaptureBtn');
-if(qeRelokStageDetailCaptureBtn) qeRelokStageDetailCaptureBtn.onclick = ()=> captureAreaForPpt('qeRelokStageDetailWrap','qeRelokStageDetailCaptureBtn','qe-relok-detail-order.png');
-const qeRelokPptCaptureBtn = document.getElementById('qeRelokPptCaptureBtn');
-if(qeRelokPptCaptureBtn) qeRelokPptCaptureBtn.onclick = ()=> captureAreaForPpt('qeRelokPptCaptureArea','qeRelokPptCaptureBtn','qe-relok-overview-ppt.png', qeRelokHideStageDetail);
-
-qeRelokLoadDataAuto();
-
-/* ============================================================
-   Halaman "Komitmen GL Bulan Ini" — rekap semua tematik, dipisah
-   per section. Dipanggil dari tiap BuildDashboard masing-masing
-   tematik; baru benar-benar render begitu SEMUA data udah siap.
-   ============================================================ */
-function renderKomitmenGLSection(prefix, rows, dateField, getFn, statusLabelFn, sortFn, valueFn){
-  const tbody = document.getElementById(prefix + 'GLTableBody');
-  if(!tbody) return;
-
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const matching = rows.filter(row=>{
-    const d = parseDMY(getFn(row, dateField));
-    return d && d.getFullYear() === year && d.getMonth() === month;
-  });
-
-  const statusAgg = {};
-  let total = 0;
-  matching.forEach(row=>{
-    const label = statusLabelFn(row);
-    const val = valueFn ? valueFn(row) : 1;
-    statusAgg[label] = (statusAgg[label]||0) + val;
-    total += val;
-  });
-
-  const entries = Object.entries(statusAgg).sort((a,b)=> sortFn(a[0]) - sortFn(b[0]));
-  tbody.innerHTML = (entries.map(([label,val])=>`
-      <tr><td class="name">${label}</td><td>${val.toLocaleString('id-ID')}</td></tr>`).join('') || `<tr><td colspan="2" style="text-align:center;padding:10px;">Tidak ada komitmen bulan ini.</td></tr>`)
-    + `<tr class="total-row"><td class="name">TOTAL</td><td>${total.toLocaleString('id-ID')}</td></tr>`;
-
-  const monthLabelEl = document.getElementById(prefix + 'GLMonthLabel');
-  if(monthLabelEl) monthLabelEl.textContent = now.toLocaleDateString('id-ID', { month:'long', year:'numeric' });
-}
-
-function renderKomitmenGLPage(){
-  // Baru render kalau SEMUA tematik udah selesai load datanya
-  if(!hemAGG || !oloAGG || !mbbAGG || !pt3AGG || !pt3fhAGG) return;
-
-  renderKomitmenGLSection('hem', hemAGG.rows, 'Komitmen Golive', hemGet,
-    (r)=> hemStripStatusPrefix(hemGet(r,'Progress Lapangan') || 'Tidak Diketahui').toUpperCase(), progressStageSortIndex);
-  renderKomitmenGLSection('olo', oloAGG.rows, 'Komitmen Golive', oloGet,
-    (r)=> hemStripStatusPrefix(oloRowProgressLabel(r)).toUpperCase(), progressStageSortIndex);
-  renderKomitmenGLSection('mbb', mbbAGG.rows, 'TGL COMMIT OA FIX', mbbGet,
-    (r)=> hemStripStatusPrefix(mbbRowStatusLabel(r)).toUpperCase(), progressStageSortIndex);
-  renderKomitmenGLSection('pt3', pt3AGG.rows, 'KOMITMEN GOLIVE', pt3Get,
-    (r)=> hemStripStatusPrefix(pt3RowStatusLabel(r)).toUpperCase(), pt3StageOrderIndex, (r)=> pt3ParseNum(pt3Get(r,'PORT PLAN')));
-  renderKomitmenGLSection('pt3fh', pt3fhAGG.rows, 'KOMITMEN GOLIVE', pt3fhGet,
-    (r)=> hemStripStatusPrefix(pt3fhRowStatusLabel(r)).toUpperCase(), pt3fhStageOrderIndex, (r)=> pt3fhParseNum(pt3fhGet(r,'PORT PLAN')));
-
-  renderKomitmenTrendChart('hemGLTrendChart', 'hemGLTrendSummary', hemAGG.rows, hemGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(hemRowProgressLabel(row)));
-  renderKomitmenTrendChart('oloGLTrendChart', 'oloGLTrendSummary', oloAGG.rows, oloGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(oloRowProgressLabel(row)));
-  renderKomitmenTrendChart('mbbGLTrendChart', 'mbbGLTrendSummary', mbbAGG.rows, mbbGet, 'TGL COMMIT OA FIX', (row)=> mbbFiOaOgp(row));
-  renderKomitmenTrendChart('pt3GLTrendChart', 'pt3GLTrendSummary', pt3AGG.rows, pt3Get, 'KOMITMEN GOLIVE', (row)=> pt3Category(row));
-  renderKomitmenTrendChart('pt3fhGLTrendChart', 'pt3fhGLTrendSummary', pt3fhAGG.rows, pt3fhGet, 'KOMITMEN GOLIVE', (row)=> pt3fhCategory(row));
-
-  ['hem','olo','mbb','pt3','pt3fh'].forEach(prefix=>{
-    const btn = document.getElementById(prefix + 'GLCaptureBtn');
-    if(btn && !btn.dataset.wired){
-      btn.dataset.wired = '1';
-      btn.onclick = ()=> captureAreaForPpt(prefix + 'GLCaptureArea', prefix + 'GLCaptureBtn', `komitmen-gl-${prefix}.png`);
-    }
-  });
-}
-
-/* ============================================================
    Halaman Checklist — OLO. Centang tahap otomatis berdasarkan
    posisi Progress Lapangan saat ini (dibanding PROGRESS_STAGE_ORDER).
    ============================================================ */
@@ -9804,20 +9017,6 @@ document.getElementById('pt3fhDownloadBtn').onclick = ()=>{
     {label:'Waspang', get:r=>pt3fhGet(r,'WASPANG')},
     {label:'Detail Status', get:r=>pt3fhGet(r,'DETAIL STATUS')},
   ], pt3fhGetFilteredRows());
-};
-
-document.getElementById('qeRelokDownloadBtn').onclick = ()=>{
-  downloadRowsAsCsv('daftar-work-order-qerelok.csv', [
-    {label:'ID', get:r=>qeRelokGet(r,'ID DIGASSS')},
-    {label:'District', get:r=>qeRelokGet(r,'DISTRICT TIF')},
-    {label:'STO', get:r=>qeRelokGet(r,'STO')},
-    {label:'Nama LOP', get:r=>qeRelokGet(r,'NAMA LOP')},
-    {label:'Batch', get:r=>qeRelokGet(r,'BATCH')},
-    {label:'Status Progres', get:r=>qeRelokGet(r,'STATUS PROGRES')},
-    {label:'Nilai Plan', get:r=>qeRelokGet(r,'NILAI PLAN')},
-    {label:'Tim Waspang', get:r=>qeRelokGet(r,'TIM WASPANG')},
-    {label:'Tim UT', get:r=>qeRelokGet(r,'TIM UT')},
-  ], qeRelokGetFilteredRows());
 };
 
 /* ============================================================
@@ -10304,117 +9503,6 @@ document.getElementById('goliveDownloadBtn').onclick = ()=>{
 
 goliveLoadDataAuto();
 
-/* ============================================================
-   Halaman "WISA" — upload foto, otomatis tersimpan ke Google Drive
-   lewat Apps Script (WRITE_API_URL yang sama dipakai buat Catatan/
-   Status PT1), jadi kefoto yang sama muncul buat SEMUA orang yang
-   buka dashboard, bukan cuma browser sendiri.
-   ============================================================ */
-async function wisaLoadPhoto(){
-  const metaEl = document.getElementById('wisaPhotoMeta');
-  const imgEl = document.getElementById('wisaPhotoImg');
-  const emptyEl = document.getElementById('wisaEmptyState');
-  if(!imgEl) return;
-
-  try{
-    const url = WRITE_API_URL + '?action=getWisaPhoto';
-    const res = await universalFetch(url, {cache:'no-store'});
-    const data = await res.json();
-    if(data.ok && data.url){
-      imgEl.src = data.url;
-      imgEl.style.display = 'block';
-      if(emptyEl) emptyEl.style.display = 'none';
-      if(metaEl) metaEl.textContent = data.uploadedAt ? `Terakhir diupdate: ${data.uploadedAt}` : '';
-    }else{
-      imgEl.style.display = 'none';
-      if(emptyEl) emptyEl.style.display = 'block';
-      if(metaEl) metaEl.textContent = '';
-    }
-  }catch(err){
-    console.error('Gagal ambil foto WISA:', err.message);
-    if(emptyEl){ emptyEl.style.display = 'block'; emptyEl.textContent = 'Gagal memuat foto. Coba refresh halaman.'; }
-  }
-}
-
-function wisaFileToBase64(file){
-  return new Promise((resolve, reject)=>{
-    const reader = new FileReader();
-    reader.onload = ()=>{
-      const dataUrl = reader.result; // format "data:image/png;base64,XXXXX"
-      const img = new Image();
-      img.onload = ()=>{
-        // Resize biar gak kegedean (upload lewat GET chunk, makin kecil makin cepat)
-        const MAX_DIM = 1600;
-        let { width, height } = img;
-        if(width > MAX_DIM || height > MAX_DIM){
-          const scale = MAX_DIM / Math.max(width, height);
-          width = Math.round(width * scale);
-          height = Math.round(height * scale);
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = width; canvas.height = height;
-        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-        const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
-        resolve(resizedDataUrl.split(',')[1]);
-      };
-      img.onerror = ()=> resolve(dataUrl.split(',')[1]); // kalau gagal di-resize, pakai aslinya aja
-      img.src = dataUrl;
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-document.getElementById('wisaUploadBtn').onclick = async ()=>{
-  const fileInput = document.getElementById('wisaFileInput');
-  const statusEl = document.getElementById('wisaUploadStatus');
-  const file = fileInput.files[0];
-  if(!file){
-    if(statusEl){ statusEl.textContent = 'Pilih file foto dulu.'; statusEl.style.color = 'var(--red)'; }
-    return;
-  }
-  if(statusEl){ statusEl.textContent = 'Menyiapkan foto...'; statusEl.style.color = 'var(--amber)'; }
-
-  try{
-    const base64Data = await wisaFileToBase64(file);
-
-    // Upload lewat GET yang dipecah jadi beberapa "chunk" kecil — bukan POST,
-    // soalnya POST ke Apps Script suka gagal kalau dashboard dibuka dari
-    // localhost. GET terbukti selalu jalan lancar (sama kayak fitur Catatan).
-    const CHUNK_SIZE = 3000; // dikecilin biar aman dari batas panjang URL (base64 kena encode +/=/ jadi bisa lebih panjang)
-    const totalChunks = Math.ceil(base64Data.length / CHUNK_SIZE) || 1;
-    const sessionId = 'wisa_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
-
-    for(let i=0; i<totalChunks; i++){
-      if(statusEl) statusEl.textContent = `Mengupload... (${i+1}/${totalChunks})`;
-      const chunk = base64Data.slice(i*CHUNK_SIZE, (i+1)*CHUNK_SIZE);
-      const url = WRITE_API_URL + '?action=uploadWisaChunk&sessionId=' + encodeURIComponent(sessionId) + '&chunkIndex=' + i + '&data=' + encodeURIComponent(chunk);
-      const res = await universalFetch(url, {cache:'no-store'});
-      const data = await res.json();
-      if(!data.ok) throw new Error('Gagal upload bagian ke-' + (i+1) + ': ' + (data.error||'unknown error'));
-    }
-
-    if(statusEl) statusEl.textContent = 'Menyelesaikan upload...';
-    const finishUrl = WRITE_API_URL + '?action=finishWisaUpload&sessionId=' + encodeURIComponent(sessionId)
-      + '&totalChunks=' + totalChunks
-      + '&filename=' + encodeURIComponent(file.name.replace(/\.[^.]+$/, '') + '.jpg')
-      + '&mimeType=' + encodeURIComponent('image/jpeg'); // selalu JPEG, soalnya udah diresize/dikonversi lewat canvas
-    const finishRes = await universalFetch(finishUrl, {cache:'no-store'});
-    const data = await finishRes.json();
-
-    if(data.ok){
-      if(statusEl){ statusEl.textContent = '✅ Berhasil diupload!'; statusEl.style.color = 'var(--emerald)'; }
-      fileInput.value = '';
-      wisaLoadPhoto();
-    }else{
-      if(statusEl){ statusEl.textContent = '❌ Gagal: ' + (data.error||'unknown error'); statusEl.style.color = 'var(--red)'; }
-    }
-  }catch(err){
-    if(statusEl){ statusEl.textContent = '❌ Gagal upload: ' + err.message; statusEl.style.color = 'var(--red)'; }
-  }
-};
-
-wisaLoadPhoto();
 
 hemLoadDataAuto();
 oloLoadDataAuto();
