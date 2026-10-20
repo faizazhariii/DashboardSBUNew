@@ -238,6 +238,8 @@
   .pivot-table tbody tr.pivot-total td.name{color:#fff;}
 
   /* === Laporan New Infra vs New Link (MBB) === */
+  .pb-table th,.pb-table td{font-size:10.5px !important;padding:4px 5px !important;}
+  .pb-table td.name{font-size:10.5px !important;white-space:nowrap;}
   .mbb-report-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
   .mbb-report-panel{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel);}
   .mbb-report-badge{
@@ -1192,7 +1194,7 @@
 
       <div class="section">
         <p class="section-title">Laporan New Infra vs New Link</p>
-        <p class="section-desc">Rekap per region: Order, Kendala, FI, OA, OGP, breakdown kendala, durasi order, dan breakdown kendala serta durasi order.</p>
+        <p class="section-desc">Rekap per region: Order, Kendala, FI, OA, OGP, breakdown kendala, durasi order, breakdown kendala, durasi order, dan status progres OGP.</p>
         <div class="capture-hide" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <button type="button" class="ppt-capture-btn" id="mbbReportCaptureBtn" title="Capture untuk PPT">📷</button>
           <span class="kpi-sub" style="margin:0;">Klik ikon untuk capture laporan ini jadi PNG.</span>
@@ -6101,6 +6103,10 @@ function mbbReportPredicateBuilder(spec){
     return row => mbbSowSide(row) === spec.side && mbbFiOaOgp(row) === 'ogp'
       && mbbKendalaLabel(row) === spec.kendala && (mbbGet(row,'REGION')||'Tidak Diketahui') === spec.region;
   }
+  if(spec.type === 'ogp_stage'){
+    return row => mbbSowSide(row) === spec.side && mbbFiOaOgp(row) === 'ogp'
+      && (mbbGet(row,'REGION')||'Tidak Diketahui') === spec.region && mbbProgresRowLabel(row) === spec.stage;
+  }
   if(spec.type === 'age'){
     return row => mbbSowSide(row) === spec.side && mbbFiOaOgp(row) === 'ogp'
       && (mbbGet(row,'REGION')||'Tidak Diketahui') === spec.region && mbbAgeBucket(mbbAgeDays(row)) === spec.bucket;
@@ -6229,6 +6235,38 @@ function mbbRenderInfraLinkPanel(sideKey, sideRows, sideLabel, badgeClass){
       </tbody>
     </table>`;
 
+  // --- Tabel OGP (status progres order berjalan) x Region ---
+  const ogpAgg = {};
+  sideRows.forEach(row=>{
+    if(mbbFiOaOgp(row) !== 'ogp') return;
+    const region = mbbGet(row,'REGION') || 'Tidak Diketahui';
+    const st = mbbProgresRowLabel(row);
+    (ogpAgg[st] = ogpAgg[st] || {})[region] = ((ogpAgg[st]||{})[region]||0) + 1;
+  });
+  const ogpPref = ['AANWIJZING','PERIZINAN','MATDEL','INSTALASI','XX HOLD ISSUE','XX ISSUE TSEL','XX REDESIGN'];
+  const ogpLabels = Object.keys(ogpAgg).sort((a,b)=>{
+    const ia = ogpPref.indexOf(a), ib = ogpPref.indexOf(b);
+    return (ia===-1?999:ia) - (ib===-1?999:ib) || a.localeCompare(b);
+  });
+  const ogpColTot = Object.fromEntries(regions.map(r=>[r,0]));
+  let ogpGrand = 0;
+  const ogpRowsHTML = ogpLabels.map(st=>{
+    let rt = 0;
+    const cells = regions.map(r=>{
+      const v = ogpAgg[st][r]||0; ogpColTot[r]+=v; rt+=v;
+      return mbbMakeClickTd(v, v||'—', {type:'ogp_stage', side:sideKey, region:r, stage:st, label:`${sideLabel} — OGP ${st} — ${r}`});
+    }).join('');
+    ogpGrand += rt;
+    return `<tr><td class="name">${st}</td>${cells}<td><strong>${rt}</strong></td></tr>`;
+  }).join('');
+  const ogpTableHTML = ogpLabels.length ? `
+    <table class="mbb-report-table">
+      <thead><tr><th>OGP</th>${regions.map(r=>`<th>${r}</th>`).join('')}<th>Total</th></tr></thead>
+      <tbody>${ogpRowsHTML}
+        <tr class="total-row"><td class="name">TOTAL</td>${regions.map(r=>`<td>${ogpColTot[r]}</td>`).join('')}<td>${ogpGrand}</td></tr>
+      </tbody>
+    </table>` : `<p class="kpi-sub" style="text-align:center;">Tidak ada order OGP.</p>`;
+
   return `
     <div class="mbb-report-panel ${badgeClass}">
       <div class="mbb-report-badge">${sideLabel}</div>
@@ -6237,6 +6275,7 @@ function mbbRenderInfraLinkPanel(sideKey, sideRows, sideLabel, badgeClass){
         <div><div class="mbb-report-sub-title">Kendala</div>${kendalaTableHTML}</div>
         <div><div class="mbb-report-sub-title">Durasi Order</div>${ageTableHTML}</div>
       </div>
+      <div style="margin-top:14px;"><div class="mbb-report-sub-title">OGP — Status Progres</div>${ogpTableHTML}</div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;margin-bottom:6px;">
         <div class="mbb-report-sub-title" style="border-radius:6px;margin-bottom:0;flex:1;">Komitmen OA (TGL COMMIT OA FIX)</div>
@@ -6351,10 +6390,10 @@ function mbbProgresBatchPanelHTML(sowKey, rows){
     return `<tr><td class="name">${p}</td>${cells}<td><strong>${rt}</strong></td></tr>`;
   }).join('');
   const badge = sowKey.includes('INFRA') ? 'infra' : sowKey.includes('LINK') ? 'link' : '';
-  const th = b=>`<th style="white-space:nowrap;">${b.replace(/^(TIF|PST)\s*/,'$1<br>')}</th>`;
+  const th = b=>`<th style="white-space:nowrap;" title="${b}">${b.replace(/\s*BATCH\s*/i,' ').trim()}</th>`;
   const table = batches.length ? `
     <div style="overflow-x:auto;">
-    <table class="mbb-report-table">
+    <table class="mbb-report-table pb-table">
       <thead><tr><th>Status</th>${batches.map(th).join('')}<th>Total</th></tr></thead>
       <tbody>${bodyHTML}
         <tr class="total-row"><td class="name">TOTAL</td>${batches.map(b=>`<td>${colTot[b]}</td>`).join('')}<td>${grand}</td></tr>
