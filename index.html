@@ -238,6 +238,9 @@
   .pivot-table tbody tr.pivot-total td.name{color:#fff;}
 
   /* === Laporan New Infra vs New Link (MBB) === */
+  #mbbProgresBatchArea{max-width:100%;}
+  #mbbProgresBatchArea .mbb-report-panel{max-width:100%;overflow-x:auto;}
+  #pageMbb,#pageMbb .section{min-width:0;max-width:100%;}
   .pb-table th,.pb-table td{font-size:10.5px !important;padding:4px 5px !important;}
   .pb-table td.name{font-size:10.5px !important;white-space:nowrap;}
   .mbb-report-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
@@ -6437,8 +6440,14 @@ let mbbMtdMonth = new Date().getMonth();
 let mbbMtdYear = new Date().getFullYear();
 
 function mbbNormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
+/* Alias header: kolom "SOW PRE ORDER" di sheet MBB sekarang bernama "SOW ORDER" (kolom TIPE ORDER sudah dihapus) */
+const MBB_HEADER_ALIAS = { 'SOW PRE ORDER':['SOW ORDER'], 'SOW ORDER':['SOW PRE ORDER'] };
 function mbbGet(row, name){
-  const key = mbbHeaderMap[mbbNormKey(name)];
+  let key = mbbHeaderMap[mbbNormKey(name)];
+  if(key === undefined){
+    const alts = MBB_HEADER_ALIAS[mbbNormKey(name)] || [];
+    for(const a of alts){ if(mbbHeaderMap[mbbNormKey(a)] !== undefined){ key = mbbHeaderMap[mbbNormKey(a)]; break; } }
+  }
   if(key === undefined) return '';
   const v = row[key];
   return (v === undefined || v === null) ? '' : v.toString().trim();

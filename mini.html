@@ -172,7 +172,7 @@ const SOURCES = [
     cat:(g)=>{ const s = strip(g('Progress Lapangan')).toUpperCase(); if(['GOLIVE','UJI TERIMA','ON AIR'].includes(s)) return 'golive'; if(['DROP','PROPOSED DROP','APPROVED DROP'].includes(s)) return 'drop'; return 'ogp'; } },
   { key:'MBB', urls:[gviz(264409897), exp(264409897)], req:'SITE ID',
     f:{ id:'ID', nama:'SITE NAME', branch:'BRANCH', sto:'STO', status:'STATUS', komit:'TGL COMMIT OA FIX', detail:'DETIL PROGRESS' },
-    extra:[['Site ID','SITE ID'],['Tipe Order','TIPE ORDER'],['Sub Status','SUB STATUS'],['Mitra','MITRA'],['Catatan','CATATAN']], search:['SITE ID'],
+    extra:[['Site ID','SITE ID'],['SOW Order','SOW ORDER'],['Sub Status','SUB STATUS'],['Mitra','MITRA'],['Catatan','CATATAN']], search:['SITE ID'],
     cat:(g)=>{ const m = (g('STATUS')||'').match(/^\s*(\d+)/); const n = m ? parseInt(m[1],10) : -1; if(n===0) return 'drop'; if(n===6||n===7) return 'golive'; return 'ogp'; } },
   { key:'QE', urls:[gviz(2018392112), exp(2018392112)], req:'NAMA LOP', region:{col:'REGION', val:'SBU'},
     f:{ id:'ID DIGASSS', nama:'NAMA LOP', branch:'DISTRICT TIF', sto:'STO', status:'STATUS PROGRES', komit:null, detail:'DETAIL STATUS' },
