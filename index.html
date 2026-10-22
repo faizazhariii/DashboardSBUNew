@@ -5727,7 +5727,7 @@ function oloRenderTable(){
   document.getElementById('oloTableBody').innerHTML = pageRows.map(row=>{
     const detailProgres = oloGet(row,'Detail Progres');
     const ihld = oloGet(row,'IHLD');
-    const catatan = getByColLetter(row,'T');
+    const catatan = oloGet(row,'CATATAN'); // dibaca lewat nama header (posisi kolom sempat berubah)
     return `<tr>
       <td>${ihld||'—'}</td>
       <td>${oloGet(row,'NO ORDER')||'—'}</td>
@@ -5740,7 +5740,7 @@ function oloRenderTable(){
       <td>${oloGet(row,'TANGGAL ORDER')||'—'}</td>
       <td>${oloGet(row,'Komitmen Golive')||'—'}</td>
       <td>${hemFormatDetailProgres(detailProgres)}</td>
-      <td>${renderStatusPT1Cell('olo', ihld, getByColLetter(row,'S'))}</td>
+      <td>${renderStatusPT1Cell('olo', ihld, oloGet(row,'STATUS PT1'))}</td>
       <td>${oloGet(row,'TTD')||'—'}</td>
       <td>${fmtIDR(oloParseNum(oloGet(row,'BOQ')))}</td>
       <td>${fmtIDR(oloParseNum(oloGet(row,'REVENEU')))}</td>
