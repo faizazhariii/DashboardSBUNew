@@ -1546,7 +1546,7 @@
                 <th>Detail Status</th>
                 <th class="sortable" data-field="PORT PLAN" data-numeric="true">Port Plan<span class="sort-arrow">▲▼</span></th>
                 <th class="sortable" data-field="BOQ" data-numeric="true">BOQ<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="CPP" data-numeric="true">CPP<span class="sort-arrow">▲▼</span></th>
+                <th class="sortable" data-field="CPP AKHIR" data-numeric="true" title="BOQ Aanwijzing / Port Plan">CPP Akhir<span class="sort-arrow">▲▼</span></th>
                 <th>Komitmen Golive</th>
                 <th>Status Golive</th>
                 <th>Waspang</th>
@@ -7435,7 +7435,12 @@ let pt3CommitMonth = new Date().getMonth();
 
 function pt3NormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
 function pt3Get(row, name){
-  const key = pt3HeaderMap[pt3NormKey(name)];
+  let key = pt3HeaderMap[pt3NormKey(name)];
+  if(key === undefined && pt3NormKey(name) === 'CPP AKHIR'){
+    // header aslinya: "CPP akhir ( boq anndwizjing /port plan)" — cari yang diawali "CPP AKHIR"
+    const k = Object.keys(pt3HeaderMap).find(h => h.indexOf('CPP AKHIR') === 0);
+    if(k !== undefined) key = pt3HeaderMap[k];
+  }
   if(key === undefined) return '';
   const v = row[key];
   return (v === undefined || v === null) ? '' : v.toString().trim();
@@ -8519,7 +8524,7 @@ function pt3RenderTable(){
       <td style="max-width:260px;"><div style="max-height:48px;overflow-y:auto;white-space:normal;font-size:11.5px;color:var(--text-dim);line-height:1.4;" title="${(pt3Get(row,'DETAIL STATUS')||'').replace(/"/g,'&quot;')}">${pt3Get(row,'DETAIL STATUS')||'—'}</div></td>
       <td>${pt3Get(row,'PORT PLAN')||'—'}</td>
       <td>${fmtIDR(pt3ParseNum(pt3Get(row,'BOQ')))}</td>
-      <td>${fmtIDR(pt3ParseNum(pt3Get(row,'CPP')))}</td>
+      <td>${fmtIDR(pt3ParseNum(pt3Get(row,'CPP AKHIR')))}</td>
       <td>${pt3Get(row,'KOMITMEN GOLIVE')||'—'}</td>
       <td>${pt3Get(row,'STATUS GOLIVE')||'—'}</td>
       <td>${pt3Get(row,'WASPANG')||'—'}</td>
@@ -10012,7 +10017,7 @@ document.getElementById('pt3DownloadBtn').onclick = ()=>{
     {label:'Sub Status', get:r=>pt3Get(r,'SUB STATUS KONS')},
     {label:'Port Plan', get:r=>pt3Get(r,'PORT PLAN')},
     {label:'BOQ', get:r=>pt3Get(r,'BOQ')},
-    {label:'CPP', get:r=>pt3Get(r,'CPP')},
+    {label:'CPP Akhir', get:r=>pt3Get(r,'CPP AKHIR')},
     {label:'Komitmen Golive', get:r=>pt3Get(r,'KOMITMEN GOLIVE')},
     {label:'Status Golive', get:r=>pt3Get(r,'STATUS GOLIVE')},
     {label:'Waspang', get:r=>pt3Get(r,'WASPANG')},
