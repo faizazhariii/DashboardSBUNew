@@ -4677,9 +4677,9 @@ function renderKomitmenTrendChart(canvasId, summaryId, rows, getFn, commitField,
     if(!d || d.getFullYear()!==year || d.getMonth()!==month) return;
     const cat = categoryFn(row);
     let bucket;
-    if(cat === 'golive' || cat === 'gl' || cat === 'oa' || cat === 'closed') bucket = 'golive';
+    if(cat === 'golive' || cat === 'gl' || cat === 'oa' || cat === 'closed' || cat === 'bisa') bucket = 'golive';
     else if(cat === 'drop') bucket = 'drop';
-    else bucket = 'ogp'; // fi/bisa/hold/ogp semua digabung jadi satu bar biru
+    else bucket = 'ogp'; // fi/hold/ogp semua digabung (Bisa PT1 dihitung golive) jadi satu bar biru
     perDay[d.getDate()][bucket] += 1;
     if(bucket==='golive') totGolive++; else if(bucket==='drop') totDrop++; else totOgp++;
   });
@@ -4729,7 +4729,7 @@ function renderKomitmenTrendChart(canvasId, summaryId, rows, getFn, commitField,
           if(!d || d.getFullYear()!==year || d.getMonth()!==month || d.getDate()!==day) return false;
           const cat = categoryFn(row);
           let bucket;
-          if(cat === 'golive' || cat === 'gl' || cat === 'oa' || cat === 'closed') bucket = 'golive';
+          if(cat === 'golive' || cat === 'gl' || cat === 'oa' || cat === 'closed' || cat === 'bisa') bucket = 'golive';
           else if(cat === 'drop') bucket = 'drop';
           else bucket = 'ogp';
           return bucket === clickedBucket;
@@ -10540,8 +10540,8 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261024g"></script>
-<script src="pptxgen.bundle.js?v=20261024g"></script>
-<script src="ppt-rekap.js?v=20261024g"></script>
+<script src="ppt-assets.js?v=20261024h"></script>
+<script src="pptxgen.bundle.js?v=20261024h"></script>
+<script src="ppt-rekap.js?v=20261024h"></script>
 </body>
 </html>
