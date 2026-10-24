@@ -472,6 +472,7 @@
     <button class="page-tab" id="tabBtnOlo" type="button">OLO</button>
     <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
     <div class="tab-group">Tambahan</div>
+    <button class="page-tab" id="tabBtnRekapPpt" type="button">Rekap PPT</button>
     <button class="page-tab" id="tabBtnChecklist" type="button">Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">Need Modul OLT</button>
     <button class="page-tab" id="tabBtnQe" type="button">QE</button>
@@ -2196,6 +2197,8 @@
         </div>
       </div>
     </div>
+
+    <div id="pageRekapPpt" style="display:none;"><div id="rekapPptHost"></div></div>
 
     <div id="pageBrt" style="display:none;">
       <div class="section" style="margin-top:0;">
@@ -5765,7 +5768,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -6351,6 +6354,7 @@ document.getElementById('tabBtnQe').onclick = ()=>{ switchTab('qe'); qeLoad(); }
   apply(c);
   btn.onclick = ()=>{ c = !c; apply(c); try{ localStorage.setItem('sideCollapsed', c ? '1' : '0'); }catch(e){} setTimeout(()=> window.dispatchEvent(new Event('resize')), 300); };
 })();
+document.getElementById('tabBtnRekapPpt').onclick = ()=> { switchTab('rekapPpt'); if(window.rekapPptOpen) window.rekapPptOpen(); };
 document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
 const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
 let brtCurrentZona = '1', brtLoadedZona = null;
@@ -10536,5 +10540,8 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js"></script>
+<script src="ppt-assets.js"></script>
+<script src="ppt-rekap.js"></script>
 </body>
 </html>
