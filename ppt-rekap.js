@@ -77,7 +77,7 @@ function mbbBlock(rowsSide, d){
       const st = mbbProgresRowLabel(row), bt = mbbBatchLabel(row);
       batches.add(bt); ((prog[st] = prog[st] || {})[bt] = (prog[st][bt]||0)+1);
     }
-    if((cat==='ogp'||cat==='fi') && sameMonth(mbbGet(row,'TGL COMMIT OA FIX'), d)) per[rg].kom++;
+    if(sameMonth(mbbGet(row,'TGL COMMIT OA FIX'), d)) per[rg].kom++;   /* komitmen OA bulan ini = semua baris yang TGL COMMIT OA FIX-nya di bulan tsb */
   });
   return { regs, per, kend, age, prog, batches:[...batches].sort((a,b)=> (parseInt(a)||999)-(parseInt(b)||999) || a.localeCompare(b)) };
 }
@@ -156,15 +156,15 @@ function autoNotes(key, d){
     } else if(key==='olo' || key==='hem'){
       const cfg = ohCfg(key), b = ohBlock(cfg, d);
       const t = f => b.dists.reduce((a,x)=>a+b.per[x][f],0);
-      out['Current Conditions'] = `Total order ${nf(t('order'))} LoP: Golive ${nf(t('golive'))}, OGP ${nf(t('ogp'))}, Bisa PT1 ${nf(t('bisa'))}, Hold ${nf(t('hold'))}, Drop ${nf(t('drop'))}\nAchievement Golive ${pct(t('golive'), t('order'))}`;
+      out['Current Conditions'] = `Total order ${nf(t('order'))} LoP: Golive ${nf(t('golive'))}, OGP ${nf(t('ogp'))}, Bisa PT1 ${nf(t('bisa'))}, Hold ${nf(t('hold'))}, Drop ${nf(t('drop'))}\nAchievement Golive ${pct(t('golive')+t('bisa'), t('order')-t('drop'))} (Golive + Bisa PT1 dari Order − Drop)`;
       out['Action to be Taken'] = t('ogp') ? `Pengawalan intensif penyelesaian konstruksi ${nf(t('ogp'))} LoP OGP bersama tim Reg ED & District\nKomitmen tambahan Golive ${BULAN[d.getMonth()]}: ${nf(t('kom'))} LoP` : '';
     } else if(key==='pt3ta' || key==='pt3fh'){
       const b = pt3Block(pt3Cfg(key), d), t = f => b.regs.reduce((a,r)=>a+b.per[r][f],0);
-      out['Current Conditions'] = `Total order ${nf(t('order'))} port: Golive ${nf(t('gl'))} (${pct(t('gl'), t('order'))}), OGP ${nf(t('ogp'))}, Drop ${nf(t('drop'))}\n${nf(t('kendala'))} port OGP berstatus kendala`;
+      out['Current Conditions'] = `Total order ${nf(t('order'))} port: Golive ${nf(t('gl'))} (${pct(t('gl'), t('order')-t('drop'))} dari Order − Drop), OGP ${nf(t('ogp'))}, Drop ${nf(t('drop'))}\n${nf(t('kendala'))} port OGP berstatus kendala`;
       out['Action to be Taken'] = `Prioritas order siap instalasi, minim kendala dan tarikan pendek (Quick Win)\nKomitmen Golive ${BULAN[d.getMonth()]}: ${nf(t('kom'))} port, tercapai ${nf(t('komGl'))} port (${pct(t('komGl'), t('kom'))})`;
     } else if(key==='pt2'){
       const b = pt2Block(), arr = Object.values(b.byBranch), tp = arr.reduce((a,x)=>a+x.port,0), gl = arr.reduce((a,x)=>a+x.golive,0), dr = arr.reduce((a,x)=>a+x.drop,0);
-      out['Current Conditions'] = `Total ${nf(tp)} port PT2: Golive ${nf(gl)} (${pct(gl,tp)}), Drop ${nf(dr)}`;
+      out['Current Conditions'] = `Total ${nf(tp)} port PT2: Golive ${nf(gl)} (${pct(gl,tp-dr)} dari Port − Drop), Drop ${nf(dr)}`;
     } else if(key==='qe'){
       out['Notes'] = `Total ${nf(qeRows.length)} LoP QE Relok`;
     }
@@ -204,6 +204,7 @@ function pr(key){
   const d = curD || inputDate();
   return all.filter(r => sameMonth(DATECOL[key](r), d));
 }
+const glp = p => pct((p.golive||0)+(p.bisa||0), (p.order||0)-(p.drop||0));
 function withMode(m, fn){ const o = P.mode; P.mode = m; try{ return fn(); } finally{ P.mode = o; } }
 const ZB = {order:0,drop:0,kendala:0,fi:0,oa:0,ogp:0,kom:0,gl:0,komGl:0,golive:0,bisa:0,hold:0};
 function sumPer(b, regs, keys){ const T = {}; keys.forEach(k=>T[k]=0); regs.forEach(r=>{ const p = (b.per && b.per[r]) || ZB; keys.forEach(k=>T[k]+=p[k]||0); }); return T; }
@@ -348,24 +349,24 @@ function slideOH(key, title, st, d){
   const LW = 6.9; let y;
   if(!bm){
     const hdr = ['DISTRICT','ORDER','DROP','GOLIVE','BISA PT1','HOLD','OGP','%GL','KOM GL'].map(t=>hc(t,{fontSize:8}));
-    const body = b.dists.map(x=>{ const p=b.per[x]; return [lc(abbr(x),{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.golive)), bc(dash(p.bisa)), bc(dash(p.hold)), bc(dash(p.ogp)), bc(pct(p.golive,p.order)), bc(dash(p.kom))]; });
-    body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.golive),dash(T.bisa),dash(T.hold),dash(T.ogp),pct(T.golive,T.order),dash(T.kom)].map(t=>tc(t)));
+    const body = b.dists.map(x=>{ const p=b.per[x]; return [lc(abbr(x),{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.golive)), bc(dash(p.bisa)), bc(dash(p.hold)), bc(dash(p.ogp)), bc(glp(p)), bc(dash(p.kom))]; });
+    body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.golive),dash(T.bisa),dash(T.hold),dash(T.ogp),pct(T.golive+T.bisa,T.order-T.drop),dash(T.kom)].map(t=>tc(t)));
     const f=[1.4,0.65,0.55,0.65,0.7,0.55,0.55,0.6,0.7], fw=f.reduce((a,v)=>a+v,0);
     y = table(s, [hdr, ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:9, rowH:0.27});
   } else {
     const g = (t,o)=>hc(t,Object.assign({fontSize:7.5},o||{}));
     const hdr1 = [g('DIST',{rowspan:2}), g('All (YTD)',{colspan:7}), g(`MTD ${BLN3[d.getMonth()]} ${d.getFullYear()}`,{colspan:4,fill:{color:C.blue}}), g('KOM GL',{rowspan:2})];
     const hdr2 = ['ORDER','DROP','GL','BISA','HOLD','OGP','%GL','ORDER','GL','OGP','%GL'].map((t,i)=>g(t,i>=7?{fill:{color:C.blue}}:{}));
-    const Tm = sumPer(bm, b.dists, ['order','golive','ogp']);
-    const cy = p => [bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.golive)), bc(dash(p.bisa)), bc(dash(p.hold)), bc(dash(p.ogp)), bc(pct(p.golive,p.order))];
-    const cm = p => [bc(nf(p.order)), bc(dash(p.golive)), bc(dash(p.ogp)), bc(pct(p.golive,p.order))];
+    const Tm = sumPer(bm, b.dists, ['order','drop','golive','bisa','ogp']);
+    const cy = p => [bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.golive)), bc(dash(p.bisa)), bc(dash(p.hold)), bc(dash(p.ogp)), bc(glp(p))];
+    const cm = p => [bc(nf(p.order)), bc(dash(p.golive+p.bisa)), bc(dash(p.ogp)), bc(glp(p))];
     const body = b.dists.map(x=>[lc(abbr(x),{bold:true}), ...cy(b.per[x]), ...cm(bm.per[x]||ZB), bc(dash(b.per[x].kom))]);
-    body.push(['TOTAL', nf(T.order),dash(T.drop),dash(T.golive),dash(T.bisa),dash(T.hold),dash(T.ogp),pct(T.golive,T.order), nf(Tm.order),dash(Tm.golive),dash(Tm.ogp),pct(Tm.golive,Tm.order), dash(T.kom)].map(t=>tc(t,{fontSize:7.5})));
+    body.push(['TOTAL', nf(T.order),dash(T.drop),dash(T.golive),dash(T.bisa),dash(T.hold),dash(T.ogp),pct(T.golive+T.bisa,T.order-T.drop), nf(Tm.order),dash(Tm.golive+Tm.bisa),dash(Tm.ogp),pct(Tm.golive+Tm.bisa,Tm.order-Tm.drop), dash(T.kom)].map(t=>tc(t,{fontSize:7.5})));
     const f=[0.6,0.55,0.45,0.45,0.45,0.45,0.5,0.55,0.55,0.45,0.5,0.55,0.55], fw=f.reduce((a,v)=>a+v,0);
     y = table(s, [hdr1, hdr2, ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:8, rowH:0.25});
   }
   y += 0.12;
-  s.addText(`KOM GL = komitmen golive ${BULAN[d.getMonth()]} ${d.getFullYear()} (order belum golive)`, { x:0.3, y, w:LW, h:0.2, fontFace:'Arial', fontSize:7.5, italic:true, color:C.blue, margin:0 });
+  s.addText(`%GL = (Golive + Bisa PT1) ÷ (Order − Drop). KOM GL = komitmen golive ${BULAN[d.getMonth()]} ${d.getFullYear()} (order belum golive)`, { x:0.3, y, w:LW, h:0.2, fontFace:'Arial', fontSize:7.5, italic:true, color:C.blue, margin:0 });
   y += 0.3;
   caption(s, 'PROGRES LAPANGAN x DISTRICT', 0.3, y-0.02, 6);
   const ds = b.dists;
@@ -394,24 +395,24 @@ function slidePt3(key, title, st, d){
   let y;
   if(!bm){
     const hdr = ['DISTRICT','ORDER','DROP','KENDALA','FI','GL','OGP','%GL','KOM GL','TERCAPAI','% ACH'].map(t=>hc(t,{fontSize:7}));
-    const body = b.regs.map(r=>{ const p=b.per[r]; return [lc(abbr(r),{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(dash(p.gl)), bc(dash(p.ogp)), bc(pct(p.gl,p.order)), bc(dash(p.kom)), bc(dash(p.komGl)), bc(pct(p.komGl,p.kom))]; });
-    body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),dash(T.gl),dash(T.ogp),pct(T.gl,T.order),dash(T.kom),dash(T.komGl),pct(T.komGl,T.kom)].map(t=>tc(t,{fontSize:7.5})));
+    const body = b.regs.map(r=>{ const p=b.per[r]; return [lc(abbr(r),{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(dash(p.gl)), bc(dash(p.ogp)), bc(pct(p.gl,p.order-p.drop)), bc(dash(p.kom)), bc(dash(p.komGl)), bc(pct(p.komGl,p.kom))]; });
+    body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),dash(T.gl),dash(T.ogp),pct(T.gl,T.order-T.drop),dash(T.kom),dash(T.komGl),pct(T.komGl,T.kom)].map(t=>tc(t,{fontSize:7.5})));
     const f=[1.25,0.6,0.5,0.6,0.45,0.5,0.6,0.5,0.55,0.65,0.55], fw=f.reduce((a,v)=>a+v,0);
     y = table(s, [hdr, ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:8, rowH:0.26});
   } else {
     const g = (t,o)=>hc(t,Object.assign({fontSize:6.5},o||{}));
     const hdr1 = [g('DIST',{rowspan:2}), g('All (YTD)',{colspan:7}), g(`MTD ${BLN3[d.getMonth()]} ${d.getFullYear()}`,{colspan:4,fill:{color:C.blue}}), g('KOMITMEN GL BLN INI',{colspan:3,fill:{color:C.green}})];
     const hdr2 = ['ORDER','DROP','KEND','FI','GL','OGP','%GL','ORDER','GL','OGP','%GL','KOM','TERCAPAI','%ACH'].map((t,i)=>g(t,i>=7&&i<11?{fill:{color:C.blue}}:(i>=11?{fill:{color:C.green}}:{})));
-    const Tm = sumPer(bm, b.regs, ['order','gl','ogp']);
-    const cy = p => [bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(dash(p.gl)), bc(dash(p.ogp)), bc(pct(p.gl,p.order))];
-    const cm = p => [bc(nf(p.order)), bc(dash(p.gl)), bc(dash(p.ogp)), bc(pct(p.gl,p.order))];
+    const Tm = sumPer(bm, b.regs, ['order','drop','gl','ogp']);
+    const cy = p => [bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(dash(p.gl)), bc(dash(p.ogp)), bc(pct(p.gl,p.order-p.drop))];
+    const cm = p => [bc(nf(p.order)), bc(dash(p.gl)), bc(dash(p.ogp)), bc(pct(p.gl,p.order-p.drop))];
     const body = b.regs.map(r=>[lc(abbr(r),{bold:true}), ...cy(b.per[r]), ...cm(bm.per[r]||ZB), bc(dash(b.per[r].kom)), bc(dash(b.per[r].komGl)), bc(pct(b.per[r].komGl,b.per[r].kom))]);
-    body.push(['TOTAL', nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),dash(T.gl),dash(T.ogp),pct(T.gl,T.order), nf(Tm.order),dash(Tm.gl),dash(Tm.ogp),pct(Tm.gl,Tm.order), dash(T.kom),dash(T.komGl),pct(T.komGl,T.kom)].map(t=>tc(t,{fontSize:6.5})));
+    body.push(['TOTAL', nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),dash(T.gl),dash(T.ogp),pct(T.gl,T.order-T.drop), nf(Tm.order),dash(Tm.gl),dash(Tm.ogp),pct(Tm.gl,Tm.order-Tm.drop), dash(T.kom),dash(T.komGl),pct(T.komGl,T.kom)].map(t=>tc(t,{fontSize:6.5})));
     const f=[0.5,0.5,0.4,0.45,0.35,0.42,0.45,0.45,0.5,0.4,0.42,0.45,0.4,0.55,0.45], fw=f.reduce((a,v)=>a+v,0);
     y = table(s, [hdr1, hdr2, ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:7, rowH:0.25});
   }
   y += 0.1;
-  s.addText(`KOM GL = komitmen golive ${BULAN[d.getMonth()]} ${d.getFullYear()} (port); TERCAPAI = yang sudah golive`, { x:0.3, y, w:LW, h:0.2, fontFace:'Arial', fontSize:7.5, italic:true, color:C.blue, margin:0 });
+  s.addText(`%GL = GL ÷ (Order − Drop). KOM GL = komitmen golive ${BULAN[d.getMonth()]} ${d.getFullYear()} (port); TERCAPAI = yang sudah golive`, { x:0.3, y, w:LW, h:0.2, fontFace:'Arial', fontSize:7.5, italic:true, color:C.blue, margin:0 });
   y += 0.3;
   caption(s, 'STATUS x DISTRICT (tanpa Drop, port)', 0.3, y-0.02, 6);
   const sh = [hc('STATUS',{fontSize:7.5}), ...b.regs.map(r=>hc(abbr(r),{fontSize:7.5})), hc('TOTAL',{fontSize:7.5})];
@@ -436,8 +437,8 @@ function slidePt2(st, d){
   const brs = regionsOf(Object.keys(b.byBranch), x=>x);
   const T = {lop:0,port:0,golive:0,godeploy:0,drop:0,other:0};
   const body = brs.map(k=>{ const p=b.byBranch[k] || {lop:0,port:0,golive:0,godeploy:0,drop:0,other:0}; Object.keys(T).forEach(q=>T[q]+=p[q]);
-    return [lc(abbr(k),{bold:true}), bc(dash(p.lop)), bc(dash(p.port)), bc(dash(p.drop)), bc(dash(p.godeploy)), bc(dash(p.golive)), bc(dash(p.other)), bc(pct(p.golive,p.port))]; });
-  body.push(['TOTAL',nf(T.lop),nf(T.port),dash(T.drop),dash(T.godeploy),dash(T.golive),dash(T.other),pct(T.golive,T.port)].map(t=>tc(t)));
+    return [lc(abbr(k),{bold:true}), bc(dash(p.lop)), bc(dash(p.port)), bc(dash(p.drop)), bc(dash(p.godeploy)), bc(dash(p.golive)), bc(dash(p.other)), bc(pct(p.golive,p.port-p.drop))]; });
+  body.push(['TOTAL',nf(T.lop),nf(T.port),dash(T.drop),dash(T.godeploy),dash(T.golive),dash(T.other),pct(T.golive,T.port-T.drop)].map(t=>tc(t)));
   const f=[1.5,0.6,0.9,0.8,0.9,0.8,0.8,0.6], fw=f.reduce((a,v)=>a+v,0), LW=6.9;
   let y = table(s, [['DISTRICT','LOP','PORT','DROP','GO DEPLOY','GOLIVE','LAINNYA','%GL'].map(t=>hc(t,{fontSize:8})), ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:9, rowH:0.27});
   y += 0.3;
