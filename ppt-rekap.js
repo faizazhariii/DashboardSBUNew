@@ -1,5 +1,5 @@
 /* ============================================================
-   Rekap PPT — 1 klik bikin .pptx (gaya Huddle Review TIF1) dari data live
+   Rekap PPT — 1 klik bikin .pptx (gaya Huddle Review ED Region Sumbagut) dari data live
    dashboard: MBB, OLO, HEM, PT3 TA, PT3 FH, PT2, QE.
    Dipanggil dari halaman "Rekap PPT". Butuh: PptxGenJS + ppt-assets.js
    ============================================================ */
@@ -19,7 +19,16 @@ const LS_KEY = 'rekapPptState_v1';
 const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 const BLN3 = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 const HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-const REG = ['SBU','SBT','SBS'];
+const DISTS = ['Medan','Binjai','Banda Aceh','Rantau Prapat','Pematang Siantar','Padang Sidempuan'];
+const DABBR = {'Medan':'MDN','Binjai':'BNJ','Banda Aceh':'BNA','Rantau Prapat':'RAP','Pematang Siantar':'SIA','Padang Sidempuan':'PSP'};
+const DKEY = Object.fromEntries(DISTS.map(x=>[x.toUpperCase().replace(/[^A-Z]/g,''), x]));
+const DALIAS = { ACEH:'Banda Aceh', SIANTAR:'Pematang Siantar', PEMATANGSIANTAR:'Pematang Siantar', RANTAUPRAPAT:'Rantau Prapat', PADANGSIDIMPUAN:'Padang Sidempuan', SIDEMPUAN:'Padang Sidempuan', SIDIMPUAN:'Padang Sidempuan' };
+function distNorm(v){
+  const raw = String(v||'').trim(); if(!raw) return 'Tidak Diketahui';
+  const k = raw.toUpperCase().replace(/[^A-Z]/g,'');
+  return DKEY[k] || DALIAS[k] || raw;
+}
+function abbr(x){ return DABBR[x] || String(x).replace(/[^A-Za-z]/g,'').slice(0,3).toUpperCase(); }
 const C = { navy:'1F3864', blue:'2F5597', grey:'595959', lgrey:'F2F2F2', border:'A6A6A6', red:'D9202F', green:'1E6B3A', ink:'222222' };
 const nf = n => (Number(n)||0).toLocaleString('id-ID');
 const pct = (a,b) => b ? ((a/b*100).toLocaleString('id-ID',{maximumFractionDigits:1})+'%') : '-';
@@ -50,12 +59,12 @@ function sameMonth(str, d){
 function mbbSide(rowsAll, side){ return rowsAll.filter(r => mbbSowSide(r) === side); }
 
 function mbbBlock(rowsSide, d){
-  const regs = regionsOf(rowsSide, r => mbbGet(r,'REGION') || 'Tidak Diketahui');
+  const regs = regionsOf(rowsSide, r => distNorm(mbbGet(r,'BRANCH')));
   const per = {}; regs.forEach(r => per[r] = {order:0, drop:0, kendala:0, fi:0, oa:0, ogp:0, kom:0});
   const kend = {}, age = {}, prog = {}, batches = new Set();
   regs.forEach(r => age[r] = {'<7':0,'7-14':0,'14-30':0,'>30':0});
   rowsSide.forEach(row=>{
-    const rg = mbbGet(row,'REGION') || 'Tidak Diketahui', cat = mbbFiOaOgp(row);
+    const rg = distNorm(mbbGet(row,'BRANCH')), cat = mbbFiOaOgp(row);
     per[rg].order++;
     if(cat==='drop') per[rg].drop++;
     else if(cat==='fi') per[rg].fi++;
@@ -74,7 +83,7 @@ function mbbBlock(rowsSide, d){
 }
 function regionsOf(rowsArr, fn){
   const present = [...new Set(rowsArr.map(fn))];
-  return REG.filter(r=>present.includes(r)).concat(present.filter(r=>!REG.includes(r)).sort());
+  return DISTS.concat(present.filter(r=>!DISTS.includes(r)).sort());
 }
 
 function pt3Block(cfg, d){
@@ -101,11 +110,11 @@ function pt3Block(cfg, d){
 
 /* OLO / HEM: dikelompokkan per DISTRICT */
 function ohBlock(cfg, d){
-  const dists = [...new Set(cfg.rows.map(r => cfg.get(r,'DISTRICT') || 'Tidak Diketahui'))].sort();
+  const dists = regionsOf(cfg.rows, r => distNorm(cfg.get(r,'DISTRICT')));
   const per = {}; dists.forEach(x => per[x] = {order:0, drop:0, golive:0, bisa:0, hold:0, ogp:0, kom:0});
   const prog = {}, drops = [];
   cfg.rows.forEach(row=>{
-    const dist = cfg.get(row,'DISTRICT') || 'Tidak Diketahui';
+    const dist = distNorm(cfg.get(row,'DISTRICT'));
     const label = cfg.prog(row), cat = hemCategoryOfLabel(label);
     per[dist].order++; per[dist][cat]++;
     const st = hemStripStatusPrefix(label).toUpperCase();
@@ -119,8 +128,8 @@ function ohBlock(cfg, d){
 
 function pt2Block(){
   const byBranch = {}, byStat = {};
-  rows.forEach(row=>{
-    const br = get(row,'Telkomsel Branch') || 'Tidak Diketahui';
+  pr('pt2').forEach(row=>{
+    const br = distNorm(get(row,'Telkomsel Branch'));
     const port = parseNum(get(row,'PORT ACTUAL'));
     const cls = statusClass(deriveStatus(get(row,'STAT FINAL')));
     const o = byBranch[br] = byBranch[br] || {lop:0, port:0, golive:0, godeploy:0, drop:0, other:0};
@@ -138,7 +147,7 @@ function autoNotes(key, d){
   const out = {};
   try{
     if(key==='mbb'){
-      const parts = ['infra','link'].map(s=>({s, b:mbbBlock(mbbSide(mbbRows,s), d)}));
+      const parts = ['infra','link'].map(s=>({s, b:mbbBlock(mbbSide(pr('mbb'),s), d)}));
       const sum = f => parts.reduce((a,p)=> a + p.b.regs.reduce((x,r)=>x+p.b.per[r][f],0), 0);
       const ord = sum('order')-sum('drop');
       out['Problems'] = [`Total order MBB ${nf(sum('order'))} site (New Infra + New Link): OA ${nf(sum('oa'))}, FI ${nf(sum('fi'))}, OGP ${nf(sum('ogp'))} (${pct(sum('oa'),ord)} OA)`,
@@ -157,7 +166,7 @@ function autoNotes(key, d){
       const b = pt2Block(), arr = Object.values(b.byBranch), tp = arr.reduce((a,x)=>a+x.port,0), gl = arr.reduce((a,x)=>a+x.golive,0), dr = arr.reduce((a,x)=>a+x.drop,0);
       out['Current Conditions'] = `Total ${nf(tp)} port PT2: Golive ${nf(gl)} (${pct(gl,tp)}), Drop ${nf(dr)}`;
     } else if(key==='qe'){
-      out['Notes'] = `Total ${nf(qeRows.length)} LoP QE Relok SBU`;
+      out['Notes'] = `Total ${nf(qeRows.length)} LoP QE Relok`;
     }
   }catch(e){ console.warn('autoNotes', key, e); }
   return out;
@@ -165,13 +174,13 @@ function autoNotes(key, d){
 
 function ohCfg(key){
   return key==='olo'
-    ? { rows: oloRows, get: oloGet, prog: oloRowProgressLabel }
-    : { rows: hemRows, get: hemGet, prog: hemRowProgressLabel };
+    ? { rows: pr('olo'), get: oloGet, prog: oloRowProgressLabel }
+    : { rows: pr('hem'), get: hemGet, prog: hemRowProgressLabel };
 }
 function pt3Cfg(key){
   return key==='pt3ta'
-    ? { rows: pt3Rows, get: pt3Get, num: pt3ParseNum, region: pt3RegionAbbr, cat: pt3Category2, kendala: pt3HasKendala, status: pt3RowStatusLabel, stageIdx: pt3StageOrderIndex }
-    : { rows: pt3fhRows, get: pt3fhGet, num: pt3fhParseNum, region: pt3fhRegionAbbr, cat: pt3fhCategory2, kendala: pt3fhHasKendala, status: pt3fhRowStatusLabel, stageIdx: (typeof pt3fhStageOrderIndex==='function' ? pt3fhStageOrderIndex : ()=>0) };
+    ? { rows: pr('pt3ta'), get: pt3Get, num: pt3ParseNum, region: r=>distNorm(pt3Get(r,'BRANCH FMC')), cat: pt3Category2, kendala: pt3HasKendala, status: pt3RowStatusLabel, stageIdx: pt3StageOrderIndex }
+    : { rows: pr('pt3fh'), get: pt3fhGet, num: pt3fhParseNum, region: r=>distNorm(pt3fhGet(r,'BRANCH FMC')), cat: pt3fhCategory2, kendala: pt3fhHasKendala, status: pt3fhRowStatusLabel, stageIdx: (typeof pt3fhStageOrderIndex==='function' ? pt3fhStageOrderIndex : ()=>0) };
 }
 
 /* ============================================================
@@ -179,7 +188,23 @@ function pt3Cfg(key){
    ============================================================ */
 const W = 13.333, H = 7.5;
 let A;                       // aset gambar
-let pptx, cutoff;
+let pptx, cutoff, curD;
+const P = { mode:'ytd' };
+const DATECOL = {
+  mbb:  r => mbbGet(r,'TGL WO'),
+  olo:  r => oloGet(r,'TANGGAL ORDER'),
+  hem:  r => hemGet(r,'Tanggal submit order nde'),
+  pt3ta:r => pt3Get(r,'Tgl Order'),
+};
+const SRC = { mbb:()=>mbbRows, olo:()=>oloRows, hem:()=>hemRows, pt3ta:()=>pt3Rows, pt3fh:()=>pt3fhRows, pt2:()=>rows };
+/* baris sesuai periode: YTD = semua; MTD = bulan dari tanggal huddle (hanya modul yang punya kolom tanggal order) */
+function pr(key){
+  const all = SRC[key]() || [];
+  if(P.mode !== 'mtd' || !DATECOL[key]) return all;
+  const d = curD || inputDate();
+  return all.filter(r => sameMonth(DATECOL[key](r), d));
+}
+function modeLabel(d){ return P.mode==='mtd' ? `MTD ${BULAN[d.getMonth()]} ${d.getFullYear()}` : 'All (YTD)'; }
 
 const hc = (t,o={}) => ({ text:String(t), options:Object.assign({ bold:true, color:'FFFFFF', fill:{color:C.navy}, align:'center', valign:'middle' }, o) });
 const bc = (t,o={}) => ({ text:String(t), options:Object.assign({ color:C.ink, align:'center', valign:'middle' }, o) });
@@ -205,13 +230,13 @@ function base(title, sub){
   s.addImage({ data:A.hdr, x:0, y:0, w:W, h:0.82 });
   s.addText([
     { text:title, options:{ bold:true, fontSize:28, color:'FFFFFF' } },
-    { text:'   '+(sub||cutoff), options:{ fontSize:12, color:'FFFFFF', italic:true } },
+    { text:'   '+(sub||(cutoff+'  |  '+modeLabel(curD))), options:{ fontSize:11, color:'FFFFFF', italic:true } },
   ], { x:0.4, y:0.1, w:9.2, h:0.62, fontFace:'Arial', valign:'middle', margin:0, fit:'shrink' });
-  s.addImage({ data:A.tiger, x:9.75, y:0.12, w:1.6, h:0.68 });
+  s.addText('ED REGION\nSUMBAGUT', { x:9.2, y:0.1, w:2.1, h:0.62, align:'right', valign:'middle', fontFace:'Arial Black', bold:true, fontSize:13, color:C.navy, margin:0 });
   s.addImage({ data:A.infra, x:11.55, y:0.14, w:1.6, h:0.47 });
   s.addImage({ data:A.footer, x:0.75, y:7.18, w:W-0.75, h:0.32 });
   s.addImage({ data:A.nlogo, x:0.18, y:7.02, w:0.5, h:0.5 });
-  s.addText('2026 | Engineering & Deployment TIF1 | PT. Telkom Infrastruktur Indonesia', { x:6.2, y:7.2, w:7.1, h:0.28, align:'right', fontFace:'Arial', fontSize:10, bold:true, color:'FFFFFF', margin:[0,0.2,0,0] });
+  s.addText('2026 | ED Region Sumbagut | PT. Telkom Infrastruktur Indonesia', { x:6.2, y:7.2, w:7.1, h:0.28, align:'right', fontFace:'Arial', fontSize:10, bold:true, color:'FFFFFF', margin:[0,0.2,0,0] });
   return s;
 }
 
@@ -244,9 +269,8 @@ function slideCover(st, d){
   s.addImage({ data:A.p1_960, x:0.4, y:0.3, w:2.3, h:1.3 });
   s.addImage({ data:A.infra_cover, x:10.9, y:0.35, w:2.2, h:0.76 });
   s.addText('HUDDLE REVIEW', { x:0.5, y:1.75, w:W-1, h:0.7, align:'center', fontFace:'Arial Black', bold:true, fontSize:36, color:'F7A41D', margin:0 });
-  s.addText((st.title || 'PROGRESS DEPLOYMENT ED TIF1 SUMATERA').toUpperCase(), { x:0.3, y:2.4, w:W-0.6, h:0.8, align:'center', fontFace:'Arial Black', bold:true, fontSize:32, color:'FFFFFF', margin:0, fit:'shrink' });
-  s.addText(String(d.getFullYear()), { x:0.5, y:3.25, w:W-1, h:0.5, align:'center', fontFace:'Arial Black', bold:true, fontSize:24, color:'FFFFFF', margin:0 });
-  s.addImage({ data:A.tigerbig, x:W/2-1.4, y:3.9, w:2.8, h:1.19 });
+  s.addText((st.title || 'PROGRESS DEPLOYMENT ED REGION SUMBAGUT').toUpperCase(), { x:0.3, y:2.4, w:W-0.6, h:0.8, align:'center', fontFace:'Arial Black', bold:true, fontSize:32, color:'FFFFFF', margin:0, fit:'shrink' });
+  s.addText(String(d.getFullYear())+'  |  '+modeLabel(d), { x:0.5, y:3.25, w:W-1, h:0.5, align:'center', fontFace:'Arial Black', bold:true, fontSize:24, color:'FFFFFF', margin:0 });
   s.addImage({ data:A.nlogo, x:0.55, y:4.55, w:2.2, h:2.2 });
   s.addImage({ data:A.p1_182, x:0.4, y:6.5, w:0.45, h:0.5 });
   s.addText('PT. TELKOM INFRASTRUKTUR INDONESIA', { x:1.05, y:6.5, w:6, h:0.22, fontFace:'Arial', fontSize:9, bold:true, color:'FFFFFF', margin:0 });
@@ -257,155 +281,147 @@ function slideCover(st, d){
 /* ---------- 2. MBB ---------- */
 function mbbTables(s, b, label, color, x, w, d){
   pill(s, label, x, 0.95, Math.min(w-0.3, 4.2), color);
-  // region
-  const hdr = ['REGION','ORDER','DROP','KENDALA','FI','OA','OGP','%OA'].map(t=>hc(t));
+  const hdr = ['DISTRICT','ORDER','DROP','KENDALA','FI','OA','OGP','%OA','KOM OA'].map(t=>hc(t,{fontSize:7}));
   const T = {order:0,drop:0,kendala:0,fi:0,oa:0,ogp:0,kom:0};
   const body = b.regs.map(r=>{ const p=b.per[r]; Object.keys(T).forEach(k=>T[k]+=p[k]);
-    return [lc(r,{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(nf(p.oa)), bc(nf(p.ogp)), bc(pct(p.oa, p.order-p.drop))]; });
-  body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),nf(T.oa),nf(T.ogp),pct(T.oa,T.order-T.drop)].map(t=>tc(t)));
-  const cw = [0.75,0.6,0.5,0.7,0.45,0.5,0.55,0.65].map(v=>v*w/4.7);
-  let y = table(s, [hdr, ...body], x, 1.32, w, cw, {fontSize:9, rowH:0.22});
-  // kendala + durasi (berdampingan)
+    return [lc(r,{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(dash(p.oa)), bc(dash(p.ogp)), bc(pct(p.oa, p.order-p.drop)), bc(dash(p.kom))]; });
+  body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),dash(T.oa),dash(T.ogp),pct(T.oa,T.order-T.drop),dash(T.kom)].map(t=>tc(t)));
+  const f = [1.2,0.5,0.45,0.6,0.35,0.4,0.45,0.55,0.55], fs = f.reduce((a,v)=>a+v,0);
+  let y = table(s, [hdr, ...body], x, 1.32, w, f.map(v=>v*w/fs), {fontSize:7.5, rowH:0.2});
   y += 0.12; const hw = (w-0.1)/2;
+  const gh = (t)=> hc(t,{fill:{color:'D9D9D9'},color:C.ink,fontSize:5.5});
   const kl = Object.keys(b.kend).sort();
-  const kh = [lc('KENDALA',{bold:true,fill:{color:'D9D9D9'}}), ...b.regs.map(r=>hc(r,{fill:{color:'D9D9D9'},color:C.ink})), hc('TOTAL',{fill:{color:'D9D9D9'},color:C.ink})];
-  const kb = kl.map(k=>{ const tot = b.regs.reduce((a,r)=>a+(b.kend[k][r]||0),0); return [lc(k,{fontSize:6.5}), ...b.regs.map(r=>bc(dash(b.kend[k][r]))), bc(nf(tot),{bold:true})]; });
+  const kh = [gh('KENDALA'), ...b.regs.map(r=>gh(abbr(r))), gh('TOT')];
+  const kb = kl.map(k=>{ const tot = b.regs.reduce((a,r)=>a+(b.kend[k][r]||0),0); return [lc(k,{fontSize:5.5}), ...b.regs.map(r=>bc(dash(b.kend[k][r]||0))), bc(nf(tot),{bold:true})]; });
   if(!kb.length) kb.push([lc('— tidak ada —'), ...b.regs.map(()=>bc('')), bc('')]);
-  table(s, [kh, ...kb], x, y, hw, [hw*0.42, ...b.regs.map(()=>hw*0.42/b.regs.length), hw*0.16], {fontSize:7, rowH:0.17});
+  const kn = b.regs.length;
+  table(s, [kh, ...kb], x, y, hw, [hw*0.26, ...b.regs.map(()=>hw*0.62/kn), hw*0.12], {fontSize:6, rowH:0.16});
   const bk = ['<7','7-14','14-30','>30'];
-  const ah = [hc('OPEN',{fill:{color:'D9D9D9'},color:C.ink}), ...bk.map(t=>hc(t,{fill:{color:'D9D9D9'},color:C.ink})), hc('TOT',{fill:{color:'D9D9D9'},color:C.ink})];
-  const ab = b.regs.map(r=>{ const a=b.age[r]; return [lc(r,{bold:true}), ...bk.map(k=>bc(dash(a[k]))), bc(nf(bk.reduce((q,k)=>q+a[k],0)),{bold:true})]; });
-  ab.push(['TOTAL', ...bk.map(k=>nf(b.regs.reduce((q,r)=>q+b.age[r][k],0))), nf(b.regs.reduce((q,r)=>q+bk.reduce((z,k)=>z+b.age[r][k],0),0))].map(t=>tc(t)));
-  table(s, [ah, ...ab], x+hw+0.1, y, hw, [hw*0.2, ...bk.map(()=>hw*0.14), hw*0.24], {fontSize:7, rowH:0.17});
-  y += 0.17 * Math.max(kb.length+1, ab.length+1) + 0.15;
-  // progres x batch
+  const ah = [gh('OPEN'), ...bk.map(gh), gh('TOT')];
+  const ab = b.regs.map(r=>{ const a=b.age[r]; return [lc(abbr(r),{bold:true}), ...bk.map(k=>bc(dash(a[k]))), bc(dash(bk.reduce((q,k)=>q+a[k],0)),{bold:true})]; });
+  ab.push(['TOTAL', ...bk.map(k=>dash(b.regs.reduce((q,r)=>q+b.age[r][k],0))), dash(b.regs.reduce((q,r)=>q+bk.reduce((z,k)=>z+b.age[r][k],0),0))].map(t=>tc(t,{fontSize:6.5})));
+  table(s, [ah, ...ab], x+hw+0.1, y, hw, [hw*0.22, ...bk.map(()=>hw*0.14), hw*0.22], {fontSize:6.5, rowH:0.16});
+  y += 0.16 * Math.max(kb.length+1, ab.length+1) + 0.15;
   const bt = b.batches.slice(0,14);
-  const ph = [hc('PROGRES',{rowspan:1}), ...bt.map(t=>hc(t,{fill:{color:'1E6B3A'}})), hc('TOTAL')];
+  const ph = [hc('PROGRES',{fontSize:7}), ...bt.map(t=>hc(t,{fill:{color:'1E6B3A'},fontSize:7})), hc('TOTAL',{fontSize:7})];
   const order = ['AANWIJZING','PERIZINAN','MATDEL','INSTALASI','XX HOLD ISSUE','XX ISSUE TSEL','XX REDESIGN'];
   const pl = Object.keys(b.prog).sort((a,c)=> (order.indexOf(a)<0?99:order.indexOf(a)) - (order.indexOf(c)<0?99:order.indexOf(c)) || a.localeCompare(c));
-  const pb = pl.map(p=>{ const tot = Object.values(b.prog[p]).reduce((a,v)=>a+v,0); return [lc(p,{fontSize:6.5}), ...bt.map(k=>bc(dash(b.prog[p][k]||0))), bc(nf(tot),{bold:true})]; });
+  const pb = pl.map(p=>{ const tot = Object.values(b.prog[p]).reduce((a,v)=>a+v,0); return [lc(p,{fontSize:6}), ...bt.map(k=>bc(dash(b.prog[p][k]||0))), bc(nf(tot),{bold:true})]; });
   if(pb.length){
-    pb.push(['TOTAL', ...bt.map(k=>nf(pl.reduce((a,p)=>a+(b.prog[p][k]||0),0))), nf(pl.reduce((a,p)=>a+Object.values(b.prog[p]).reduce((z,v)=>z+v,0),0))].map(t=>tc(t)));
+    pb.push(['TOTAL', ...bt.map(k=>dash(pl.reduce((a,p)=>a+(b.prog[p][k]||0),0))), nf(pl.reduce((a,p)=>a+Object.values(b.prog[p]).reduce((z,v)=>z+v,0),0))].map(t=>tc(t,{fontSize:6.5})));
     caption(s, 'PROGRES x BATCH (OGP)', x, y-0.02, w);
-    y = table(s, [ph, ...pb], x, y+0.2, w, [w*0.2, ...bt.map(()=>w*0.65/Math.max(bt.length,1)), w*0.15], {fontSize:7, rowH:0.17});
+    y = table(s, [ph, ...pb], x, y+0.2, w, [w*0.2, ...bt.map(()=>w*0.65/Math.max(bt.length,1)), w*0.15], {fontSize:6.5, rowH:0.17});
   }
-  // komitmen
-  y += 0.12;
-  s.addText(`KOMITMEN ADD OA\n${BULAN[d.getMonth()].toUpperCase()} ${d.getFullYear()}`, { x, y:y+0.05, w:w*0.4, h:0.6, fontFace:'Arial', fontSize:11, bold:true, italic:true, color:C.blue, margin:0 });
-  const kb2 = b.regs.map(r=>[lc(r,{bold:true}), bc(nf(b.per[r].kom))]);
-  kb2.push(['TOTAL', nf(b.regs.reduce((a,r)=>a+b.per[r].kom,0))].map(t=>tc(t)));
-  table(s, [[hc('REGION',{fill:{color:'D9D9D9'},color:C.ink}), hc('KOMITMEN OA',{fill:{color:'D9D9D9'},color:C.ink})], ...kb2], x+w*0.45, y, w*0.55, [w*0.25, w*0.3], {fontSize:7.5, rowH:0.17});
+  s.addText(`KOM OA = komitmen tambah OA ${BULAN[d.getMonth()]} ${d.getFullYear()}`, { x, y:y+0.08, w, h:0.2, fontFace:'Arial', fontSize:7.5, italic:true, color:C.blue, margin:0 });
 }
 function slideMbb(st, d){
   const s = base('MBB DEPLOYMENT');
-  const bi = mbbBlock(mbbSide(mbbRows,'infra'), d), bl = mbbBlock(mbbSide(mbbRows,'link'), d);
-  mbbTables(s, bi, 'ALL ORDER NEW INFRA', '595959', 0.3, 5.0, d);
-  mbbTables(s, bl, 'ALL ORDER NEW LINK', C.blue, 5.45, 5.0, d);
+  const all = pr('mbb');
+  mbbTables(s, mbbBlock(mbbSide(all,'infra'), d), 'ALL ORDER NEW INFRA', '595959', 0.3, 5.0, d);
+  mbbTables(s, mbbBlock(mbbSide(all,'link'), d), 'ALL ORDER NEW LINK', C.blue, 5.45, 5.0, d);
   notesFor(s, SECTIONS[0], st, d, 10.6, 0.95, 2.55, 6.15);
 }
 
 /* ---------- OLO / HEM ---------- */
 function slideOH(key, title, st, d){
   const cfg = ohCfg(key), b = ohBlock(cfg, d), s = base(title);
-  caption(s, `ALL ORDER ${key.toUpperCase()} (per District)`, 0.3, 0.95, 6, {fontSize:10});
-  const hdr = ['DISTRICT','ORDER','DROP','GOLIVE','BISA PT1','HOLD','OGP','%GL'].map(t=>hc(t));
+  caption(s, `ALL ORDER ${key.toUpperCase()} (per District) — ${modeLabel(d)}`, 0.3, 0.95, 7, {fontSize:10});
+  const hdr = ['DISTRICT','ORDER','DROP','GOLIVE','BISA PT1','HOLD','OGP','%GL','KOM GL'].map(t=>hc(t,{fontSize:8}));
   const T = {order:0,drop:0,golive:0,bisa:0,hold:0,ogp:0,kom:0};
   const body = b.dists.map(x=>{ const p=b.per[x]; Object.keys(T).forEach(k=>T[k]+=p[k]);
-    return [lc(x,{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.golive)), bc(dash(p.bisa)), bc(dash(p.hold)), bc(nf(p.ogp)), bc(pct(p.golive,p.order))]; });
-  body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.golive),dash(T.bisa),dash(T.hold),nf(T.ogp),pct(T.golive,T.order)].map(t=>tc(t)));
-  const shown = body.slice(0,12);
-  if(body.length>12){ const tot = body[body.length-1]; shown.splice(11,1,tot); }
-  let y = table(s, [hdr, ...shown], 0.3, 1.22, 6.4, [1.6,0.75,0.65,0.7,0.75,0.65,0.65,0.65], {fontSize:10, rowH:0.29});
+    return [lc(x,{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.golive)), bc(dash(p.bisa)), bc(dash(p.hold)), bc(dash(p.ogp)), bc(pct(p.golive,p.order)), bc(dash(p.kom))]; });
+  body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.golive),dash(T.bisa),dash(T.hold),dash(T.ogp),pct(T.golive,T.order),dash(T.kom)].map(t=>tc(t)));
+  const f=[1.4,0.65,0.55,0.65,0.7,0.55,0.55,0.6,0.7], fw=f.reduce((a,v)=>a+v,0), LW=6.9;
+  let y = table(s, [hdr, ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:9, rowH:0.27});
+  y += 0.12;
+  s.addText(`KOM GL = komitmen golive ${BULAN[d.getMonth()]} ${d.getFullYear()} (order belum golive)`, { x:0.3, y, w:LW, h:0.2, fontFace:'Arial', fontSize:7.5, italic:true, color:C.blue, margin:0 });
   y += 0.3;
   caption(s, 'PROGRES LAPANGAN x DISTRICT', 0.3, y-0.02, 6);
-  const ds = b.dists.slice(0,6);
-  const ph = [hc('PROGRES'), ...ds.map(x=>hc(x,{fontSize:6.5})), hc('TOTAL')];
-  const pb = b.progOrder.map(p=>[lc(p,{fontSize:7}), ...ds.map(x=>bc(dash(b.prog[p][x]||0))), bc(nf(Object.values(b.prog[p]).reduce((a,v)=>a+v,0)),{bold:true})]);
-  pb.push(['TOTAL', ...ds.map(x=>nf(b.progOrder.reduce((a,p)=>a+(b.prog[p][x]||0),0))), nf(T.order)].map(t=>tc(t)));
-  const cwp = 6.4; y = table(s, [ph, ...pb], 0.3, y+0.2, cwp, [cwp*0.3, ...ds.map(()=>cwp*0.55/ds.length), cwp*0.15], {fontSize:8.5, rowH:0.24});
-  y += 0.25;
-  s.addText(`KOMITMEN GOLIVE\n${BULAN[d.getMonth()].toUpperCase()} ${d.getFullYear()}`, { x:0.3, y, w:2.4, h:0.5, fontFace:'Arial', fontSize:10.5, bold:true, italic:true, color:C.blue, margin:0 });
-  const kb = b.dists.slice(0,5).map(x=>[lc(x,{bold:true}), bc(nf(b.per[x].kom))]); kb.push(['TOTAL', nf(T.kom)].map(t=>tc(t)));
-  if(y+0.19*(kb.length+1) < 7.0) table(s, [[hc('DISTRICT',{fill:{color:'D9D9D9'},color:C.ink}), hc('KOMITMEN',{fill:{color:'D9D9D9'},color:C.ink})], ...kb], 2.8, y, 3.0, [1.8,1.2], {fontSize:7.5, rowH:0.17});
-  // kanan: daftar drop + catatan
-  let ry = 0.95;
+  const ds = b.dists;
+  const ph = [hc('PROGRES',{fontSize:7.5}), ...ds.map(x=>hc(abbr(x),{fontSize:7.5})), hc('TOTAL',{fontSize:7.5})];
+  const pb = b.progOrder.map(p=>[lc(p,{fontSize:7.5}), ...ds.map(x=>bc(dash(b.prog[p][x]||0))), bc(nf(Object.values(b.prog[p]).reduce((a,v)=>a+v,0)),{bold:true})]);
+  pb.push(['TOTAL', ...ds.map(x=>dash(b.progOrder.reduce((a,p)=>a+(b.prog[p][x]||0),0))), nf(T.order)].map(t=>tc(t)));
+  table(s, [ph, ...pb], 0.3, y+0.2, LW, [LW*0.28, ...ds.map(()=>LW*0.57/ds.length), LW*0.15], {fontSize:8, rowH:0.22});
+  let ry = 0.95; const RX = 7.45, RW = 5.6;
   if(b.drops.length){
-    caption(s, `DAFTAR DROP (${b.drops.length} LoP)`, 7.0, ry-0.02, 5);
+    caption(s, `DAFTAR DROP (${b.drops.length} LoP)`, RX, ry-0.02, 5);
     const dl = b.drops.slice(0,8).map(r=>[lc(r.nama,{fontSize:6.5}), lc(r.dist,{fontSize:6.5}), lc(r.status,{fontSize:6.5})]);
-    ry = table(s, [[hc('NAMA PROYEK'), hc('DISTRICT'), hc('STATUS')], ...dl], 7.0, ry+0.22, 6.0, [3.4,1.3,1.3], {fontSize:7, rowH:0.2});
-    if(b.drops.length>8){ s.addText(`…dan ${b.drops.length-8} LoP drop lainnya`, { x:7.0, y:ry, w:6, h:0.2, fontSize:7, italic:true, fontFace:'Arial', color:C.grey, margin:0 }); ry += 0.2; }
+    ry = table(s, [[hc('NAMA PROYEK'), hc('DISTRICT'), hc('STATUS')], ...dl], RX, ry+0.22, RW, [3.1,1.3,1.2], {fontSize:7, rowH:0.2});
+    if(b.drops.length>8){ s.addText(`…dan ${b.drops.length-8} LoP drop lainnya`, { x:RX, y:ry, w:RW, h:0.2, fontSize:7, italic:true, fontFace:'Arial', color:C.grey, margin:0 }); ry += 0.2; }
     ry += 0.1;
   }
-  notesFor(s, SECTIONS.find(x=>x.key===key), st, d, 7.0, ry, 6.0, 7.05-ry);
+  notesFor(s, SECTIONS.find(x=>x.key===key), st, d, RX, ry, RW, 7.05-ry);
 }
 
 /* ---------- PT3 ---------- */
 function slidePt3(key, title, st, d){
   const cfg = pt3Cfg(key), b = pt3Block(cfg, d), s = base(title);
-  caption(s, `ALL ORDER ${key==='pt3ta'?'PT3 TA':'PT3 FH'} (PORT PLAN)`, 0.3, 0.95, 6, {fontSize:10});
-  const hdr = ['REGION','ORDER','DROP','KENDALA','FI','GL','OGP','%GL'].map(t=>hc(t));
+  const LW = 7.0;
+  caption(s, `ALL ORDER ${key==='pt3ta'?'PT3 TA':'PT3 FH'} (PORT PLAN) — ${key==='pt3ta' ? modeLabel(d) : 'All (YTD)'}`, 0.3, 0.95, 7, {fontSize:10});
+  const hdr = ['DISTRICT','ORDER','DROP','KENDALA','FI','GL','OGP','%GL','KOM GL','TERCAPAI','% ACH'].map(t=>hc(t,{fontSize:7}));
   const T = {order:0,drop:0,kendala:0,fi:0,gl:0,ogp:0,kom:0,komGl:0};
   const body = b.regs.map(r=>{ const p=b.per[r]; Object.keys(T).forEach(k=>T[k]+=p[k]);
-    return [lc(r,{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(nf(p.gl)), bc(nf(p.ogp)), bc(pct(p.gl,p.order))]; });
-  body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),nf(T.gl),nf(T.ogp),pct(T.gl,T.order)].map(t=>tc(t)));
-  let y = table(s, [hdr, ...body], 0.3, 1.22, 6.4, [1.0,1.0,0.8,0.8,0.7,0.8,0.8,0.5].map(v=>v*6.4/6.4), {fontSize:10.5, rowH:0.3});
+    return [lc(r,{bold:true}), bc(nf(p.order)), bc(dash(p.drop)), bc(dash(p.kendala)), bc(dash(p.fi)), bc(dash(p.gl)), bc(dash(p.ogp)), bc(pct(p.gl,p.order)), bc(dash(p.kom)), bc(dash(p.komGl)), bc(pct(p.komGl,p.kom))]; });
+  body.push(['TOTAL',nf(T.order),dash(T.drop),dash(T.kendala),dash(T.fi),dash(T.gl),dash(T.ogp),pct(T.gl,T.order),dash(T.kom),dash(T.komGl),pct(T.komGl,T.kom)].map(t=>tc(t,{fontSize:7.5})));
+  const f=[1.25,0.6,0.5,0.6,0.45,0.5,0.6,0.5,0.55,0.65,0.55], fw=f.reduce((a,v)=>a+v,0);
+  let y = table(s, [hdr, ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:8, rowH:0.26});
+  y += 0.1;
+  s.addText(`KOM GL = komitmen golive ${BULAN[d.getMonth()]} ${d.getFullYear()} (port); TERCAPAI = yang sudah golive`, { x:0.3, y, w:LW, h:0.2, fontFace:'Arial', fontSize:7.5, italic:true, color:C.blue, margin:0 });
   y += 0.3;
-  caption(s, 'PROGRES STATUS x REGION (tanpa Drop, port)', 0.3, y-0.02, 6);
-  const sh = [hc('STATUS'), ...b.regs.map(r=>hc(r)), hc('TOTAL')];
+  caption(s, 'STATUS x DISTRICT (tanpa Drop, port)', 0.3, y-0.02, 6);
+  const sh = [hc('STATUS',{fontSize:7.5}), ...b.regs.map(r=>hc(abbr(r),{fontSize:7.5})), hc('TOTAL',{fontSize:7.5})];
   const sb = b.stageOrder.map(k=>[lc(k,{fontSize:7.5}), ...b.regs.map(r=>bc(dash(b.stage[k][r]||0))), bc(nf(Object.values(b.stage[k]).reduce((a,v)=>a+v,0)),{bold:true})]);
-  sb.push(['TOTAL', ...b.regs.map(r=>nf(b.stageOrder.reduce((a,k)=>a+(b.stage[k][r]||0),0))), nf(T.order-T.drop)].map(t=>tc(t)));
-  y = table(s, [sh, ...sb], 0.3, y+0.2, 6.4, [2.2, ...b.regs.map(()=>3.2/b.regs.length), 1.0], {fontSize:9, rowH:0.25});
-  y += 0.25;
-  // komitmen + % achievement
-  s.addText(`KOMITMEN GL (PORT)\n${BULAN[d.getMonth()].toUpperCase()} ${d.getFullYear()}`, { x:0.3, y, w:2.4, h:0.5, fontFace:'Arial', fontSize:10.5, bold:true, italic:true, color:C.blue, margin:0 });
-  const kb = b.regs.map(r=>[lc(r,{bold:true}), bc(nf(b.per[r].kom)), bc(nf(b.per[r].komGl)), bc(pct(b.per[r].komGl,b.per[r].kom))]);
-  kb.push(['TOTAL', nf(T.kom), nf(T.komGl), pct(T.komGl,T.kom)].map(t=>tc(t)));
-  table(s, [[hc('REGION',{fill:{color:'D9D9D9'},color:C.ink}), hc('KOMITMEN',{fill:{color:'D9D9D9'},color:C.ink}), hc('TERCAPAI',{fill:{color:'D9D9D9'},color:C.ink}), hc('% ACH',{fill:{color:'D9D9D9'},color:C.ink})], ...kb], 2.8, y, 3.9, [0.9,1.0,1.0,1.0], {fontSize:7.5, rowH:0.18});
-  // kanan: detail drop + catatan
-  let ry = 0.95;
+  sb.push(['TOTAL', ...b.regs.map(r=>dash(b.stageOrder.reduce((a,k)=>a+(b.stage[k][r]||0),0))), nf(T.order-T.drop)].map(t=>tc(t)));
+  table(s, [sh, ...sb], 0.3, y+0.2, LW, [LW*0.25, ...b.regs.map(()=>LW*0.58/b.regs.length), LW*0.17], {fontSize:8, rowH:0.22});
+  let ry = 0.95; const RX = 7.55, RW = 5.5;
   const dk = Object.keys(b.dropSt);
   if(dk.length){
-    caption(s, 'DETAIL DROP (port)', 7.0, ry-0.02, 5);
-    const db = dk.slice(0,8).map(k=>[lc(k,{fontSize:7}), ...b.regs.map(r=>bc(dash(b.dropSt[k][r]||0))), bc(nf(Object.values(b.dropSt[k]).reduce((a,v)=>a+v,0)),{bold:true})]);
-    db.push(['TOTAL', ...b.regs.map(r=>nf(b.per[r].drop)), nf(T.drop)].map(t=>tc(t)));
-    ry = table(s, [[hc('STATUS'), ...b.regs.map(r=>hc(r)), hc('JLH')], ...db], 7.0, ry+0.22, 6.0, [3.0, ...b.regs.map(()=>2.1/b.regs.length), 0.9], {fontSize:7.5, rowH:0.19}) + 0.12;
+    caption(s, 'DETAIL DROP (port)', RX, ry-0.02, 5);
+    const db = dk.slice(0,8).map(k=>[lc(k,{fontSize:6.5}), ...b.regs.map(r=>bc(dash(b.dropSt[k][r]||0))), bc(nf(Object.values(b.dropSt[k]).reduce((a,v)=>a+v,0)),{bold:true})]);
+    db.push(['TOTAL', ...b.regs.map(r=>dash(b.per[r].drop)), nf(T.drop)].map(t=>tc(t,{fontSize:6.5})));
+    ry = table(s, [[hc('STATUS',{fontSize:7}), ...b.regs.map(r=>hc(abbr(r),{fontSize:7})), hc('JLH',{fontSize:7})], ...db], RX, ry+0.22, RW, [RW*0.28, ...b.regs.map(()=>RW*0.58/b.regs.length), RW*0.14], {fontSize:7, rowH:0.19}) + 0.12;
   }
-  notesFor(s, SECTIONS.find(x=>x.key===key), st, d, 7.0, ry, 6.0, 7.05-ry);
+  notesFor(s, SECTIONS.find(x=>x.key===key), st, d, RX, ry, RW, 7.05-ry);
 }
 
 /* ---------- PT2 ---------- */
 function slidePt2(st, d){
   const b = pt2Block(), s = base('FBB PT2');
-  caption(s, 'ALL ORDER PT2 (port actual, per Branch)', 0.3, 0.95, 6, {fontSize:10});
-  const brs = Object.keys(b.byBranch).sort();
+  caption(s, 'ALL ORDER PT2 (port actual, per District) — All (YTD)', 0.3, 0.95, 7, {fontSize:10});
+  const brs = regionsOf(Object.keys(b.byBranch), x=>x);
   const T = {lop:0,port:0,golive:0,godeploy:0,drop:0,other:0};
-  const body = brs.map(k=>{ const p=b.byBranch[k]; Object.keys(T).forEach(q=>T[q]+=p[q]);
-    return [lc(k,{bold:true}), bc(nf(p.lop)), bc(nf(p.port)), bc(dash(p.drop)), bc(dash(p.godeploy)), bc(nf(p.golive)), bc(dash(p.other)), bc(pct(p.golive,p.port))]; });
-  body.push(['TOTAL',nf(T.lop),nf(T.port),dash(T.drop),dash(T.godeploy),nf(T.golive),dash(T.other),pct(T.golive,T.port)].map(t=>tc(t)));
-  let y = table(s, [['BRANCH','LOP','PORT','DROP','GO DEPLOY','GOLIVE','LAINNYA','%GL'].map(t=>hc(t)), ...body.slice(0,14)], 0.3, 1.22, 6.4, [1.6,0.6,0.9,0.8,0.8,0.8,0.8,0.5].map(v=>v*6.4/6.8), {fontSize:8.5, rowH:0.22});
-  y += 0.25;
+  const body = brs.map(k=>{ const p=b.byBranch[k] || {lop:0,port:0,golive:0,godeploy:0,drop:0,other:0}; Object.keys(T).forEach(q=>T[q]+=p[q]);
+    return [lc(k,{bold:true}), bc(dash(p.lop)), bc(dash(p.port)), bc(dash(p.drop)), bc(dash(p.godeploy)), bc(dash(p.golive)), bc(dash(p.other)), bc(pct(p.golive,p.port))]; });
+  body.push(['TOTAL',nf(T.lop),nf(T.port),dash(T.drop),dash(T.godeploy),dash(T.golive),dash(T.other),pct(T.golive,T.port)].map(t=>tc(t)));
+  const f=[1.5,0.6,0.9,0.8,0.9,0.8,0.8,0.6], fw=f.reduce((a,v)=>a+v,0), LW=6.9;
+  let y = table(s, [['DISTRICT','LOP','PORT','DROP','GO DEPLOY','GOLIVE','LAINNYA','%GL'].map(t=>hc(t,{fontSize:8})), ...body], 0.3, 1.22, LW, f.map(v=>v*LW/fw), {fontSize:9, rowH:0.27});
+  y += 0.3;
   caption(s, 'STATUS FINAL (top 12)', 0.3, y-0.02, 6);
   const sk = Object.keys(b.byStat).sort((a,c)=>b.byStat[c].port-b.byStat[a].port).slice(0,12);
-  const sb = sk.map(k=>[lc(k,{fontSize:7.5}), bc(nf(b.byStat[k].lop)), bc(nf(b.byStat[k].port))]);
-  table(s, [[hc('STATUS'), hc('LOP'), hc('PORT')], ...sb], 0.3, y+0.2, 6.4, [4.2,1.0,1.2], {fontSize:8, rowH:0.2});
-  notesFor(s, SECTIONS.find(x=>x.key==='pt2'), st, d, 7.0, 0.95, 6.0, 6.1);
+  const sb = sk.map(k=>[lc(k,{fontSize:8}), bc(nf(b.byStat[k].lop)), bc(nf(b.byStat[k].port))]);
+  table(s, [[hc('STATUS'), hc('LOP'), hc('PORT')], ...sb], 0.3, y+0.2, LW, [4.5,1.1,1.3], {fontSize:8, rowH:0.2});
+  notesFor(s, SECTIONS.find(x=>x.key==='pt2'), st, d, 7.45, 0.95, 5.6, 6.1);
 }
 
 /* ---------- QE ---------- */
+function qeDist(r){ return distNorm(qeGet(r,'DISTRICT TIF') || qeGet(r,'DISTRICT') || qeGet(r,'BRANCH')); }
 function slideQe(st, d){
   const s = base('QE RELOK');
   const by = {};
   qeRows.forEach(r=>{ const k = qeStatusLabel(r); (by[k] = by[k] || []).push(r); });
   const keys = Object.keys(by).sort((a,c)=>by[c].length-by[a].length);
-  caption(s, 'ALL ORDER QE (REGION SBU)', 0.3, 0.95, 6, {fontSize:10});
-  const sb = keys.map(k=>[lc(k,{bold:true}), bc(nf(by[k].length)), bc(pct(by[k].length, qeRows.length))]);
-  sb.push(['TOTAL', nf(qeRows.length), '100%'].map(t=>tc(t)));
-  let y = table(s, [[hc('STATUS PROGRES'), hc('LOP'), hc('%')], ...sb.slice(0,14)], 0.3, 1.22, 5.0, [3.0,1.0,1.0], {fontSize:9, rowH:0.22});
+  const ds = regionsOf(qeRows, qeDist);
+  caption(s, 'ALL ORDER QE (per District) — All (YTD)', 0.3, 0.95, 7, {fontSize:10});
+  const sb = keys.map(k=>[lc(k,{bold:true,fontSize:8}), ...ds.map(x=>bc(dash(by[k].filter(r=>qeDist(r)===x).length))), bc(nf(by[k].length),{bold:true})]);
+  sb.push(['TOTAL', ...ds.map(x=>dash(qeRows.filter(r=>qeDist(r)===x).length)), nf(qeRows.length)].map(t=>tc(t)));
+  const LW = 6.6;
+  let y = table(s, [[hc('STATUS PROGRES',{fontSize:8}), ...ds.map(x=>hc(abbr(x),{fontSize:8})), hc('TOTAL',{fontSize:8})], ...sb.slice(0,14)], 0.3, 1.22, LW, [LW*0.28, ...ds.map(()=>LW*0.57/ds.length), LW*0.15], {fontSize:8.5, rowH:0.22});
   const open = qeRows.filter(r => !/CLOSE|SELESAI|DONE/i.test(qeStatusLabel(r))).slice(0,14);
-  caption(s, `DAFTAR LOP BELUM CLOSED (${open.length}${qeRows.length>open.length?'+':''})`, 5.6, 0.93, 7.4);
-  const ob = open.map(r=>[lc(qeGet(r,'NAMA LOP'),{fontSize:7}), lc(qeStatusLabel(r),{fontSize:7})]);
-  const oy = table(s, [[hc('NAMA PROYEK'), hc('STATUS')], ...ob], 5.6, 1.22, 7.4, [5.6,1.8], {fontSize:7.5, rowH:0.2});
-  notesFor(s, SECTIONS.find(x=>x.key==='qe'), st, d, 0.3, Math.max(y, 4.4)+0.2, 5.0, 7.0-Math.max(y,4.4)-0.2);
+  caption(s, `DAFTAR LOP BELUM CLOSED (${open.length}${qeRows.length>open.length?'+':''})`, 7.15, 0.93, 5.8);
+  const ob = open.map(r=>[lc(qeGet(r,'NAMA LOP'),{fontSize:7}), lc(qeDist(r),{fontSize:7}), lc(qeStatusLabel(r),{fontSize:7})]);
+  table(s, [[hc('NAMA PROYEK'), hc('DISTRICT'), hc('STATUS')], ...ob], 7.15, 1.22, 5.8, [3.2,1.2,1.4], {fontSize:7.5, rowH:0.2});
+  const ny = Math.max(y, 4.4)+0.2;
+  notesFor(s, SECTIONS.find(x=>x.key==='qe'), st, d, 0.3, ny, LW, 7.0-ny);
 }
 
 /* ---------- Support Needed (rekap dari semua tematik) ---------- */
@@ -435,7 +451,7 @@ function slideEnd(){
   s.addImage({ data:A.infra_cover, x:10.4, y:0.45, w:2.5, h:0.86 });
   s.addText('Thank You', { x:0.5, y:3.6, w:6, h:1.2, fontFace:'Arial', fontSize:54, color:'F7A41D', margin:0 });
   s.addImage({ data:A.nlogo, x:5.2, y:1.7, w:3.9, h:3.9 });
-  s.addText('2026 | Engineering & Deployment TIF1 | PT. Telkom Infrastruktur Indonesia', { x:4.5, y:7.05, w:8.7, h:0.3, align:'right', fontFace:'Arial', fontSize:10, bold:true, color:'FFFFFF', margin:0 });
+  s.addText('2026 | ED Region Sumbagut | PT. Telkom Infrastruktur Indonesia', { x:4.5, y:7.05, w:8.7, h:0.3, align:'right', fontFace:'Arial', fontSize:10, bold:true, color:'FFFFFF', margin:0 });
 }
 
 /* ============================================================
@@ -457,7 +473,7 @@ function readUI(){
   const st = loadState();
   st.title = document.getElementById('rpTitle').value.trim();
   st.date = document.getElementById('rpDate').value; st.time = document.getElementById('rpTime').value;
-  st.auto = document.getElementById('rpAuto').checked;
+  st.auto = document.getElementById('rpAuto').checked; st.mode = document.getElementById('rpMode').value;
   st.inc = SECTIONS.filter(sec => document.getElementById('rpInc_'+sec.key).checked).map(sec=>sec.key);
   st.notes = st.notes || {};
   SECTIONS.forEach(sec=>{ st.notes[sec.key] = st.notes[sec.key] || {}; sec.notes.forEach(n=>{ st.notes[sec.key][n] = document.getElementById(`rpN_${sec.key}_${n.replace(/\W/g,'')}`).value; }); });
@@ -474,25 +490,30 @@ async function generate(){
     btn.disabled = true; say('Menyiapkan data…');
     const st = readUI(), d = inputDate();
     if(st.inc.includes('qe') && !qeRows.length && typeof qeLoad === 'function'){ say('Memuat data QE…'); try{ await qeLoad(); }catch(e){} }
-    pptx = new PptxGenJS(); pptx.layout = 'LAYOUT_WIDE';
-    pptx.title = 'Huddle Review ED TIF1 Sumatera'; pptx.company = 'PT Telkom Infrastruktur Indonesia';
-    cutoff = cutoffText(d);
-    const miss = [];
-    const run = (key, fn) => { if(!st.inc.includes(key)) return; try{ fn(); }catch(e){ console.error(key, e); miss.push(SECTIONS.find(x=>x.key===key).label); } };
-    say('Membuat slide…');
-    slideCover(st, d);
-    run('mbb', ()=> slideMbb(st,d));
-    run('olo', ()=> slideOH('olo','OLO DEPLOYMENT', st, d));
-    run('hem', ()=> slideOH('hem','HEM DEPLOYMENT', st, d));
-    run('pt3ta', ()=> slidePt3('pt3ta','FBB PT3 — TA', st, d));
-    run('pt3fh', ()=> slidePt3('pt3fh','FBB PT3 — FH', st, d));
-    run('pt2', ()=> slidePt2(st, d));
-    run('qe', ()=> slideQe(st, d));
-    slideSupport(st, d, st.inc);
-    slideEnd();
-    const fn = `Huddle_Review_ED_SBU_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.pptx`;
-    await pptx.writeFile({ fileName: fn });
-    say(`Selesai — ${fn} terunduh.` + (miss.length ? ` (Slide gagal dibuat: ${miss.join(', ')} — datanya mungkin belum termuat.)` : ''), miss.length>0);
+    const sel = document.getElementById('rpMode').value;
+    const modes = sel==='both' ? ['ytd','mtd'] : [sel];
+    const miss = [], files = [];
+    for(const mode of modes){
+      P.mode = mode; curD = d;
+      pptx = new PptxGenJS(); pptx.layout = 'LAYOUT_WIDE';
+      pptx.title = 'Huddle Review ED Region Sumbagut'; pptx.company = 'PT Telkom Infrastruktur Indonesia';
+      cutoff = cutoffText(d);
+      const run = (key, fn) => { if(!st.inc.includes(key)) return; try{ fn(); }catch(e){ console.error(key, e); const l = SECTIONS.find(x=>x.key===key).label; if(!miss.includes(l)) miss.push(l); } };
+      say(`Membuat slide (${modeLabel(d)})…`);
+      slideCover(st, d);
+      run('mbb', ()=> slideMbb(st,d));
+      run('olo', ()=> slideOH('olo','OLO DEPLOYMENT', st, d));
+      run('hem', ()=> slideOH('hem','HEM DEPLOYMENT', st, d));
+      run('pt3ta', ()=> slidePt3('pt3ta','FBB PT3 — TA', st, d));
+      run('pt3fh', ()=> slidePt3('pt3fh','FBB PT3 — FH', st, d));
+      run('pt2', ()=> slidePt2(st, d));
+      run('qe', ()=> slideQe(st, d));
+      slideSupport(st, d, st.inc);
+      slideEnd();
+      const fn = `Huddle_Review_ED_Sumbagut_${mode==='mtd'?'MTD':'YTD'}_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.pptx`;
+      await pptx.writeFile({ fileName: fn }); files.push(fn);
+    }
+    say(`Selesai — ${files.join(' & ')} terunduh.` + (miss.length ? ` (Slide gagal dibuat: ${miss.join(', ')} — datanya mungkin belum termuat.)` : ''), miss.length>0);
   }catch(e){ console.error(e); say('Gagal: '+(e.message||e), true); }
   finally{ btn.disabled = false; }
 }
@@ -502,6 +523,7 @@ function buildUI(){
   const host = document.getElementById('rekapPptHost'); if(!host || host.dataset.ready) return;
   host.dataset.ready = '1';
   const st = loadState(), now = new Date();
+  if(/TIF1/i.test(st.title||'')) st.title = '';
   const pad = n => String(n).padStart(2,'0');
   const dv = st.date || `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
   const tv = st.time || `${pad(now.getHours())}:${pad(now.getMinutes())}`;
@@ -509,11 +531,12 @@ function buildUI(){
   host.innerHTML = `
     <div class="card" style="padding:18px 20px;margin-bottom:14px;">
       <p class="section-title" style="margin:0 0 4px;">Rekap Presentasi (PPT) — 1 klik</p>
-      <p class="kpi-sub" style="margin:0 0 14px;">Merangkum MBB, OLO, HEM, PT3 TA/FH, PT2 dan QE dari data live dashboard ke file PowerPoint bergaya Huddle Review TIF1. Angka diambil otomatis; teks catatan bisa diisi sendiri (opsional).</p>
+      <p class="kpi-sub" style="margin:0 0 14px;">Merangkum MBB, OLO, HEM, PT3 TA/FH, PT2 dan QE dari data live dashboard ke file PowerPoint bergaya Huddle Review ED Region Sumbagut. Angka diambil otomatis; teks catatan bisa diisi sendiri (opsional).</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
-        <label style="flex:2;min-width:260px;font-size:12px;">Judul cover<input id="rpTitle" type="text" style="width:100%;" value="${esc(st.title||'Progress Deployment ED TIF1 Sumatera')}"></label>
+        <label style="flex:2;min-width:260px;font-size:12px;">Judul cover<input id="rpTitle" type="text" style="width:100%;" value="${esc(st.title||'Progress Deployment ED Region Sumbagut')}"></label>
         <label style="font-size:12px;">Tanggal huddle<input id="rpDate" type="date" value="${dv}"></label>
         <label style="font-size:12px;">Cut off jam<input id="rpTime" type="time" value="${tv}"></label>
+        <label style="font-size:12px;">Periode<select id="rpMode"><option value="ytd" ${st.mode==='ytd'||!st.mode?'selected':''}>All (YTD)</option><option value="mtd" ${st.mode==='mtd'?'selected':''}>MTD (bulan tanggal huddle)</option><option value="both" ${st.mode==='both'?'selected':''}>Keduanya (2 file)</option></select></label>
         <button id="rpGo" type="button" style="padding:10px 22px;font-weight:700;background:var(--navy,#1F3864);color:#fff;border:0;border-radius:6px;cursor:pointer;">Generate PPT</button>
       </div>
       <div id="rpMsg" class="kpi-sub" style="margin-top:10px;min-height:18px;"></div>
