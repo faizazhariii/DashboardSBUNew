@@ -6612,7 +6612,7 @@ function mbbBuildDashboard(){
   mbbCurrentPage = 1;
   mbbRenderTable();
   mbbHideStageDetail();
-  renderKomitmenTrendChart('mbbKomitmenTrendChart', null, mbbAGG.rows, mbbGet, 'TGL COMMIT OA FIX', (row)=> mbbFiOaOgp(row), mbbFilterCtl, 'mbbKomitmenTrendTitle');
+  renderKomitmenTrendChart('mbbKomitmenTrendChart', null, mbbRows, mbbGet, 'TGL COMMIT OA FIX', (row)=> mbbFiOaOgp(row), mbbFilterCtl, 'mbbKomitmenTrendTitle');
   renderMbbNeedOltPage();
 }
 
@@ -7651,7 +7651,7 @@ function pt3BuildDashboard(){
   pt3CurrentPage = 1;
   pt3RenderTable();
   pt3HideStageDetail();
-  renderKomitmenTrendChart('pt3KomitmenTrendChart', null, pt3AGG.rows, pt3Get, 'KOMITMEN GOLIVE', (row)=> pt3Category(row), pt3FilterCtl, 'pt3KomitmenTrendTitle');
+  renderKomitmenTrendChart('pt3KomitmenTrendChart', null, pt3Rows, pt3Get, 'KOMITMEN GOLIVE', (row)=> pt3Category(row), pt3FilterCtl, 'pt3KomitmenTrendTitle');
   renderOverdueTable('pt3OverdueTableBody', 'pt3OverdueCount', pt3AGG.rows, pt3Get, pt3Category);
   try{ renderResumePT3TA(); }catch(e){ console.warn('resume ta', e); }
   renderPt3NeedOltPage();
@@ -9056,7 +9056,7 @@ function pt3fhBuildDashboard(){
   pt3fhCurrentPage = 1;
   pt3fhRenderTable();
   pt3fhHideStageDetail();
-  renderKomitmenTrendChart('pt3fhKomitmenTrendChart', null, pt3fhAGG.rows, pt3fhGet, 'KOMITMEN GOLIVE', (row)=> pt3fhCategory(row), pt3fhFilterCtl, 'pt3fhKomitmenTrendTitle');
+  renderKomitmenTrendChart('pt3fhKomitmenTrendChart', null, pt3fhRows, pt3fhGet, 'KOMITMEN GOLIVE', (row)=> pt3fhCategory(row), pt3fhFilterCtl, 'pt3fhKomitmenTrendTitle');
   renderOverdueTable('pt3fhOverdueTableBody', 'pt3fhOverdueCount', pt3fhAGG.rows, pt3fhGet, pt3fhCategory);
   try{ renderResumePT3FH(); }catch(e){ console.warn('resume fh', e); }
 }
@@ -10540,8 +10540,8 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261024f"></script>
-<script src="pptxgen.bundle.js?v=20261024f"></script>
-<script src="ppt-rekap.js?v=20261024f"></script>
+<script src="ppt-assets.js?v=20261024g"></script>
+<script src="pptxgen.bundle.js?v=20261024g"></script>
+<script src="ppt-rekap.js?v=20261024g"></script>
 </body>
 </html>
