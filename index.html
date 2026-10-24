@@ -4239,7 +4239,7 @@ function hemBuildDashboard(){
   hemRenderTable();
   hemHideStageDetail(); // reset detail table tiap kali data/filter periode berubah
   hemSetupCommitDropdown();
-  renderKomitmenTrendChart('hemKomitmenTrendChart', null, hemAGG.rows, hemGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(hemRowProgressLabel(row)), hemFilterCtl, 'hemKomitmenTrendTitle');
+  renderKomitmenTrendChart('hemKomitmenTrendChart', null, hemRows, hemGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(hemRowProgressLabel(row)), hemFilterCtl, 'hemKomitmenTrendTitle');
   renderHemChecklistPage();
 }
 
@@ -5384,7 +5384,7 @@ function oloBuildDashboard(){
   oloRenderTable();
   oloHideStageDetail();
   oloSetupCommitDropdown();
-  renderKomitmenTrendChart('oloKomitmenTrendChart', null, oloAGG.rows, oloGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(oloRowProgressLabel(row)), oloFilterCtl, 'oloKomitmenTrendTitle');
+  renderKomitmenTrendChart('oloKomitmenTrendChart', null, oloRows, oloGet, 'Komitmen Golive', (row)=> hemCategoryOfLabel(oloRowProgressLabel(row)), oloFilterCtl, 'oloKomitmenTrendTitle');
   renderOloChecklistPage();
   renderOloNeedOltPage();
 }
@@ -10540,8 +10540,8 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261024e"></script>
-<script src="pptxgen.bundle.js?v=20261024e"></script>
-<script src="ppt-rekap.js?v=20261024e"></script>
+<script src="ppt-assets.js?v=20261024f"></script>
+<script src="pptxgen.bundle.js?v=20261024f"></script>
+<script src="ppt-rekap.js?v=20261024f"></script>
 </body>
 </html>
