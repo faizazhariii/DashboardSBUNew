@@ -628,5 +628,6 @@ function refreshStatus(){
   const el = document.getElementById('rpData'); if(!el) return;
   el.innerHTML = 'Data termuat: ' + dataReady().map(([k,l,n])=> `<span style="margin-right:12px;${n?'':'color:#B42318;'}">${l}: ${n?nf(n)+' baris':'belum ada'}</span>`).join('');
 }
+window.RekapAgg = { P, pr, mbbBlock, mbbSide, ohBlock, ohCfg, pt3Block, pt3Cfg, pt2Block, distNorm, abbr, DISTS, regionsOf };
 window.rekapPptOpen = function(){ buildUI(); refreshStatus(); };
 })();

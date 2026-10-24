@@ -473,6 +473,8 @@
     <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
     <div class="tab-group">Tambahan</div>
     <button class="page-tab" id="tabBtnRekapPpt" type="button">Rekap PPT</button>
+    <button class="page-tab" id="tabBtnAlerts" type="button">Peringatan</button>
+    <button class="page-tab" id="tabBtnCompare" type="button">Perbandingan</button>
     <button class="page-tab" id="tabBtnChecklist" type="button">Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">Need Modul OLT</button>
     <button class="page-tab" id="tabBtnQe" type="button">QE</button>
@@ -2198,6 +2200,8 @@
       </div>
     </div>
 
+    <div id="pageAlerts" style="display:none;"><div id="alertsHost"></div></div>
+    <div id="pageCompare" style="display:none;"><div id="compareHost"></div></div>
     <div id="pageRekapPpt" style="display:none;"><div id="rekapPptHost"></div></div>
 
     <div id="pageBrt" style="display:none;">
@@ -5768,7 +5772,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -6355,6 +6359,8 @@ document.getElementById('tabBtnQe').onclick = ()=>{ switchTab('qe'); qeLoad(); }
   btn.onclick = ()=>{ c = !c; apply(c); try{ localStorage.setItem('sideCollapsed', c ? '1' : '0'); }catch(e){} setTimeout(()=> window.dispatchEvent(new Event('resize')), 300); };
 })();
 document.getElementById('tabBtnRekapPpt').onclick = ()=> { switchTab('rekapPpt'); if(window.rekapPptOpen) window.rekapPptOpen(); };
+document.getElementById('tabBtnAlerts').onclick = ()=> { switchTab('alerts'); if(window.monitorOpenAlerts) window.monitorOpenAlerts(); };
+document.getElementById('tabBtnCompare').onclick = ()=> { switchTab('compare'); if(window.monitorOpenCompare) window.monitorOpenCompare(); };
 document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
 const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
 let brtCurrentZona = '1', brtLoadedZona = null;
@@ -10540,8 +10546,9 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261024h"></script>
-<script src="pptxgen.bundle.js?v=20261024h"></script>
-<script src="ppt-rekap.js?v=20261024h"></script>
+<script src="ppt-assets.js?v=20261024j"></script>
+<script src="pptxgen.bundle.js?v=20261024j"></script>
+<script src="ppt-rekap.js?v=20261024j"></script>
+<script src="monitor.js?v=20261024j"></script>
 </body>
 </html>
