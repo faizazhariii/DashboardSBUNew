@@ -484,7 +484,15 @@ async function generate(){
   const btn = document.getElementById('rpGo'), msg = document.getElementById('rpMsg');
   const say = (t,err)=>{ msg.textContent = t; msg.style.color = err ? '#B42318' : ''; };
   try{
-    if(typeof PptxGenJS === 'undefined') throw new Error('Library PptxGenJS belum termuat (cek koneksi internet).');
+    if(typeof PptxGenJS === 'undefined'){
+      say('Memuat library PPT…');
+      const srcs = ['pptxgen.bundle.js','https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js','https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js','https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
+      for(const src of srcs){
+        if(typeof PptxGenJS !== 'undefined') break;
+        await new Promise(res=>{ const el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = res; document.head.appendChild(el); });
+      }
+    }
+    if(typeof PptxGenJS === 'undefined') throw new Error('Library PptxGenJS gagal dimuat. Pastikan file pptxgen.bundle.js ikut ter-upload di folder yang sama dengan index.html (atau cek koneksi internet).');
     if(!window.PPT_ASSETS) throw new Error('File ppt-assets.js belum termuat — pastikan ada di folder yang sama dengan index.html.');
     A = window.PPT_ASSETS;
     btn.disabled = true; say('Menyiapkan data…');
