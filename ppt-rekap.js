@@ -22,7 +22,7 @@ const HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 const DISTS = ['Medan','Binjai','Banda Aceh','Rantau Prapat','Pematang Siantar','Padang Sidempuan'];
 const DABBR = {'Medan':'MDN','Binjai':'BNJ','Banda Aceh':'BNA','Rantau Prapat':'RAP','Pematang Siantar':'SIA','Padang Sidempuan':'PSP'};
 const DKEY = Object.fromEntries(DISTS.map(x=>[x.toUpperCase().replace(/[^A-Z]/g,''), x]));
-const DALIAS = { ACEH:'Banda Aceh', SIANTAR:'Pematang Siantar', PEMATANGSIANTAR:'Pematang Siantar', RANTAUPRAPAT:'Rantau Prapat', PADANGSIDIMPUAN:'Padang Sidempuan', SIDEMPUAN:'Padang Sidempuan', SIDIMPUAN:'Padang Sidempuan' };
+const DALIAS = { ACEH:'Banda Aceh', SIANTAR:'Pematang Siantar', PEMATANGSIANTAR:'Pematang Siantar', RANTAUPRAPAT:'Rantau Prapat', PADANGSIDIMPUAN:'Padang Sidempuan', SIDEMPUAN:'Padang Sidempuan', SIDIMPUAN:'Padang Sidempuan', PSIANTAR:'Pematang Siantar', PSIDEMPUAN:'Padang Sidempuan', PSIDIMPUAN:'Padang Sidempuan', RPRAPAT:'Rantau Prapat', BNDACEH:'Banda Aceh', BANDAACEH:'Banda Aceh', PADANGSIDEMPUAN:'Padang Sidempuan' };
 function distNorm(v){
   const raw = String(v||'').trim(); if(!raw) return 'Tidak Diketahui';
   const k = raw.toUpperCase().replace(/[^A-Z]/g,'');
