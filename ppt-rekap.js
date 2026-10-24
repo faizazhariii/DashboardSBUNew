@@ -191,7 +191,7 @@ let A;                       // aset gambar
 let pptx, cutoff, curD;
 const P = { mode:'ytd' };
 const DATECOL = {
-  mbb:  r => mbbGet(r,'TGL WO'),
+  mbb:  r => mbbGet(r,'TGL COMMIT OA FIX'),   /* MTD MBB = order dengan komitmen OA di bulan tsb */
   olo:  r => oloGet(r,'TANGGAL ORDER'),
   hem:  r => hemGet(r,'Tanggal submit order nde'),
   pt3ta:r => pt3Get(r,'Tgl Order'),
