@@ -1317,6 +1317,10 @@
             <button type="button" class="multiselect-btn" id="mbbFilterSowBtn">Semua SOW Order <span class="chev">▾</span></button>
             <div class="multiselect-panel" id="mbbFilterSowPanel" style="display:none;"></div>
           </div>
+          <div class="multiselect" id="mbbFilterBatchWrap">
+            <button type="button" class="multiselect-btn" id="mbbFilterBatchBtn">Semua Batch <span class="chev">▾</span></button>
+            <div class="multiselect-panel" id="mbbFilterBatchPanel" style="display:none;"></div>
+          </div>
           <div class="multiselect" id="mbbFilterStatusWrap">
             <button type="button" class="multiselect-btn" id="mbbFilterStatusBtn">Semua Status <span class="chev">▾</span></button>
             <div class="multiselect-panel" id="mbbFilterStatusPanel" style="display:none;"></div>
@@ -7323,6 +7327,7 @@ function mbbRenderInfraLinkReport(){
 
 const mbbBranchMultiSelect = makeMultiSelect('mbbFilterBranch', 'Semua Branch', ()=>{ mbbCurrentPage=1; mbbRenderTable(); });
 const mbbSowMultiSelect = makeMultiSelect('mbbFilterSow', 'Semua SOW Order', ()=>{ mbbCurrentPage=1; mbbRenderTable(); });
+const mbbBatchMultiSelect = makeMultiSelect('mbbFilterBatch', 'Semua Batch', ()=>{ mbbCurrentPage=1; mbbRenderTable(); });
 const mbbStatusMultiSelect = makeMultiSelect('mbbFilterStatus', 'Semua Status', ()=>{ mbbCurrentPage=1; mbbRenderTable(); });
 const mbbSubStatusMultiSelect = makeMultiSelect('mbbFilterSubStatus', 'Semua Sub Status', ()=>{ mbbCurrentPage=1; mbbRenderTable(); });
 
@@ -7334,6 +7339,8 @@ function mbbSetupFilters(){
   if(mbbBranchMultiSelect) mbbBranchMultiSelect.setOptions(branches);
   const sows = [...new Set(mbbRows.map(r=>mbbGet(r,'SOW ORDER')).filter(Boolean))].sort();
   if(mbbSowMultiSelect) mbbSowMultiSelect.setOptions(sows);
+  const batches = [...new Set(mbbRows.map(r=>mbbPbBatch(r)))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  if(mbbBatchMultiSelect) mbbBatchMultiSelect.setOptions(batches);
   if(mbbStatusMultiSelect) mbbStatusMultiSelect.setOptions(statuses);
   if(mbbSubStatusMultiSelect) mbbSubStatusMultiSelect.setOptions(subStatuses);
 
@@ -7343,6 +7350,7 @@ function mbbSetupFilters(){
 function mbbGetFilteredRows(){
   const q = document.getElementById('mbbSearchInput').value.trim().toLowerCase();
   const branchFilters = mbbBranchMultiSelect ? mbbBranchMultiSelect.getSelected() : [];
+  const batchFilters = mbbBatchMultiSelect ? mbbBatchMultiSelect.getSelected() : [];
   const sowFilters = mbbSowMultiSelect ? mbbSowMultiSelect.getSelected() : [];
   const statusFilters = mbbStatusMultiSelect ? mbbStatusMultiSelect.getSelected() : [];
   const subStatusFilters = mbbSubStatusMultiSelect ? mbbSubStatusMultiSelect.getSelected() : [];
@@ -7350,6 +7358,7 @@ function mbbGetFilteredRows(){
   const baseRows = mbbFilterCtl.apply(mbbAGG && mbbAGG.rows ? mbbAGG.rows : mbbRows);
   const filtered = baseRows.filter(row=>{
     if(branchFilters.length && !branchFilters.includes(mbbGet(row,'BRANCH'))) return false;
+    if(batchFilters.length && !batchFilters.includes(mbbPbBatch(row))) return false;
     if(sowFilters.length && !sowFilters.includes(mbbGet(row,'SOW ORDER'))) return false;
     if(statusFilters.length && !statusFilters.includes(mbbGet(row,'STATUS'))) return false;
     if(subStatusFilters.length && !subStatusFilters.includes(mbbGet(row,'SUB STATUS'))) return false;
@@ -10558,9 +10567,9 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261026b"></script>
-<script src="pptxgen.bundle.js?v=20261026b"></script>
-<script src="ppt-rekap.js?v=20261026b"></script>
-<script src="monitor.js?v=20261026b"></script>
+<script src="ppt-assets.js?v=20261026c"></script>
+<script src="pptxgen.bundle.js?v=20261026c"></script>
+<script src="ppt-rekap.js?v=20261026c"></script>
+<script src="monitor.js?v=20261026c"></script>
 </body>
 </html>
