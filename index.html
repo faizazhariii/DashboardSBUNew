@@ -2220,7 +2220,8 @@
       <hr class="rekap-divider">
       <div class="section">
         <p class="section-title" style="font-size:15px;">PT2</p>
-        <p class="section-desc" style="margin:0 0 8px;">Order PT2 dengan kolom FLAG TSEL terisi (Prio). Nilai = Port Actual.</p>
+        <p class="section-desc" style="margin:0 0 8px;">Order PT2 yang ditandai di kolom FLAG TSEL. Pilih chip buat lihat prio per bulan, atau Total buat semuanya. Nilai = Port Actual.</p>
+        <div id="prioPt2Chips" style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;"></div>
         <div class="kpi-row" id="prioPt2Kpi"></div>
         <div class="table-card" style="overflow-x:auto;">
           <table class="pivot-table"><thead><tr id="prioPt2Head"></tr></thead><tbody id="prioPt2Body"></tbody></table>
@@ -2229,7 +2230,8 @@
       <hr class="rekap-divider">
       <div class="section">
         <p class="section-title" style="font-size:15px;">PT3 TA</p>
-        <p class="section-desc" style="margin:0 0 8px;">Kolom PRIORITAS 1 BY TSEL = Priority (bukan NON). Nilai = Port Plan.</p>
+        <p class="section-desc" style="margin:0 0 8px;">Kolom PRIORITAS 1 BY TSEL = Priority (bukan NON). Pilih chip buat lihat per label prio, atau Total. Nilai = Port Plan.</p>
+        <div id="prioTaChips" style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;"></div>
         <div class="kpi-row" id="prioTaKpi"></div>
         <div class="table-card" style="overflow-x:auto;">
           <table class="pivot-table"><thead><tr id="prioTaHead"></tr></thead><tbody id="prioTaBody"></tbody></table>
@@ -6202,8 +6204,28 @@ function prioRows(){
   const mbb = (window.RekapAgg && typeof mbbRows !== 'undefined') ? window.RekapAgg.mbbSide(mbbRows, 'infra') : [];
   return { pt2, ta, fh, mbb };
 }
+const prioSel = { pt2:'', ta:'' };
+function prioLabelOf(kind, row){
+  return kind === 'pt2' ? get(row,'FLAG TSEL') : (pt3Get(row,'PRIORITAS 1 BY TSEL')||'').trim();
+}
+function prioChips(kind, elId, all){
+  const el = document.getElementById(elId); if(!el) return all;
+  const counts = {};
+  all.forEach(r => { const l = prioLabelOf(kind, r); counts[l] = (counts[l]||0) + 1; });
+  const labels = Object.keys(counts).sort((a,b)=> a.localeCompare(b,'id',{numeric:true}));
+  if(prioSel[kind] && !counts[prioSel[kind]]) prioSel[kind] = '';
+  const chip = (val, text, n) => {
+    const on = prioSel[kind] === val;
+    return `<button type="button" data-prio-kind="${kind}" data-prio-val="${val.replace(/"/g,'&quot;')}" style="cursor:pointer;border:1px solid var(--border,#cfd6e4);border-radius:999px;padding:5px 12px;font:600 12px Inter,sans-serif;${on?'background:#0B5CAB;color:#fff;border-color:#0B5CAB;':'background:#fff;color:#1b2a4a;'}">${text} <span style="opacity:.75;">${n}</span></button>`;
+  };
+  el.innerHTML = chip('', 'Total (semua prio)', all.length) + labels.map(l => chip(l, l || '(tanpa label)', counts[l])).join('');
+  el.onclick = e => { const b = e.target.closest('[data-prio-kind]'); if(!b) return; prioSel[b.dataset.prioKind] = b.dataset.prioVal; renderPrioPage(); };
+  return prioSel[kind] ? all.filter(r => prioLabelOf(kind, r) === prioSel[kind]) : all;
+}
 function renderPrioPage(){
   const d = prioRows();
+  d.pt2 = prioChips('pt2', 'prioPt2Chips', d.pt2);
+  d.ta = prioChips('ta', 'prioTaChips', d.ta);
   rekapPrefixOverride = 'prio';
   try{
     const pt2Cat = r => { const c = statusClass(deriveStatus(get(r,'STAT FINAL'))); return c === 'golive' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
@@ -10698,9 +10720,9 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261103a"></script>
-<script src="pptxgen.bundle.js?v=20261103a"></script>
-<script src="ppt-rekap.js?v=20261103a"></script>
-<script src="monitor.js?v=20261103a"></script>
+<script src="ppt-assets.js?v=20261103b"></script>
+<script src="pptxgen.bundle.js?v=20261103b"></script>
+<script src="ppt-rekap.js?v=20261103b"></script>
+<script src="monitor.js?v=20261103b"></script>
 </body>
 </html>
