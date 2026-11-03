@@ -472,6 +472,7 @@
     <button class="page-tab" id="tabBtnOlo" type="button">OLO</button>
     <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
     <div class="tab-group">Tambahan</div>
+    <button class="page-tab" id="tabBtnPrio" type="button">⭐ Priority TSEL</button>
     <button class="page-tab" id="tabBtnRekapPpt" type="button">Rekap PPT</button>
     <button class="page-tab" id="tabBtnAlerts" type="button">Peringatan</button>
     <button class="page-tab" id="tabBtnCompare" type="button">Perbandingan</button>
@@ -2205,6 +2206,64 @@
               <th>Tim Waspang</th><th>Tim UT</th><th>Subcon TA</th>
             </tr></thead>
             <tbody id="qeTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="pagePrio" style="display:none;">
+      <div class="section" style="margin-top:0;">
+        <p class="section-title" style="margin-bottom:2px;">⭐ Priority TSEL</p>
+        <p class="section-desc" style="margin:0;">Order prioritas Telkomsel dari PT2, PT3 TA, PT3 FH, dan MBB (khusus kategori New Infra). Klik sel manapun buat lihat daftar order-nya di Detail Data paling bawah.</p>
+        <div id="prioSummary" class="kpi-row" style="margin-top:12px;"></div>
+      </div>
+      <hr class="rekap-divider">
+      <div class="section">
+        <p class="section-title" style="font-size:15px;">PT2</p>
+        <p class="section-desc" style="margin:0 0 8px;">Order PT2 dengan kolom FLAG TSEL terisi (Prio). Nilai = Port Actual.</p>
+        <div class="kpi-row" id="prioPt2Kpi"></div>
+        <div class="table-card" style="overflow-x:auto;">
+          <table class="pivot-table"><thead><tr id="prioPt2Head"></tr></thead><tbody id="prioPt2Body"></tbody></table>
+        </div>
+      </div>
+      <hr class="rekap-divider">
+      <div class="section">
+        <p class="section-title" style="font-size:15px;">PT3 TA</p>
+        <p class="section-desc" style="margin:0 0 8px;">Kolom PRIORITAS 1 BY TSEL = Priority (bukan NON). Nilai = Port Plan.</p>
+        <div class="kpi-row" id="prioTaKpi"></div>
+        <div class="table-card" style="overflow-x:auto;">
+          <table class="pivot-table"><thead><tr id="prioTaHead"></tr></thead><tbody id="prioTaBody"></tbody></table>
+        </div>
+      </div>
+      <hr class="rekap-divider">
+      <div class="section">
+        <p class="section-title" style="font-size:15px;">PT3 FH</p>
+        <p class="section-desc" style="margin:0 0 8px;">Kolom PRIORITAS 1 BY TSEL = P1. Nilai = Port Plan.</p>
+        <div class="kpi-row" id="prioFhKpi"></div>
+        <div class="table-card" style="overflow-x:auto;">
+          <table class="pivot-table"><thead><tr id="prioFhHead"></tr></thead><tbody id="prioFhBody"></tbody></table>
+        </div>
+      </div>
+      <hr class="rekap-divider">
+      <div class="section">
+        <p class="section-title" style="font-size:15px;">MBB — New Infra</p>
+        <p class="section-desc" style="margin:0 0 8px;">Seluruh order MBB dengan SOW Order New Infra. Nilai = jumlah site; Golive = OA.</p>
+        <div class="kpi-row" id="prioMbbKpi"></div>
+        <div class="table-card" style="overflow-x:auto;">
+          <table class="pivot-table"><thead><tr id="prioMbbHead"></tr></thead><tbody id="prioMbbBody"></tbody></table>
+        </div>
+      </div>
+      <hr class="rekap-divider">
+      <div class="section" id="prioDetailSection">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <p class="section-title" style="font-size:15px;margin:0;">📋 Detail Data <span class="kpi-sub" id="prioDetailLabel" style="font-weight:500;"></span></p>
+          <button type="button" id="prioDownloadBtn" class="refresh-btn" style="cursor:pointer;">⬇ Download CSV</button>
+        </div>
+        <p class="section-desc" id="prioDetailDesc">Klik salah satu sel di tabel manapun di atas buat nampilin daftar order-nya di sini.</p>
+        <div class="table-card" style="overflow-x:auto;">
+          <table class="mbb-report-table">
+            <thead><tr><th>Program</th><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch/Program</th><th>Status</th><th>Nilai</th><th>Detail</th></tr></thead>
+            <tbody id="prioDetailBody"><tr><td colspan="9" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -5782,7 +5841,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], prio:['tabBtnPrio','pagePrio'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -5814,7 +5873,7 @@ function renderRekapKpiRow(elId, kpis){
     let openTag = `<div class="kpi">`;
     if(k.rows && k.rows.length){
       const key = 'rk' + (rekapCellCounter++);
-      rekapCellRegistry[key] = { program: k.program || 'MBB', rows: k.rows, label: k.clickLabel || k.label, targetPrefix: k.targetPrefix || 'rekap' };
+      rekapCellRegistry[key] = { program: k.program || 'MBB', rows: k.rows, label: k.clickLabel || k.label, targetPrefix: k.targetPrefix || rekapPrefixOverride || 'rekap' };
       openTag = `<div class="kpi rekap-clickable" data-rekap-key="${key}">`;
     }
     return `
@@ -5827,9 +5886,10 @@ function renderRekapKpiRow(elId, kpis){
   }).join('');
 }
 function rekapPct(n, total){ return total ? (n/total*100).toFixed(1)+'%' : '0%'; }
+let rekapPrefixOverride = null;
 function rekapTd(program, rowsSubset, displayValue, label, extraAttrs, targetPrefix){
   extraAttrs = extraAttrs || '';
-  targetPrefix = targetPrefix || 'rekap';
+  targetPrefix = targetPrefix || rekapPrefixOverride || 'rekap';
   if(!rowsSubset || rowsSubset.length === 0) return `<td${extraAttrs}>${displayValue}</td>`;
   const key = 'rk' + (rekapCellCounter++);
   rekapCellRegistry[key] = { program, rows: rowsSubset, label, targetPrefix };
@@ -6015,6 +6075,14 @@ function renderRekapKomitmenBulanan(program, monthSelId, headId, bodyId, agg, ge
 }
 
 function rekapRowDetail(program, row){
+  if(program === 'PT2'){
+    return { id: get(row,'iHLD LoP ID'), nama: get(row,'Nama Proyek'), branch: get(row,'Telkomsel Branch'), sto: get(row,'STO'), batch: get(row,'Jenis Program'),
+             status: deriveStatus(get(row,'STAT FINAL')), value: parseNum(get(row,'PORT ACTUAL')), detil: get(row,'KET UPDATE') || get(row,'KET DROP') };
+  }
+  if(program === 'MBB New Infra'){
+    return { id: mbbGet(row,'ID'), nama: mbbGet(row,'SITE NAME'), branch: mbbGet(row,'BRANCH'), sto: mbbGet(row,'STO'), batch: mbbGet(row,'BATCH WO'),
+             status: hemStripStatusPrefix(mbbRowStatusLabel(row)), value: 1, detil: mbbGet(row,'DETIL PROGRESS') };
+  }
   const fh = program === 'PT3 FH';
   const g = fh ? pt3fhGet : pt3Get;
   const statusFn = fh ? pt3fhRowStatusLabel : pt3RowStatusLabel;
@@ -6022,12 +6090,15 @@ function rekapRowDetail(program, row){
   return { id: g(row,'ID-IHLD'), nama: g(row,'NAMA LOP'), branch: g(row,'BRANCH FMC'), sto: g(row,'STO'), batch: g(row,'BATCH PROGRAM'),
            status: hemStripStatusPrefix(statusFn(row)), value: numFn(g(row,'PORT PLAN')), detil: g(row,'DETAIL STATUS') };
 }
+let prioLastDetail = null;
 function renderRekapDetailOutput(key){
   const entry = rekapCellRegistry[key];
   if(!entry) return;
-  const labelEl = document.getElementById('rekapDetailLabel');
-  const descEl = document.getElementById('rekapDetailDesc');
-  const bodyEl = document.getElementById('rekapDetailBody');
+  const pfx = entry.targetPrefix || 'rekap';
+  const labelEl = document.getElementById(pfx + 'DetailLabel');
+  const descEl = document.getElementById(pfx + 'DetailDesc');
+  const bodyEl = document.getElementById(pfx + 'DetailBody');
+  prioLastDetail = (pfx === 'prio') ? entry : prioLastDetail;
   if(labelEl) labelEl.textContent = `— ${entry.label} (${entry.rows.length.toLocaleString('id-ID')} baris)`;
   if(descEl) descEl.textContent = `Menampilkan detail order untuk: ${entry.label}`;
   const esc = t=> String(t||'').replace(/"/g,'&quot;');
@@ -6040,7 +6111,7 @@ function renderRekapDetailOutput(key){
     if(entry.rows.length > 500) html += `<tr><td colspan="9" style="text-align:center;padding:10px;color:var(--text-faint);">...dan ${(entry.rows.length-500).toLocaleString('id-ID')} baris lainnya (dibatasi 500 buat performa)</td></tr>`;
     bodyEl.innerHTML = html;
   }
-  const section = document.getElementById('rekapDetailSection');
+  const section = document.getElementById(pfx + 'DetailSection');
   if(section) section.scrollIntoView({behavior:'smooth', block:'start'});
 }
 document.addEventListener('click', (e)=>{
@@ -6120,6 +6191,63 @@ function renderResumePT3FH(){
 
 document.getElementById('rekapPt3CommitMonth').addEventListener('change', ()=>{ if(pt3AGG) renderResumeKomitmenChart('PT3 TA','rekapPt3',pt3AGG.rows,pt3Get,pt3Category,'KOMITMEN GOLIVE'); });
 document.getElementById('rekapPt3fhCommitMonth').addEventListener('change', ()=>{ if(pt3fhAGG) renderResumeKomitmenChart('PT3 FH','rekapPt3fh',pt3fhAGG.rows,pt3fhGet,pt3fhCategory,'KOMITMEN GOLIVE'); });
+
+/* ============================================================
+   Halaman "Priority TSEL" — PT2 (FLAG TSEL), PT3 TA, PT3 FH, MBB New Infra
+   ============================================================ */
+function prioRows(){
+  const pt2 = (typeof rows !== 'undefined' ? rows : []).filter(r => get(r,'FLAG TSEL') !== '');
+  const ta = (pt3AGG ? pt3AGG.rows : []).filter(row => { const v=(pt3Get(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim(); return v.startsWith('PRIO') && !v.startsWith('NON'); });
+  const fh = (pt3fhAGG ? pt3fhAGG.rows : []).filter(row => (pt3fhGet(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim() === 'P1');
+  const mbb = (window.RekapAgg && typeof mbbRows !== 'undefined') ? window.RekapAgg.mbbSide(mbbRows, 'infra') : [];
+  return { pt2, ta, fh, mbb };
+}
+function renderPrioPage(){
+  const d = prioRows();
+  rekapPrefixOverride = 'prio';
+  try{
+    const pt2Cat = r => { const c = statusClass(deriveStatus(get(r,'STAT FINAL'))); return c === 'golive' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
+    const pt2Get = (r,n)=> n === 'BRANCH FMC' ? get(r,'Telkomsel Branch') : get(r,n);
+    renderRekapPivotGeneric('PT2', 'prioPt2Kpi', 'prioPt2Head', 'prioPt2Body', {rows:d.pt2}, pt2Get,
+      r => deriveStatus(get(r,'STAT FINAL')), pt2Cat, null, r => parseNum(get(r,'PORT ACTUAL')));
+    renderRekapPivotGeneric('PT3 TA', 'prioTaKpi', 'prioTaHead', 'prioTaBody', {rows:d.ta}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, r => pt3ParseNum(pt3Get(r,'PORT PLAN')));
+    renderRekapPivotGeneric('PT3 FH', 'prioFhKpi', 'prioFhHead', 'prioFhBody', {rows:d.fh}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, r => pt3fhParseNum(pt3fhGet(r,'PORT PLAN')));
+    const mbbCat = r => { const c = mbbFiOaOgp(r); return c === 'oa' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
+    renderRekapPivotGeneric('MBB New Infra', 'prioMbbKpi', 'prioMbbHead', 'prioMbbBody', {rows:d.mbb}, mbbGet,
+      mbbRowStatusLabel, mbbCat, a => mbbStageSortIndex(a), () => 1);
+
+    const sum = (arr, vf, cf) => { let t=0,g=0,dr=0; arr.forEach(r=>{ const v=vf(r), c=cf(r); t+=v; if(c==='golive') g+=v; else if(c==='drop') dr+=v; }); return {t,g,dr,o:t-g-dr}; };
+    const S = {
+      'PT2': sum(d.pt2, r=>parseNum(get(r,'PORT ACTUAL')), pt2Cat),
+      'PT3 TA': sum(d.ta, r=>pt3ParseNum(pt3Get(r,'PORT PLAN')), pt3Category),
+      'PT3 FH': sum(d.fh, r=>pt3fhParseNum(pt3fhGet(r,'PORT PLAN')), pt3fhCategory),
+      'MBB New Infra': sum(d.mbb, ()=>1, mbbCat),
+    };
+    const nf = n => n.toLocaleString('id-ID');
+    const colors = ['var(--text)','var(--emerald)','var(--red)','var(--text-faint)'];
+    renderRekapKpiRow('prioSummary', Object.keys(S).map((k,i)=>({
+      label: k + (k.startsWith('MBB') ? ' (site)' : ' (port)'),
+      value: nf(S[k].t),
+      sub: `GL/OA ${nf(S[k].g)} · OGP ${nf(S[k].o)} · Drop ${nf(S[k].dr)}`,
+      color: ['#0B5CAB','#167A4B','#7A3FB0','#C77700'][i]
+    })));
+  } finally { rekapPrefixOverride = null; }
+}
+document.getElementById('tabBtnPrio').onclick = ()=> { switchTab('prio'); renderPrioPage(); };
+document.getElementById('prioDownloadBtn').onclick = ()=>{
+  if(!prioLastDetail || !prioLastDetail.rows.length){ alert('Klik dulu salah satu sel di tabel buat milih data yang mau di-download.'); return; }
+  const esc = v => '"' + String(v==null?'':v).replace(/"/g,'""') + '"';
+  const head = ['Program','ID','Nama','Branch','STO','Batch/Program','Status','Nilai','Detail'];
+  const lines = [head.map(esc).join(',')].concat(prioLastDetail.rows.map(r=>{
+    const x = rekapRowDetail(prioLastDetail.program, r);
+    return [prioLastDetail.program, x.id, x.nama, x.branch, x.sto, x.batch, x.status, x.value, x.detil].map(esc).join(',');
+  }));
+  const blob = new Blob(['﻿' + lines.join('\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'priority-tsel-' + prioLastDetail.label.replace(/[^\w]+/g,'-').toLowerCase() + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+};
+
 document.getElementById('tabBtnResume').onclick = ()=> { switchTab('resume'); renderResumePT3TA(); renderResumePT3FH(); };
 
 /* ============================================================
@@ -10570,9 +10698,9 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261026e"></script>
-<script src="pptxgen.bundle.js?v=20261026e"></script>
-<script src="ppt-rekap.js?v=20261026e"></script>
-<script src="monitor.js?v=20261026e"></script>
+<script src="ppt-assets.js?v=20261103a"></script>
+<script src="pptxgen.bundle.js?v=20261103a"></script>
+<script src="ppt-rekap.js?v=20261103a"></script>
+<script src="monitor.js?v=20261103a"></script>
 </body>
 </html>
