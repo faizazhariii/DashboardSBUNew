@@ -2412,7 +2412,10 @@ const PAGE_SIZE = 12;
 let lanjutGoPage = 1;
 const LANJUT_GO_PAGE_SIZE = 12;
 
-function normKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
+/* normKey di-memo: dipanggil jutaan kali tiap render (get/mbbGet per sel), nama kolom itu-itu saja */
+const _nkCache = new Map();
+function _nkMemo(s){ let v = _nkCache.get(s); if(v === undefined){ v = (s||'').replace(/\s+/g,' ').trim().toUpperCase(); if(_nkCache.size < 5000) _nkCache.set(s, v); } return v; }
+function normKey(s){ return _nkMemo(s); }
 /**
  * Kolom ODC di sheet utama (gid 817384998) sering tidak konsisten diisi.
  * Data ODC yang benar & lengkap ada di tab "RESUMEE SBU" (gid 487592778).
@@ -4115,7 +4118,7 @@ let hemMtdMonth = new Date().getMonth();
 let hemMtdYear = new Date().getFullYear();
 const MONTH_NAMES_ID = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
-function hemNormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
+function hemNormKey(s){ return _nkMemo(s); }
 function hemGet(row, name){
   const key = hemHeaderMap[hemNormKey(name)];
   if(key === undefined) return '';
@@ -5299,7 +5302,7 @@ let oloPeriodMode = 'ytd'; // 'ytd' | 'mtd'
 let oloMtdMonth = new Date().getMonth();
 let oloMtdYear = new Date().getFullYear();
 
-function oloNormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
+function oloNormKey(s){ return _nkMemo(s); }
 function oloGet(row, name){
   const key = oloHeaderMap[oloNormKey(name)];
   if(key === undefined) return '';
@@ -6197,8 +6200,19 @@ document.getElementById('rekapPt3fhCommitMonth').addEventListener('change', ()=>
 /* ============================================================
    Halaman "Priority TSEL" — PT2 (FLAG TSEL), PT3 TA, PT3 FH, MBB New Infra
    ============================================================ */
+/* Hitung sekali per baris PT2 (get/deriveStatus/parseNum mahal), simpan di properti non-enumerable */
+function prioPt2Pre(r){
+  let p = r.__prio;
+  if(!p){
+    const st = deriveStatus(get(r,'STAT FINAL'));
+    const c = statusClass(st);
+    p = { lab: get(r,'FLAG TSEL'), br: get(r,'Telkomsel Branch'), st, cat: c === 'golive' ? 'golive' : c === 'drop' ? 'drop' : 'ogp', port: parseNum(get(r,'PORT ACTUAL')) };
+    Object.defineProperty(r, '__prio', { value: p, enumerable: false, configurable: true });
+  }
+  return p;
+}
 function prioRows(){
-  const pt2 = (typeof rows !== 'undefined' ? rows : []).filter(r => get(r,'FLAG TSEL') !== '');
+  const pt2 = (typeof rows !== 'undefined' ? rows : []).filter(r => prioPt2Pre(r).lab !== '');
   const ta = (pt3AGG ? pt3AGG.rows : []).filter(row => { const v=(pt3Get(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim(); return v.startsWith('PRIO') && !v.startsWith('NON'); });
   const fh = (pt3fhAGG ? pt3fhAGG.rows : []).filter(row => (pt3fhGet(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim() === 'P1');
   const mbb = (window.RekapAgg && typeof mbbRows !== 'undefined') ? window.RekapAgg.mbbSide(mbbRows, 'infra') : [];
@@ -6206,7 +6220,7 @@ function prioRows(){
 }
 const prioSel = { pt2:'', ta:'' };
 function prioLabelOf(kind, row){
-  return kind === 'pt2' ? get(row,'FLAG TSEL') : (pt3Get(row,'PRIORITAS 1 BY TSEL')||'').trim();
+  return kind === 'pt2' ? prioPt2Pre(row).lab : (pt3Get(row,'PRIORITAS 1 BY TSEL')||'').trim();
 }
 function prioChips(kind, elId, all){
   const el = document.getElementById(elId); if(!el) return all;
@@ -6224,7 +6238,7 @@ function prioChips(kind, elId, all){
 }
 let prioBase = null, prioBaseKey = null;
 const prioSums = {};
-const prioPt2Cat = r => { const c = statusClass(deriveStatus(get(r,'STAT FINAL'))); return c === 'golive' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
+const prioPt2Cat = r => prioPt2Pre(r).cat;
 const prioMbbCat = r => { const c = mbbFiOaOgp(r); return c === 'oa' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
 const prioSumOf = (arr, vf, cf) => { let t=0,g=0,dr=0; arr.forEach(r=>{ const v=vf(r), c=cf(r); t+=v; if(c==='golive') g+=v; else if(c==='drop') dr+=v; }); return {t,g,dr,o:t-g-dr}; };
 function prioGetBase(){
@@ -6243,9 +6257,9 @@ function renderPrioBlock(kind){
     if(kind === 'pt2'){
       const r = prioChips('pt2', 'prioPt2Chips', base.pt2);
       prioClearRegistry('PT2');
-      const pt2Get = (x,n)=> n === 'BRANCH FMC' ? get(x,'Telkomsel Branch') : get(x,n);
-      renderRekapPivotGeneric('PT2', 'prioPt2Kpi', 'prioPt2Head', 'prioPt2Body', {rows:r}, pt2Get, x => deriveStatus(get(x,'STAT FINAL')), prioPt2Cat, null, x => parseNum(get(x,'PORT ACTUAL')));
-      prioSums['PT2'] = prioSumOf(r, x=>parseNum(get(x,'PORT ACTUAL')), prioPt2Cat);
+      const pt2Get = (x,n)=> n === 'BRANCH FMC' ? prioPt2Pre(x).br : get(x,n);
+      renderRekapPivotGeneric('PT2', 'prioPt2Kpi', 'prioPt2Head', 'prioPt2Body', {rows:r}, pt2Get, x => prioPt2Pre(x).st, prioPt2Cat, null, x => prioPt2Pre(x).port);
+      prioSums['PT2'] = prioSumOf(r, x=>prioPt2Pre(x).port, prioPt2Cat);
     } else if(kind === 'ta'){
       const r = prioChips('ta', 'prioTaChips', base.ta);
       prioClearRegistry('PT3 TA');
@@ -6634,7 +6648,7 @@ let mbbPeriodMode = 'ytd';
 let mbbMtdMonth = new Date().getMonth();
 let mbbMtdYear = new Date().getFullYear();
 
-function mbbNormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
+function mbbNormKey(s){ return _nkMemo(s); }
 /* Alias header: kolom "SOW PRE ORDER" di sheet MBB sekarang bernama "SOW ORDER" (kolom TIPE ORDER sudah dihapus) */
 const MBB_HEADER_ALIAS = { 'SOW PRE ORDER':['SOW ORDER'], 'SOW ORDER':['SOW PRE ORDER'] };
 function mbbGet(row, name){
@@ -7640,7 +7654,7 @@ let pt3MtdMonth = new Date().getMonth();
 let pt3MtdYear = new Date().getFullYear();
 let pt3CommitMonth = new Date().getMonth();
 
-function pt3NormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
+function pt3NormKey(s){ return _nkMemo(s); }
 function pt3Get(row, name){
   let key = pt3HeaderMap[pt3NormKey(name)];
   if(key === undefined && pt3NormKey(name) === 'CPP AKHIR'){
@@ -9079,7 +9093,7 @@ let pt3fhMtdMonth = new Date().getMonth();
 let pt3fhMtdYear = new Date().getFullYear();
 let pt3fhCommitMonth = new Date().getMonth();
 
-function pt3fhNormKey(s){ return (s||'').replace(/\s+/g,' ').trim().toUpperCase(); }
+function pt3fhNormKey(s){ return _nkMemo(s); }
 function pt3fhGet(row, name){
   const key = pt3fhHeaderMap[pt3fhNormKey(name)];
   if(key === undefined) return '';
