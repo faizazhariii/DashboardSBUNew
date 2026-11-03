@@ -248,6 +248,169 @@
   }
 
   /* ============================================================
+     QE BRT
+     ============================================================ */
+  function segName(r){ return (r.namaLop ? r.namaLop + " — " : "") + r.segmen; }
+  var brt = { items: [], jalan: [], updates: [], loadedAt: null };
+
+  function brtBuild(structure, timeline, updates){
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var tl = {};
+    (timeline.rows || []).forEach(function(r){
+      (r.items || []).forEach(function(it){ tl[segName(r) + '|' + it.label] = it; });
+    });
+    var items = [];
+    (structure.rows || []).forEach(function(r){
+      (r.items || []).forEach(function(it){
+        var t = tl[segName(r) + '|' + it.label] || {};
+        var plan = Number(it.plan) || 0, akt = Number(it.aktual) || 0;
+        var p = plan > 0 ? clamp01(akt / plan) : 0;
+        var target = null;
+        if (t.start && t.end){
+          var s = new Date(t.start + 'T00:00:00'), e = new Date(t.end + 'T00:00:00');
+          var span = (e - s) / 864e5;
+          target = span <= 0 ? (today >= s ? 1 : 0) : clamp01(((today - s) / 864e5) / span);
+        }
+        items.push({ jalan: segName(r), label: it.label, unit: it.unit, plan: plan, akt: akt, p: p, target: target, start: t.startDisplay || '', end: t.endDisplay || '' });
+      });
+    });
+    var byJ = {};
+    items.forEach(function(it){ (byJ[it.jalan] = byJ[it.jalan] || []).push(it); });
+    var jalan = Object.keys(byJ).map(function(name){
+      var its = byJ[name];
+      var avg = function(a){ return a.length ? a.reduce(function(s, x){ return s + x; }, 0) / a.length : 0; };
+      var prog = avg(its.map(function(i){ return i.p; }));
+      var tg = its.filter(function(i){ return i.target !== null; });
+      var target = tg.length ? avg(tg.map(function(i){ return i.target; })) : null;
+      var done = its.filter(function(i){ return i.p >= 1; }).length;
+      var status = prog >= 1 ? 'Selesai' : (target === null ? 'Berjalan' : (prog < target - 0.10 ? 'Terlambat' : 'Tepat waktu'));
+      return { name: name, items: its, prog: prog, target: target, done: done, status: status };
+    });
+    brt.items = items; brt.jalan = jalan; brt.updates = updates || []; brt.loadedAt = new Date();
+  }
+
+  function brtHost(){
+    var page = $('pageBrtRecap');
+    if (!page.dataset.built){
+      page.dataset.built = '1';
+      page.innerHTML =
+        '<div class="section" style="margin-top:0;">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">' +
+            '<div><p class="section-title" style="margin-bottom:2px;">QE BRT Medan — Rekap Progress</p>' +
+            '<p class="section-desc" style="margin:0;" id="brtSource">Memuat data…</p></div>' +
+            '<div style="display:flex;gap:8px;flex-wrap:wrap;"><button type="button" class="refresh-btn" id="brtRefresh">↻ Muat ulang</button>' +
+            '<button type="button" class="download-btn" id="brtDownload" style="margin-top:0;">📥 Download CSV</button></div>' +
+          '</div>' +
+          '<div id="brtBody"></div>' +
+        '</div>';
+      $('brtRefresh').onclick = function(){ cache = {}; qeBrtOpen(true); };
+      $('brtDownload').onclick = brtDownload;
+    }
+  }
+
+  async function qeBrtOpen(force){
+    brtHost();
+    var body = $('brtBody');
+    if (force || !brt.loadedAt) body.innerHTML = '<div class="state-msg">Memuat data BRT Medan…</div>';
+    try {
+      var r = await Promise.all([api('brtStructure'), api('brtTimeline'), api('brtUpdates', '&limit=15')]);
+      brtBuild(r[0], r[1], r[2].updates);
+      brtRender();
+    } catch (e) { errBox(body, e); }
+  }
+
+  function brtRender(){
+    var J = brt.jalan, I = brt.items;
+    var tot = I.length ? I.reduce(function(s, i){ return s + i.p; }, 0) / I.length : 0;
+    var tgI = I.filter(function(i){ return i.target !== null; });
+    var tgt = tgI.length ? tgI.reduce(function(s, i){ return s + i.target; }, 0) / tgI.length : null;
+    var diff = tgt === null ? null : (tot - tgt) * 100;
+    var done = I.filter(function(i){ return i.p >= 1; }).length;
+    var notStarted = I.filter(function(i){ return i.p === 0; }).length;
+    var late = J.filter(function(j){ return j.status === 'Terlambat'; }).length;
+    $('brtSource').textContent = 'Sumber: Mini Web QE (sheet BRT) · ' + J.length + ' segmen · ' + I.length + ' item · dimuat ' + brt.loadedAt.toLocaleString('id-ID');
+
+    var kpis = [
+      ['Progress Total', pct(tot) + '%', '#16406F'],
+      ['Target Hari Ini', tgt === null ? '—' : pct(tgt) + '%', '#805ad5'],
+      ['Selisih', diff === null ? '—' : (diff >= 0 ? '+' : '') + diff.toFixed(1) + ' poin', diff !== null && diff < -10 ? '#c8102e' : '#167A4B'],
+      ['Jumlah Segmen', J.length, '#0a2342'],
+      ['Segmen Terlambat', late, late ? '#c8102e' : '#167A4B'],
+      ['Item Selesai', done + ' / ' + I.length, '#167A4B'],
+      ['Item Belum Mulai', notStarted, '#d69e2e']
+    ];
+
+    var statusColor = { 'Selesai': '#167A4B', 'Tepat waktu': '#2b6cb0', 'Terlambat': '#c8102e', 'Berjalan': '#d69e2e' };
+    var jalanOpts = '<option value="">Semua Segmen</option>' + J.map(function(j){ return '<option>' + esc(j.name) + '</option>'; }).join('');
+
+    $('brtBody').innerHTML =
+      '<div class="kpi-row">' + kpiHtml(kpis) + '</div>' +
+      '<div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">' +
+        '<div class="chart-card"><h3>Progress vs Target per Segmen (%)</h3><div class="canvas-wrap" style="height:290px;"><canvas id="brtChartJalan"></canvas></div></div>' +
+        '<div class="chart-card"><h3>Progress per Item (%)</h3><div class="canvas-wrap" style="height:290px;"><canvas id="brtChartItem"></canvas></div></div>' +
+      '</div>' +
+      '<p class="section-title" style="margin:22px 0 4px;font-size:15px;">Rekap per Segmen</p>' +
+      '<div class="table-card" style="overflow-x:auto;"><table class="mbb-report-table"><thead><tr><th>Segmen</th><th>Progress</th><th>Target Hari Ini</th><th>Selisih</th><th>Item Selesai</th><th>Status</th></tr></thead><tbody>' +
+        J.map(function(j){
+          var d = j.target === null ? null : (j.prog - j.target) * 100;
+          return '<tr><td class="name">' + esc(j.name) + '</td><td>' + bar(pct(j.prog), colorFor(pct(j.prog))) + '</td>' +
+            '<td>' + (j.target === null ? '—' : pct(j.target) + '%') + '</td>' +
+            '<td style="color:' + (d !== null && d < -10 ? '#c8102e' : 'inherit') + ';">' + (d === null ? '—' : (d >= 0 ? '+' : '') + d.toFixed(1)) + '</td>' +
+            '<td>' + j.done + ' / ' + j.items.length + '</td>' +
+            '<td><span style="font-weight:700;color:' + statusColor[j.status] + ';">' + j.status + '</span></td></tr>';
+        }).join('') +
+        '<tr class="pivot-total"><td><b>TOTAL</b></td><td>' + bar(pct(tot), colorFor(pct(tot))) + '</td><td><b>' + (tgt === null ? '—' : pct(tgt) + '%') + '</b></td><td><b>' + (diff === null ? '—' : (diff >= 0 ? '+' : '') + diff.toFixed(1)) + '</b></td><td><b>' + done + ' / ' + I.length + '</b></td><td></td></tr>' +
+      '</tbody></table></div>' +
+      '<p class="section-title" style="margin:22px 0 4px;font-size:15px;">Detail Item</p>' +
+      '<div class="filters"><input type="text" id="brtSearch" placeholder="Cari segmen / item…"><select id="brtFJalan" class="period-select">' + jalanOpts + '</select>' +
+        '<select id="brtFStatus" class="period-select"><option value="">Semua Status</option><option value="done">Selesai</option><option value="run">Berjalan</option><option value="zero">Belum mulai</option></select><span class="count" id="brtCount"></span></div>' +
+      '<div class="table-card" style="overflow-x:auto;"><table class="mbb-report-table"><thead><tr><th>Segmen</th><th>Item</th><th>Satuan</th><th>Plan</th><th>Aktual</th><th>Progress</th><th>Mulai</th><th>Selesai</th><th>Target</th></tr></thead><tbody id="brtItemBody"></tbody></table></div>' +
+      '<p class="section-title" style="margin:22px 0 4px;font-size:15px;">Update Terakhir dari Mini Web</p>' +
+      '<div class="table-card" style="overflow-x:auto;">' + updatesTable(brt.updates, 'Segmen') + '</div>';
+
+    drawChart('brtChartJalan', 'bar', J.map(function(j){ return j.name; }), [
+      { label: 'Progress', data: J.map(function(j){ return pct(j.prog); }), backgroundColor: '#16406F' },
+      { label: 'Target', data: J.map(function(j){ return j.target === null ? null : pct(j.target); }), backgroundColor: '#c8102e' }
+    ], { indexAxis: 'y', scales: { x: { beginAtZero: true, max: 100 } } });
+    var labels = []; brt.items.forEach(function(i){ if (labels.indexOf(i.label) < 0) labels.push(i.label); });
+    var perItem = labels.map(function(l){
+      var a = brt.items.filter(function(i){ return i.label === l; });
+      return pct(a.reduce(function(s, i){ return s + i.p; }, 0) / a.length);
+    });
+    drawChart('brtChartItem', 'bar', labels, [{ label: 'Progress (%)', data: perItem, backgroundColor: perItem.map(colorFor) }],
+      { indexAxis: 'y', plugins: { legend: { display: false }, datalabels: { display: false } }, scales: { x: { beginAtZero: true, max: 100 } } });
+
+    ['brtSearch', 'brtFJalan', 'brtFStatus'].forEach(function(id){ $(id).oninput = $(id).onchange = brtRenderItems; });
+    brtRenderItems();
+  }
+
+  function brtFiltered(){
+    var q = $('brtSearch').value.trim().toLowerCase(), j = $('brtFJalan').value, s = $('brtFStatus').value;
+    return brt.items.filter(function(i){
+      if (j && i.jalan !== j) return false;
+      if (s === 'done' && i.p < 1) return false;
+      if (s === 'zero' && i.p !== 0) return false;
+      if (s === 'run' && !(i.p > 0 && i.p < 1)) return false;
+      return !q || (i.jalan + ' ' + i.label).toLowerCase().indexOf(q) >= 0;
+    });
+  }
+  function brtRenderItems(){
+    var rows = brtFiltered();
+    $('brtCount').textContent = rows.length + ' item';
+    $('brtItemBody').innerHTML = rows.map(function(i){
+      var p = pct(i.p);
+      return '<tr><td class="name">' + esc(i.jalan) + '</td><td>' + esc(i.label) + '</td><td>' + esc(i.unit) + '</td><td>' + nf(i.plan) + '</td><td>' + nf(i.akt) + '</td>' +
+        '<td>' + bar(p, colorFor(p)) + '</td><td>' + esc(i.start || '—') + '</td><td>' + esc(i.end || '—') + '</td><td>' + (i.target === null ? '—' : pct(i.target) + '%') + '</td></tr>';
+    }).join('') || '<tr><td colspan="9" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>';
+  }
+  function brtDownload(){
+    var q = function(v){ return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+    var csv = [['Segmen', 'Item', 'Satuan', 'Plan', 'Aktual', 'Progress %', 'Mulai', 'Selesai', 'Target %'].map(q).join(',')].concat(brtFiltered().map(function(i){
+      return [i.jalan, i.label, i.unit, i.plan, i.akt, pct(i.p), i.start, i.end, i.target === null ? '' : pct(i.target)].map(q).join(',');
+    })).join('\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = 'QE_BRT_Medan.csv'; a.click();
+  }
+  /* ============================================================
      DUSEM
      ============================================================ */
   var ds = { lops: [], updates: [], loadedAt: null };
@@ -434,4 +597,5 @@
   })();
   window.qeLpOpen = qeLpOpen;
   window.qeDusemOpen = qeDusemOpen;
+  window.qeBrtOpen = qeBrtOpen;
 })();

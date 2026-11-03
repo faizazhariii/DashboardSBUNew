@@ -2305,8 +2305,9 @@
     <div id="pageQeDusem" style="display:none;"></div>
 
     <div id="pageBrt" style="display:none;">
-      <div class="section" style="margin-top:0;">
-        <p class="section-title" style="margin-bottom:2px;">BRT Medan — Cek Update Progress</p>
+      <div id="pageBrtRecap"></div>
+      <div class="section" style="margin-top:22px;">
+        <p class="section-title" style="margin-bottom:2px;">BRT Medan — Cek Update Lapangan</p>
         <p class="section-desc" style="margin:0 0 12px;">Update aktual lapangan beserta peta, per zona.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
           <button type="button" class="brt-zona-btn active" data-zona="1">Zona 1</button>
@@ -6587,7 +6588,7 @@ document.getElementById('tabBtnQe').onclick = ()=>{ switchTab('qe'); qeLoad(); }
 document.getElementById('tabBtnRekapPpt').onclick = ()=> { switchTab('rekapPpt'); if(window.rekapPptOpen) window.rekapPptOpen(); };
 document.getElementById('tabBtnAlerts').onclick = ()=> { switchTab('alerts'); if(window.monitorOpenAlerts) window.monitorOpenAlerts(); };
 document.getElementById('tabBtnCompare').onclick = ()=> { switchTab('compare'); if(window.monitorOpenCompare) window.monitorOpenCompare(); };
-document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); brtLoadZona(brtCurrentZona); };
+document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); if(window.qeBrtOpen) qeBrtOpen(); brtLoadZona(brtCurrentZona); };
 const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
 let brtCurrentZona = '1', brtLoadedZona = null;
 function brtLoadZona(z){
@@ -10790,6 +10791,6 @@ oloLoadDataAuto();
 <script src="pptxgen.bundle.js?v=20261103b"></script>
 <script src="ppt-rekap.js?v=20261103b"></script>
 <script src="monitor.js?v=20261103b"></script>
-<script src="qe-recap.js?v=20261104a"></script>
+<script src="qe-recap.js?v=20261104b"></script>
 </body>
 </html>
