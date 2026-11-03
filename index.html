@@ -439,6 +439,21 @@
     body.side-collapsed .page-tabs{transform:none;}
     .tab-group{display:none;}
   }
+
+  /* Menu QE (dropdown di Tematik) */
+  .tab-parent{display:flex;align-items:center;justify-content:space-between;}
+  .tab-caret{font-size:11px;opacity:.75;transition:transform .15s;}
+  .tab-parent[aria-expanded="true"] .tab-caret{transform:rotate(180deg);}
+  .tab-parent.active-parent{color:#fff;font-weight:700;border-left-color:var(--brand-red);background:rgba(255,255,255,.08);}
+  .tab-sub{display:none;margin:0 0 4px 14px;padding-left:6px;border-left:1px solid rgba(255,255,255,.18);}
+  .tab-sub.open{display:block;}
+  .tab-sub .page-tab{font-size:13px;padding:8px 12px;}
+  @media (max-width:900px){
+    .tab-sub,.tab-sub.open{display:contents;}
+    .tab-caret{display:none;}
+    .tab-parent{display:none;}
+    .tab-sub .page-tab{font-size:14px;padding:8px 12px;}
+  }
 </style>
 </head>
 <body>
@@ -471,6 +486,12 @@
     <button class="page-tab" id="tabBtnHem" type="button">HEM</button>
     <button class="page-tab" id="tabBtnOlo" type="button">OLO</button>
     <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
+    <button class="page-tab tab-parent" id="tabBtnQeGroup" type="button" aria-expanded="false" aria-controls="qeSub">QE <span class="tab-caret">&#9662;</span></button>
+    <div class="tab-sub" id="qeSub">
+      <button class="page-tab" id="tabBtnBrt" type="button">BRT Medan</button>
+      <button class="page-tab" id="tabBtnQeLp" type="button">QE Lubuk Pakam</button>
+      <button class="page-tab" id="tabBtnQeDusem" type="button">Dusem</button>
+    </div>
     <div class="tab-group">Tambahan</div>
     <button class="page-tab" id="tabBtnPrio" type="button">⭐ Priority TSEL</button>
     <button class="page-tab" id="tabBtnRekapPpt" type="button">Rekap PPT</button>
@@ -478,10 +499,9 @@
     <button class="page-tab" id="tabBtnCompare" type="button">Perbandingan</button>
     <button class="page-tab" id="tabBtnChecklist" type="button">Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" type="button">Need Modul OLT</button>
-    <button class="page-tab" id="tabBtnQe" type="button">QE</button>
+    <button class="page-tab" id="tabBtnQe" type="button" style="display:none;">QE SBU</button>
     <button class="page-tab" id="tabBtnGolive" type="button">Golive</button>
     <button class="page-tab" id="tabBtnNodeB" type="button">L0 Kendala MBB</button>
-    <button class="page-tab" id="tabBtnBrt" type="button">BRT Medan</button>
   </div>
 
   <div id="pagePT2">
@@ -2280,6 +2300,9 @@
     <div id="pageAlerts" style="display:none;"><div id="alertsHost"></div></div>
     <div id="pageCompare" style="display:none;"><div id="compareHost"></div></div>
     <div id="pageRekapPpt" style="display:none;"><div id="rekapPptHost"></div></div>
+
+    <div id="pageQeLp" style="display:none;"></div>
+    <div id="pageQeDusem" style="display:none;"></div>
 
     <div id="pageBrt" style="display:none;">
       <div class="section" style="margin-top:0;">
@@ -5852,13 +5875,14 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], prio:['tabBtnPrio','pagePrio'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], prio:['tabBtnPrio','pagePrio'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
     document.getElementById(btnId).classList.toggle('active', isActive);
     document.getElementById(pageId).style.display = isActive ? 'block' : 'none';
   });
+  if(window.qeMenuSync) window.qeMenuSync(active);
 }
 document.getElementById('tabBtnPT2').onclick = ()=> switchTab('pt2');
 document.getElementById('tabBtnHem').onclick = ()=> switchTab('hem');
@@ -10766,5 +10790,6 @@ oloLoadDataAuto();
 <script src="pptxgen.bundle.js?v=20261103b"></script>
 <script src="ppt-rekap.js?v=20261103b"></script>
 <script src="monitor.js?v=20261103b"></script>
+<script src="qe-recap.js?v=20261104a"></script>
 </body>
 </html>
