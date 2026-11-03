@@ -6219,41 +6219,66 @@ function prioChips(kind, elId, all){
     return `<button type="button" data-prio-kind="${kind}" data-prio-val="${val.replace(/"/g,'&quot;')}" style="cursor:pointer;border:1px solid var(--border,#cfd6e4);border-radius:999px;padding:5px 12px;font:600 12px Inter,sans-serif;${on?'background:#0B5CAB;color:#fff;border-color:#0B5CAB;':'background:#fff;color:#1b2a4a;'}">${text} <span style="opacity:.75;">${n}</span></button>`;
   };
   el.innerHTML = chip('', 'Total (semua prio)', all.length) + labels.map(l => chip(l, l || '(tanpa label)', counts[l])).join('');
-  el.onclick = e => { const b = e.target.closest('[data-prio-kind]'); if(!b) return; prioSel[b.dataset.prioKind] = b.dataset.prioVal; renderPrioPage(); };
+  el.onclick = e => { const b = e.target.closest('[data-prio-kind]'); if(!b) return; prioSel[b.dataset.prioKind] = b.dataset.prioVal; renderPrioPage(b.dataset.prioKind); };
   return prioSel[kind] ? all.filter(r => prioLabelOf(kind, r) === prioSel[kind]) : all;
 }
-function renderPrioPage(){
-  const d = prioRows();
-  d.pt2 = prioChips('pt2', 'prioPt2Chips', d.pt2);
-  d.ta = prioChips('ta', 'prioTaChips', d.ta);
+let prioBase = null, prioBaseKey = null;
+const prioSums = {};
+const prioPt2Cat = r => { const c = statusClass(deriveStatus(get(r,'STAT FINAL'))); return c === 'golive' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
+const prioMbbCat = r => { const c = mbbFiOaOgp(r); return c === 'oa' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
+const prioSumOf = (arr, vf, cf) => { let t=0,g=0,dr=0; arr.forEach(r=>{ const v=vf(r), c=cf(r); t+=v; if(c==='golive') g+=v; else if(c==='drop') dr+=v; }); return {t,g,dr,o:t-g-dr}; };
+function prioGetBase(){
+  const key = [rows, pt3AGG, pt3fhAGG, typeof mbbRows !== 'undefined' ? mbbRows : null];
+  if(prioBase && prioBaseKey && key.every((k,i)=> k === prioBaseKey[i])) return prioBase;
+  prioBase = prioRows(); prioBaseKey = key; return prioBase;
+}
+function prioClearRegistry(program){
+  Object.keys(rekapCellRegistry).forEach(k => { const e = rekapCellRegistry[k]; if(e.targetPrefix === 'prio' && e.program === program) delete rekapCellRegistry[k]; });
+}
+/* Render 1 blok (pivot + KPI) lalu simpan totalnya buat kartu ringkasan */
+function renderPrioBlock(kind){
+  const base = prioGetBase();
   rekapPrefixOverride = 'prio';
   try{
-    const pt2Cat = r => { const c = statusClass(deriveStatus(get(r,'STAT FINAL'))); return c === 'golive' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
-    const pt2Get = (r,n)=> n === 'BRANCH FMC' ? get(r,'Telkomsel Branch') : get(r,n);
-    renderRekapPivotGeneric('PT2', 'prioPt2Kpi', 'prioPt2Head', 'prioPt2Body', {rows:d.pt2}, pt2Get,
-      r => deriveStatus(get(r,'STAT FINAL')), pt2Cat, null, r => parseNum(get(r,'PORT ACTUAL')));
-    renderRekapPivotGeneric('PT3 TA', 'prioTaKpi', 'prioTaHead', 'prioTaBody', {rows:d.ta}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, r => pt3ParseNum(pt3Get(r,'PORT PLAN')));
-    renderRekapPivotGeneric('PT3 FH', 'prioFhKpi', 'prioFhHead', 'prioFhBody', {rows:d.fh}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, r => pt3fhParseNum(pt3fhGet(r,'PORT PLAN')));
-    const mbbCat = r => { const c = mbbFiOaOgp(r); return c === 'oa' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
-    renderRekapPivotGeneric('MBB New Infra', 'prioMbbKpi', 'prioMbbHead', 'prioMbbBody', {rows:d.mbb}, mbbGet,
-      mbbRowStatusLabel, mbbCat, a => mbbStageSortIndex(a), () => 1);
-
-    const sum = (arr, vf, cf) => { let t=0,g=0,dr=0; arr.forEach(r=>{ const v=vf(r), c=cf(r); t+=v; if(c==='golive') g+=v; else if(c==='drop') dr+=v; }); return {t,g,dr,o:t-g-dr}; };
-    const S = {
-      'PT2': sum(d.pt2, r=>parseNum(get(r,'PORT ACTUAL')), pt2Cat),
-      'PT3 TA': sum(d.ta, r=>pt3ParseNum(pt3Get(r,'PORT PLAN')), pt3Category),
-      'PT3 FH': sum(d.fh, r=>pt3fhParseNum(pt3fhGet(r,'PORT PLAN')), pt3fhCategory),
-      'MBB New Infra': sum(d.mbb, ()=>1, mbbCat),
-    };
-    const nf = n => n.toLocaleString('id-ID');
-    const colors = ['var(--text)','var(--emerald)','var(--red)','var(--text-faint)'];
-    renderRekapKpiRow('prioSummary', Object.keys(S).map((k,i)=>({
+    if(kind === 'pt2'){
+      const r = prioChips('pt2', 'prioPt2Chips', base.pt2);
+      prioClearRegistry('PT2');
+      const pt2Get = (x,n)=> n === 'BRANCH FMC' ? get(x,'Telkomsel Branch') : get(x,n);
+      renderRekapPivotGeneric('PT2', 'prioPt2Kpi', 'prioPt2Head', 'prioPt2Body', {rows:r}, pt2Get, x => deriveStatus(get(x,'STAT FINAL')), prioPt2Cat, null, x => parseNum(get(x,'PORT ACTUAL')));
+      prioSums['PT2'] = prioSumOf(r, x=>parseNum(get(x,'PORT ACTUAL')), prioPt2Cat);
+    } else if(kind === 'ta'){
+      const r = prioChips('ta', 'prioTaChips', base.ta);
+      prioClearRegistry('PT3 TA');
+      renderRekapPivotGeneric('PT3 TA', 'prioTaKpi', 'prioTaHead', 'prioTaBody', {rows:r}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, x => pt3ParseNum(pt3Get(x,'PORT PLAN')));
+      prioSums['PT3 TA'] = prioSumOf(r, x=>pt3ParseNum(pt3Get(x,'PORT PLAN')), pt3Category);
+    } else if(kind === 'fh'){
+      prioClearRegistry('PT3 FH');
+      renderRekapPivotGeneric('PT3 FH', 'prioFhKpi', 'prioFhHead', 'prioFhBody', {rows:base.fh}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, x => pt3fhParseNum(pt3fhGet(x,'PORT PLAN')));
+      prioSums['PT3 FH'] = prioSumOf(base.fh, x=>pt3fhParseNum(pt3fhGet(x,'PORT PLAN')), pt3fhCategory);
+    } else if(kind === 'mbb'){
+      prioClearRegistry('MBB New Infra');
+      renderRekapPivotGeneric('MBB New Infra', 'prioMbbKpi', 'prioMbbHead', 'prioMbbBody', {rows:base.mbb}, mbbGet, mbbRowStatusLabel, prioMbbCat, a => mbbStageSortIndex(a), () => 1);
+      prioSums['MBB New Infra'] = prioSumOf(base.mbb, ()=>1, prioMbbCat);
+    }
+  } finally { rekapPrefixOverride = null; }
+}
+function renderPrioSummary(){
+  const nf = n => n.toLocaleString('id-ID');
+  const names = ['PT2','PT3 TA','PT3 FH','MBB New Infra'].filter(n => prioSums[n]);
+  const colors = {'PT2':'#C77700','PT3 TA':'#0B5CAB','PT3 FH':'#167A4B','MBB New Infra':'#7A3FB0'};
+  rekapPrefixOverride = 'prio';
+  try{
+    renderRekapKpiRow('prioSummary', names.map(k => ({
       label: k + (k.startsWith('MBB') ? ' (site)' : ' (port)'),
-      value: nf(S[k].t),
-      sub: `GL/OA ${nf(S[k].g)} · OGP ${nf(S[k].o)} · Drop ${nf(S[k].dr)}`,
-      color: ['#0B5CAB','#167A4B','#7A3FB0','#C77700'][i]
+      value: nf(prioSums[k].t),
+      sub: `GL/OA ${nf(prioSums[k].g)} · OGP ${nf(prioSums[k].o)} · Drop ${nf(prioSums[k].dr)}`,
+      color: colors[k]
     })));
   } finally { rekapPrefixOverride = null; }
+}
+function renderPrioPage(only){
+  (only ? [only] : ['pt2','ta','fh','mbb']).forEach(renderPrioBlock);
+  renderPrioSummary();
 }
 document.getElementById('tabBtnPrio').onclick = ()=> { switchTab('prio'); renderPrioPage(); };
 document.getElementById('prioDownloadBtn').onclick = ()=>{
