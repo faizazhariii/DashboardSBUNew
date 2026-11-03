@@ -2214,8 +2214,18 @@
     <div id="pagePrio" style="display:none;">
       <div class="section" style="margin-top:0;">
         <p class="section-title" style="margin-bottom:2px;">⭐ Priority TSEL</p>
-        <p class="section-desc" style="margin:0;">Order prioritas Telkomsel dari PT3 TA, PT3 FH, dan MBB (khusus kategori New Infra). Klik sel manapun buat lihat daftar order-nya di Detail Data paling bawah.</p>
+        <p class="section-desc" style="margin:0;">Order prioritas Telkomsel dari PT2, PT3 TA, PT3 FH, dan MBB (khusus kategori New Infra). Klik sel manapun buat lihat daftar order-nya di Detail Data paling bawah.</p>
         <div id="prioSummary" class="kpi-row" style="margin-top:12px;"></div>
+      </div>
+      <hr class="rekap-divider">
+      <div class="section">
+        <p class="section-title" style="font-size:15px;">PT2</p>
+        <p class="section-desc" style="margin:0 0 8px;">Order PT2 yang ditandai di kolom FLAG TSEL. Pilih chip buat lihat prio per bulan, atau Total buat semuanya. Nilai = Port Actual.</p>
+        <div id="prioPt2Chips" style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;"></div>
+        <div class="kpi-row" id="prioPt2Kpi"></div>
+        <div class="table-card" style="overflow-x:auto;">
+          <table class="pivot-table"><thead><tr id="prioPt2Head"></tr></thead><tbody id="prioPt2Body"></tbody></table>
+        </div>
       </div>
       <hr class="rekap-divider">
       <div class="section">
@@ -6185,17 +6195,18 @@ document.getElementById('rekapPt3CommitMonth').addEventListener('change', ()=>{ 
 document.getElementById('rekapPt3fhCommitMonth').addEventListener('change', ()=>{ if(pt3fhAGG) renderResumeKomitmenChart('PT3 FH','rekapPt3fh',pt3fhAGG.rows,pt3fhGet,pt3fhCategory,'KOMITMEN GOLIVE'); });
 
 /* ============================================================
-   Halaman "Priority TSEL" — PT3 TA, PT3 FH, MBB New Infra
+   Halaman "Priority TSEL" — PT2 (FLAG TSEL), PT3 TA, PT3 FH, MBB New Infra
    ============================================================ */
 function prioRows(){
+  const pt2 = (typeof rows !== 'undefined' ? rows : []).filter(r => get(r,'FLAG TSEL') !== '');
   const ta = (pt3AGG ? pt3AGG.rows : []).filter(row => { const v=(pt3Get(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim(); return v.startsWith('PRIO') && !v.startsWith('NON'); });
   const fh = (pt3fhAGG ? pt3fhAGG.rows : []).filter(row => (pt3fhGet(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim() === 'P1');
   const mbb = (window.RekapAgg && typeof mbbRows !== 'undefined') ? window.RekapAgg.mbbSide(mbbRows, 'infra') : [];
-  return { ta, fh, mbb };
+  return { pt2, ta, fh, mbb };
 }
-const prioSel = { ta:'' };
+const prioSel = { pt2:'', ta:'' };
 function prioLabelOf(kind, row){
-  return (pt3Get(row,'PRIORITAS 1 BY TSEL')||'').trim();
+  return kind === 'pt2' ? get(row,'FLAG TSEL') : (pt3Get(row,'PRIORITAS 1 BY TSEL')||'').trim();
 }
 function prioChips(kind, elId, all){
   const el = document.getElementById(elId); if(!el) return all;
@@ -6213,9 +6224,14 @@ function prioChips(kind, elId, all){
 }
 function renderPrioPage(){
   const d = prioRows();
+  d.pt2 = prioChips('pt2', 'prioPt2Chips', d.pt2);
   d.ta = prioChips('ta', 'prioTaChips', d.ta);
   rekapPrefixOverride = 'prio';
   try{
+    const pt2Cat = r => { const c = statusClass(deriveStatus(get(r,'STAT FINAL'))); return c === 'golive' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
+    const pt2Get = (r,n)=> n === 'BRANCH FMC' ? get(r,'Telkomsel Branch') : get(r,n);
+    renderRekapPivotGeneric('PT2', 'prioPt2Kpi', 'prioPt2Head', 'prioPt2Body', {rows:d.pt2}, pt2Get,
+      r => deriveStatus(get(r,'STAT FINAL')), pt2Cat, null, r => parseNum(get(r,'PORT ACTUAL')));
     renderRekapPivotGeneric('PT3 TA', 'prioTaKpi', 'prioTaHead', 'prioTaBody', {rows:d.ta}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, r => pt3ParseNum(pt3Get(r,'PORT PLAN')));
     renderRekapPivotGeneric('PT3 FH', 'prioFhKpi', 'prioFhHead', 'prioFhBody', {rows:d.fh}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, r => pt3fhParseNum(pt3fhGet(r,'PORT PLAN')));
     const mbbCat = r => { const c = mbbFiOaOgp(r); return c === 'oa' ? 'golive' : c === 'drop' ? 'drop' : 'ogp'; };
@@ -6224,6 +6240,7 @@ function renderPrioPage(){
 
     const sum = (arr, vf, cf) => { let t=0,g=0,dr=0; arr.forEach(r=>{ const v=vf(r), c=cf(r); t+=v; if(c==='golive') g+=v; else if(c==='drop') dr+=v; }); return {t,g,dr,o:t-g-dr}; };
     const S = {
+      'PT2': sum(d.pt2, r=>parseNum(get(r,'PORT ACTUAL')), pt2Cat),
       'PT3 TA': sum(d.ta, r=>pt3ParseNum(pt3Get(r,'PORT PLAN')), pt3Category),
       'PT3 FH': sum(d.fh, r=>pt3fhParseNum(pt3fhGet(r,'PORT PLAN')), pt3fhCategory),
       'MBB New Infra': sum(d.mbb, ()=>1, mbbCat),
@@ -6234,7 +6251,7 @@ function renderPrioPage(){
       label: k + (k.startsWith('MBB') ? ' (site)' : ' (port)'),
       value: nf(S[k].t),
       sub: `GL/OA ${nf(S[k].g)} · OGP ${nf(S[k].o)} · Drop ${nf(S[k].dr)}`,
-      color: ['#0B5CAB','#167A4B','#7A3FB0'][i]
+      color: ['#0B5CAB','#167A4B','#7A3FB0','#C77700'][i]
     })));
   } finally { rekapPrefixOverride = null; }
 }
@@ -10703,9 +10720,9 @@ hemLoadDataAuto();
 oloLoadDataAuto();
 
 </script>
-<script src="ppt-assets.js?v=20261103c"></script>
-<script src="pptxgen.bundle.js?v=20261103c"></script>
-<script src="ppt-rekap.js?v=20261103c"></script>
-<script src="monitor.js?v=20261103c"></script>
+<script src="ppt-assets.js?v=20261103b"></script>
+<script src="pptxgen.bundle.js?v=20261103b"></script>
+<script src="ppt-rekap.js?v=20261103b"></script>
+<script src="monitor.js?v=20261103b"></script>
 </body>
 </html>
