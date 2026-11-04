@@ -2290,8 +2290,8 @@
         <p class="section-desc" id="prioDetailDesc">Klik salah satu sel di tabel manapun di atas buat nampilin daftar order-nya di sini.</p>
         <div class="table-card" style="overflow-x:auto;">
           <table class="mbb-report-table">
-            <thead><tr><th>Program</th><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch/Program</th><th>Status</th><th>Nilai</th><th>Detail</th></tr></thead>
-            <tbody id="prioDetailBody"><tr><td colspan="9" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+            <thead><tr><th>Program</th><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch/Program</th><th>Status</th><th>Nilai</th><th>Detail</th><th style="min-width:260px;">Catatan</th></tr></thead>
+            <tbody id="prioDetailBody"><tr><td colspan="10" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -6126,6 +6126,51 @@ function rekapRowDetail(program, row){
   return { id: g(row,'ID-IHLD'), nama: g(row,'NAMA LOP'), branch: g(row,'BRANCH FMC'), sto: g(row,'STO'), batch: g(row,'BATCH PROGRAM'),
            status: hemStripStatusPrefix(statusFn(row)), value: numFn(g(row,'PORT PLAN')), detil: g(row,'DETAIL STATUS') };
 }
+
+/* ---------- Catatan pribadi Priority TSEL (tab "CATATAN PRIORITY" di Google Sheets) ---------- */
+const prioNotes = {};   // key "PROGRAM|ID" -> teks catatan (riwayat, dipisah baris baru)
+let prioNotesLoaded = false;
+async function loadPrioNotes(){
+  try{
+    const res = await universalFetch(WRITE_API_URL + '?action=getPrioCatatan&_=' + Date.now(), {cache:'no-store'});
+    const data = await res.json();
+    if(data.ok){ Object.keys(prioNotes).forEach(k=>delete prioNotes[k]); Object.assign(prioNotes, data.notes || {}); prioNotesLoaded = true; }
+  }catch(e){ console.warn('Catatan priority belum bisa dimuat (script write-back perlu di-update):', e.message); }
+}
+function prioNoteKey(program, d){ return program + '|' + (d.id || ''); }
+function prioCatatanCell(program, d){
+  const esc = t => String(t||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  const key = prioNoteKey(program, d);
+  return `<div class="hem-catatan-history" data-prio-hist="${esc(key)}">${esc(prioNotes[key]||'').replace(/\n/g,'<br>')}</div>
+    <div class="hem-catatan-row">
+      <input type="text" class="hem-catatan-input" data-prio-note="${esc(key)}" data-prio-prog="${esc(program)}" data-prio-id="${esc(d.id)}" data-prio-nama="${esc(d.nama)}" placeholder="+ Catatan saya...">
+      <button type="button" class="hem-catatan-submit" data-prio-save="${esc(key)}">Simpan</button>
+    </div>`;
+}
+async function savePrioNote(input){
+  const text = input.value.trim(); if(!text) return;
+  input.style.borderColor = 'var(--amber)';
+  try{
+    const url = WRITE_API_URL + '?action=updatePrioCatatan&program=' + encodeURIComponent(input.dataset.prioProg) + '&ihld=' + encodeURIComponent(input.dataset.prioId) +
+                '&nama=' + encodeURIComponent(input.dataset.prioNama || '') + '&text=' + encodeURIComponent(text);
+    const res = await universalFetch(url, {cache:'no-store'});
+    const data = await res.json();
+    input.style.borderColor = data.ok ? 'var(--emerald)' : 'var(--red)';
+    if(data.ok){
+      input.value = '';
+      prioNotes[input.dataset.prioNote] = data.isiTerbaru || '';
+      const box = document.querySelector(`[data-prio-hist="${CSS.escape(input.dataset.prioNote)}"]`);
+      if(box) box.innerHTML = String(data.isiTerbaru||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
+    } else { console.error('Gagal simpan catatan priority:', data.error); alert('Gagal simpan catatan: ' + (data.error || 'script write-back belum di-update')); }
+    setTimeout(()=>{ input.style.borderColor = ''; }, 1500);
+  }catch(err){ input.style.borderColor = 'var(--red)'; console.error(err); alert('Gagal simpan catatan: ' + err.message); }
+}
+document.addEventListener('keydown', e=>{ const i = e.target.closest && e.target.closest('[data-prio-note]'); if(i && e.key === 'Enter') savePrioNote(i); });
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-prio-save]'); if(!b) return;
+  const input = document.querySelector(`[data-prio-note="${CSS.escape(b.dataset.prioSave)}"]`);
+  if(input) savePrioNote(input);
+});
 let prioLastDetail = null;
 function renderRekapDetailOutput(key){
   const entry = rekapCellRegistry[key];
@@ -6134,7 +6179,7 @@ function renderRekapDetailOutput(key){
   const labelEl = document.getElementById(pfx + 'DetailLabel');
   const descEl = document.getElementById(pfx + 'DetailDesc');
   const bodyEl = document.getElementById(pfx + 'DetailBody');
-  prioLastDetail = (pfx === 'prio') ? entry : prioLastDetail;
+  if(pfx === 'prio'){ entry._key = key; prioLastDetail = entry; }
   if(labelEl) labelEl.textContent = `— ${entry.label} (${entry.rows.length.toLocaleString('id-ID')} baris)`;
   if(descEl) descEl.textContent = `Menampilkan detail order untuk: ${entry.label}`;
   const esc = t=> String(t||'').replace(/"/g,'&quot;');
@@ -6142,9 +6187,10 @@ function renderRekapDetailOutput(key){
     let html = entry.rows.slice(0,500).map(row=>{
       const d = rekapRowDetail(entry.program, row);
       const valStr = typeof d.value === 'number' ? d.value.toLocaleString('id-ID') : (d.value||'—');
-      return `<tr><td>${entry.program}</td><td>${d.id||'—'}</td><td class="name">${d.nama||'—'}</td><td>${d.branch||'—'}</td><td>${d.sto||'—'}</td><td>${d.batch||'—'}</td><td>${d.status||'—'}</td><td>${valStr}</td><td style="min-width:260px;max-width:360px;"><div style="max-height:52px;overflow-y:auto;white-space:normal;font-size:11.5px;color:var(--text-dim);line-height:1.4;" title="${esc(d.detil)}">${d.detil||'—'}</div></td></tr>`;
-    }).join('') || `<tr><td colspan="9" style="text-align:center;padding:20px;">Tidak ada data.</td></tr>`;
-    if(entry.rows.length > 500) html += `<tr><td colspan="9" style="text-align:center;padding:10px;color:var(--text-faint);">...dan ${(entry.rows.length-500).toLocaleString('id-ID')} baris lainnya (dibatasi 500 buat performa)</td></tr>`;
+      const cat = pfx === 'prio' ? `<td>${prioCatatanCell(entry.program, d)}</td>` : '';
+      return `<tr><td>${entry.program}</td><td>${d.id||'—'}</td><td class="name">${d.nama||'—'}</td><td>${d.branch||'—'}</td><td>${d.sto||'—'}</td><td>${d.batch||'—'}</td><td>${d.status||'—'}</td><td>${valStr}</td><td style="min-width:260px;max-width:360px;"><div style="max-height:52px;overflow-y:auto;white-space:normal;font-size:11.5px;color:var(--text-dim);line-height:1.4;" title="${esc(d.detil)}">${d.detil||'—'}</div></td>${cat}</tr>`;
+    }).join('') || `<tr><td colspan="${pfx==='prio'?10:9}" style="text-align:center;padding:20px;">Tidak ada data.</td></tr>`;
+    if(entry.rows.length > 500) html += `<tr><td colspan="${pfx==='prio'?10:9}" style="text-align:center;padding:10px;color:var(--text-faint);">...dan ${(entry.rows.length-500).toLocaleString('id-ID')} baris lainnya (dibatasi 500 buat performa)</td></tr>`;
     bodyEl.innerHTML = html;
   }
   const section = document.getElementById(pfx + 'DetailSection');
@@ -6322,14 +6368,14 @@ function renderPrioPage(only){
   (only ? [only] : ['pt2','ta','fh','mbb']).forEach(renderPrioBlock);
   renderPrioSummary();
 }
-document.getElementById('tabBtnPrio').onclick = ()=> { switchTab('prio'); renderPrioPage(); };
+document.getElementById('tabBtnPrio').onclick = ()=> { switchTab('prio'); renderPrioPage(); loadPrioNotes().then(()=>{ if(prioLastDetail) renderRekapDetailOutput(prioLastDetail._key); }); };
 document.getElementById('prioDownloadBtn').onclick = ()=>{
   if(!prioLastDetail || !prioLastDetail.rows.length){ alert('Klik dulu salah satu sel di tabel buat milih data yang mau di-download.'); return; }
   const esc = v => '"' + String(v==null?'':v).replace(/"/g,'""') + '"';
-  const head = ['Program','ID','Nama','Branch','STO','Batch/Program','Status','Nilai','Detail'];
+  const head = ['Program','ID','Nama','Branch','STO','Batch/Program','Status','Nilai','Detail','Catatan'];
   const lines = [head.map(esc).join(',')].concat(prioLastDetail.rows.map(r=>{
     const x = rekapRowDetail(prioLastDetail.program, r);
-    return [prioLastDetail.program, x.id, x.nama, x.branch, x.sto, x.batch, x.status, x.value, x.detil].map(esc).join(',');
+    return [prioLastDetail.program, x.id, x.nama, x.branch, x.sto, x.batch, x.status, x.value, x.detil, prioNotes[prioNoteKey(prioLastDetail.program, x)] || ''].map(esc).join(',');
   }));
   const blob = new Blob(['﻿' + lines.join('\n')], {type:'text/csv;charset=utf-8'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
