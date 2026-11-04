@@ -198,11 +198,52 @@ const DATECOL = {
   pt3fh:r => pt3fhGet(r,'KOMITMEN GOLIVE'),
 };
 const SRC = { mbb:()=>mbbRows, olo:()=>oloRows, hem:()=>hemRows, pt3ta:()=>pt3Rows, pt3fh:()=>pt3fhRows, pt2:()=>rows };
+/* ---- LOG KOMITMEN (tab "LOG KOMITMEN", diisi Apps Script harian) ----
+   Kolom KOMITMEN GOLIVE cuma nyimpen nilai terakhir; kalau order mundur ke bulan depan, jejaknya hilang.
+   Log nyimpen semua komitmen yang pernah tercatat -> MTD = order yang pernah berkomitmen di bulan itu. */
+const KOMLOG = { loaded:false, n:0, map:{}, err:'' };
+const KOMLOG_URLS = [
+  'https://docs.google.com/spreadsheets/d/1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent('LOG KOMITMEN'),
+];
+async function loadKomLog(){
+  KOMLOG.map = {}; KOMLOG.n = 0; KOMLOG.err = '';
+  for(const url of KOMLOG_URLS){
+    try{
+      const res = await fetch(url + '&_=' + Date.now(), {cache:'no-store'});
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const txt = await res.text();
+      const out = Papa.parse(txt, {header:true, skipEmptyLines:true});
+      const rowsL = out.data || [];
+      if(!rowsL.length || rowsL[0]['PROGRAM'] === undefined) throw new Error('tab LOG KOMITMEN belum ada / kosong');
+      rowsL.forEach(r=>{
+        const k = (r['PROGRAM']||'').trim() + '|' + (r['ID-IHLD']||'').trim();
+        const m = (r['BULAN KOMITMEN']||'').trim();
+        if(!m) return;
+        (KOMLOG.map[k] = KOMLOG.map[k] || new Set()).add(m);
+        KOMLOG.n++;
+      });
+      KOMLOG.loaded = KOMLOG.n > 0; KOMLOG.err = KOMLOG.loaded ? '' : 'log masih kosong';
+      return;
+    }catch(e){ KOMLOG.err = String(e.message || e); }
+  }
+  KOMLOG.loaded = false;
+}
+const KOMLOG_PROG = { pt3ta:'PT3 TA', pt3fh:'PT3 FH' };
+const KOMLOG_ID = { pt3ta: r=>pt3Get(r,'ID-IHLD'), pt3fh: r=>pt3fhGet(r,'ID-IHLD') };
+function ymKey(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0'); }
+/* order ikut MTD bulan d: komitmen SEKARANG di bulan itu, atau pernah tercatat di log */
+function inMonthByLog(key, r, d){
+  if(sameMonth(DATECOL[key](r), d)) return true;
+  if(!KOMLOG.loaded) return false;
+  const set = KOMLOG.map[KOMLOG_PROG[key] + '|' + String(KOMLOG_ID[key](r)||'').trim()];
+  return !!set && set.has(ymKey(d));
+}
 /* baris sesuai periode: YTD = semua; MTD = bulan dari tanggal huddle (hanya modul yang punya kolom tanggal order) */
 function pr(key){
   const all = SRC[key]() || [];
   if(P.mode !== 'mtd' || !DATECOL[key]) return all;
   const d = curD || inputDate();
+  if(KOMLOG_PROG[key]) return all.filter(r => inMonthByLog(key, r, d));
   return all.filter(r => sameMonth(DATECOL[key](r), d));
 }
 const glp = p => pct((p.golive||0)+(p.bisa||0), (p.order||0)-(p.drop||0));
@@ -531,6 +572,7 @@ async function generate(){
   const btn = document.getElementById('rpGo'), msg = document.getElementById('rpMsg');
   const say = (t,err)=>{ msg.textContent = t; msg.style.color = err ? '#B42318' : ''; };
   try{
+    if(P.mode !== 'ytd' || document.getElementById('rpMode').value !== 'ytd'){ say('Membaca log komitmen…'); await loadKomLog(); refreshStatus(); }
     if(typeof PptxGenJS === 'undefined'){
       say('Memuat library PPT…');
       const srcs = ['pptxgen.bundle.js','https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js','https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js','https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
@@ -627,8 +669,9 @@ function buildUI(){
 }
 function refreshStatus(){
   const el = document.getElementById('rpData'); if(!el) return;
-  el.innerHTML = 'Data termuat: ' + dataReady().map(([k,l,n])=> `<span style="margin-right:12px;${n?'':'color:#B42318;'}">${l}: ${n?nf(n)+' baris':'belum ada'}</span>`).join('');
+  const lg = KOMLOG.loaded ? `<span style="margin-left:4px;color:#167A4B;">Log komitmen PT3: ${nf(KOMLOG.n)} catatan (MTD PT3 pakai riwayat komitmen)</span>` : `<span style="margin-left:4px;color:#B45309;">Log komitmen PT3 belum aktif${KOMLOG.err ? ' ('+KOMLOG.err+')' : ''} — MTD PT3 pakai komitmen terakhir</span>`;
+  el.innerHTML = lg + '<br>Data termuat: ' + dataReady().map(([k,l,n])=> `<span style="margin-right:12px;${n?'':'color:#B42318;'}">${l}: ${n?nf(n)+' baris':'belum ada'}</span>`).join('');
 }
-window.RekapAgg = { P, pr, mbbBlock, mbbSide, ohBlock, ohCfg, pt3Block, pt3Cfg, pt2Block, distNorm, abbr, DISTS, regionsOf };
-window.rekapPptOpen = function(){ buildUI(); refreshStatus(); };
+window.RekapAgg = { KOMLOG, loadKomLog, P, pr, mbbBlock, mbbSide, ohBlock, ohCfg, pt3Block, pt3Cfg, pt2Block, distNorm, abbr, DISTS, regionsOf };
+window.rekapPptOpen = function(){ buildUI(); refreshStatus(); loadKomLog().then(refreshStatus); };
 })();
