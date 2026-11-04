@@ -194,7 +194,8 @@ const DATECOL = {
   mbb:  r => mbbGet(r,'TGL COMMIT OA FIX'),   /* MTD MBB = order dengan komitmen OA di bulan tsb */
   olo:  r => oloGet(r,'TANGGAL ORDER'),
   hem:  r => hemGet(r,'Tanggal submit order nde'),
-  pt3ta:r => pt3Get(r,'Tgl Order'),
+  pt3ta:r => pt3Get(r,'KOMITMEN GOLIVE'),   /* MTD PT3 = order dengan komitmen golive di bulan tsb */
+  pt3fh:r => pt3fhGet(r,'KOMITMEN GOLIVE'),
 };
 const SRC = { mbb:()=>mbbRows, olo:()=>oloRows, hem:()=>hemRows, pt3ta:()=>pt3Rows, pt3fh:()=>pt3fhRows, pt2:()=>rows };
 /* baris sesuai periode: YTD = semua; MTD = bulan dari tanggal huddle (hanya modul yang punya kolom tanggal order) */
@@ -389,8 +390,8 @@ function slideOH(key, title, st, d){
 function slidePt3(key, title, st, d){
   const cfg = pt3Cfg(key), b = pt3Block(cfg, d), s = base(title);
   const LW = 7.0;
-  caption(s, `ALL ORDER ${key==='pt3ta'?'PT3 TA':'PT3 FH'} (PORT PLAN) — ${key==='pt3ta' ? modeLabel(d) : 'All (YTD)'}`, 0.3, 0.95, 7, {fontSize:10});
-  const bm = (P.both && key==='pt3ta') ? withMode('mtd', ()=>pt3Block(pt3Cfg(key), d)) : null;
+  caption(s, `ALL ORDER ${key==='pt3ta'?'PT3 TA':'PT3 FH'} (PORT PLAN) — ${modeLabel(d)}`, 0.3, 0.95, 7, {fontSize:10});
+  const bm = (P.both) ? withMode('mtd', ()=>pt3Block(pt3Cfg(key), d)) : null;
   const T = sumPer(b, b.regs, ['order','drop','kendala','fi','gl','ogp','kom','komGl']);
   let y;
   if(!bm){
