@@ -953,6 +953,7 @@
               <tr id="hemTableHead">
                 <th class="sortable" data-field="IHLD">IHLD<span class="sort-arrow">▲▼</span></th>
                 <th class="sortable" data-field="TIPE DESAIN">Tipe Desain<span class="sort-arrow">▲▼</span></th>
+                <th class="sortable" data-field="TIPE DESAIN 2">Tipe Desain 2<span class="sort-arrow">▲▼</span></th>
                 <th class="sortable" data-field="NAMA LOP">Nama LOP<span class="sort-arrow">▲▼</span></th>
                 <th class="sortable" data-field="WITEL">Witel<span class="sort-arrow">▲▼</span></th>
                 <th class="sortable" data-field="DISTRICT">District<span class="sort-arrow">▲▼</span></th>
@@ -5134,6 +5135,7 @@ function hemRenderTable(){
     return `<tr>
       <td>${ihld||'—'}</td>
       <td>${hemGet(row,'TIPE DESAIN')||'—'}</td>
+      <td>${hemGet(row,'TIPE DESAIN 2')||'—'}</td>
       <td class="name">${hemGet(row,'NAMA LOP')||'—'}</td>
       <td>${hemGet(row,'WITEL')||'—'}</td>
       <td>${hemGet(row,'DISTRICT')||'—'}</td>
@@ -5157,7 +5159,7 @@ function hemRenderTable(){
         ${renderCatatanCell('hem', ihld, catatan)}
       </td>
     </tr>`;
-  }).join('') || `<tr><td colspan="22" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
+  }).join('') || `<tr><td colspan="23" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
 
   document.getElementById('hemPageInfo').textContent = `Halaman ${hemCurrentPage} dari ${totalPages}`;
   document.getElementById('hemPrevPage').disabled = hemCurrentPage <= 1;
@@ -10237,6 +10239,7 @@ document.getElementById('hemDownloadBtn').onclick = ()=>{
   downloadRowsAsCsv('daftar-work-order-hem.csv', [
     {label:'IHLD', get:r=>hemGet(r,'IHLD')},
     {label:'Tipe Desain', get:r=>hemGet(r,'TIPE DESAIN')},
+    {label:'Tipe Desain 2', get:r=>hemGet(r,'TIPE DESAIN 2')},
     {label:'Nama LOP', get:r=>hemGet(r,'NAMA LOP')},
     {label:'Witel', get:r=>hemGet(r,'WITEL')},
     {label:'District', get:r=>hemGet(r,'DISTRICT')},
