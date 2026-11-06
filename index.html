@@ -3174,10 +3174,8 @@ function renderFunnelFlowGoDeployUkur(){
       <div class="flow-box-row value"><div>${odp.toLocaleString('id-ID')}</div><div>${port.toLocaleString('id-ID')}</div></div>
     </div>`;
 
-  let goDeployOdp = 0, goDeployPort = 0;
-  Object.values(FUNNEL.godeploy).forEach(branchObj=>{
-    JENIS_GROUPS.forEach(g=>{ goDeployOdp += branchObj[g].odp; goDeployPort += branchObj[g].port; });
-  });
+  const goDeployOdp = AGG.ukurGoDeployAgg.done.count + AGG.ukurGoDeployAgg.belum.count;
+  const goDeployPort = AGG.ukurGoDeployAgg.done.port + AGG.ukurGoDeployAgg.belum.port;
 
   const rightBoxesHTML = [
     boxHTML('DONE UKUR', '#2F5233', AGG.ukurGoDeployAgg.done.count, AGG.ukurGoDeployAgg.done.port),
@@ -3187,7 +3185,7 @@ function renderFunnelFlowGoDeployUkur(){
   document.getElementById('funnelFlowGoDeployUkur').innerHTML = `
     <svg id="funnelSvgGoDeployUkur" class="funnel-svg"></svg>
     <div class="flow-box" id="flowBoxAllGoDeployUkur">
-      <div class="flow-box-title" style="background:#8B7226">GO DEPLOY</div>
+      <div class="flow-box-title" style="background:#8B7226">SURVEY MANCORE</div>
       <div class="flow-box-row header"><div>ODP</div><div>PORT</div></div>
       <div class="flow-box-row value"><div>${goDeployOdp.toLocaleString('id-ID')}</div><div>${goDeployPort.toLocaleString('id-ID')}</div></div>
     </div>
@@ -3212,9 +3210,9 @@ function renderFunnelFlowLanjut(){
   document.getElementById('funnelFlowLanjut').innerHTML = `
     <svg id="funnelSvgLanjut" class="funnel-svg"></svg>
     <div class="flow-box" id="flowBoxAllLanjut">
-      <div class="flow-box-title" style="background:#2F5233">DONE UKUR</div>
+      <div class="flow-box-title" style="background:#8B7226">SURVEY MANCORE</div>
       <div class="flow-box-row header"><div>ODP</div><div>PORT</div></div>
-      <div class="flow-box-row value"><div>${AGG.ukurGoDeployAgg.done.count.toLocaleString('id-ID')}</div><div>${AGG.ukurGoDeployAgg.done.port.toLocaleString('id-ID')}</div></div>
+      <div class="flow-box-row value"><div>${(AGG.ukurGoDeployAgg.done.count+AGG.ukurGoDeployAgg.belum.count).toLocaleString('id-ID')}</div><div>${(AGG.ukurGoDeployAgg.done.port+AGG.ukurGoDeployAgg.belum.port).toLocaleString('id-ID')}</div></div>
     </div>
     <div class="flow-right-col" id="flowRightColLanjut">${rightBoxesHTML}</div>`;
 
