@@ -940,6 +940,14 @@
             <button type="button" class="multiselect-btn" id="hemFilterDistrictBtn">Semua District <span class="chev">▾</span></button>
             <div class="multiselect-panel" id="hemFilterDistrictPanel" style="display:none;"></div>
           </div>
+          <div class="multiselect" id="hemFilterDesainWrap">
+            <button type="button" class="multiselect-btn" id="hemFilterDesainBtn">Semua Tipe Desain <span class="chev">▾</span></button>
+            <div class="multiselect-panel" id="hemFilterDesainPanel" style="display:none;"></div>
+          </div>
+          <div class="multiselect" id="hemFilterDesain2Wrap">
+            <button type="button" class="multiselect-btn" id="hemFilterDesain2Btn">Semua Tipe Desain 2 <span class="chev">▾</span></button>
+            <div class="multiselect-panel" id="hemFilterDesain2Panel" style="display:none;"></div>
+          </div>
           <div class="multiselect" id="hemFilterProgressWrap">
             <button type="button" class="multiselect-btn" id="hemFilterProgressBtn">Semua Progres <span class="chev">▾</span></button>
             <div class="multiselect-panel" id="hemFilterProgressPanel" style="display:none;"></div>
@@ -5054,6 +5062,8 @@ function hemRenderDistrictChart(){
 
 const hemWitelMultiSelect = makeMultiSelect('hemFilterWitel', 'Semua Witel', ()=>{ hemCurrentPage=1; hemRenderTable(); });
 const hemDistrictMultiSelect = makeMultiSelect('hemFilterDistrict', 'Semua District', ()=>{ hemCurrentPage=1; hemRenderTable(); });
+const hemDesainMultiSelect = makeMultiSelect('hemFilterDesain', 'Semua Tipe Desain', ()=>{ hemCurrentPage=1; hemRenderTable(); });
+const hemDesain2MultiSelect = makeMultiSelect('hemFilterDesain2', 'Semua Tipe Desain 2', ()=>{ hemCurrentPage=1; hemRenderTable(); });
 const hemProgressMultiSelect = makeMultiSelect('hemFilterProgress', 'Semua Progres', ()=>{ hemCurrentPage=1; hemRenderTable(); });
 
 function hemSetupFilters(){
@@ -5064,6 +5074,8 @@ function hemSetupFilters(){
   if(hemWitelMultiSelect) hemWitelMultiSelect.setOptions(witels);
   if(hemDistrictMultiSelect) hemDistrictMultiSelect.setOptions(districts);
   if(hemProgressMultiSelect) hemProgressMultiSelect.setOptions(progresses);
+  if(hemDesainMultiSelect) hemDesainMultiSelect.setOptions([...new Set(hemRows.map(r=>hemGet(r,'TIPE DESAIN')).filter(Boolean))].sort());
+  if(hemDesain2MultiSelect) hemDesain2MultiSelect.setOptions([...new Set(hemRows.map(r=>hemGet(r,'TIPE DESAIN 2')).filter(Boolean))].sort());
 
   document.getElementById('hemSearchInput').oninput = ()=>{ hemCurrentPage=1; hemRenderTable(); };
 }
@@ -5073,6 +5085,8 @@ function hemGetFilteredRows(){
   const witelFilters = hemWitelMultiSelect ? hemWitelMultiSelect.getSelected() : [];
   const districtFilters = hemDistrictMultiSelect ? hemDistrictMultiSelect.getSelected() : [];
   const progressFilters = hemProgressMultiSelect ? hemProgressMultiSelect.getSelected() : [];
+  const desainFilters = hemDesainMultiSelect ? hemDesainMultiSelect.getSelected() : [];
+  const desain2Filters = hemDesain2MultiSelect ? hemDesain2MultiSelect.getSelected() : [];
 
   const baseRows0 = (hemAGG && hemAGG.rows) ? hemAGG.rows : hemRows;
   const baseRows = hemFilterCtl.apply(baseRows0);
@@ -5080,6 +5094,8 @@ function hemGetFilteredRows(){
     if(witelFilters.length && !witelFilters.includes(hemGet(row,'WITEL'))) return false;
     if(districtFilters.length && !districtFilters.includes(hemGet(row,'DISTRICT'))) return false;
     if(progressFilters.length && !progressFilters.includes(hemGet(row,'Progress Lapangan'))) return false;
+    if(desainFilters.length && !desainFilters.includes(hemGet(row,'TIPE DESAIN'))) return false;
+    if(desain2Filters.length && !desain2Filters.includes(hemGet(row,'TIPE DESAIN 2'))) return false;
     if(q){
       const hay = [hemGet(row,'IHLD'), hemGet(row,'NAMA LOP'), hemGet(row,'STO'), hemGet(row,'DISTRICT')].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
