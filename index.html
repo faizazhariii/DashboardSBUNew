@@ -536,7 +536,6 @@
         <div class="funnel-flow" id="funnelFlow"></div>
         <div class="funnel-flow" id="funnelFlowGoDeployUkur"></div>
         <div class="funnel-flow" id="funnelFlowLanjut"></div>
-        <div class="funnel-flow" id="funnelFlowSplitter"></div>
       </div>
     </div>
 
@@ -2536,11 +2535,8 @@ function isDoneUkur(raw){
   return (raw||'').toUpperCase().includes('DONE');
 }
 function getLanjutRaw(row){
-  let v = get(row,'LANJUT (YES/NO)');
-  if(v) return v;
-  const foundKey = Object.keys(headerMap).find(k=>k.includes('LANJUT'));
-  if(foundKey) return (row[headerMap[foundKey]]||'').toString().trim();
-  return '';
+  // Header 'GO' (nilai: GO / NOT GO / kosong)
+  return (get(row,'GO')||'').toString().trim();
 }
 function isYesLanjut(raw){
   // .replace(/\s+/g,' ') menormalkan semua jenis spasi (termasuk non-breaking space
@@ -2974,9 +2970,11 @@ function buildDashboard(){
 
       if(key === 'done'){
         const lanjutRaw = getLanjutRaw(row);
-        const lKey = isYesLanjut(lanjutRaw) ? 'yes' : 'no';
+        const lKey = !lanjutRaw ? null : (isYesLanjut(lanjutRaw) ? 'yes' : 'no');
+        if(lKey){
         lanjutAgg[lKey].count += 1;
         lanjutAgg[lKey].port += port;
+        }
 
         if(lKey === 'yes'){
           const sGroup = splitterGroup(row);
@@ -3336,41 +3334,6 @@ function sanitizeSheetName(name){
   return s;
 }
 
-function renderFunnelFlowSplitter(){
-  const boxHTML = (title, color, odp, port)=>`
-    <div class="flow-box">
-      <div class="flow-box-title" style="background:${color}">${title}</div>
-      <div class="flow-box-row header"><div>ODP</div><div>PORT</div></div>
-      <div class="flow-box-row value"><div>${odp.toLocaleString('id-ID')}</div><div>${port.toLocaleString('id-ID')}</div></div>
-    </div>`;
-
-  const rightBoxesHTML = [
-    boxHTML('SPLITTER 1:12', '#4A6C8C', AGG.splitterAgg['1:12'].count, AGG.splitterAgg['1:12'].port),
-    boxHTML('SPLITTER 1:16', '#3B6E86', AGG.splitterAgg['1:16'].count, AGG.splitterAgg['1:16'].port),
-  ].join('');
-
-  const lainnyaCount = AGG.splitterAgg['Lainnya'].count;
-  const lainnyaNote = lainnyaCount > 0
-    ? `<p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-faint);margin:8px 0 0;">⚠ ${lainnyaCount.toLocaleString('id-ID')} data dalam subset ini punya format SPLITTER yang tidak dikenali (bukan 1:12/1:16), tidak masuk kotak manapun.</p>`
-    : '';
-
-  document.getElementById('funnelFlowSplitter').innerHTML = `
-    <svg id="funnelSvgSplitter" class="funnel-svg"></svg>
-    <div class="flow-box" id="flowBoxAllSplitter">
-      <div class="flow-box-title" style="background:#0E9C93">LANJUT (GO)</div>
-      <div class="flow-box-row header"><div>ODP</div><div>PORT</div></div>
-      <div class="flow-box-row value"><div>${AGG.lanjutAgg.yes.count.toLocaleString('id-ID')}</div><div>${AGG.lanjutAgg.yes.port.toLocaleString('id-ID')}</div></div>
-      <button class="download-lanjut-btn" id="downloadLanjutGoBtn" type="button">⬇ Download Excel (${AGG.lanjutGoRows.length})</button>
-    </div>
-    <div class="flow-right-col" id="flowRightColSplitter">${rightBoxesHTML}</div>
-    ${lainnyaNote}`;
-
-  const dlBtn = document.getElementById('downloadLanjutGoBtn');
-  if(dlBtn) dlBtn.onclick = downloadLanjutGoExcel;
-
-  requestAnimationFrame(()=>drawFunnelConnectors('funnelFlowSplitter','funnelSvgSplitter','flowBoxAllSplitter','flowRightColSplitter'));
-}
-
 function drawFunnelConnectors(containerId, svgId, leftBoxId, rightColId){
   const container = document.getElementById(containerId);
   const svg = document.getElementById(svgId);
@@ -3401,7 +3364,6 @@ window.addEventListener('resize', ()=>{
   if(FUNNEL) drawFunnelConnectors('funnelFlow','funnelSvg','flowBoxAll','flowRightCol');
   if(AGG && AGG.ukurGoDeployAgg) drawFunnelConnectors('funnelFlowGoDeployUkur','funnelSvgGoDeployUkur','flowBoxAllGoDeployUkur','flowRightColGoDeployUkur');
   if(AGG && AGG.lanjutAgg) drawFunnelConnectors('funnelFlowLanjut','funnelSvgLanjut','flowBoxAllLanjut','flowRightColLanjut');
-  if(AGG && AGG.splitterAgg) drawFunnelConnectors('funnelFlowSplitter','funnelSvgSplitter','flowBoxAllSplitter','flowRightColSplitter');
 });
 
 function renderFunnelCharts(){
@@ -3409,7 +3371,6 @@ function renderFunnelCharts(){
   renderFunnelFlow();
   renderFunnelFlowGoDeployUkur();
   renderFunnelFlowLanjut();
-  renderFunnelFlowSplitter();
   if(FUNNEL_TSEL_PRIO) renderFunnelFlowTselPrio();
 }
 
