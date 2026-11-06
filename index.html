@@ -2957,9 +2957,8 @@ function buildDashboard(){
     ukurAgg[key].count += 1;
     ukurAgg[key].port += port;
 
-    { const gRaw = getLanjutRaw(row); if(gRaw){ const gk = isYesLanjut(gRaw)?'yes':'no'; lanjutAgg[gk].count += 1; lanjutAgg[gk].port += port; } }
     const status = deriveStatus(get(row,'STAT FINAL'));
-    const isGoDeploy = statusClass(status) === 'godeploy';
+    const isGoDeploy = /survey\s*ma(?:i)?ncore/i.test((get(row,'STAT FINAL')||'').toString());
     if(isGoDeploy){
       ukurGoDeployAgg[key].count += 1;
       ukurGoDeployAgg[key].port += port;
@@ -2969,9 +2968,10 @@ function buildDashboard(){
       ukurGoDeployJenisAgg[key][jenisGroupUkur].count += 1;
       ukurGoDeployJenisAgg[key][jenisGroupUkur].port += port;
 
-      if(key === 'done'){
+      {
         const lanjutRaw = getLanjutRaw(row);
         const lKey = !lanjutRaw ? null : (isYesLanjut(lanjutRaw) ? 'yes' : 'no');
+        if(lKey){ lanjutAgg[lKey].count += 1; lanjutAgg[lKey].port += port; }
         if(lKey === 'yes'){
           const sGroup = splitterGroup(row);
           splitterAgg[sGroup].count += 1;
