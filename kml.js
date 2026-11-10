@@ -22,6 +22,8 @@
     $('kmlClear').onclick=clearAll;
     $('kmlFit').onclick=fit;
     $('kmlSearch').oninput=renderList;
+    $('kmlAllOn').onclick=()=>setAll(true); $('kmlAllOff').onclick=()=>setAll(false);
+    $('kmlExp').onclick=()=>expandAll(true); $('kmlCol').onclick=()=>expandAll(false);
     setTimeout(()=>map.invalidateSize(),50);
   }
   function status(t,err){ const el=$('kmlStatus'); el.textContent=t; el.style.color=err?'#E31B23':''; }
@@ -127,7 +129,14 @@
     // kode yang tidak ada di KML: baris kosong
     SITES.forEach(code=>{ if(!out[code]) out[code]={name:code,layer:L.featureGroup(),children:[],on:true,open:false,parent:root,pe:null}; });
     root.removeLayer(top);
-    entry.sitesOut=SITES.map(code=>out[code]);
+    const GROUPS=[['PSP684','PSP702'],['TRT971','TRT967']];
+    const GNAME={PSP684:'PSP684 · PSP702 · PSP439 (Sejalur)',TRT971:'TRT971 · TRT967 · TRT891 (Sejalur)'};
+    const merged={};
+    GROUPS.forEach(g=>{
+      const ge={name:GNAME[g[0]],layer:L.featureGroup().addTo(root),children:[],on:true,open:true,parent:root,pe:null};
+      g.forEach(code=>{ const m=out[code]; root.removeLayer(m.layer); m.layer.addTo(ge.layer); m.parent=ge.layer; ge.children.push(m); merged[code]=g[0]===code?ge:null; });
+    });
+    entry.sitesOut=SITES.map(code=>code in merged?merged[code]:out[code]).filter(Boolean);
   }
   function addKml(xml,name){
     const doc=new DOMParser().parseFromString(xml,'text/xml');
@@ -229,6 +238,11 @@
     }
     items.forEach(e=>row(e,0));
   }
+  function setAll(on){
+    const rec=e=>{ e.on=on; if(on) e.layer.addTo(e.parent); else e.parent.removeLayer(e.layer); (e.children||[]).forEach(rec); };
+    items.forEach(rec); renderList();
+  }
+  function expandAll(open){ const rec=e=>{ e.open=open; (e.children||[]).forEach(rec); }; items.forEach(rec); renderList(); }
   function clearAll(){ if(root){ root.clearLayers(); } items=[]; renderList(); renderTable(); status('Peta dikosongkan'); }
   function fit(){ if(root){ const b=root.getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]}); } }
   function stat(e,acc){

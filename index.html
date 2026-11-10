@@ -2262,6 +2262,12 @@
         <div style="display:flex;gap:12px;flex-wrap:wrap;">
           <div style="width:260px;flex:0 0 260px;max-height:600px;overflow:auto;">
             <input id="kmlSearch" placeholder="Cari nama objek…" style="width:100%;padding:6px 8px;margin-bottom:6px;box-sizing:border-box;">
+            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
+              <button class="refresh-btn" id="kmlAllOn" type="button" style="padding:3px 8px;font-size:11px;">☑ Pilih semua</button>
+              <button class="refresh-btn" id="kmlAllOff" type="button" style="padding:3px 8px;font-size:11px;">☐ Kosongkan</button>
+              <button class="refresh-btn" id="kmlExp" type="button" style="padding:3px 8px;font-size:11px;">▾ Buka semua</button>
+              <button class="refresh-btn" id="kmlCol" type="button" style="padding:3px 8px;font-size:11px;">▸ Tutup semua</button>
+            </div>
             <div id="kmlList"></div>
           </div>
           <div id="kmlMap" style="flex:1;min-width:300px;height:600px;border-radius:10px;"></div>
@@ -10850,6 +10856,6 @@ oloLoadDataAuto();
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
 <script src="qe-recap.js?v=20261104b"></script>
-<script src="kml.js?v=20261111d"></script>
+<script src="kml.js?v=20261111e"></script>
 </body>
 </html>
