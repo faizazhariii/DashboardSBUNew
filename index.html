@@ -457,6 +457,7 @@
     .tab-parent{display:none;}
     .tab-sub .page-tab{font-size:14px;padding:8px 12px;}
   }
+.kml-ico{background:none;border:none}.kml-lbl{background:rgba(255,255,255,.85);border:1px solid #999;color:#111;font-size:11px;font-weight:600;padding:0 4px;box-shadow:none}.kml-lbl:before{display:none}.kml-nolbl .kml-lbl{display:none}
 </style>
 </head>
 <body>
@@ -2253,6 +2254,7 @@
           <input id="kmlUrl" placeholder="URL KML/KMZ (opsional)" style="flex:1;min-width:200px;padding:6px 8px;">
           <button class="refresh-btn" id="kmlUrlBtn" type="button">Muat URL</button>
           <select id="kmlBase" style="padding:6px;"><option value="osm">Peta</option><option value="sat">Satelit</option></select>
+          <label style="font-size:12px;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="kmlLbl" checked> Label nama (zoom dekat)</label>
           <button class="refresh-btn" id="kmlFit" type="button">Fit</button>
           <button class="refresh-btn" id="kmlClear" type="button">Hapus semua</button>
         </div>
@@ -10848,6 +10850,6 @@ oloLoadDataAuto();
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
 <script src="qe-recap.js?v=20261104b"></script>
-<script src="kml.js?v=20261111b"></script>
+<script src="kml.js?v=20261111c"></script>
 </body>
 </html>

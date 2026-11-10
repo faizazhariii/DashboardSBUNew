@@ -16,6 +16,8 @@
     ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over');}));
     ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over');}));
     dz.addEventListener('drop',e=>loadFiles(e.dataTransfer.files));
+    const upd=()=>{ const on=$('kmlLbl').checked&&map.getZoom()>=16; $('kmlMap').classList.toggle('kml-nolbl',!on); };
+    $('kmlLbl').onchange=upd; map.on('zoomend',upd); upd();
     $('kmlUrlBtn').onclick=loadUrl;
     $('kmlClear').onclick=clearAll;
     $('kmlFit').onclick=fit;
@@ -62,6 +64,47 @@
   }
   const kids=(n,tag)=>Array.from(n.children).filter(c=>c.localName===tag);
   const txt=(n,tag)=>{const c=kids(n,tag)[0];return c?c.textContent.trim():'';};
+
+  const ICONCOL={'ylw-pushpin':'#FFD400','blue-pushpin':'#1E6BFF','grn-pushpin':'#22B14C','red-pushpin':'#E31B23','wht-pushpin':'#FFFFFF','red-circle':'#E31B23','grn-circle':'#22B14C','flag':'#E31B23'};
+  function iconShape(name,col,sc){
+    const k=(name||'').toLowerCase(); const z=Math.round(22*(sc||1)); const st=`stroke="#222" stroke-width="1.4"`; let b;
+    if(/pushpin/.test(k)) b=`<path d="M12 22 L7 10 A6 6 0 1 1 17 10 Z" fill="${col}" ${st}/><circle cx="12" cy="8" r="2" fill="#fff"/>`;
+    else if(k==='square') b=`<rect x="4" y="4" width="16" height="16" rx="2" fill="${col}" ${st}/>`;
+    else if(k==='triangle') b=`<path d="M12 3 L22 20 L2 20 Z" fill="${col}" ${st}/>`;
+    else if(k==='forbidden') b=`<circle cx="12" cy="12" r="9" fill="none" stroke="${col}" stroke-width="3.2"/><path d="M6 18 L18 6" stroke="${col}" stroke-width="3.2"/><circle cx="12" cy="12" r="10.4" fill="none" stroke="#222" stroke-width=".8"/>`;
+    else if(k==='flag') b=`<path d="M6 21 V3" stroke="#222" stroke-width="2"/><path d="M6 4 H19 L15 8.5 L19 13 H6 Z" fill="${col}" ${st}/>`;
+    else if(k==='water') b=`<path d="M12 2 C12 2 4 11 4 15 A8 8 0 0 0 20 15 C20 11 12 2 12 2Z" fill="${col}" ${st}/>`;
+    else if(k==='picnic') b=`<path d="M2 20 L12 4 L22 20 Z" fill="${col}" ${st}/><rect x="9" y="13" width="6" height="7" fill="#fff" stroke="#222" stroke-width="1"/>`;
+    else if(k==='sunny') b=`<circle cx="12" cy="12" r="5" fill="${col}" ${st}/><g stroke="${col}" stroke-width="2.4"><path d="M12 1v4M12 19v4M1 12h4M19 12h4M4 4l3 3M17 17l3 3M20 4l-3 3M7 17l-3 3"/></g>`;
+    else if(k==='target'||k==='cross-hairs') b=`<circle cx="12" cy="12" r="9" fill="none" ${st} stroke-width="2"/><circle cx="12" cy="12" r="4" fill="${col}" ${st}/>`;
+    else if(k==='arrow') b=`<path d="M12 2 L21 20 L12 15 L3 20 Z" fill="${col}" ${st}/>`;
+    else b=`<circle cx="12" cy="12" r="8" fill="${col}" ${st}/>`;
+    return L.divIcon({className:'kml-ico',html:`<svg width="${z}" height="${z}" viewBox="0 0 24 24">${b}</svg>`,iconSize:[z,z],iconAnchor:[z/2,/pushpin/.test(k)?z-2:z/2]});
+  }
+  function classify(name,isLine,folder){
+    const n=(name||'').toUpperCase().trim(), f=(folder||'').toUpperCase().trim();
+    if(isLine) return /ROUTE|RUTE|CATUAN|PATH/.test(f)||/^(ROUTE|RUTE|UNTITLED PATH)/.test(n)?'RUTE':'KABEL';
+    if(!isLine){ const F=[[/^TIANG/,'TIANG'],[/^CLOSUR|^CLOSURE|^CL$/,'CLOSURE'],[/^(MH|HH|MM)[\s\/&]|^(MH|HH)$|^HH/,'HH/MH'],[/^JEMBATAN/,'JEMBATAN'],[/^ODC/,'ODC'],[/^ODP/,'ODP'],[/^OLT/,'OLT'],[/^STO/,'STO'],[/^SITE/,'SITE'],[/^GALVANIS/,'GALVANIS'],[/^CATUAN/,'CATUAN'],[/^JT$/,'JEMBATAN']]; for(const [r,v] of F) if(r.test(f)) return v; }
+    if(/^PU[-_\s]?S?\d|^PU\d/.test(n)) return 'TIANG';
+    if(/^(TN|TE|TB)\b|TIANG|^TN[-\s]?\d|^TE[-\s]?\d|\bTN\d*\b/.test(n)) return 'TIANG';
+    if(/\bCL\b|^NEW CL|^EX CL|CLOSURE|\bCL[-\s]?\d/.test(n)) return 'CLOSURE';
+    if(/\bODC\b|^TC-.*ODC/.test(n)) return 'ODC';
+    if(/\bODP\b|^ODP/.test(n)) return 'ODP';
+    if(/\bOLT\b/.test(n)) return 'OLT';
+    if(/\bSTO\b/.test(n)) return 'STO';
+    if(/JEMBATAN|^JT[.\s\d]/.test(n)) return 'JEMBATAN';
+    if(/GALVANIS/.test(n)) return 'GALVANIS';
+    if(/GORONG/.test(n)) return 'GORONG-GORONG';
+    if(/BCTR|BORING|BOX\b/.test(n)) return 'BORING/BOX';
+    if(/\bHH\b|\bMH\b|HH\/|MH\/|MM\/HH|HANDHOLE|HH\d|HH-/.test(n)) return 'HH/MH';
+    if(/^(DD|HB|M-BC)[-\s]/.test(n)||/^DD/.test(n)) return 'DD (titik survey)';
+    if(/^(TRT|PSP|RAP|GST|SKL|PYB|TUK|AKN)\d*/.test(n)||/\bSITE\b/.test(n)) return 'SITE';
+    if(/SPICLING|SPARE|SPER/.test(n)) return 'SPARE/SPICLING';
+    if(/CATUAN/.test(f)) return 'CATUAN';
+    if(f&&!/^(TRT|PSP|RAP|GST|SKL|PYB|TUK|AKN|QE|EXTEND|NODE|PLAN|NEW|HASIL)/.test(f)&&f.length<18) return f;
+    return 'LAINNYA';
+  }
+  function crumbs(e){ const a=[]; for(let x=e; x; x=x.pe) a.unshift(x.name); return a; }
   function addKml(xml,name){
     const doc=new DOMParser().parseFromString(xml,'text/xml');
     if(doc.querySelector('parsererror')) throw new Error('File KML tidak valid');
@@ -74,13 +117,13 @@
     };
     if(!root){ root=L.featureGroup().addTo(map); }
     const top=L.featureGroup(); let count=0;
-    const entry={name,layer:top,children:[],on:true};
+    const entry={name,layer:top,children:[],on:true,open:true,parent:root,pe:null};
     function walk(node,parentGroup,parentEntry){
       Array.from(node.children).forEach(c=>{
         const t=c.localName;
         if(t==='Folder'||t==='Document'){
           const g=L.featureGroup().addTo(parentGroup);
-          const e={name:txt(c,'name')||'(folder)',layer:g,children:[],on:true};
+          const e={name:txt(c,'name')||'(folder)',layer:g,children:[],on:true,open:(t==='Document'),parent:parentGroup,pe:parentEntry};
           parentEntry.children.push(e); walk(c,g,e);
         } else if(t==='Placemark'){ count+=place(c,parentGroup,parentEntry,getStyle(c)); }
       });
@@ -96,7 +139,8 @@
       let ext='';
       pm.querySelectorAll('Data').forEach(d=>{ext+=`<tr><td><b>${esc(d.getAttribute('name'))}</b></td><td>${esc(txt(d,'value'))}</td></tr>`;});
       pm.querySelectorAll('SimpleData').forEach(d=>{ext+=`<tr><td><b>${esc(d.getAttribute('name'))}</b></td><td>${esc(d.textContent)}</td></tr>`;});
-      const html=`<div style="max-width:280px;max-height:240px;overflow:auto"><b>${esc(name)}</b>${desc?'<div>'+desc.replace(/<script[\s\S]*?<\/script>/gi,'')+'</div>':''}${ext?'<table style="font-size:11px">'+ext+'</table>':''}</div>`;
+      const path=crumbs(pe).filter(Boolean).slice(1).join(' › ');
+      const html0=`<div style="max-width:300px;max-height:260px;overflow:auto"><div style="font-size:14px;font-weight:700;margin-bottom:2px">${esc(name||'(tanpa nama)')}</div><div style="font-size:11px;color:#666;margin-bottom:4px">${esc(path)}</div>${desc?'<div>'+desc.replace(/<script[\s\S]*?<\/script>/gi,'')+'</div>':''}${ext?'<table style="font-size:11px">'+ext+'</table>':''}@@COORD@@</div>`;
       const ls=st?kids(st,'LineStyle')[0]:null, ps=st?kids(st,'PolyStyle')[0]:null;
       const lc=kmlColor(ls&&txt(ls,'color'),{color:'#E31B23',opacity:1});
       const lw=ls&&parseFloat(txt(ls,'width'))||3;
@@ -106,7 +150,12 @@
         let lyr;
         if(g.localName==='Point'){
           const c=parseCoords(txt(g,'coordinates'))[0]; if(!c) return;
-          lyr=L.circleMarker(c,{radius:6,color:'#fff',weight:1.5,fillColor:lc.color==='#E31B23'?'#E31B23':lc.color,fillOpacity:.95});
+          const is=st?kids(st,'IconStyle')[0]:null;
+          const href=is&&kids(is,'Icon')[0]?txt(kids(is,'Icon')[0],'href'):'';
+          const base=(href.split('/').pop()||'').replace(/\.png.*$/i,'');
+          const ic=kmlColor(is&&txt(is,'color'),null);
+          const col=ic?ic.color:(ICONCOL[base]||'#FFFFFF');
+          lyr=L.marker(c,{icon:iconShape(base,col,is&&parseFloat(txt(is,'scale'))||1)});
         } else if(g.localName==='Polygon'){
           const rings=[]; const ob=g.querySelector('outerBoundaryIs coordinates'); if(ob) rings.push(parseCoords(ob.textContent));
           g.querySelectorAll('innerBoundaryIs coordinates').forEach(i=>rings.push(parseCoords(i.textContent)));
@@ -114,9 +163,13 @@
         } else {
           lyr=L.polyline(parseCoords(txt(g,'coordinates')),{color:lc.color,weight:lw,opacity:lc.opacity});
         }
-        lyr.bindPopup(html); lyr.bindTooltip(name||'',{sticky:true}); lyr.addTo(group); n++;
+        const ll=lyr.getLatLng?lyr.getLatLng():(lyr.getBounds().getCenter());
+        const coord=`<div style="font-size:11px;color:#444;margin-top:6px">📍 ${ll.lat.toFixed(6)}, ${ll.lng.toFixed(6)}</div>`;
+        lyr.bindPopup(html0.replace('@@COORD@@',coord));
+        if(g.localName==='Point') lyr.bindTooltip(name||'',{permanent:true,direction:'right',offset:[8,0],className:'kml-lbl'}); else lyr.bindTooltip(name||'',{sticky:true});
+        lyr.addTo(group); n++;
         let len=0; if(g.localName==='LineString'||g.localName==='LinearRing'){ const pts=lyr.getLatLngs().flat(2); for(let i=1;i<pts.length;i++) len+=pts[i-1].distanceTo(pts[i]); }
-        (pe.pms=pe.pms||[]).push({name,lyr,len,pt:g.localName==='Point'});
+        (pe.pms=pe.pms||[]).push({name,lyr,len,pt:g.localName==='Point',cat:classify(name,g.localName!=='Point',pe.name)});
       }));
       return n;
     }
@@ -129,28 +182,32 @@
   }
   function renderList(){
     const q=($('kmlSearch').value||'').toLowerCase(), box=$('kmlList'); box.innerHTML='';
-    function row(e,depth,parentArr){
-      const d=document.createElement('div'); d.style.cssText='padding:3px 0 3px '+(depth*14)+'px;font-size:12.5px;display:flex;gap:6px;align-items:center;';
+    if(!items.length){ box.innerHTML='<div style="font-size:12px;color:var(--text-faint,#888)">Belum ada file dimuat.</div>'; return; }
+    function pmCount(e){ let n=(e.pms||[]).length; (e.children||[]).forEach(c=>n+=pmCount(c)); return n; }
+    function row(e,depth){
+      const d=document.createElement('div'); d.style.cssText='padding:2px 0 2px '+(depth*14)+'px;font-size:12.5px;display:flex;gap:4px;align-items:center;';
+      const has=(e.children||[]).length>0;
+      const ar=document.createElement('span'); ar.textContent=has?(e.open?'▾':'▸'):'·'; ar.style.cssText='width:14px;text-align:center;cursor:'+(has?'pointer':'default')+';user-select:none;flex:0 0 14px;';
+      ar.onclick=()=>{ if(has){ e.open=!e.open; renderList(); } };
       const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=e.on;
-      cb.onchange=()=>{ e.on=cb.checked; const p=e.parentGroup||(depth===0?root:null);
-        if(e.on) e.layer.addTo(e.parent||root); else (e.parent||root).removeLayer(e.layer); };
-      const lb=document.createElement('span'); lb.textContent=e.name; lb.style.cursor='pointer';
-      lb.onclick=()=>{ const b=e.layer.getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]}); };
-      d.append(cb,lb); box.append(d);
-      (e.children||[]).forEach(c=>{c.parent=e.layer; row(c,depth+1);});
+      cb.onchange=()=>{ e.on=cb.checked; if(e.on) e.layer.addTo(e.parent); else e.parent.removeLayer(e.layer); };
+      const lb=document.createElement('span'); lb.textContent=e.name; lb.title=e.name; lb.style.cssText='cursor:pointer;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+      lb.onclick=()=>{ if(has){ e.open=!e.open; renderList(); } const bb=e.layer.getBounds(); if(bb.isValid()) map.fitBounds(bb,{padding:[30,30]}); };
+      const ct=document.createElement('span'); ct.textContent=pmCount(e); ct.style.cssText='font-size:11px;color:#888;';
+      d.append(ar,cb,lb,ct); box.append(d);
+      if(e.open||q) (e.children||[]).forEach(c=>row(c,depth+1));
       if(q&&e.pms) e.pms.filter(p=>p.name&&p.name.toLowerCase().includes(q)).slice(0,50).forEach(p=>{
-        const s=document.createElement('div'); s.style.cssText='padding:2px 0 2px '+((depth+1)*14)+'px;font-size:12px;color:var(--brand-red,#E31B23);cursor:pointer;';
-        s.textContent='📍 '+p.name; s.onclick=()=>{ const b=p.lyr.getBounds?p.lyr.getBounds():L.latLngBounds([p.lyr.getLatLng()]); map.fitBounds(b.pad(.5),{maxZoom:18}); p.lyr.openPopup&&p.lyr.openPopup(); };
-        box.append(s);
+        const s2=document.createElement('div'); s2.style.cssText='padding:2px 0 2px '+((depth+1)*14+18)+'px;font-size:12px;color:var(--brand-red,#E31B23);cursor:pointer;';
+        s2.textContent='📍 '+p.name; s2.onclick=()=>{ const ll=p.lyr.getLatLng?p.lyr.getLatLng():p.lyr.getBounds().getCenter(); map.setView(ll,Math.max(map.getZoom(),17)); p.lyr.openPopup&&p.lyr.openPopup(); };
+        box.append(s2);
       });
     }
-    items.forEach(e=>{ e.parent=root; row(e,0); });
-    if(!items.length) box.innerHTML='<div style="font-size:12px;color:var(--text-faint,#888)">Belum ada file dimuat.</div>';
+    items.forEach(e=>row(e,0));
   }
   function clearAll(){ if(root){ root.clearLayers(); } items=[]; renderList(); renderTable(); status('Peta dikosongkan'); }
   function fit(){ if(root){ const b=root.getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]}); } }
   function stat(e,acc){
-    (e.pms||[]).forEach(p=>{ acc.n++; acc.len+=p.len||0; const k=(e.name||'-').toUpperCase().trim(); acc.by[k]=(acc.by[k]||0)+1; });
+    (e.pms||[]).forEach(p=>{ acc.n++; acc.len+=p.len||0; const k=p.cat||'LAINNYA'; acc.by[k]=(acc.by[k]||0)+1; });
     (e.children||[]).forEach(c=>stat(c,acc));
     return acc;
   }
