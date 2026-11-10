@@ -16,7 +16,7 @@
     ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over');}));
     ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over');}));
     dz.addEventListener('drop',e=>loadFiles(e.dataTransfer.files));
-    const upd=()=>{ const on=$('kmlLbl').checked&&map.getZoom()>=16; $('kmlMap').classList.toggle('kml-nolbl',!on); };
+    const upd=()=>{ const on=$('kmlLbl').checked; $('kmlMap').classList.toggle('kml-nolbl',!on); };
     $('kmlLbl').onchange=upd; map.on('zoomend',upd); upd();
     $('kmlUrlBtn').onclick=loadUrl;
     $('kmlClear').onclick=clearAll;
@@ -105,6 +105,30 @@
     return 'LAINNYA';
   }
   function crumbs(e){ const a=[]; for(let x=e; x; x=x.pe) a.unshift(x.name); return a; }
+
+  const SITES=['PSP721','TRT913','PSP723','TRT573','RAP047','SKL602','TUK070','PYB690','TUK908','PSP683','PSP684','PSP702','TRT971','TRT967'];
+  function arrangeSites(entry,top){
+    const doc=(entry.children.length===1&&!(entry.pms&&entry.pms.length))?entry.children[0]:entry;
+    const tops=doc.children||[];
+    const hit=c=>SITES.filter(code=>new RegExp('(^|[^A-Z0-9])'+code+'([^A-Z0-9]|$)').test((c.name||'').toUpperCase()));
+    if(tops.filter(c=>hit(c).length).length<3) return; // bukan file ini: tampilkan apa adanya
+    const out={};
+    const take=(e,code,parent)=>{ e.name=code; e.pe=null; e.open=false; e.on=true; if(e.parent) e.parent.removeLayer(e.layer); e.layer.addTo(root); e.parent=root; out[code]=e; };
+    // folder gabungan: kode kedua+ diambil dari sub-folder bernama persis kode itu
+    tops.forEach(c=>{
+      const codes=hit(c); if(!codes.length) return;
+      const primary=codes[0];
+      codes.slice(1).forEach(code=>{
+        const find=(x)=>{ for(const k of (x.children||[])){ if((k.name||'').trim().toUpperCase()===code) return [x,k]; const r=find(k); if(r) return r; } return null; };
+        const r=find(c); if(r){ r[0].children=r[0].children.filter(k=>k!==r[1]); take(r[1],code); }
+      });
+      take(c,primary);
+    });
+    // kode yang tidak ada di KML: baris kosong
+    SITES.forEach(code=>{ if(!out[code]) out[code]={name:code,layer:L.featureGroup(),children:[],on:true,open:false,parent:root,pe:null}; });
+    root.removeLayer(top);
+    entry.sitesOut=SITES.map(code=>out[code]);
+  }
   function addKml(xml,name){
     const doc=new DOMParser().parseFromString(xml,'text/xml');
     if(doc.querySelector('parsererror')) throw new Error('File KML tidak valid');
@@ -175,8 +199,9 @@
     }
     top.addTo(root);
     walk(doc.documentElement,top,entry);
-    items.push(entry);
-    const b=top.getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]});
+    arrangeSites(entry,top);
+    items.push(...(entry.sitesOut||[entry]));
+    const b=(entry.sitesOut?root:top).getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]});
     status(`${name}: ${count} objek dimuat`);
     renderList(); renderTable();
   }
@@ -213,7 +238,7 @@
   }
   function sites(){
     const out=[];
-    items.forEach(f=>{
+    items.forEach(f=>{ out.push(f); return;
       let lvl=f.children&&f.children.length===1&&!(f.pms&&f.pms.length)?f.children[0]:f;
       if(lvl.children&&lvl.children.length) lvl.children.forEach(c=>out.push(c)); else out.push(lvl);
     });
