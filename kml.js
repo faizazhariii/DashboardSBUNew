@@ -212,7 +212,7 @@
     items.push(...(entry.sitesOut||[entry]));
     const b=(entry.sitesOut?root:top).getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]});
     status(`${name}: ${count} objek dimuat`);
-    renderList(); renderTable();
+    renderList(); renderTable(); window.topoInit&&window.topoInit();
   }
   function renderList(){
     const q=($('kmlSearch').value||'').toLowerCase(), box=$('kmlList'); box.innerHTML='';
@@ -283,6 +283,7 @@
       addKml(await z.files[k].async('string'),'L0 Kendala MAI Gabungan');
     }catch(e){ status('Data default tidak termuat ('+e.message+'). Upload file manual.',true); }
   }
-  window.kmlRenderTable=renderTable;
+  window.kmlItems=()=>items;
+  window.kmlRenderTable=function(){ renderTable(); window.topoInit&&window.topoInit(); };
   window.kmlInit=function(){ init(); loadDefault(); };
 })();

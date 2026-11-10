@@ -2279,6 +2279,14 @@
             <tbody id="kmlTableBody"></tbody>
           </table>
         </div>
+        <p class="section-title" style="margin:22px 0 4px;">Topology Sejalur</p>
+        <p class="section-desc">Diagram ruas per grup sejalur. Isi status per ruas lewat kolom catatan di bawah diagram (tersimpan ke Google Sheets).</p>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
+          <select id="topoGroup" style="padding:6px;"><option value="PSP">PSP684 · PSP702 · PSP439</option><option value="TRT">TRT971 · TRT967 · TRT891</option></select>
+          <button class="refresh-btn" id="topoDl" type="button">⬇ Download PNG</button>
+        </div>
+        <div style="overflow:auto;border:1px solid var(--border,#ddd);border-radius:10px;"><div id="topoBox"></div></div>
+        <div id="topoNotes" style="margin-top:10px;max-width:900px;"></div>
       </div>
     </div>
 
@@ -6145,6 +6153,7 @@ function rekapRowDetail(program, row){
 
 /* ---------- Catatan pribadi Priority TSEL (tab "CATATAN PRIORITY" di Google Sheets) ---------- */
 const prioNotes = {};   // key "PROGRAM|ID" -> teks catatan (riwayat, dipisah baris baru)
+window.prioNotes = prioNotes;
 let prioNotesLoaded = false;
 async function loadPrioNotes(){
   try{
@@ -6177,6 +6186,7 @@ async function savePrioNote(input){
       prioNotes[input.dataset.prioNote] = data.isiTerbaru || '';
       const box = document.querySelector(`[data-prio-hist="${CSS.escape(input.dataset.prioNote)}"]`);
       if(box) box.innerHTML = String(data.isiTerbaru||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>');
+      if(String(input.dataset.prioProg)==='TOPO' && window.topoRender) window.topoRender();
     } else { console.error('Gagal simpan catatan priority:', data.error); alert('Gagal simpan catatan: ' + (data.error || 'script write-back belum di-update')); }
     setTimeout(()=>{ input.style.borderColor = ''; }, 1500);
   }catch(err){ input.style.borderColor = 'var(--red)'; console.error(err); alert('Gagal simpan catatan: ' + err.message); }
@@ -10856,6 +10866,7 @@ oloLoadDataAuto();
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
 <script src="qe-recap.js?v=20261104b"></script>
-<script src="kml.js?v=20261111e"></script>
+<script src="topo.js?v=20261111b"></script>
+<script src="kml.js?v=20261111f"></script>
 </body>
 </html>
