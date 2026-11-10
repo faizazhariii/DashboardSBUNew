@@ -4,7 +4,7 @@
   const $=id=>document.getElementById(id);
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   function init(){
-    if(inited){ setTimeout(()=>map.invalidateSize(),50); return; }
+    if(inited){ setTimeout(()=>map.invalidateSize(),50); renderTable(); return; }
     inited=true;
     map=L.map('kmlMap',{preferCanvas:true}).setView([3.59,98.67],8);
     baseLayers.osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});
@@ -115,7 +115,8 @@
           lyr=L.polyline(parseCoords(txt(g,'coordinates')),{color:lc.color,weight:lw,opacity:lc.opacity});
         }
         lyr.bindPopup(html); lyr.bindTooltip(name||'',{sticky:true}); lyr.addTo(group); n++;
-        (pe.pms=pe.pms||[]).push({name,lyr});
+        let len=0; if(g.localName==='LineString'||g.localName==='LinearRing'){ const pts=lyr.getLatLngs().flat(2); for(let i=1;i<pts.length;i++) len+=pts[i-1].distanceTo(pts[i]); }
+        (pe.pms=pe.pms||[]).push({name,lyr,len,pt:g.localName==='Point'});
       }));
       return n;
     }
@@ -124,7 +125,7 @@
     items.push(entry);
     const b=top.getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]});
     status(`${name}: ${count} objek dimuat`);
-    renderList();
+    renderList(); renderTable();
   }
   function renderList(){
     const q=($('kmlSearch').value||'').toLowerCase(), box=$('kmlList'); box.innerHTML='';
@@ -146,7 +147,46 @@
     items.forEach(e=>{ e.parent=root; row(e,0); });
     if(!items.length) box.innerHTML='<div style="font-size:12px;color:var(--text-faint,#888)">Belum ada file dimuat.</div>';
   }
-  function clearAll(){ if(root){ root.clearLayers(); } items=[]; renderList(); status('Peta dikosongkan'); }
+  function clearAll(){ if(root){ root.clearLayers(); } items=[]; renderList(); renderTable(); status('Peta dikosongkan'); }
   function fit(){ if(root){ const b=root.getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]}); } }
-  window.kmlInit=init;
+  function stat(e,acc){
+    (e.pms||[]).forEach(p=>{ acc.n++; acc.len+=p.len||0; const k=(e.name||'-').toUpperCase().trim(); acc.by[k]=(acc.by[k]||0)+1; });
+    (e.children||[]).forEach(c=>stat(c,acc));
+    return acc;
+  }
+  function sites(){
+    const out=[];
+    items.forEach(f=>{
+      let lvl=f.children&&f.children.length===1&&!(f.pms&&f.pms.length)?f.children[0]:f;
+      if(lvl.children&&lvl.children.length) lvl.children.forEach(c=>out.push(c)); else out.push(lvl);
+    });
+    return out;
+  }
+  function renderTable(){
+    const box=$('kmlTableBody'); if(!box) return;
+    const list=sites();
+    $('kmlTableCount').textContent=list.length?`(${list.length} site)`:'';
+    if(!list.length){ box.innerHTML='<tr><td colspan="7" style="text-align:center;padding:14px;color:var(--text-faint,#888)">Belum ada data.</td></tr>'; return; }
+    box.innerHTML='';
+    list.forEach((e,i)=>{
+      const a=stat(e,{n:0,len:0,by:{}});
+      const rinci=Object.entries(a.by).sort((x,y)=>y[1]-x[1]).slice(0,8).map(([k,v])=>`<span style="display:inline-block;background:var(--surface-2,#eef1f6);border-radius:6px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;white-space:nowrap">${esc(k)} <b>${v}</b></span>`).join('');
+      const tr=document.createElement('tr');
+      const catHtml=(window.prioCatatanCell?window.prioCatatanCell('KML',{id:e.name,nama:e.name}):'');
+      tr.innerHTML=`<td>${i+1}</td><td><b>${esc(e.name)}</b></td><td style="text-align:right">${a.n.toLocaleString('id-ID')}</td><td style="text-align:right">${a.len?(a.len/1000).toLocaleString('id-ID',{maximumFractionDigits:2}):'—'}</td><td>${rinci}</td><td><button type="button" class="refresh-btn kml-zoom">📍 Lihat</button></td><td style="min-width:260px">${catHtml}</td>`;
+      tr.querySelector('.kml-zoom').onclick=()=>{ if(!map.hasLayer(e.layer)) e.layer.addTo(e.parent||root); const b=e.layer.getBounds(); if(b.isValid()){ window.scrollTo({top:$('kmlMap').getBoundingClientRect().top+scrollY-80,behavior:'smooth'}); map.fitBounds(b,{padding:[30,30]}); } };
+      box.append(tr);
+    });
+  }
+  async function loadDefault(){
+    if(items.length) return;
+    try{
+      status('Memuat data default…');
+      const r=await fetch('kml-default.kmz?v=20261111a'); if(!r.ok) throw new Error('HTTP '+r.status);
+      const z=await JSZip.loadAsync(await r.arrayBuffer()); const k=Object.keys(z.files).find(n=>/\.kml$/i.test(n));
+      addKml(await z.files[k].async('string'),'L0 Kendala MAI Gabungan');
+    }catch(e){ status('Data default tidak termuat ('+e.message+'). Upload file manual.',true); }
+  }
+  window.kmlRenderTable=renderTable;
+  window.kmlInit=function(){ init(); loadDefault(); };
 })();

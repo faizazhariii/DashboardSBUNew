@@ -2264,6 +2264,13 @@
           </div>
           <div id="kmlMap" style="flex:1;min-width:300px;height:600px;border-radius:10px;"></div>
         </div>
+        <p class="section-title" style="margin:18px 0 4px;">Tabel per Site <span id="kmlTableCount" style="font-weight:400;font-size:12px;"></span></p>
+        <div style="overflow:auto;">
+          <table style="width:100%;font-size:12.5px;">
+            <thead><tr><th>No</th><th>Site</th><th>Objek</th><th>Kabel (km)</th><th>Rincian</th><th>Peta</th><th>Catatan</th></tr></thead>
+            <tbody id="kmlTableBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -6369,7 +6376,7 @@ function renderPrioPage(only){
   (only ? [only] : ['pt2','ta','fh','mbb']).forEach(renderPrioBlock);
   renderPrioSummary();
 }
-document.getElementById('tabBtnKml').onclick = ()=>{ switchTab('kml'); window.kmlInit&&window.kmlInit(); };
+document.getElementById('tabBtnKml').onclick = ()=>{ switchTab('kml'); window.kmlInit&&window.kmlInit(); loadPrioNotes().then(()=>window.kmlRenderTable&&window.kmlRenderTable()); };
 document.getElementById('tabBtnPrio').onclick = ()=> { switchTab('prio'); renderPrioPage(); loadPrioNotes().then(()=>{ if(prioLastDetail) renderRekapDetailOutput(prioLastDetail._key); }); };
 document.getElementById('prioDownloadBtn').onclick = ()=>{
   if(!prioLastDetail || !prioLastDetail.rows.length){ alert('Klik dulu salah satu sel di tabel buat milih data yang mau di-download.'); return; }
@@ -10841,6 +10848,6 @@ oloLoadDataAuto();
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
 <script src="qe-recap.js?v=20261104b"></script>
-<script src="kml.js?v=20261111a"></script>
+<script src="kml.js?v=20261111b"></script>
 </body>
 </html>
