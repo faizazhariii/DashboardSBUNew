@@ -2304,9 +2304,9 @@
         </div>
 
         <div class="kv-card">
-          <div class="kv-card-h">Topology Sejalur
+          <div class="kv-card-h">Topology <span class="kv-mute">· pilih site/grup, atur ruas (dari → sampai) dan isi status sendiri</span>
             <span class="kv-grow"></span>
-            <select id="topoGroup" class="kv-input" style="width:auto"><option value="PSP">PSP684 · PSP702 · PSP439</option><option value="TRT">TRT971 · TRT967 · TRT891</option></select>
+            <select id="topoGroup" class="kv-input" style="width:auto;max-width:360px"></select>
             <button class="kv-btn" id="topoDl" type="button">⬇ PNG</button>
           </div>
           <div style="overflow:auto;"><div id="topoBox"></div></div>
@@ -6538,14 +6538,6 @@ function nodebRender(){
     <td>${nodebEsc(r['FLAGGING'])||'—'}</td><td>${nodebEsc(r['PLAN'])||'—'}</td><td>${nodebEsc(r['UIC'])||'—'}</td><td>${nodebEsc(r['TIM SURVEY'])||'—'}</td><td>${nodebEsc(r['TIMELINE OA'])||'—'}</td>
     ${cell(r['REMARKS NEW'])}${cell(r['HISTORY'])}${cell(r['DETAIL'])}</tr>`).join('') || '<tr><td colspan="15" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>';
 }
-['nodebFKendala','nodebFPlan','nodebFMitra','nodebFStatus','nodebFOrder'].forEach(id=> document.getElementById(id).onchange = nodebRender);
-document.getElementById('nodebSearch').oninput = nodebRender;
-document.getElementById('nodebDownloadBtn').onclick = ()=>{
-  const rows = nodebFiltered(), cols = Object.keys(NODEB_SNAPSHOT[0]);
-  const q = (v)=> '"' + (v||'').toString().replace(/"/g,'""') + '"';
-  const csv = [cols.map(q).join(',')].concat(rows.map(r=> cols.map(c=>q(r[c])).join(','))).join('\n');
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download = 'L0_Kendala_MBB_SBU.csv'; a.click();
-};
 
 /* ============================================================
    Halaman QE — sheet "QE" (gid 2018392112), filter kolom B (REGION) = SBU
@@ -10889,7 +10881,7 @@ oloLoadDataAuto();
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
 <script src="qe-recap.js?v=20261104b"></script>
-<script src="topo.js?v=20261111c"></script>
-<script src="kml.js?v=20261111g"></script>
+<script src="topo.js?v=20261111e"></script>
+<script src="kml.js?v=20261111h"></script>
 </body>
 </html>

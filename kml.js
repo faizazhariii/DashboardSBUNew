@@ -268,6 +268,12 @@
     });
   }
   function stat(e,acc){ (e.pms||[]).forEach(p=>{ acc.n++; acc.len+=p.len||0; const k=p.cat||'LAINNYA'; acc.by[k]=(acc.by[k]||0)+1; }); (e.children||[]).forEach(c=>stat(c,acc)); return acc; }
+  window.kmlSetNote=async function(program,id,nama,text){
+    const url=WRITE_API_URL+'?action=setKmlCatatan&program='+encodeURIComponent(program)+'&ihld='+encodeURIComponent(id)+'&nama='+encodeURIComponent(nama||'')+'&text='+encodeURIComponent(text);
+    const res=await universalFetch(url,{cache:'no-store'}); const data=await res.json();
+    if(!data.ok) throw new Error(data.error||'script write-back belum di-update');
+    kmlNotes[program+'|'+id]=text; return true;
+  };
   window.kmlItems=()=>items;
   window.kmlRenderTable=function(){ renderTable(); window.topoInit&&window.topoInit(); };
   window.kmlInit=async function(){ init(); loadDefault(); await loadNotes(); renderTable(); window.topoInit&&window.topoInit(); };
