@@ -1,60 +1,41 @@
-/* Halaman KML Viewer: upload/drag KML/KMZ atau URL, tampil di peta Leaflet */
+/* Halaman L0 Kendala: peta KML (Leaflet) + tabel site + catatan (gsheet) + topology */
 (function(){
-  let map, baseLayers={}, curBase, root=null, items=[], inited=false;
+  let map, baseLayers={}, curBase, items=[], inited=false, lastSite=null, shown=new Set();
   const $=id=>document.getElementById(id);
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const KML_URL='kml-default.kmz?v=20261111b';
+  const kmlNotes={}; let kmlNotesLoaded=false;
+  window.kmlNotes=kmlNotes;
+  function status(t,err){ const el=$('kmlStatus'); if(!el) return; el.textContent=t; el.style.color=err?'#E31B23':''; }
   function init(){
     if(inited){ setTimeout(()=>map.invalidateSize(),50); renderTable(); return; }
     inited=true;
-    map=L.map('kmlMap',{preferCanvas:true}).setView([3.59,98.67],8);
+    map=L.map('kmlMap',{preferCanvas:true,zoomControl:true}).setView([2.2,99.4],8);
     baseLayers.osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});
     baseLayers.sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri'});
     curBase=baseLayers.osm.addTo(map);
-    $('kmlBase').onchange=e=>{ map.removeLayer(curBase); curBase=baseLayers[e.target.value].addTo(map); };
-    $('kmlFile').onchange=e=>{ loadFiles(e.target.files); e.target.value=''; };
-    const dz=$('kmlDrop');
-    ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over');}));
-    ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('over');}));
-    dz.addEventListener('drop',e=>loadFiles(e.dataTransfer.files));
-    const upd=()=>{ const on=$('kmlLbl').checked; $('kmlMap').classList.toggle('kml-nolbl',!on); };
-    $('kmlLbl').onchange=upd; map.on('zoomend',upd); upd();
-    $('kmlUrlBtn').onclick=loadUrl;
-    $('kmlClear').onclick=clearAll;
-    $('kmlFit').onclick=fit;
+    document.querySelectorAll('[data-kml-base]').forEach(b=>b.onclick=()=>{
+      map.removeLayer(curBase); curBase=baseLayers[b.dataset.kmlBase].addTo(map);
+      document.querySelectorAll('[data-kml-base]').forEach(x=>x.classList.toggle('on',x===b));
+    });
+    const upd=()=>{ $('kmlMap').classList.toggle('kml-nolbl',!$('kmlLbl').checked); };
+    $('kmlLbl').onchange=upd; upd();
+    $('kmlFit').onclick=()=>{ lastSite=null; markChips(); fitAll(); };
+    $('kmlFull').onclick=()=>{ const w=$('kmlMapWrap'); w.classList.toggle('kv-full'); setTimeout(()=>map.invalidateSize(),80); $('kmlFull').textContent=w.classList.contains('kv-full')?'✕ Tutup':'⛶ Layar penuh'; };
     $('kmlSearch').oninput=renderList;
     $('kmlAllOn').onclick=()=>setAll(true); $('kmlAllOff').onclick=()=>setAll(false);
     $('kmlExp').onclick=()=>expandAll(true); $('kmlCol').onclick=()=>expandAll(false);
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('kmlMapWrap').classList.contains('kv-full')) $('kmlFull').click(); });
     setTimeout(()=>map.invalidateSize(),50);
   }
-  function status(t,err){ const el=$('kmlStatus'); el.textContent=t; el.style.color=err?'#E31B23':''; }
-  async function loadFiles(files){
-    for(const f of files){
-      try{
-        status('Membaca '+f.name+'…');
-        if(/\.kmz$/i.test(f.name)){
-          if(!window.JSZip) throw new Error('JSZip belum termuat');
-          const z=await JSZip.loadAsync(await f.arrayBuffer());
-          const k=Object.keys(z.files).find(n=>/\.kml$/i.test(n));
-          if(!k) throw new Error('KML tidak ditemukan di dalam KMZ');
-          addKml(await z.files[k].async('string'),f.name);
-        } else addKml(await f.text(),f.name);
-      }catch(e){ status('Gagal: '+e.message,true); }
-    }
-  }
-  async function loadUrl(){
-    let u=$('kmlUrl').value.trim(); if(!u) return;
-    const m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/)||u.match(/[?&]id=([^&]+)/);
-    if(/drive\.google\.com/.test(u)&&m) u='https://drive.google.com/uc?export=download&id='+m[1];
+  async function loadDefault(){
+    if(items.length) return;
     try{
-      status('Mengunduh…');
-      const r=await fetch(u); if(!r.ok) throw new Error('HTTP '+r.status);
-      const buf=await r.arrayBuffer();
-      const b=new Uint8Array(buf);
-      if(b[0]===0x50&&b[1]===0x4B){
-        const z=await JSZip.loadAsync(buf); const k=Object.keys(z.files).find(n=>/\.kml$/i.test(n));
-        addKml(await z.files[k].async('string'),u.split('/').pop()||'URL');
-      } else addKml(new TextDecoder().decode(buf),u.split('/').pop()||'URL');
-    }catch(e){ status('Gagal ambil URL ('+e.message+'). Kalau diblok CORS, download dulu lalu upload file.',true); }
+      status('Memuat peta…');
+      const r=await fetch(KML_URL); if(!r.ok) throw new Error('HTTP '+r.status);
+      const z=await JSZip.loadAsync(await r.arrayBuffer()); const k=Object.keys(z.files).find(n=>/\.kml$/i.test(n));
+      addKml(await z.files[k].async('string'),'L0 Kendala');
+    }catch(e){ status('Peta tidak termuat ('+e.message+')',true); }
   }
   function kmlColor(c,def){ // aabbggrr -> {color,opacity}
     if(!c||c.length<8) return def; c=c.trim();
@@ -109,34 +90,26 @@
   function crumbs(e){ const a=[]; for(let x=e; x; x=x.pe) a.unshift(x.name); return a; }
 
   const SITES=['PSP721','TRT913','PSP723','TRT573','RAP047','SKL602','TUK070','PYB690','TUK908','PSP683','PSP684','PSP702','TRT971','TRT967'];
-  function arrangeSites(entry,top){
+  function arrangeSites(entry){
     const doc=(entry.children.length===1&&!(entry.pms&&entry.pms.length))?entry.children[0]:entry;
     const tops=doc.children||[];
     const hit=c=>SITES.filter(code=>new RegExp('(^|[^A-Z0-9])'+code+'([^A-Z0-9]|$)').test((c.name||'').toUpperCase()));
-    if(tops.filter(c=>hit(c).length).length<3) return; // bukan file ini: tampilkan apa adanya
+    if(tops.filter(c=>hit(c).length).length<3) return null;
     const out={};
-    const take=(e,code,parent)=>{ e.name=code; e.pe=null; e.open=false; e.on=true; if(e.parent) e.parent.removeLayer(e.layer); e.layer.addTo(root); e.parent=root; out[code]=e; };
-    // folder gabungan: kode kedua+ diambil dari sub-folder bernama persis kode itu
     tops.forEach(c=>{
       const codes=hit(c); if(!codes.length) return;
-      const primary=codes[0];
       codes.slice(1).forEach(code=>{
-        const find=(x)=>{ for(const k of (x.children||[])){ if((k.name||'').trim().toUpperCase()===code) return [x,k]; const r=find(k); if(r) return r; } return null; };
-        const r=find(c); if(r){ r[0].children=r[0].children.filter(k=>k!==r[1]); take(r[1],code); }
+        const find=x=>{ for(const k of (x.children||[])){ if((k.name||'').trim().toUpperCase()===code) return [x,k]; const r=find(k); if(r) return r; } return null; };
+        const r=find(c); if(r){ r[0].children=r[0].children.filter(k=>k!==r[1]); r[1].name=code; r[1].pe=null; out[code]=r[1]; }
       });
-      take(c,primary);
+      c.name=codes[0]; c.pe=null; out[codes[0]]=c;
     });
-    // kode yang tidak ada di KML: baris kosong
-    SITES.forEach(code=>{ if(!out[code]) out[code]={name:code,layer:L.featureGroup(),children:[],on:true,open:false,parent:root,pe:null}; });
-    root.removeLayer(top);
+    SITES.forEach(code=>{ if(!out[code]) out[code]={name:code,children:[],pms:[],on:true,open:false,pe:null}; });
     const GROUPS=[['PSP684','PSP702'],['TRT971','TRT967']];
     const GNAME={PSP684:'PSP684 · PSP702 · PSP439 (Sejalur)',TRT971:'TRT971 · TRT967 · TRT891 (Sejalur)'};
     const merged={};
-    GROUPS.forEach(g=>{
-      const ge={name:GNAME[g[0]],layer:L.featureGroup().addTo(root),children:[],on:true,open:true,parent:root,pe:null};
-      g.forEach(code=>{ const m=out[code]; root.removeLayer(m.layer); m.layer.addTo(ge.layer); m.parent=ge.layer; ge.children.push(m); merged[code]=g[0]===code?ge:null; });
-    });
-    entry.sitesOut=SITES.map(code=>code in merged?merged[code]:out[code]).filter(Boolean);
+    GROUPS.forEach(g=>{ const ge={name:GNAME[g[0]],children:g.map(c=>out[c]),pms:[],on:true,open:true,pe:null,group:true}; g.forEach(c=>{ merged[c]=c===g[0]?ge:null; }); });
+    return SITES.map(code=>code in merged?merged[code]:out[code]).filter(Boolean);
   }
   function addKml(xml,name){
     const doc=new DOMParser().parseFromString(xml,'text/xml');
@@ -144,36 +117,27 @@
     const styles={}, maps={};
     doc.querySelectorAll('Style').forEach(s=>{ const id=s.getAttribute('id'); if(id) styles['#'+id]=s; });
     doc.querySelectorAll('StyleMap').forEach(s=>{ const id=s.getAttribute('id'); const p=Array.from(s.children).find(p=>txt(p,'key')==='normal'); if(p&&id) maps['#'+id]=txt(p,'styleUrl'); });
-    const getStyle=pm=>{
-      let st=kids(pm,'Style')[0]; if(st) return st;
-      let u=txt(pm,'styleUrl'); if(maps[u]) u=maps[u]; return styles[u]||null;
-    };
-    if(!root){ root=L.featureGroup().addTo(map); }
-    const top=L.featureGroup(); let count=0;
-    const entry={name,layer:top,children:[],on:true,open:true,parent:root,pe:null};
-    function walk(node,parentGroup,parentEntry){
+    const getStyle=pm=>{ let st=kids(pm,'Style')[0]; if(st) return st; let u=txt(pm,'styleUrl'); if(maps[u]) u=maps[u]; return styles[u]||null; };
+    let count=0;
+    const entry={name,children:[],pms:[],on:true,open:true,pe:null};
+    function walk(node,parentEntry){
       Array.from(node.children).forEach(c=>{
         const t=c.localName;
         if(t==='Folder'||t==='Document'){
-          const g=L.featureGroup().addTo(parentGroup);
-          const e={name:txt(c,'name')||'(folder)',layer:g,children:[],on:true,open:(t==='Document'),parent:parentGroup,pe:parentEntry};
-          parentEntry.children.push(e); walk(c,g,e);
-        } else if(t==='Placemark'){ count+=place(c,parentGroup,parentEntry,getStyle(c)); }
+          const e={name:txt(c,'name')||'(folder)',children:[],pms:[],on:true,open:false,pe:parentEntry};
+          parentEntry.children.push(e); walk(c,e);
+        } else if(t==='Placemark'){ count+=place(c,parentEntry,getStyle(c)); }
       });
     }
-    function geoms(g){
-      const out=[]; const t=g.localName;
+    function geoms(g){ const out=[]; const t=g.localName;
       if(t==='MultiGeometry') Array.from(g.children).forEach(x=>out.push(...geoms(x)));
       else if(['Point','LineString','LinearRing','Polygon'].includes(t)) out.push(g);
-      return out;
-    }
-    function place(pm,group,pe,st){
+      return out; }
+    function place(pm,pe,st){
       const name=txt(pm,'name'), desc=txt(pm,'description');
       let ext='';
       pm.querySelectorAll('Data').forEach(d=>{ext+=`<tr><td><b>${esc(d.getAttribute('name'))}</b></td><td>${esc(txt(d,'value'))}</td></tr>`;});
       pm.querySelectorAll('SimpleData').forEach(d=>{ext+=`<tr><td><b>${esc(d.getAttribute('name'))}</b></td><td>${esc(d.textContent)}</td></tr>`;});
-      const path=crumbs(pe).filter(Boolean).slice(1).join(' › ');
-      const html0=`<div style="max-width:300px;max-height:260px;overflow:auto"><div style="font-size:14px;font-weight:700;margin-bottom:2px">${esc(name||'(tanpa nama)')}</div><div style="font-size:11px;color:#666;margin-bottom:4px">${esc(path)}</div>${desc?'<div>'+desc.replace(/<script[\s\S]*?<\/script>/gi,'')+'</div>':''}${ext?'<table style="font-size:11px">'+ext+'</table>':''}@@COORD@@</div>`;
       const ls=st?kids(st,'LineStyle')[0]:null, ps=st?kids(st,'PolyStyle')[0]:null;
       const lc=kmlColor(ls&&txt(ls,'color'),{color:'#E31B23',opacity:1});
       const lw=ls&&parseFloat(txt(ls,'width'))||3;
@@ -196,94 +160,116 @@
         } else {
           lyr=L.polyline(parseCoords(txt(g,'coordinates')),{color:lc.color,weight:lw,opacity:lc.opacity});
         }
-        const ll=lyr.getLatLng?lyr.getLatLng():(lyr.getBounds().getCenter());
-        const coord=`<div style="font-size:11px;color:#444;margin-top:6px">📍 ${ll.lat.toFixed(6)}, ${ll.lng.toFixed(6)}</div>`;
-        lyr.bindPopup(html0.replace('@@COORD@@',coord));
-        if(g.localName==='Point') lyr.bindTooltip(name||'',{permanent:true,direction:'right',offset:[8,0],className:'kml-lbl'}); else lyr.bindTooltip(name||'',{sticky:true});
-        lyr.addTo(group); n++;
         let len=0; if(g.localName==='LineString'||g.localName==='LinearRing'){ const pts=lyr.getLatLngs().flat(2); for(let i=1;i<pts.length;i++) len+=pts[i-1].distanceTo(pts[i]); }
-        (pe.pms=pe.pms||[]).push({name,lyr,len,pt:g.localName==='Point',cat:classify(name,g.localName!=='Point',pe.name)});
+        const p={name,lyr,len,pt:g.localName==='Point',cat:classify(name,g.localName!=='Point',pe.name),desc,ext,pe};
+        lyr.on('click',()=>openPopup(p));
+        if(p.pt) lyr.bindTooltip(name||'',{permanent:true,direction:'right',offset:[8,0],className:'kml-lbl'}); else lyr.bindTooltip(name||'',{sticky:true});
+        pe.pms.push(p); n++;
       }));
       return n;
     }
-    top.addTo(root);
-    walk(doc.documentElement,top,entry);
-    arrangeSites(entry,top);
-    items.push(...(entry.sitesOut||[entry]));
-    const b=(entry.sitesOut?root:top).getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]});
-    status(`${name}: ${count} objek dimuat`);
-    renderList(); renderTable(); window.topoInit&&window.topoInit();
+    walk(doc.documentElement,entry);
+    const arranged=arrangeSites(entry);
+    items=arranged||[entry];
+    refresh(); fitAll();
+    status('');
+    renderChips(); renderList(); renderTable(); window.topoInit&&window.topoInit();
   }
+  function openPopup(p){
+    const ll=p.lyr.getLatLng?p.lyr.getLatLng():p.lyr.getBounds().getCenter();
+    const path=crumbs(p.pe).filter(Boolean).slice(1).join(' › ');
+    const html=`<div class="kv-pop"><div class="kv-pop-t">${esc(p.name||'(tanpa nama)')}</div><div class="kv-pop-s">${esc(path)}</div><span class="kv-pop-c">${esc(p.cat||'')}</span>${p.desc?'<div class="kv-pop-d">'+p.desc.replace(/<script[\s\S]*?<\/script>/gi,'')+'</div>':''}${p.ext?'<table style="font-size:11px">'+p.ext+'</table>':''}<div class="kv-pop-l">📍 ${ll.lat.toFixed(6)}, ${ll.lng.toFixed(6)} · <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=${ll.lat},${ll.lng}">Google Maps</a></div></div>`;
+    L.popup({maxWidth:320}).setLatLng(ll).setContent(html).openOn(map);
+  }
+  // ---- visibilitas: satu-satunya tempat yang menambah/menghapus layer dari peta
+  function refresh(){
+    const rec=(e,pOn)=>{ const on=pOn&&e.on; (e.pms||[]).forEach(p=>{ const has=map.hasLayer(p.lyr); if(on&&!has) p.lyr.addTo(map); else if(!on&&has) map.removeLayer(p.lyr); }); (e.children||[]).forEach(c=>rec(c,on)); };
+    items.forEach(e=>rec(e,true));
+  }
+  function boundsOf(e,only){
+    const pts=[]; const rec=x=>{ (x.pms||[]).forEach(p=>pts.push(p.lyr.getLatLng?p.lyr.getLatLng():p.lyr.getBounds())); (x.children||[]).forEach(rec); };
+    rec(e); const b=L.latLngBounds([]); pts.forEach(p=>b.extend(p)); return b;
+  }
+  function fitAll(){ const b=L.latLngBounds([]); items.forEach(e=>{ const x=boundsOf(e); if(x.isValid()) b.extend(x); }); if(b.isValid()) map.fitBounds(b,{padding:[30,30]}); }
+  function zoomSite(e){
+    const b=boundsOf(e); if(!b.isValid()){ status(e.name+': belum ada data di KML',true); setTimeout(()=>status(''),2500); return; }
+    if(!e.on){ e.on=true; refresh(); renderList(); }
+    lastSite=e; markChips(); map.fitBounds(b,{padding:[40,40],maxZoom:17});
+    const w=$('kmlMapWrap'); if(w&&!w.classList.contains('kv-full')) w.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  function renderChips(){
+    const box=$('kmlChips'); if(!box) return; box.innerHTML='';
+    items.forEach(e=>{ const b=document.createElement('button'); b.type='button'; b.className='kv-chip'; b.textContent=e.group?e.name.replace(' (Sejalur)',''):e.name; b.title=e.name; b.onclick=()=>zoomSite(e); b._e=e; box.append(b); });
+    $('kmlSiteCount').textContent=items.length;
+  }
+  function markChips(){ document.querySelectorAll('#kmlChips .kv-chip').forEach(b=>b.classList.toggle('on',b._e===lastSite)); }
   function renderList(){
     const q=($('kmlSearch').value||'').toLowerCase(), box=$('kmlList'); box.innerHTML='';
-    if(!items.length){ box.innerHTML='<div style="font-size:12px;color:var(--text-faint,#888)">Belum ada file dimuat.</div>'; return; }
-    function pmCount(e){ let n=(e.pms||[]).length; (e.children||[]).forEach(c=>n+=pmCount(c)); return n; }
+    if(!items.length){ box.innerHTML='<div class="kv-empty">Belum ada data.</div>'; return; }
+    const pmCount=e=>{ let n=(e.pms||[]).length; (e.children||[]).forEach(c=>n+=pmCount(c)); return n; };
     function row(e,depth){
-      const d=document.createElement('div'); d.style.cssText='padding:2px 0 2px '+(depth*14)+'px;font-size:12.5px;display:flex;gap:4px;align-items:center;';
+      const d=document.createElement('div'); d.className='kv-row'; d.style.paddingLeft=(depth*14)+'px';
       const has=(e.children||[]).length>0;
-      const ar=document.createElement('span'); ar.textContent=has?(e.open?'▾':'▸'):'·'; ar.style.cssText='width:14px;text-align:center;cursor:'+(has?'pointer':'default')+';user-select:none;flex:0 0 14px;';
-      ar.onclick=()=>{ if(has){ e.open=!e.open; renderList(); } };
-      const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=e.on;
-      cb.onchange=()=>{ e.on=cb.checked; if(e.on) e.layer.addTo(e.parent); else e.parent.removeLayer(e.layer); };
-      const lb=document.createElement('span'); lb.textContent=e.name; lb.title=e.name; lb.style.cssText='cursor:pointer;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
-      lb.onclick=()=>{ if(has){ e.open=!e.open; renderList(); } const bb=e.layer.getBounds(); if(bb.isValid()) map.fitBounds(bb,{padding:[30,30]}); };
-      const ct=document.createElement('span'); ct.textContent=pmCount(e); ct.style.cssText='font-size:11px;color:#888;';
+      const ar=document.createElement('span'); ar.className='kv-ar'; ar.textContent=has?(e.open?'▾':'▸'):'·'; ar.onclick=()=>{ if(has){ e.open=!e.open; renderList(); } };
+      const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=e.on; cb.onchange=()=>{ e.on=cb.checked; refresh(); };
+      const lb=document.createElement('span'); lb.className='kv-lb'; lb.textContent=e.name; lb.title=e.name;
+      lb.onclick=()=>{ if(has&&!e.open){ e.open=true; renderList(); } const bb=boundsOf(e); if(bb.isValid()){ if(!e.on){e.on=true;refresh();renderList();} map.fitBounds(bb,{padding:[30,30],maxZoom:17}); } };
+      const ct=document.createElement('span'); ct.className='kv-ct'; ct.textContent=pmCount(e);
       d.append(ar,cb,lb,ct); box.append(d);
       if(e.open||q) (e.children||[]).forEach(c=>row(c,depth+1));
       if(q&&e.pms) e.pms.filter(p=>p.name&&p.name.toLowerCase().includes(q)).slice(0,50).forEach(p=>{
-        const s2=document.createElement('div'); s2.style.cssText='padding:2px 0 2px '+((depth+1)*14+18)+'px;font-size:12px;color:var(--brand-red,#E31B23);cursor:pointer;';
-        s2.textContent='📍 '+p.name; s2.onclick=()=>{ const ll=p.lyr.getLatLng?p.lyr.getLatLng():p.lyr.getBounds().getCenter(); map.setView(ll,Math.max(map.getZoom(),17)); p.lyr.openPopup&&p.lyr.openPopup(); };
+        const s2=document.createElement('div'); s2.className='kv-hit'; s2.style.paddingLeft=((depth+1)*14+18)+'px';
+        s2.textContent='📍 '+p.name; s2.onclick=()=>{ if(!map.hasLayer(p.lyr)){ e.on=true; refresh(); } const ll=p.lyr.getLatLng?p.lyr.getLatLng():p.lyr.getBounds().getCenter(); map.setView(ll,Math.max(map.getZoom(),17)); openPopup(p); };
         box.append(s2);
       });
     }
     items.forEach(e=>row(e,0));
   }
-  function setAll(on){
-    const rec=e=>{ e.on=on; if(on) e.layer.addTo(e.parent); else e.parent.removeLayer(e.layer); (e.children||[]).forEach(rec); };
-    items.forEach(rec); renderList();
-  }
+  function setAll(on){ const rec=e=>{ e.on=on; (e.children||[]).forEach(rec); }; items.forEach(rec); refresh(); renderList(); }
   function expandAll(open){ const rec=e=>{ e.open=open; (e.children||[]).forEach(rec); }; items.forEach(rec); renderList(); }
-  function clearAll(){ if(root){ root.clearLayers(); } items=[]; renderList(); renderTable(); status('Peta dikosongkan'); }
-  function fit(){ if(root){ const b=root.getBounds(); if(b.isValid()) map.fitBounds(b,{padding:[30,30]}); } }
-  function stat(e,acc){
-    (e.pms||[]).forEach(p=>{ acc.n++; acc.len+=p.len||0; const k=p.cat||'LAINNYA'; acc.by[k]=(acc.by[k]||0)+1; });
-    (e.children||[]).forEach(c=>stat(c,acc));
-    return acc;
+  // ---- catatan (spreadsheet PROGRESS DEPLOYMENT, tab CATATAN L0 KENDALA)
+  async function loadNotes(){
+    try{
+      const res=await universalFetch(WRITE_API_URL+'?action=getKmlCatatan&_='+Date.now(),{cache:'no-store'});
+      const data=await res.json();
+      if(data.ok){ Object.keys(kmlNotes).forEach(k=>delete kmlNotes[k]); Object.assign(kmlNotes,data.notes||{}); kmlNotesLoaded=true; }
+    }catch(e){ console.warn('Catatan L0 Kendala belum bisa dimuat (deploy script write-back terbaru):',e.message); }
   }
-  function sites(){
-    const out=[];
-    items.forEach(f=>{ out.push(f); return;
-      let lvl=f.children&&f.children.length===1&&!(f.pms&&f.pms.length)?f.children[0]:f;
-      if(lvl.children&&lvl.children.length) lvl.children.forEach(c=>out.push(c)); else out.push(lvl);
-    });
-    return out;
+  function noteCell(program,id,nama){
+    const key=program+'|'+id;
+    const hist=String(kmlNotes[key]||'').split('\n').filter(Boolean);
+    return `<div class="kv-note" data-kv-key="${esc(key)}"><div class="kv-note-h" data-kv-hist="${esc(key)}">${hist.length?hist.slice(-3).map(esc).join('<br>'):'<span class="kv-mute">Belum ada catatan</span>'}</div><div class="kv-note-f no-cap"><input type="text" data-kv-in="${esc(key)}" data-kv-prog="${esc(program)}" data-kv-id="${esc(id)}" data-kv-nama="${esc(nama||id)}" placeholder="+ Tambah catatan…"><button type="button" data-kv-save="${esc(key)}">Simpan</button></div></div>`;
   }
+  window.kmlNoteCell=noteCell;
+  async function saveNote(input){
+    const text=input.value.trim(); if(!text) return;
+    input.classList.add('busy');
+    try{
+      const url=WRITE_API_URL+'?action=updateKmlCatatan&program='+encodeURIComponent(input.dataset.kvProg)+'&ihld='+encodeURIComponent(input.dataset.kvId)+'&nama='+encodeURIComponent(input.dataset.kvNama||'')+'&text='+encodeURIComponent(text);
+      const res=await universalFetch(url,{cache:'no-store'}); const data=await res.json();
+      input.classList.remove('busy');
+      if(data.ok){ kmlNotes[input.dataset.kvIn]=data.isiTerbaru||''; input.value=''; renderTable(); window.topoRender&&window.topoRender(); }
+      else { input.classList.add('err'); alert('Gagal simpan catatan: '+(data.error||'script write-back belum di-update')); }
+    }catch(err){ input.classList.remove('busy'); input.classList.add('err'); alert('Gagal simpan catatan: '+err.message); }
+  }
+  document.addEventListener('keydown',e=>{ const i=e.target.closest&&e.target.closest('[data-kv-in]'); if(i&&e.key==='Enter') saveNote(i); });
+  document.addEventListener('click',e=>{ const b=e.target.closest&&e.target.closest('[data-kv-save]'); if(!b) return; const i=document.querySelector(`[data-kv-in="${CSS.escape(b.dataset.kvSave)}"]`); if(i) saveNote(i); });
+  // ---- tabel per site
   function renderTable(){
     const box=$('kmlTableBody'); if(!box) return;
-    const list=sites();
-    $('kmlTableCount').textContent=list.length?`(${list.length} site)`:'';
-    if(!list.length){ box.innerHTML='<tr><td colspan="7" style="text-align:center;padding:14px;color:var(--text-faint,#888)">Belum ada data.</td></tr>'; return; }
+    if(!items.length){ box.innerHTML='<tr><td colspan="4" class="kv-empty" style="text-align:center">Belum ada data.</td></tr>'; return; }
     box.innerHTML='';
-    list.forEach((e,i)=>{
-      const a=stat(e,{n:0,len:0,by:{}});
-      const rinci=Object.entries(a.by).sort((x,y)=>y[1]-x[1]).slice(0,8).map(([k,v])=>`<span style="display:inline-block;background:var(--surface-2,#eef1f6);border-radius:6px;padding:1px 6px;margin:1px 3px 1px 0;font-size:11px;white-space:nowrap">${esc(k)} <b>${v}</b></span>`).join('');
+    items.forEach((e,i)=>{
       const tr=document.createElement('tr');
-      const catHtml=(window.prioCatatanCell?window.prioCatatanCell('KML',{id:e.name,nama:e.name}):'');
-      tr.innerHTML=`<td>${i+1}</td><td><b>${esc(e.name)}</b></td><td style="text-align:right">${a.n.toLocaleString('id-ID')}</td><td style="text-align:right">${a.len?(a.len/1000).toLocaleString('id-ID',{maximumFractionDigits:2}):'—'}</td><td>${rinci}</td><td><button type="button" class="refresh-btn kml-zoom">📍 Lihat</button></td><td style="min-width:260px">${catHtml}</td>`;
-      tr.querySelector('.kml-zoom').onclick=()=>{ if(!map.hasLayer(e.layer)) e.layer.addTo(e.parent||root); const b=e.layer.getBounds(); if(b.isValid()){ window.scrollTo({top:$('kmlMap').getBoundingClientRect().top+scrollY-80,behavior:'smooth'}); map.fitBounds(b,{padding:[30,30]}); } };
+      const hasData=boundsOf(e).isValid();
+      tr.innerHTML=`<td class="kv-no">${i+1}</td><td><b>${esc(e.name)}</b>${e.group?'<span class="kv-badge">Sejalur</span>':''}${hasData?'':'<span class="kv-badge kv-badge-m">belum ada di KML</span>'}</td><td><button type="button" class="kv-btn kml-zoom"${hasData?'':' disabled'}>📍 Lihat</button></td><td class="kv-notecol">${noteCell('SITE',e.name,e.name)}</td>`;
+      tr.querySelector('.kml-zoom').onclick=()=>zoomSite(e);
       box.append(tr);
     });
   }
-  async function loadDefault(){
-    if(items.length) return;
-    try{
-      status('Memuat data default…');
-      const r=await fetch('kml-default.kmz?v=20261111a'); if(!r.ok) throw new Error('HTTP '+r.status);
-      const z=await JSZip.loadAsync(await r.arrayBuffer()); const k=Object.keys(z.files).find(n=>/\.kml$/i.test(n));
-      addKml(await z.files[k].async('string'),'L0 Kendala MAI Gabungan');
-    }catch(e){ status('Data default tidak termuat ('+e.message+'). Upload file manual.',true); }
-  }
+  function stat(e,acc){ (e.pms||[]).forEach(p=>{ acc.n++; acc.len+=p.len||0; const k=p.cat||'LAINNYA'; acc.by[k]=(acc.by[k]||0)+1; }); (e.children||[]).forEach(c=>stat(c,acc)); return acc; }
   window.kmlItems=()=>items;
   window.kmlRenderTable=function(){ renderTable(); window.topoInit&&window.topoInit(); };
-  window.kmlInit=function(){ init(); loadDefault(); };
+  window.kmlInit=async function(){ init(); loadDefault(); await loadNotes(); renderTable(); window.topoInit&&window.topoInit(); };
+  window.kmlHasNotes=()=>kmlNotesLoaded;
 })();

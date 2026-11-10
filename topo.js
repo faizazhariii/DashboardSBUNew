@@ -1,67 +1,114 @@
-/* Topology Sejalur: diagram ala "Topology After" + status per ruas (catatan sync gsheet) */
+/* Topology Sejalur: diagram jalur + ruas bernomor + kartu status (catatan sync gsheet) */
 (function(){
   const $=id=>document.getElementById(id);
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const PSP_SVG="<svg width=\"1236\" height=\"262\" viewBox=\"0 0 1236 262\" overflow=\"visible\" style=\"position:absolute;left:0;top:0;font-family:Calibri,Arial\">\n<defs><marker id=\"a\" markerWidth=\"8\" markerHeight=\"8\" refX=\"4\" refY=\"4\" orient=\"auto\"><path d=\"M0 0L8 4L0 8z\" fill=\"context-stroke\"/></marker>\n<g id=\"tw\"><path d=\"M0 -26 L-9 22 H9 Z\" fill=\"#fff\" stroke=\"#c33\" stroke-width=\"2\"/><path d=\"M-5 -6H5M-7 6H7M-8 14H8\" stroke=\"#c33\" stroke-width=\"2\"/><circle cx=\"0\" cy=\"-28\" r=\"3\" fill=\"#c33\"/><path d=\"M-12 -34 q-6 6 0 12 M12 -34 q6 6 0 12\" fill=\"none\" stroke=\"#c33\" stroke-width=\"1.6\"/></g>\n<g id=\"bd\"><rect x=\"-14\" y=\"-34\" width=\"28\" height=\"60\" fill=\"#8fa0b5\" stroke=\"#556\" /><path d=\"M-8 -26h4M2 -26h4M-8 -16h4M2 -16h4M-8 -6h4M2 -6h4M-8 4h4M2 4h4\" stroke=\"#fff\" stroke-width=\"3\"/></g>\n<g id=\"bx\"><rect x=\"-14\" y=\"-12\" width=\"28\" height=\"22\" fill=\"#9aa\" stroke=\"#334\"/><path d=\"M-9 -6h18M-9 0h18M-9 5h18\" stroke=\"#334\"/></g>\n</defs>\n<!-- trunk lines -->\n<line x1=\"90\" y1=\"116\" x2=\"185\" y2=\"116\" stroke=\"#9c3a9c\" stroke-width=\"3\"/>\n<line x1=\"205\" y1=\"116\" x2=\"300\" y2=\"116\" stroke=\"#4aa3d6\" stroke-width=\"3\"/>\n<line x1=\"300\" y1=\"116\" x2=\"412\" y2=\"116\" stroke=\"#4aa3d6\" stroke-width=\"3\"/>\n<line x1=\"412\" y1=\"116\" x2=\"660\" y2=\"116\" stroke=\"#14214d\" stroke-width=\"5\"/>\n<line x1=\"660\" y1=\"122\" x2=\"775\" y2=\"122\" stroke=\"#14214d\" stroke-width=\"4\" stroke-dasharray=\"10 6\"/>\n<line x1=\"775\" y1=\"116\" x2=\"965\" y2=\"116\" stroke=\"#14214d\" stroke-width=\"5\"/>\n<line x1=\"985\" y1=\"116\" x2=\"1125\" y2=\"116\" stroke=\"#9c3a9c\" stroke-width=\"3\"/>\n<!-- distances -->\n<g font-size=\"12\" font-weight=\"700\" fill=\"#222\" text-anchor=\"middle\">\n<text x=\"140\" y=\"136\">25km</text><text x=\"250\" y=\"136\">5km</text><text x=\"350\" y=\"136\">30km</text>\n<text x=\"612\" y=\"136\">5km</text><text x=\"716\" y=\"136\">12km</text><text x=\"818\" y=\"136\">15km</text><text x=\"905\" y=\"136\">7km</text><text x=\"1060\" y=\"136\">30km</text></g>\n<!-- nodes -->\n<use href=\"#bd\" x=\"62\" y=\"104\"/><text x=\"62\" y=\"150\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">GNT</text>\n<use href=\"#bx\" x=\"195\" y=\"104\"/><text x=\"195\" y=\"80\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">ME-BINANGA</text>\n<use href=\"#tw\" x=\"265\" y=\"85\"/><text x=\"265\" y=\"50\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">PSP703</text>\n<use href=\"#tw\" x=\"372\" y=\"190\"/><text x=\"372\" y=\"236\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">PSP129</text>\n<use href=\"#tw\" x=\"412\" y=\"86\"/><text x=\"412\" y=\"46\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">PSP531</text>\n<use href=\"#tw\" x=\"515\" y=\"88\"/><text x=\"515\" y=\"34\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">PSP684</text><text x=\"515\" y=\"49\" font-size=\"11\" text-anchor=\"middle\" fill=\"#c33\">NY OA</text>\n<use href=\"#tw\" x=\"578\" y=\"88\"/><text x=\"578\" y=\"34\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">PSP702</text><text x=\"578\" y=\"49\" font-size=\"11\" text-anchor=\"middle\" fill=\"#c33\">NY OA</text>\n<use href=\"#tw\" x=\"650\" y=\"88\"/><text x=\"650\" y=\"34\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">PSP439</text><text x=\"650\" y=\"49\" font-size=\"11\" text-anchor=\"middle\" fill=\"#c33\">NY OA</text>\n<use href=\"#tw\" x=\"772\" y=\"88\"/><text x=\"772\" y=\"34\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">RAP845</text><text x=\"772\" y=\"49\" font-size=\"11\" text-anchor=\"middle\" fill=\"#c33\">NY OA</text>\n<use href=\"#tw\" x=\"845\" y=\"88\"/><text x=\"845\" y=\"34\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">RAP829</text><text x=\"845\" y=\"49\" font-size=\"11\" text-anchor=\"middle\" fill=\"#c33\">NY OA</text>\n<use href=\"#bx\" x=\"975\" y=\"104\"/><text x=\"1050\" y=\"84\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">GPON00-D1-KPI-2LGP</text>\n<use href=\"#bd\" x=\"1165\" y=\"104\"/><text x=\"1165\" y=\"150\" font-size=\"12\" font-weight=\"700\" text-anchor=\"middle\">KPI</text>\n<!-- program labels -->\n<g fill=\"none\" stroke=\"#c33\" stroke-width=\"2\" stroke-dasharray=\"3 3\"><ellipse cx=\"465\" cy=\"116\" rx=\"16\" ry=\"9\"/><ellipse cx=\"548\" cy=\"116\" rx=\"16\" ry=\"9\"/></g>\n<text x=\"415\" y=\"166\" font-size=\"14\" font-weight=\"700\" fill=\"#333\">Program c</text><text x=\"528\" y=\"165\" font-size=\"14\" font-weight=\"700\" fill=\"#333\">Program a</text>\n<text x=\"805\" y=\"176\" font-size=\"14\" font-weight=\"700\" fill=\"#333\">Program b</text>\n<text x=\"440\" y=\"222\" font-size=\"16\" font-weight=\"700\" fill=\"#333\">LOP FO NodeB OnGoing</text>\n<text x=\"705\" y=\"206\" font-size=\"14\" font-weight=\"700\" fill=\"#333\">LOP FO NodeB New Link</text><text x=\"705\" y=\"222\" font-size=\"14\" font-weight=\"700\" fill=\"#333\">Proses Perizinan</text>\n<!-- ruas boxes -->\n<rect x=\"376\" y=\"20\" width=\"250\" height=\"104\" fill=\"none\" stroke=\"#d62828\" stroke-width=\"4\"/>\n<rect x=\"630\" y=\"22\" width=\"118\" height=\"104\" fill=\"none\" stroke=\"#f2b100\" stroke-width=\"4\"/>\n<rect x=\"752\" y=\"22\" width=\"146\" height=\"104\" fill=\"none\" stroke=\"#2aa4e0\" stroke-width=\"4\"/>\n<path d=\"M410 126V300\" stroke=\"#d62828\" stroke-width=\"3\" marker-end=\"url(#a)\"/>\n<path d=\"M689 126V392\" stroke=\"#f2b100\" stroke-width=\"3\" marker-end=\"url(#a)\"/>\n<path d=\"M890 126V262\" stroke=\"#2aa4e0\" stroke-width=\"3\" marker-end=\"url(#a)\"/>\n</svg>";
-  const PSP_BLOCKS=[{"x": 278, "y": 300, "w": 380, "c": "#d62828", "h": "<b>Status :</b><br><b><i>1. &nbsp;Ruas : PSP531-PSP439</i></b><br>2. &nbsp;New Deploy, <b>L0 KENDALA</b>, Mitra TA<br>3. &nbsp;Need QE : Plan Mitra MAI<br>4. &nbsp;Proses Survey MAI<br>5. &nbsp;Need TPAS 3 Site (PSP531, 684, 702, 439)"}, {"x": 630, "y": 374, "w": 420, "c": "#f2b100", "h": "<b>Status :</b><br><b><i>1. &nbsp;Ruas PSP439-RAP845</i></b><br><b>2. &nbsp;New Deploy</b>, Mitra TA<br>3. &nbsp;Batch WO: TIF Batch 03<br>4. &nbsp;Redesign KT ke KU sepanjang 12 Km (Approve)<br>5. &nbsp;Lanjut progress after QE <b><i>RAP845-RAP829 Done</i></b>,<br><b>6. &nbsp;TGT 30 Nov</b>"}, {"x": 790, "y": 268, "w": 420, "c": "#2aa4e0", "h": "<b>Status :</b><br><b><i>1. &nbsp;Ruas QE : RAP845-RAP829</i></b><br><b>2. &nbsp;QE, Mitra</b> TA Konstruksi<br>3. &nbsp;Redesign KT ke KU sepanjang 4 Km (Approve)<br>4. &nbsp;QE Project, status OGP TGT 20 Nov"}];
-  const TRT={ title:'TRT971 · TRT967 · TRT891 (Sejalur)',
-    nodes:[['STO TRT',2.0149198,98.964393],['TRT906',2.1118426,99.089555],['TRT917',2.0099937,99.165236],['TRT583',1.9850492,99.179399],['TRT889',1.95584,99.198499],['TRT971',1.9298407,99.228923],['TRT967',1.9045034,99.288056],['TRT891',1.8497035,99.331516]],
-    ruas:[
-      {t:'Ruas STO–TRT906',a:0,b:1,c:'#d62828',f:['TRT906']},
-      {t:'Ruas TRT906–TRT889 (TRT917, TRT583)',a:1,b:4,c:'#f2b100',f:['TRT889','TRT889,TRT583,TRT917']},
-      {t:'Ruas TRT971',a:4,b:5,c:'#2aa4e0',f:['TRT971']},
-      {t:'Ruas TRT967–TRT891',a:6,b:7,c:'#2e9e5b',f:['TRT891']}
-    ]};
+  const COL={bb:'#8E44AD',old:'#3AA0D8',new:'#14214D',plan:'#14214D'};
+  const GROUPS={
+    PSP:{title:'PSP684 · PSP702 · PSP439',
+      nodes:[{l:'GNT',t:'bld'},{l:'ME-BINANGA',t:'box'},{l:'PSP703',t:'tw'},{l:'PSP531',t:'tw'},{l:'PSP684',t:'tw',tag:'NY OA'},{l:'PSP702',t:'tw',tag:'NY OA'},{l:'PSP439',t:'tw',tag:'NY OA'},{l:'RAP845',t:'tw',tag:'NY OA'},{l:'RAP829',t:'tw',tag:'NY OA'},{l:'GPON KPI',t:'box',full:'GPON00-D1-KPI-2LGP'},{l:'KPI',t:'bld'}],
+      links:[{km:25,k:'bb'},{km:5,k:'old'},{km:30,k:'old'},{km:6,k:'new',tg:'Prog c'},{km:10,k:'new',tg:'Prog a'},{km:5,k:'new'},{km:12,k:'plan',tg:'Prog b',dash:1},{km:15,k:'new'},{km:7,k:'new'},{km:30,k:'bb'}],
+      branch:{at:3,l:'PSP129'},
+      ruas:[
+        {c:'#E5383B',a:3,b:6,t:'Ruas PSP531 – PSP439',lines:['New Deploy, <b>L0 KENDALA</b>, Mitra TA','Need QE : Plan Mitra MAI','Proses Survey MAI','Need TPAS 3 Site (PSP531, 684, 702, 439)'],tag:'LOP FO NodeB OnGoing'},
+        {c:'#F2A900',a:6,b:7,t:'Ruas PSP439 – RAP845',lines:['<b>New Deploy</b>, Mitra TA','Batch WO: TIF Batch 03','Redesign KT ke KU sepanjang 12 Km (Approve)','Lanjut progress after QE <b><i>RAP845-RAP829 Done</i></b>','<b>TGT 30 Nov</b>'],tag:'LOP FO NodeB New Link · Proses Perizinan'},
+        {c:'#1F9BE0',a:7,b:8,t:'Ruas QE : RAP845 – RAP829',lines:['<b>QE, Mitra</b> TA Konstruksi','Redesign KT ke KU sepanjang 4 Km (Approve)','QE Project, status OGP TGT 20 Nov'],tag:'QE Project'}
+      ]},
+    TRT:{title:'TRT971 · TRT967 · TRT891',
+      nodes:[['STO TRT',2.0149198,98.964393],['TRT906',2.1118426,99.089555],['TRT917',2.0099937,99.165236],['TRT583',1.9850492,99.179399],['TRT889',1.95584,99.198499],['TRT971',1.9298407,99.228923],['TRT967',1.9045034,99.288056],['TRT891',1.8497035,99.331516]].map((n,i)=>({l:n[0],t:i?'tw':'box',ll:[n[1],n[2]]})),
+      auto:true,
+      ruas:[
+        {c:'#E5383B',a:0,b:1,t:'Ruas STO – TRT906',f:['TRT906']},
+        {c:'#F2A900',a:1,b:4,t:'Ruas TRT906 – TRT889 (TRT917, TRT583)',f:['TRT889','TRT889,TRT583,TRT917']},
+        {c:'#1F9BE0',a:4,b:5,t:'Ruas TRT889 – TRT971',f:['TRT971']},
+        {c:'#2E9E5B',a:6,b:7,t:'Ruas TRT967 – TRT891',f:['TRT891']}
+      ]}
+  };
   function hv(a,b){ const R=6371,p=Math.PI/180,dl=(b[0]-a[0])*p,dn=(b[1]-a[1])*p; const x=Math.sin(dl/2)**2+Math.cos(a[0]*p)*Math.cos(b[0]*p)*Math.sin(dn/2)**2; return 2*R*Math.asin(Math.sqrt(x)); }
-  function lastNote(key){ const t=(window.prioNotes&&window.prioNotes[key])||''; const l=t.split('\n').filter(Boolean); return l.length?l[l.length-1]:''; }
-  function noteHtml(key){ const t=(window.prioNotes&&window.prioNotes[key])||''; const l=t.split('\n').filter(Boolean); return l.length?'<br>'+l.slice(-2).map((x,i)=>(i?'':'<b>Update:</b> ')+esc(x)).join('<br>'):''; }
-  function allEntries(){ const out=[]; const rec=e=>{out.push(e);(e.children||[]).forEach(rec);}; (window.kmlItems?window.kmlItems():[]).forEach(rec); return out; }
+  function notes(key){ const t=(window.kmlNotes&&window.kmlNotes[key])||''; return t.split('\n').filter(Boolean); }
   function statOf(names){
     const OK=['TIANG','CLOSURE','HH/MH','JEMBATAN','GALVANIS','GORONG-GORONG','BORING/BOX','ODC','ODP'];
-    const by={}; let len=0, found=0;
+    const by={}; let len=0;
     const count=e=>{ (e.pms||[]).forEach(p=>{ len+=p.len||0; if(OK.includes(p.cat)) by[p.cat]=(by[p.cat]||0)+1; }); (e.children||[]).forEach(count); };
-    const find=e=>{ if(names.some(n=>(e.name||'').trim().toUpperCase()===n)){ found++; count(e); return; } (e.children||[]).forEach(find); };
+    const find=e=>{ if(names.some(n=>(e.name||'').trim().toUpperCase()===n)){ count(e); return; } (e.children||[]).forEach(find); };
     (window.kmlItems?window.kmlItems():[]).forEach(find);
-    return {km:len/1000,by,found};
+    return {km:len/1000,by};
   }
-  function trtHtml(){
-    const N=TRT.nodes, X=N.map((_,i)=>90+i*150), D=[]; for(let i=0;i<N.length-1;i++) D.push(hv([N[i][1],N[i][2]],[N[i+1][1],N[i+1][2]]));
-    let sv='<defs><marker id="tpa" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="context-stroke"/></marker><g id="tptw"><path d="M0 -26 L-9 22 H9 Z" fill="#fff" stroke="#c33" stroke-width="2"/><path d="M-5 -6H5M-7 6H7M-8 14H8" stroke="#c33" stroke-width="2"/><circle cx="0" cy="-28" r="3" fill="#c33"/><path d="M-12 -34 q-6 6 0 12 M12 -34 q6 6 0 12" fill="none" stroke="#c33" stroke-width="1.6"/></g><g id="tpbx"><rect x="-14" y="-12" width="28" height="22" fill="#9aa" stroke="#334"/><path d="M-9 -6h18M-9 0h18M-9 5h18" stroke="#334"/></g></defs>';
-    sv+=`<line x1="${X[0]}" y1="116" x2="${X[X.length-1]}" y2="116" stroke="#14214d" stroke-width="5"/>`;
-    D.forEach((d,i)=>{ sv+=`<text x="${(X[i]+X[i+1])/2}" y="148" font-size="12" font-weight="700" text-anchor="middle" fill="#222">≈${d.toFixed(1)}km</text>`; });
-    N.forEach((n,i)=>{ if(i===0) sv+=`<use href="#tpbx" x="${X[i]}" y="108"/><text x="${X[i]}" y="82" font-size="12" font-weight="700" text-anchor="middle">${n[0]}</text>`;
-      else sv+=`<use href="#tptw" x="${X[i]}" y="88"/><text x="${X[i]}" y="${i%2===0?44:32}" font-size="12" font-weight="700" text-anchor="middle">${n[0]}</text>`; });
-    let html='';
-    TRT.ruas.forEach((r,k)=>{
-      const x1=X[r.a]-24+k*3, x2=X[r.b]+24-k*3, st=statOf(r.f), key='TRT|'+k;
-      sv+=`<rect x="${x1}" y="${14+k*4}" width="${x2-x1}" height="${112}" fill="none" stroke="${r.c}" stroke-width="4"/>`;
-      sv+=`<path d="M${(x1+x2)/2} 126 V${166+(k%2)*70}" stroke="${r.c}" stroke-width="3" marker-end="url(#tpa)"/>`;
-      const det=Object.entries(st.by).map(([a,b])=>a+' '+b).join(', ')||'-';
-      const xl=Math.max(8,Math.min((x1+x2)/2-110,1240-300));
-      html+=`<div style="position:absolute;left:${xl}px;top:${258+(k%2)*70}px;width:290px;font-size:13px;line-height:1.5;border-left:4px solid ${r.c};padding-left:8px"><b>Status :</b><br><b><i>1. &nbsp;${esc(r.t)}</i></b><br>2. &nbsp;Kabel ±${st.km.toFixed(1)} km <span style="color:#888">(dari KML)</span><br>3. &nbsp;${esc(det)}${noteHtml(key)||'<br><span style="color:#888"><i>(belum ada catatan)</i></span>'}</div>`;
+  const ICON={
+    tw:(c)=>`<path d="M0 -9 L-5.5 8 H5.5 Z" fill="none" stroke="${c}" stroke-width="1.8" stroke-linejoin="round"/><path d="M-3 0H3M-4.4 4H4.4" stroke="${c}" stroke-width="1.5"/><path d="M-8 -9 q-4 4 0 8 M8 -9 q4 4 0 8" fill="none" stroke="${c}" stroke-width="1.5"/>`,
+    box:(c)=>`<rect x="-9" y="-6" width="18" height="12" rx="2" fill="none" stroke="${c}" stroke-width="1.8"/><path d="M-5 -2H5M-5 2H5" stroke="${c}" stroke-width="1.5"/>`,
+    bld:(c)=>`<rect x="-6" y="-10" width="12" height="20" rx="1.5" fill="none" stroke="${c}" stroke-width="1.8"/><path d="M-3 -6h2M1 -6h2M-3 -1h2M1 -1h2M-3 4h2M1 4h2" stroke="${c}" stroke-width="2"/>`
+  };
+  function diagram(g,key){
+    const n=g.nodes.length, W=1240, pad=60, step=(W-2*pad)/(n-1), X=g.nodes.map((_,i)=>pad+i*step);
+    const Y=118;
+    let links=g.links;
+    if(g.auto){ links=[]; for(let i=0;i<n-1;i++) links.push({km:hv(g.nodes[i].ll,g.nodes[i+1].ll),k:i===0?'old':'new',approx:1}); }
+    let sv='';
+    // jalur
+    links.forEach((L,i)=>{
+      const x1=X[i]+18,x2=X[i+1]-18, col=COL[L.k]||'#14214D', w=L.k==='new'||L.k==='plan'?6:4;
+      sv+=`<line x1="${x1}" y1="${Y}" x2="${x2}" y2="${Y}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" ${L.dash?'stroke-dasharray="2 9"':''}/>`;
+      const mx=(X[i]+X[i+1])/2, txt=(L.approx?'≈':'')+(+L.km).toFixed(L.approx?1:0)+' km';
+      sv+=`<g transform="translate(${mx},${Y+22})"><rect x="-26" y="-9" width="52" height="18" rx="9" fill="#fff" stroke="#d7dde8"/><text y="4" font-size="10.5" font-weight="700" text-anchor="middle" fill="#33405a">${txt}</text></g>`;
+      if(L.tg) sv+=`<text x="${mx}" y="${Y-14}" font-size="10" font-weight="700" text-anchor="middle" fill="#8a94a6">${L.tg}</text>`;
     });
-    return `<div id="topoCanvas" style="width:1240px;position:relative;height:560px;background:#fff;font-family:Calibri,Arial,sans-serif"><div style="position:absolute;left:0;top:0;width:1236px;height:560px;border:2px solid #4e9a5a;border-radius:14px;background:#f6f8f6;box-sizing:content-box"></div><div style="position:absolute;left:18px;top:10px;font-size:22px;font-weight:700">Topology After — ${esc(TRT.title)}</div><svg width="1240" height="520" style="position:absolute;left:0;top:0;overflow:visible"><g transform="translate(0,44)">${sv}</g></svg>${html}</div>`;
+    // node
+    g.nodes.forEach((nd,i)=>{
+      const oa=nd.tag==='NY OA', c=oa?'#E5383B':'#33405a';
+      sv+=`<g transform="translate(${X[i]},${Y})"><circle r="18" fill="#fff" stroke="${c}" stroke-width="2.2"/>${ICON[nd.t](c)}</g>`;
+      const lab=nd.l, fs=lab.length>9?10:11.5;
+      sv+=`<text x="${X[i]}" y="${Y-34}" font-size="${fs}" font-weight="800" text-anchor="middle" fill="#14214D">${esc(lab)}</text>`;
+      if(oa) sv+=`<g transform="translate(${X[i]},${Y-62})"><rect x="-19" y="-8" width="38" height="15" rx="7.5" fill="#E5383B"/><text y="3" font-size="9" font-weight="800" text-anchor="middle" fill="#fff">NY OA</text></g>`;
+    });
+    if(g.branch){ const bx=X[g.branch.at]; sv+=`<line x1="${bx}" y1="${Y+18}" x2="${bx}" y2="${Y+54}" stroke="#aab" stroke-width="1.6" stroke-dasharray="3 3"/><g transform="translate(${bx},${Y+66})"><circle r="13" fill="#fff" stroke="#33405a" stroke-width="2"/><g transform="scale(.8)">${ICON.tw('#33405a')}</g></g><text x="${bx+20}" y="${Y+70}" font-size="11" font-weight="800" fill="#14214D">${g.branch.l}</text>`; }
+    // ruas strip
+    const SY=Y+110;
+    g.ruas.forEach((r,k)=>{
+      const x1=X[r.a]+6, x2=X[r.b]-6;
+      sv+=`<line x1="${X[r.a]}" y1="${Y+34}" x2="${x1}" y2="${SY}" stroke="${r.c}" stroke-opacity=".35" stroke-dasharray="2 4"/><line x1="${X[r.b]}" y1="${Y+34}" x2="${x2}" y2="${SY}" stroke="${r.c}" stroke-opacity=".35" stroke-dasharray="2 4"/>`;
+      sv+=`<rect x="${x1}" y="${SY}" width="${x2-x1}" height="26" rx="13" fill="${r.c}"/><circle cx="${x1+14}" cy="${SY+13}" r="9" fill="#fff"/><text x="${x1+14}" y="${SY+17}" font-size="11" font-weight="800" text-anchor="middle" fill="${r.c}">${k+1}</text>${(x2-x1)>170?`<text x="${(x1+x2)/2+10}" y="${SY+17}" font-size="11.5" font-weight="700" text-anchor="middle" fill="#fff">${esc(r.t.replace('Ruas ','').replace(/ \(.*\)/,''))}</text>`:''}`;
+    });
+    return {svg:`<svg width="100%" viewBox="0 0 ${W} ${SY+40}" preserveAspectRatio="xMidYMid meet" style="display:block;max-width:${W}px;margin:0 auto;font-family:'Inter','Segoe UI',Arial,sans-serif">${sv}</svg>`,W};
   }
-  function pspHtml(){
-    let h='';
-    PSP_BLOCKS.forEach((b,k)=>{ h+=`<div style="position:absolute;left:${b.x}px;top:${b.y}px;width:${b.w}px;font-size:13px;line-height:1.55">${b.h}${noteHtml('PSP|'+k)}</div>`; });
-    return `<div id="topoCanvas" style="width:1240px;position:relative;height:560px;background:#fff;font-family:Calibri,Arial,sans-serif"><div style="position:absolute;left:0;top:0;width:1236px;height:262px;border:2px solid #4e9a5a;border-radius:14px;background:#f6f8f6"></div><div style="position:absolute;left:18px;top:10px;font-size:22px;font-weight:700">Topology After</div>${PSP_SVG}${h}</div>`;
-  }
-  function noteForm(group){
-    const ruas=group==='TRT'?TRT.ruas.map((r,i)=>[r.t,'TRT|'+i]):[['Ruas PSP531-PSP439','PSP|0'],['Ruas PSP439-RAP845','PSP|1'],['Ruas QE : RAP845-RAP829','PSP|2']];
-    return ruas.map(([t,key])=>{ const id=key.split('|')[1]; return `<div style="margin:6px 0;padding:6px 8px;border:1px solid var(--border,#ddd);border-radius:8px"><b style="font-size:12.5px">${esc(t)}</b><div>${window.prioCatatanCell?window.prioCatatanCell('TOPO',{id:key,nama:t}):''}</div></div>`; }).join('');
+  function cards(g,key){
+    return `<div class="tp-cards" style="grid-template-columns:repeat(auto-fit,minmax(250px,1fr))">`+g.ruas.map((r,k)=>{
+      let body='';
+      if(g.auto){ const st=statOf(r.f); const chips=Object.entries(st.by).map(([a,b])=>`<span class="tp-chip">${esc(a)} <b>${b}</b></span>`).join(''); body=`<div class="tp-km">Kabel ±${st.km.toFixed(1)} km <span class="kv-mute">(dari KML)</span></div><div>${chips||'<span class="kv-mute">—</span>'}</div>`; }
+      else body='<ul class="tp-ul">'+r.lines.map(l=>`<li>${l}</li>`).join('')+'</ul>'+(r.tag?`<div class="tp-tag">${esc(r.tag)}</div>`:'');
+      const nk='TOPO|'+key+'|'+k, nl=notes(nk).slice(-2);
+      const upd=nl.length?`<div class="tp-upd"><b>Update:</b> ${nl.map(esc).join('<br>')}</div>`:'';
+      const form=window.kmlNoteCell?window.kmlNoteCell('TOPO',key+'|'+k,r.t).replace(/<div class="kv-note-h"[\s\S]*?<\/div><div class="kv-note-f/,'<div class="kv-note-f'):'';
+      return `<div class="tp-card" style="border-top:4px solid ${r.c}"><div class="tp-ct"><span class="tp-n" style="background:${r.c}">${k+1}</span>${esc(r.t)}</div>${body}${upd}<div class="no-cap">${form}</div></div>`;
+    }).join('')+'</div>';
   }
   function render(){
     const box=$('topoBox'); if(!box) return;
-    const g=$('topoGroup').value;
-    box.innerHTML=g==='TRT'?trtHtml():pspHtml();
-    $('topoNotes').innerHTML=noteForm(g);
+    const key=$('topoGroup').value, g=GROUPS[key], d=diagram(g,key);
+    const leg=`<div class="tp-leg"><span><i style="background:${COL.new}"></i>Jalur FO (ongoing)</span><span><i class="dash"></i>New link (proses perizinan)</span><span><i style="background:${COL.old}"></i>Existing</span><span><i style="background:#E5383B;border-radius:50%"></i>NY OA</span></div>`;
+    box.innerHTML=`<div id="topoCanvas" class="tp" style="min-width:760px"><div class="tp-h"><div class="tp-t">Topology After</div><div class="tp-s">${esc(g.title)} (Sejalur)</div>${g.ruas.length?leg:''}</div>${d.svg}${cards(g,key)}</div>`;
   }
   function download(){
     const el=$('topoCanvas'); if(!el||!window.html2canvas) return;
-    html2canvas(el,{backgroundColor:'#ffffff',scale:2}).then(c=>{ const a=document.createElement('a'); a.download='topology-'+$('topoGroup').value+'.png'; a.href=c.toDataURL('image/png'); a.click(); });
+    html2canvas(el,{backgroundColor:'#ffffff',scale:2,ignoreElements:n=>n.classList&&n.classList.contains('no-cap')}).then(c=>{ const a=document.createElement('a'); a.download='topology-'+$('topoGroup').value+'.png'; a.href=c.toDataURL('image/png'); a.click(); });
   }
+  const css=document.createElement('style'); css.textContent=`
+.tp{background:#fff;padding:16px 20px 20px;font-family:'Inter','Segoe UI',Arial,sans-serif;color:#14214D}
+.tp-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.tp-t{font-size:20px;font-weight:800}.tp-s{font-size:13px;color:#667;font-weight:600}
+.tp-leg{margin-left:auto;display:flex;gap:14px;font-size:11px;color:#556}
+.tp-leg span{display:flex;align-items:center;gap:5px}.tp-leg i{display:inline-block;width:18px;height:5px;border-radius:3px}
+.tp-leg i.dash{background:repeating-linear-gradient(90deg,#14214D 0 3px,transparent 3px 8px)}
+.tp-cards{display:grid;gap:12px;margin-top:6px}
+.tp-card{background:#f7f9fc;border:1px solid #e4e8ef;border-radius:10px;padding:10px 12px;font-size:12.5px;line-height:1.5}
+.tp-ct{font-weight:800;font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.tp-n{display:inline-flex;width:20px;height:20px;border-radius:50%;color:#fff;font-size:11px;align-items:center;justify-content:center;flex:0 0 20px}
+.tp-ul{margin:0 0 6px;padding-left:18px}.tp-ul li{margin:1px 0}
+.tp-tag{display:inline-block;background:#fff;border:1px dashed #c5cddb;border-radius:6px;font-size:11px;padding:1px 7px;color:#556;margin-bottom:4px}
+.tp-km{font-weight:700;margin-bottom:4px}
+.tp-chip{display:inline-block;background:#fff;border:1px solid #e4e8ef;border-radius:6px;padding:1px 7px;margin:1px 4px 1px 0;font-size:11.5px}
+.tp-upd{background:#fff8e1;border-left:3px solid #F2A900;padding:4px 8px;margin:6px 0;font-size:12px;border-radius:4px}
+`;
+  document.head.appendChild(css);
   window.topoRender=render;
-  document.addEventListener('DOMContentLoaded',()=>{});
   window.topoInit=function(){ const s=$('topoGroup'); if(s&&!s._b){ s._b=1; s.onchange=render; $('topoDl').onclick=download; } render(); };
 })();

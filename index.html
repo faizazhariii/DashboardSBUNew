@@ -457,7 +457,68 @@
     .tab-parent{display:none;}
     .tab-sub .page-tab{font-size:14px;padding:8px 12px;}
   }
-.kml-ico{background:none;border:none}.kml-lbl{background:rgba(255,255,255,.85);border:1px solid #999;color:#111;font-size:11px;font-weight:600;padding:0 4px;box-shadow:none}.kml-lbl:before{display:none}.kml-nolbl .kml-lbl{display:none}
+.kv{max-width:1400px;margin:0 auto;padding:4px 2px 30px;--kb:#e4e8ef;--kf:#f5f7fb;--kt:#0A2342}
+.kv-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.kv-title{font-size:24px;font-weight:800;color:var(--kt);letter-spacing:-.3px}
+.kv-sub{font-size:12.5px;color:#6b7686;margin-top:2px}
+.kv-pills{display:flex;gap:8px;align-items:center}
+.kv-pill{background:#fff;border:1px solid var(--kb);border-radius:999px;padding:4px 12px;font-size:12px;color:#445}
+.kv-pill:empty{display:none}
+.kv-chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}
+.kv-chip{border:1px solid var(--kb);background:#fff;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:600;color:#33405a;cursor:pointer;transition:.15s}
+.kv-chip:hover{border-color:#E31B23;color:#E31B23}
+.kv-chip.on{background:#E31B23;border-color:#E31B23;color:#fff}
+.kv-main{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap}
+.kv-side{width:270px;flex:0 0 270px;background:#fff;border:1px solid var(--kb);border-radius:12px;padding:10px;display:flex;flex-direction:column;max-height:640px}
+.kv-input{width:100%;box-sizing:border-box;border:1px solid var(--kb);border-radius:8px;padding:7px 10px;font-size:13px;background:#fff}
+.kv-tools{display:flex;gap:4px;flex-wrap:wrap;margin:8px 0}
+.kv-btn{border:1px solid var(--kb);background:#fff;border-radius:8px;padding:4px 9px;font-size:12px;cursor:pointer;color:#33405a;font-weight:600}
+.kv-btn:hover:not(:disabled){background:var(--kf);border-color:#c5cddb}
+.kv-btn:disabled{opacity:.4;cursor:default}
+.kv-list{overflow:auto;flex:1}
+.kv-row{display:flex;align-items:center;gap:4px;padding:2px 0;font-size:12.5px}
+.kv-ar{width:14px;flex:0 0 14px;text-align:center;cursor:pointer;user-select:none;color:#667}
+.kv-lb{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.kv-lb:hover{color:#E31B23}
+.kv-ct{font-size:11px;color:#99a}
+.kv-hit{font-size:12px;color:#E31B23;cursor:pointer;padding:2px 0}
+.kv-empty,.kv-mute{color:#99a;font-size:12px}
+.kv-mapwrap{flex:1;min-width:320px;position:relative;border:1px solid var(--kb);border-radius:12px;overflow:hidden;background:#fff;height:640px}
+.kv-mapwrap.kv-full{position:fixed;inset:10px;z-index:9999;height:auto;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+#kmlMap{position:absolute;inset:0}
+.kv-bar{position:absolute;z-index:1000;left:50px;top:10px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.kv-bar>*{background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.2)}
+.kv-seg{display:flex;border-radius:8px;overflow:hidden}
+.kv-seg button{border:0;background:#fff;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;color:#445}
+.kv-seg button.on{background:var(--kt);color:#fff}
+.kv-chk{font-size:12px;padding:5px 10px;border-radius:8px;display:flex;gap:5px;align-items:center;cursor:pointer}
+.kv-card{background:#fff;border:1px solid var(--kb);border-radius:12px;margin-top:14px;padding:12px 14px}
+.kv-card-h{font-weight:800;color:var(--kt);font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.kv-card-h .kv-mute{font-weight:400}
+.kv-grow{flex:1}
+.kv-table{width:100%;border-collapse:collapse;font-size:13px}
+.kv-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#667;padding:8px;border-bottom:2px solid var(--kb);background:var(--kf)}
+.kv-table td{padding:8px;border-bottom:1px solid var(--kb);vertical-align:top}
+.kv-table tr:hover td{background:#fafbfd}
+.kv-no{color:#99a}
+.kv-badge{display:inline-block;margin-left:6px;font-size:10px;font-weight:700;background:#e8f1ff;color:#1b5ed6;border-radius:6px;padding:1px 6px}
+.kv-badge-m{background:#f3f3f3;color:#888}
+.kv-notecol{min-width:320px}
+.kv-note-h{font-size:12px;line-height:1.5;color:#333;margin-bottom:4px;white-space:pre-wrap}
+.kv-note-f{display:flex;gap:4px}
+.kv-note-f input{flex:1;border:1px solid var(--kb);border-radius:7px;padding:5px 8px;font-size:12px;min-width:0}
+.kv-note-f input.busy{border-color:#f0a500}.kv-note-f input.err{border-color:#E31B23}
+.kv-note-f button{border:0;background:var(--kt);color:#fff;border-radius:7px;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer}
+.kv-pop{max-width:300px;max-height:260px;overflow:auto}
+.kv-pop-t{font-size:14px;font-weight:800}
+.kv-pop-s{font-size:11px;color:#666;margin:2px 0 4px}
+.kv-pop-c{display:inline-block;background:#fdeaea;color:#c11;font-size:10px;font-weight:700;border-radius:6px;padding:1px 6px;margin-bottom:4px}
+.kv-pop-d{font-size:12px;margin-top:4px}
+.kv-pop-l{font-size:11px;color:#444;margin-top:6px}
+.kml-ico{background:none;border:none}
+.kml-lbl{background:rgba(255,255,255,.88);border:1px solid #aaa;color:#111;font-size:11px;font-weight:600;padding:0 4px;box-shadow:none}
+.kml-lbl:before{display:none}
+.kml-nolbl .kml-lbl{display:none}
 </style>
 </head>
 <body>
@@ -498,7 +559,7 @@
     </div>
     <div class="tab-group">Tambahan</div>
     <button class="page-tab" id="tabBtnPrio" type="button">⭐ Priority TSEL</button>
-    <button class="page-tab" id="tabBtnKml" type="button">🗺️ KML Viewer</button>
+    <button class="page-tab" id="tabBtnKml" type="button">🗺️ L0 Kendala</button>
     <button class="page-tab" id="tabBtnRekapPpt" type="button">Rekap PPT</button>
     <button class="page-tab" id="tabBtnAlerts" type="button">Peringatan</button>
     <button class="page-tab" id="tabBtnCompare" type="button">Perbandingan</button>
@@ -506,7 +567,6 @@
     <button class="page-tab" id="tabBtnNeedOlt" type="button">Need Modul OLT</button>
     <button class="page-tab" id="tabBtnQe" type="button" style="display:none;">QE SBU</button>
     <button class="page-tab" id="tabBtnGolive" type="button">Golive</button>
-    <button class="page-tab" id="tabBtnNodeB" type="button">L0 Kendala MBB</button>
   </div>
 
   <div id="pagePT2">
@@ -2159,50 +2219,6 @@
     </div>
     </div>
 
-    <div id="pageNodeB" style="display:none;">
-      <div class="section" style="margin-top:0;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div>
-            <p class="section-title" style="margin-bottom:2px;">L0 Kendala MBB — SBU</p>
-            <p class="section-desc" style="margin:0;" id="nodebSource">Sumber: Detail 62 Site (REGION = SBU).</p>
-          </div>
-          <button type="button" class="download-btn capture-hide" id="nodebDownloadBtn" style="margin-top:0;">📥 Download CSV</button>
-        </div>
-        <div class="kpi-row" id="nodebKpis"></div>
-        <div class="chart-grid" style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;">
-          <div class="chart-card"><h3>Penyebab Kendala (Status Progres Kendala2)</h3><div class="canvas-wrap" style="height:260px;"><canvas id="nodebChartKendala"></canvas></div></div>
-          <div class="chart-card"><h3>Target Plan</h3><div class="canvas-wrap" style="height:260px;"><canvas id="nodebChartPlan"></canvas></div></div>
-          <div class="chart-card"><h3>Status Progres per Mitra</h3><div class="canvas-wrap" style="height:260px;"><canvas id="nodebChartMitra"></canvas></div></div>
-        </div>
-        <div class="table-card" style="overflow-x:auto;margin-top:18px;">
-          <table class="mbb-report-table">
-            <thead><tr id="nodebPivotHead"></tr></thead>
-            <tbody id="nodebPivotBody"></tbody>
-          </table>
-        </div>
-        <p class="section-title" style="margin:22px 0 4px;font-size:15px;">Detail Site</p>
-        <div class="filters">
-          <input type="text" id="nodebSearch" placeholder="Cari SiteID, Site Name, Remarks...">
-          <select id="nodebFKendala" class="period-select"></select>
-          <select id="nodebFPlan" class="period-select"></select>
-          <select id="nodebFMitra" class="period-select"></select>
-          <select id="nodebFStatus" class="period-select"></select>
-          <select id="nodebFOrder" class="period-select"></select>
-          <span class="count" id="nodebCount"></span>
-        </div>
-        <div class="table-card" style="overflow-x:auto;">
-          <table class="mbb-report-table">
-            <thead><tr>
-              <th>SiteID</th><th>Site Name</th><th>Tematik</th><th>Mitra</th><th>Order</th><th>Status Progres</th>
-              <th>Kendala</th><th>Flagging</th><th>Plan</th><th>UIC</th><th>Tim Survey</th><th>Timeline OA</th>
-              <th>Remarks</th><th>History</th><th>Detail</th>
-            </tr></thead>
-            <tbody id="nodebTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
     <div id="pageQe" style="display:none;">
       <div class="section" style="margin-top:0;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
@@ -2245,48 +2261,56 @@
     </div>
 
     <div id="pageKml" style="display:none;">
-      <div class="section" style="margin-top:0;">
-        <p class="section-title" style="margin-bottom:2px;">🗺️ KML Viewer</p>
-        <p class="section-desc">Upload / drag file KML atau KMZ (bisa lebih dari satu), atau tempel URL. Klik objek untuk lihat detail.</p>
-        <div id="kmlDrop" style="border:2px dashed var(--border,#ccc);border-radius:10px;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-          <label class="refresh-btn" style="cursor:pointer;">📂 Pilih KML/KMZ<input type="file" id="kmlFile" accept=".kml,.kmz" multiple style="display:none"></label>
-          <span style="font-size:12px;">atau drag file ke sini</span>
-          <input id="kmlUrl" placeholder="URL KML/KMZ (opsional)" style="flex:1;min-width:200px;padding:6px 8px;">
-          <button class="refresh-btn" id="kmlUrlBtn" type="button">Muat URL</button>
-          <select id="kmlBase" style="padding:6px;"><option value="osm">Peta</option><option value="sat">Satelit</option></select>
-          <label style="font-size:12px;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="kmlLbl" checked> Label nama</label>
-          <button class="refresh-btn" id="kmlFit" type="button">Fit</button>
-          <button class="refresh-btn" id="kmlClear" type="button">Hapus semua</button>
-        </div>
-        <p id="kmlStatus" style="font-size:12px;margin:6px 0;"></p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <div style="width:260px;flex:0 0 260px;max-height:600px;overflow:auto;">
-            <input id="kmlSearch" placeholder="Cari nama objek…" style="width:100%;padding:6px 8px;margin-bottom:6px;box-sizing:border-box;">
-            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">
-              <button class="refresh-btn" id="kmlAllOn" type="button" style="padding:3px 8px;font-size:11px;">☑ Pilih semua</button>
-              <button class="refresh-btn" id="kmlAllOff" type="button" style="padding:3px 8px;font-size:11px;">☐ Kosongkan</button>
-              <button class="refresh-btn" id="kmlExp" type="button" style="padding:3px 8px;font-size:11px;">▾ Buka semua</button>
-              <button class="refresh-btn" id="kmlCol" type="button" style="padding:3px 8px;font-size:11px;">▸ Tutup semua</button>
-            </div>
-            <div id="kmlList"></div>
+      <div class="kv">
+        <div class="kv-head">
+          <div>
+            <div class="kv-title">🗺️ L0 Kendala</div>
+            <div class="kv-sub">Peta rute &amp; site L0 Kendala MAI · klik site untuk zoom, klik objek untuk detail</div>
           </div>
-          <div id="kmlMap" style="flex:1;min-width:300px;height:600px;border-radius:10px;"></div>
+          <div class="kv-pills"><span class="kv-pill"><b id="kmlSiteCount">0</b> site / grup</span><span class="kv-pill" id="kmlStatus"></span></div>
         </div>
-        <p class="section-title" style="margin:18px 0 4px;">Tabel per Site <span id="kmlTableCount" style="font-weight:400;font-size:12px;"></span></p>
-        <div style="overflow:auto;">
-          <table style="width:100%;font-size:12.5px;">
-            <thead><tr><th>No</th><th>Site</th><th>Objek</th><th>Kabel (km)</th><th>Rincian</th><th>Peta</th><th>Catatan</th></tr></thead>
-            <tbody id="kmlTableBody"></tbody>
-          </table>
+        <div class="kv-chips" id="kmlChips"></div>
+
+        <div class="kv-main">
+          <aside class="kv-side">
+            <input id="kmlSearch" class="kv-input" placeholder="🔍 Cari nama objek (TN, CL, HH…)">
+            <div class="kv-tools">
+              <button class="kv-btn" id="kmlAllOn" type="button">☑ Semua</button>
+              <button class="kv-btn" id="kmlAllOff" type="button">☐ Kosong</button>
+              <button class="kv-btn" id="kmlExp" type="button">▾ Buka</button>
+              <button class="kv-btn" id="kmlCol" type="button">▸ Tutup</button>
+            </div>
+            <div id="kmlList" class="kv-list"></div>
+          </aside>
+          <div class="kv-mapwrap" id="kmlMapWrap">
+            <div class="kv-bar">
+              <div class="kv-seg"><button type="button" class="on" data-kml-base="osm">Peta</button><button type="button" data-kml-base="sat">Satelit</button></div>
+              <label class="kv-chk"><input type="checkbox" id="kmlLbl" checked> Label nama</label>
+              <button class="kv-btn" id="kmlFit" type="button">⤢ Semua</button>
+              <button class="kv-btn" id="kmlFull" type="button">⛶ Layar penuh</button>
+            </div>
+            <div id="kmlMap"></div>
+          </div>
         </div>
-        <p class="section-title" style="margin:22px 0 4px;">Topology Sejalur</p>
-        <p class="section-desc">Diagram ruas per grup sejalur. Isi status per ruas lewat kolom catatan di bawah diagram (tersimpan ke Google Sheets).</p>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px;">
-          <select id="topoGroup" style="padding:6px;"><option value="PSP">PSP684 · PSP702 · PSP439</option><option value="TRT">TRT971 · TRT967 · TRT891</option></select>
-          <button class="refresh-btn" id="topoDl" type="button">⬇ Download PNG</button>
+
+        <div class="kv-card">
+          <div class="kv-card-h">Daftar Site &amp; Catatan <span class="kv-mute">· catatan tersimpan di Google Sheets (tab CATATAN L0 KENDALA)</span></div>
+          <div style="overflow:auto;">
+            <table class="kv-table">
+              <thead><tr><th style="width:44px">No</th><th>Site</th><th style="width:110px">Peta</th><th>Catatan</th></tr></thead>
+              <tbody id="kmlTableBody"></tbody>
+            </table>
+          </div>
         </div>
-        <div style="overflow:auto;border:1px solid var(--border,#ddd);border-radius:10px;"><div id="topoBox"></div></div>
-        <div id="topoNotes" style="margin-top:10px;max-width:900px;"></div>
+
+        <div class="kv-card">
+          <div class="kv-card-h">Topology Sejalur
+            <span class="kv-grow"></span>
+            <select id="topoGroup" class="kv-input" style="width:auto"><option value="PSP">PSP684 · PSP702 · PSP439</option><option value="TRT">TRT971 · TRT967 · TRT891</option></select>
+            <button class="kv-btn" id="topoDl" type="button">⬇ PNG</button>
+          </div>
+          <div style="overflow:auto;"><div id="topoBox"></div></div>
+        </div>
       </div>
     </div>
 
@@ -5900,7 +5924,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], nodeb:['tabBtnNodeB','pageNodeB'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -6394,7 +6418,7 @@ function renderPrioPage(only){
   (only ? [only] : ['pt2','ta','fh','mbb']).forEach(renderPrioBlock);
   renderPrioSummary();
 }
-document.getElementById('tabBtnKml').onclick = ()=>{ switchTab('kml'); window.kmlInit&&window.kmlInit(); loadPrioNotes().then(()=>window.kmlRenderTable&&window.kmlRenderTable()); };
+document.getElementById('tabBtnKml').onclick = ()=>{ switchTab('kml'); window.kmlInit&&window.kmlInit(); };
 document.getElementById('tabBtnPrio').onclick = ()=> { switchTab('prio'); renderPrioPage(); loadPrioNotes().then(()=>{ if(prioLastDetail) renderRekapDetailOutput(prioLastDetail._key); }); };
 document.getElementById('prioDownloadBtn').onclick = ()=>{
   if(!prioLastDetail || !prioLastDetail.rows.length){ alert('Klik dulu salah satu sel di tabel buat milih data yang mau di-download.'); return; }
@@ -6522,7 +6546,6 @@ document.getElementById('nodebDownloadBtn').onclick = ()=>{
   const csv = [cols.map(q).join(',')].concat(rows.map(r=> cols.map(c=>q(r[c])).join(','))).join('\n');
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'})); a.download = 'L0_Kendala_MBB_SBU.csv'; a.click();
 };
-document.getElementById('tabBtnNodeB').onclick = ()=>{ switchTab('nodeb'); nodebLoad(); };
 
 /* ============================================================
    Halaman QE — sheet "QE" (gid 2018392112), filter kolom B (REGION) = SBU
@@ -10866,7 +10889,7 @@ oloLoadDataAuto();
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
 <script src="qe-recap.js?v=20261104b"></script>
-<script src="topo.js?v=20261111b"></script>
-<script src="kml.js?v=20261111f"></script>
+<script src="topo.js?v=20261111c"></script>
+<script src="kml.js?v=20261111g"></script>
 </body>
 </html>
