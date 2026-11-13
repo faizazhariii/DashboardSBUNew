@@ -2164,6 +2164,15 @@
       <div class="table-card" style="overflow-x:auto;">
         <table class="pivot-table"><thead><tr id="rekapPt3GabPivotHead"></tr></thead><tbody id="rekapPt3GabPivotBody"></tbody></table>
       </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
+        <p class="section-title" style="font-size:13px;margin:0;">Komitmen Golive Per Bulan — TA + FH</p>
+        <select id="rekapPt3GabCommitMonth" class="period-select"></select>
+      </div>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="pivot-table"><thead><tr id="rekapPt3GabCommitHead"></tr></thead><tbody id="rekapPt3GabCommitBody"></tbody></table>
+      </div>
+      <p class="section-title" style="font-size:13px;margin-top:16px;" id="rekapPt3GabTrendTitle">Chart Komitmen Golive Harian</p>
+      <div class="table-card" style="padding:14px 16px;"><div style="height:280px;"><canvas id="rekapPt3GabTrendChart"></canvas></div></div>
       <p class="section-title" style="font-size:13px;margin-top:16px;">Ringkasan per Program</p>
       <div class="table-card" style="overflow-x:auto;">
         <table class="pivot-table"><thead><tr id="rekapPt3GabSumHead"></tr></thead><tbody id="rekapPt3GabSumBody"></tbody></table>
@@ -6348,6 +6357,11 @@ function renderResumePT3Gab(){
   const valFn = r => isFh(r) ? pt3fhParseNum(pt3fhGet(r,'PORT PLAN')) : pt3ParseNum(pt3Get(r,'PORT PLAN'));
   window.__pt3GabIsFh = isFh;
   renderRekapPivotGeneric('PT3 Gabungan', 'rekapPt3GabKpiRow', 'rekapPt3GabPivotHead', 'rekapPt3GabPivotBody', {rows:all}, getFn, statusFn, catFn, pt3StageOrderIndex, valFn);
+  window.__gabCommit = ()=> renderResumeKomitmenChart('PT3 Gabungan','rekapPt3Gab',all,getFn,catFn,'KOMITMEN GOLIVE');
+  renderRekapKomitmenBulanan('PT3 Gabungan','rekapPt3GabCommitMonth','rekapPt3GabCommitHead','rekapPt3GabCommitBody',{rows:all},getFn,statusFn,catFn,pt3StageOrderIndex,valFn,'KOMITMEN GOLIVE','BRANCH FMC');
+  window.__gabCommit();
+  window.__gabTable = ()=> renderRekapKomitmenBulanan('PT3 Gabungan','rekapPt3GabCommitMonth','rekapPt3GabCommitHead','rekapPt3GabCommitBody',{rows:all},getFn,statusFn,catFn,pt3StageOrderIndex,valFn,'KOMITMEN GOLIVE','BRANCH FMC');
+  document.getElementById('rekapPt3GabCommitMonth').onchange = ()=>{ window.__gabTable(); window.__gabCommit(); };
   // ringkasan per program: TA, FH, Total
   const head = document.getElementById('rekapPt3GabSumHead'), body = document.getElementById('rekapPt3GabSumBody');
   if(!head||!body) return;
