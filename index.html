@@ -2157,6 +2157,20 @@
     </div>
     <hr class="rekap-divider">
     <div class="section">
+      <p class="section-title" style="font-size:15px;">PT3 Gabungan (TA + FH)</p>
+      <p class="section-desc" style="margin:0 0 6px;">Gabungan nilai PT3 TA dan PT3 FH (Port Plan). Klik sel untuk lihat daftar order-nya (kolom Batch menunjukkan asal TA/FH).</p>
+      <div class="kpi-row" id="rekapPt3GabKpiRow"></div>
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Pivot Branch × Status — TA + FH</p>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="pivot-table"><thead><tr id="rekapPt3GabPivotHead"></tr></thead><tbody id="rekapPt3GabPivotBody"></tbody></table>
+      </div>
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Ringkasan per Program</p>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="pivot-table"><thead><tr id="rekapPt3GabSumHead"></tr></thead><tbody id="rekapPt3GabSumBody"></tbody></table>
+      </div>
+    </div>
+    <hr class="rekap-divider">
+    <div class="section">
       <p class="section-title" style="font-size:15px;">⭐ Priority TSEL</p>
       <p class="section-title" style="font-size:13px;margin-top:16px;">PT3 TA — Pivot Branch × Status — TSEL Priority</p>
       <div class="table-card" style="overflow-x:auto;">
@@ -6167,11 +6181,11 @@ function rekapRowDetail(program, row){
     return { id: mbbGet(row,'ID'), nama: mbbGet(row,'SITE NAME'), branch: mbbGet(row,'BRANCH'), sto: mbbGet(row,'STO'), batch: mbbGet(row,'BATCH WO'),
              status: hemStripStatusPrefix(mbbRowStatusLabel(row)), value: 1, detil: mbbGet(row,'DETIL PROGRESS') };
   }
-  const fh = program === 'PT3 FH';
+  const fh = program === 'PT3 FH' || (program === 'PT3 Gabungan' && window.__pt3GabIsFh && window.__pt3GabIsFh(row));
   const g = fh ? pt3fhGet : pt3Get;
   const statusFn = fh ? pt3fhRowStatusLabel : pt3RowStatusLabel;
   const numFn = fh ? pt3fhParseNum : pt3ParseNum;
-  return { id: g(row,'ID-IHLD'), nama: g(row,'NAMA LOP'), branch: g(row,'BRANCH FMC'), sto: g(row,'STO'), batch: g(row,'BATCH PROGRAM'),
+  return { id: g(row,'ID-IHLD'), nama: g(row,'NAMA LOP'), branch: g(row,'BRANCH FMC'), sto: g(row,'STO'), batch: (program === 'PT3 Gabungan' ? (fh?'[FH] ':'[TA] ') : '') + g(row,'BATCH PROGRAM'),
            status: hemStripStatusPrefix(statusFn(row)), value: numFn(g(row,'PORT PLAN')), detil: g(row,'DETAIL STATUS') };
 }
 
@@ -6321,6 +6335,32 @@ function renderResumePT3FH(){
   renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhP1KpiRowDUMMY', 'rekapPt3fhP1PivotHead', 'rekapPt3fhP1PivotBody', {rows:p1Rows}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
 }
 
+/* ---------- Gabungan PT3 TA + PT3 FH ---------- */
+function renderResumePT3Gab(){
+  const taRows = pt3AGG ? pt3AGG.rows : [], fhRows = pt3fhAGG ? pt3fhAGG.rows : [];
+  if(!taRows.length && !fhRows.length) return;
+  const fhSet = new Set(fhRows);
+  const isFh = r => fhSet.has(r);
+  const all = taRows.concat(fhRows);
+  const getFn = (r,c)=> isFh(r) ? pt3fhGet(r,c) : pt3Get(r,c);
+  const statusFn = r => isFh(r) ? pt3fhRowStatusLabel(r) : pt3RowStatusLabel(r);
+  const catFn = r => isFh(r) ? pt3fhCategory(r) : pt3Category(r);
+  const valFn = r => isFh(r) ? pt3fhParseNum(pt3fhGet(r,'PORT PLAN')) : pt3ParseNum(pt3Get(r,'PORT PLAN'));
+  window.__pt3GabIsFh = isFh;
+  renderRekapPivotGeneric('PT3 Gabungan', 'rekapPt3GabKpiRow', 'rekapPt3GabPivotHead', 'rekapPt3GabPivotBody', {rows:all}, getFn, statusFn, catFn, pt3StageOrderIndex, valFn);
+  // ringkasan per program: TA, FH, Total
+  const head = document.getElementById('rekapPt3GabSumHead'), body = document.getElementById('rekapPt3GabSumBody');
+  if(!head||!body) return;
+  head.innerHTML = '<th>Program</th><th>Jumlah LoP</th><th>Total Port Plan</th><th>Golive</th><th>OGP</th><th>Drop</th><th>% Achievement</th>';
+  const sum = a => a.reduce((x,r)=>x+valFn(r),0);
+  const line = (name, a)=>{
+    const g=a.filter(r=>catFn(r)==='golive'), o=a.filter(r=>catFn(r)==='ogp'), d=a.filter(r=>catFn(r)==='drop');
+    const tot=sum(a), pg=sum(g);
+    return `<tr><td class="name">${name}</td>${rekapTd('PT3 Gabungan',a,a.length.toLocaleString('id-ID'),name+' — semua')}${rekapTd('PT3 Gabungan',a,tot.toLocaleString('id-ID'),name+' — semua')}${rekapTd('PT3 Gabungan',g,sum(g).toLocaleString('id-ID'),name+' — Golive')}${rekapTd('PT3 Gabungan',o,sum(o).toLocaleString('id-ID'),name+' — OGP')}${rekapTd('PT3 Gabungan',d,sum(d).toLocaleString('id-ID'),name+' — Drop')}<td>${tot?(pg/tot*100).toFixed(1):'0.0'}%</td></tr>`;
+  };
+  body.innerHTML = line('PT3 TA',taRows)+line('PT3 FH',fhRows)+line('TOTAL TA + FH',all).replace('<tr>','<tr class="pivot-total">');
+}
+
 document.getElementById('rekapPt3CommitMonth').addEventListener('change', ()=>{ if(pt3AGG) renderResumeKomitmenChart('PT3 TA','rekapPt3',pt3AGG.rows,pt3Get,pt3Category,'KOMITMEN GOLIVE'); });
 document.getElementById('rekapPt3fhCommitMonth').addEventListener('change', ()=>{ if(pt3fhAGG) renderResumeKomitmenChart('PT3 FH','rekapPt3fh',pt3fhAGG.rows,pt3fhGet,pt3fhCategory,'KOMITMEN GOLIVE'); });
 
@@ -6434,7 +6474,7 @@ document.getElementById('prioDownloadBtn').onclick = ()=>{
   document.body.appendChild(a); a.click(); a.remove();
 };
 
-document.getElementById('tabBtnResume').onclick = ()=> { switchTab('resume'); renderResumePT3TA(); renderResumePT3FH(); };
+document.getElementById('tabBtnResume').onclick = ()=> { switchTab('resume'); renderResumePT3TA(); renderResumePT3FH(); renderResumePT3Gab(); };
 
 /* ============================================================
    Node B Terkendala — SBU (sheet "Detail 62 Site", REGION = SBU)
@@ -7987,6 +8027,7 @@ function pt3BuildDashboard(){
   renderKomitmenTrendChart('pt3KomitmenTrendChart', null, pt3Rows, pt3Get, 'KOMITMEN GOLIVE', (row)=> pt3Category(row), pt3FilterCtl, 'pt3KomitmenTrendTitle');
   renderOverdueTable('pt3OverdueTableBody', 'pt3OverdueCount', pt3AGG.rows, pt3Get, pt3Category);
   try{ renderResumePT3TA(); }catch(e){ console.warn('resume ta', e); }
+  try{ renderResumePT3Gab(); }catch(e){ console.warn('resume gab', e); }
   renderPt3NeedOltPage();
 }
 
@@ -9392,6 +9433,7 @@ function pt3fhBuildDashboard(){
   renderKomitmenTrendChart('pt3fhKomitmenTrendChart', null, pt3fhRows, pt3fhGet, 'KOMITMEN GOLIVE', (row)=> pt3fhCategory(row), pt3fhFilterCtl, 'pt3fhKomitmenTrendTitle');
   renderOverdueTable('pt3fhOverdueTableBody', 'pt3fhOverdueCount', pt3fhAGG.rows, pt3fhGet, pt3fhCategory);
   try{ renderResumePT3FH(); }catch(e){ console.warn('resume fh', e); }
+  try{ renderResumePT3Gab(); }catch(e){ console.warn('resume gab', e); }
 }
 
 const PT3FH_CATEGORY_LABELS = { all:'All Order', drop:'Drop', golive:'Golive', ogp:'OGP' };
