@@ -642,6 +642,26 @@
   #pt3KpiRow .kpi{padding:8px 12px;} #pt3KpiRow .kpi-label{margin-bottom:2px;} #pt3KpiRow .kpi-value{font-size:19px;}
   #pt3ProgressFlow .flow-chevron{padding-top:8px;padding-bottom:8px;} #pt3ProgressFlow .flow-chevron-value{font-size:18px;}
   #pt3ProgressFlow{margin-top:10px;}
+
+  /* ===== Sidebar profesional ===== */
+  .page-tabs{padding:76px 12px 14px;gap:1px;background:linear-gradient(180deg,#0A1B33 0%,#0D2748 55%,#0B2140 100%);}
+  .page-tabs::before{content:'ED REG SUMBAGUT';background:linear-gradient(90deg,rgba(215,20,26,.18),transparent 70%);}
+  .page-tab{display:flex;align-items:center;gap:10px;padding:7px 10px;font-size:13px;border-left:none;border-radius:9px;position:relative;transition:background .15s,color .15s,transform .15s;}
+  .page-tab[data-i]::before{content:attr(data-i);flex:0 0 28px;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;border-radius:8px;background:rgba(255,255,255,.07);transition:background .15s;}
+  .page-tab:hover{background:rgba(255,255,255,.08);transform:translateX(2px);}
+  .page-tab:hover::before{background:rgba(255,255,255,.14);}
+  .page-tab.active{background:linear-gradient(90deg,rgba(255,255,255,.17),rgba(255,255,255,.05));box-shadow:inset 3px 0 0 var(--brand-red);}
+  .page-tab.active[data-i]::before{background:var(--brand-red);box-shadow:0 2px 8px rgba(215,20,26,.45);}
+  .tab-parent{justify-content:flex-start;} .tab-parent .tab-caret{margin-left:auto;}
+  .tab-sub{margin:2px 0 6px 24px;padding-left:8px;border-left:1px dashed rgba(255,255,255,.2);}
+  .tab-sub .page-tab{padding:5px 10px;font-size:12.5px;color:#9FB2CD;}
+  .tab-sub .page-tab.active{color:#fff;}
+  .tab-group{margin:16px 6px 5px;font-size:9.5px;letter-spacing:.2em;color:#6F88AA;}
+  .side-foot{margin-top:auto;padding:14px 10px 4px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:2px;font-size:10px;color:#6F88AA;line-height:1.4;}
+  .side-foot b{color:#C9D6E8;font-size:11px;letter-spacing:.04em;}
+  @media (max-width:900px){ .page-tab[data-i]::before{display:none;} .side-foot{display:none;} .page-tab:hover{transform:none;} }
+  .wo-table td.g{color:var(--emerald);font-weight:700;} .wo-table td.d{color:var(--red);font-weight:700;} .wo-table td.w{color:var(--amber);font-weight:700;}
+  .pt3pf:hover{background:var(--cyan-dim) !important;text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -664,31 +684,33 @@
 
   <button type="button" id="sideToggle" class="side-toggle" title="Sembunyikan / tampilkan menu" aria-label="Sembunyikan menu">‹</button>
   <div class="page-tabs">
-    <div class="tab-group">Tematik</div>
-    <button class="page-tab active" id="tabBtnPT2" type="button">Feeding PT2</button>
-    <button class="page-tab" id="tabBtnLapPt2" type="button">PT2</button>
-    <button class="page-tab" id="tabBtnPt3" type="button">PT3 TA</button>
-    <button class="page-tab" id="tabBtnPt3Fh" type="button">PT3 FH</button>
-    <button class="page-tab" id="tabBtnResume" type="button">Resume PT3</button>
-    <button class="page-tab" id="tabBtnHem" type="button">HEM</button>
-    <button class="page-tab" id="tabBtnOlo" type="button">OLO</button>
-    <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
-    <button class="page-tab tab-parent" id="tabBtnQeGroup" type="button" aria-expanded="false" aria-controls="qeSub">QE <span class="tab-caret">&#9662;</span></button>
+    <div class="tab-group">Program Deployment</div>
+    <button class="page-tab active" id="tabBtnPT2" data-i="📥" type="button">Feeding PT2</button>
+    <button class="page-tab" id="tabBtnLapPt2" data-i="📋" type="button">PT2</button>
+    <button class="page-tab" id="tabBtnPt3" data-i="📡" type="button">PT3 TA</button>
+    <button class="page-tab" id="tabBtnPt3Fh" data-i="🧵" type="button">PT3 FH</button>
+    <button class="page-tab" id="tabBtnResume" data-i="📊" type="button">Resume PT3</button>
+    <button class="page-tab" id="tabBtnHem" data-i="🏠" type="button">HEM</button>
+    <button class="page-tab" id="tabBtnOlo" data-i="🏢" type="button">OLO</button>
+    <button class="page-tab" id="tabBtnMbb" data-i="📶" type="button">MBB</button>
+    <button class="page-tab tab-parent" id="tabBtnQeGroup" data-i="🏗️" type="button" aria-expanded="false" aria-controls="qeSub"><span>QE</span> <span class="tab-caret">&#9662;</span></button>
     <div class="tab-sub" id="qeSub">
       <button class="page-tab" id="tabBtnBrt" type="button">BRT Medan</button>
       <button class="page-tab" id="tabBtnQeLp" type="button">QE Lubuk Pakam</button>
       <button class="page-tab" id="tabBtnQeDusem" type="button">Dusem</button>
     </div>
-    <div class="tab-group">Tambahan</div>
-    <button class="page-tab" id="tabBtnPrio" type="button">⭐ Priority TSEL</button>
-    <button class="page-tab" id="tabBtnKml" type="button">🗺️ L0 Kendala</button>
-    <button class="page-tab" id="tabBtnRekapPpt" type="button">Rekap PPT</button>
-    <button class="page-tab" id="tabBtnAlerts" type="button">Peringatan</button>
-    <button class="page-tab" id="tabBtnCompare" type="button">Perbandingan</button>
-    <button class="page-tab" id="tabBtnChecklist" type="button">Checklist</button>
-    <button class="page-tab" id="tabBtnNeedOlt" type="button">Need Modul OLT</button>
+    <div class="tab-group">Monitoring</div>
+    <button class="page-tab" id="tabBtnPrio" data-i="⭐" type="button">Priority TSEL</button>
+    <button class="page-tab" id="tabBtnAlerts" data-i="🔔" type="button">Peringatan</button>
+    <button class="page-tab" id="tabBtnCompare" data-i="⚖️" type="button">Perbandingan</button>
+    <button class="page-tab" id="tabBtnChecklist" data-i="✅" type="button">Checklist</button>
+    <button class="page-tab" id="tabBtnNeedOlt" data-i="🔌" type="button">Need Modul OLT</button>
+    <button class="page-tab" id="tabBtnGolive" data-i="🚀" type="button">Golive</button>
     <button class="page-tab" id="tabBtnQe" type="button" style="display:none;">QE SBU</button>
-    <button class="page-tab" id="tabBtnGolive" type="button">Golive</button>
+    <div class="tab-group">Peta &amp; Laporan</div>
+    <button class="page-tab" id="tabBtnKml" data-i="🗺️" type="button">L0 Kendala</button>
+    <button class="page-tab" id="tabBtnRekapPpt" data-i="🎞️" type="button">Rekap PPT</button>
+    <div class="side-foot"><b>Telkom Indonesia</b><span>ED REG Sumbagut · Deployment Dashboard</span></div>
   </div>
 
   <div id="pagePT2">
@@ -1706,6 +1728,21 @@
       </div>
 
 
+      </div>
+
+      <div class="section" id="pt3ExtraSection">
+        <p class="section-title" data-ic="🏅">Performa per Mitra / Waspang / STO</p>
+        <p class="section-desc">Ringkasan jumlah order, Port Plan, dan capaian per kelompok. Klik angka untuk memfilter Daftar Work Order.</p>
+        <div class="wo-quick" id="pt3PerfTabs" style="margin-bottom:8px;">
+          <button type="button" class="on" data-g="mitra">Mitra</button>
+          <button type="button" data-g="wasp">Waspang</button>
+          <button type="button" data-g="sto">STO</button>
+        </div>
+        <div class="wo-scroll" style="max-height:340px;"><table class="wo-table" id="pt3PerfTable"><thead><tr id="pt3PerfHead"></tr></thead><tbody id="pt3PerfBody"></tbody></table></div>
+
+        <p class="section-title" style="margin-top:18px;" data-ic="⏳">Top 10 Order OGP Paling Lama Tanpa Update</p>
+        <p class="section-desc">Order OGP dengan log DETAIL STATUS terakhir paling lama. Klik baris untuk memfilter ke order tersebut.</p>
+        <div class="wo-scroll" style="max-height:340px;"><table class="wo-table"><thead><tr><th>ID</th><th>Nama LOP</th><th>Branch</th><th>Status</th><th>Waspang</th><th>Jarak Update</th><th>Detail Status</th></tr></thead><tbody id="pt3TopStaleBody"></tbody></table></div>
       </div>
 
       <div class="section">
@@ -5072,7 +5109,7 @@ function makeStageDetailController(prefix, columns){
     body.innerHTML = rows.map(row => '<tr>' +
       columns.map(c => {
         const v = c.get(row) || '';
-        if(isDetail(c) && v) return `<td style="white-space:pre-line;min-width:300px;max-width:440px;line-height:1.45;color:var(--text-dim);">${esc(v)}</td>`;
+        if(isDetail(c) && v) return `<td><div class="wo-detail" style="max-width:340px;" title="${esc(v)}">${esc(String(v).split(/\s*\n\s*/).filter(Boolean).join(' • '))}</div></td>`;
         return `<td class="${c.name ? 'name' : ''}">${v ? v : '—'}</td>`;
       }).join('') +
       '</tr>').join('') || `<tr><td colspan="${columns.length}" style="text-align:center;padding:24px;">Tidak ada order pada kategori ini.</td></tr>`;
@@ -8180,6 +8217,7 @@ function pt3BuildDashboard(){
     pt3RenderOgpBars('pt3OgpSubBars', pt3OgpRows, r=> pt3Get(r,'SUB STATUS KONS') || 'Tidak Diketahui', 'Sub Status');
   }
   pt3RenderAllOrderReport();
+  try{ pt3RenderExtra(); }catch(e){ console.warn('pt3 extra', e); }
   pt3SetupCommitDropdown();
   pt3SetupFilters();
   pt3SetupSortableHeaders();
@@ -8910,6 +8948,49 @@ function pt3RenderOgpBars(id, rows, labelFn, chartLabel){
     const l = r.dataset.l.replace(/&quot;|&amp;|&lt;|&gt;/g,m=>({'&quot;':'"','&amp;':'&','&lt;':'<','&gt;':'>'}[m]));
     pt3FilterCtl.set(row=> (labelFn(row)||'Tidak Diketahui')===l && pt3Category2(row)==='ogp', `${chartLabel}: ${l}`);
   });
+}
+
+
+let pt3PerfGroup = 'mitra';
+function pt3RenderExtra(){
+  if(!pt3AGG) return;
+  const rows = pt3AGG.rows, today = new Date(); today.setHours(0,0,0,0);
+  const gf = { mitra:r=>pt3Get(r,'Mitra'), wasp:r=>pt3Get(r,'WASPANG'), sto:r=>pt3Get(r,'STO') }[pt3PerfGroup];
+  const gl = { mitra:'Mitra', wasp:'Waspang', sto:'STO' }[pt3PerfGroup];
+  const gap = r=>{ const d=pt3ExtractLatestUpdateDate(pt3Get(r,'DETAIL STATUS')); return d ? Math.round((today-d)/86400000) : -1; };
+  const groups = {};
+  rows.forEach(r=>{ const k=(gf(r)||'').trim()||'(Kosong)'; (groups[k]=groups[k]||[]).push(r); });
+  const ent = Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
+  const head = document.getElementById('pt3PerfHead'), body = document.getElementById('pt3PerfBody');
+  if(head) head.innerHTML = `<th>${gl}</th><th>Order</th><th>Port Plan</th><th>Golive</th><th>OGP</th><th>Drop</th><th style="min-width:150px">% Golive</th><th>Komitmen Terlewat</th><th>Tanpa Update &gt;${PT3_STALE_THRESHOLD_DAYS}h</th>`;
+  const fld = {mitra:'Mitra', wasp:'WASPANG', sto:'STO'}[pt3PerfGroup];
+  const cell = (arr,label,txt,cls)=> arr.length ? `<td class="num pt3pf ${cls||''}" data-k="${_woEsc(label)}" style="cursor:pointer;">${txt}</td>` : `<td class="num" style="color:var(--text-faint)">—</td>`;
+  window.__pt3Perf = {};
+  if(body) body.innerHTML = ent.map(([k,arr],i)=>{
+    const g=arr.filter(r=>pt3Category(r)==='golive'), o=arr.filter(r=>pt3Category(r)==='ogp'), d=arr.filter(r=>pt3Category(r)==='drop');
+    const late=o.filter(r=>{ const x=parseDMY(pt3Get(r,'KOMITMEN GOLIVE')); return x && x<today; });
+    const stale=o.filter(r=>gap(r) > PT3_STALE_THRESHOLD_DAYS);
+    const port=arr.reduce((a,r)=>a+pt3ParseNum(pt3Get(r,'PORT PLAN')),0);
+    const pct=Math.round(g.length/arr.length*100);
+    const col=pct>=50?'var(--emerald)':(pct>=25?'var(--amber)':'var(--red)');
+    window.__pt3Perf['a'+i]={ all:arr, g, o, d, late, stale };
+    const c=(key,list,cls)=> list.length ? `<td class="num pt3pf ${cls||''}" data-i="a${i}" data-s="${key}" style="cursor:pointer;">${list.length.toLocaleString('id-ID')}</td>` : `<td class="num" style="color:var(--text-faint)">—</td>`;
+    return `<tr style="cursor:default"><td class="name" style="min-width:160px;font-weight:600;">${_woEsc(k)}</td>${c('all',arr)}<td class="num">${Math.round(port).toLocaleString('id-ID')}</td>${c('g',g,'g')}${c('o',o)}${c('d',d,'d')}<td><div style="display:flex;align-items:center;gap:8px;"><span class="ogp-bar" style="flex:1;"><i style="width:${pct}%;background:${col}"></i></span><b style="min-width:34px;text-align:right;color:${col}">${pct}%</b></div></td>${c('late',late,'d')}${c('stale',stale,'w')}</tr>`;
+  }).join('') || '<tr><td colspan="9" style="text-align:center;padding:20px;">Tidak ada data.</td></tr>';
+  if(body) body.querySelectorAll('.pt3pf').forEach(td=> td.onclick = ()=>{
+    const g = window.__pt3Perf[td.dataset.i], list = g[td.dataset.s], set = new Set(list);
+    const name = td.closest('tr').querySelector('td').textContent;
+    const lab = {all:'semua',g:'Golive',o:'OGP',d:'Drop',late:'komitmen terlewat',stale:'tanpa update'}[td.dataset.s];
+    pt3FilterCtl.set(r=>set.has(r), `${gl} ${name} — ${lab}`);
+  });
+  const tb = document.getElementById('pt3TopStaleBody');
+  if(tb){
+    const top = rows.filter(r=>pt3Category(r)==='ogp' && gap(r)>=0).sort((a,b)=>gap(b)-gap(a)).slice(0,10);
+    tb.innerHTML = top.map((r,i)=>{ const n=gap(r); const d=(pt3Get(r,'DETAIL STATUS')||'').split(/\s*\n\s*/).filter(Boolean).join(' • ');
+      return `<tr data-i="${i}"><td>${_woEsc(pt3Get(r,'ID-IHLD'))}</td><td class="name">${_woEsc(pt3Get(r,'NAMA LOP'))}</td><td>${_woEsc(pt3Get(r,'BRANCH FMC'))}</td><td><span class="wo-pill ogp">${_woEsc(pt3Get(r,'Status'))}</span></td><td>${_woEsc(pt3Get(r,'WASPANG')||'—')}</td><td><span class="wo-gap ${n>25?'bad':(n>15?'warn':'')}">${n} hari</span></td><td><div class="wo-detail" title="${_woEsc(pt3Get(r,'DETAIL STATUS'))}">${_woEsc(d)}</div></td></tr>`; }).join('') || '<tr><td colspan="7" style="text-align:center;padding:16px;">Tidak ada data.</td></tr>';
+    tb.onclick = e=>{ const tr=e.target.closest('tr[data-i]'); if(!tr) return; const r=top[+tr.dataset.i]; pt3FilterCtl.set(x=>x===r, `Order ${pt3Get(r,'ID-IHLD')}`); };
+  }
+  document.querySelectorAll('#pt3PerfTabs button').forEach(b=> b.onclick = ()=>{ pt3PerfGroup=b.dataset.g; document.querySelectorAll('#pt3PerfTabs button').forEach(x=>x.classList.toggle('on',x===b)); pt3RenderExtra(); });
 }
 
 function pt3QuickPass(row){
