@@ -619,6 +619,21 @@
   .ogp-l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:var(--text);}
   .ogp-bar{background:var(--panel-2);border-radius:4px;height:9px;overflow:hidden;} .ogp-bar i{display:block;height:100%;border-radius:4px;}
   .ogp-n{text-align:right;font-weight:700;} .ogp-p{text-align:right;color:var(--text-faint);}
+
+  /* ===== Warna & ikon ===== */
+  .kpi[data-category="all"]{background:linear-gradient(135deg,#fff 55%,var(--cyan-dim));}
+  .kpi[data-category="drop"]{background:linear-gradient(135deg,#fff 55%,var(--red-dim));}
+  .kpi[data-category="golive"]{background:linear-gradient(135deg,#fff 55%,var(--emerald-dim));}
+  .kpi[data-category="ogp"]{background:linear-gradient(135deg,#fff 55%,var(--amber-dim));}
+  .kpi[data-category="all"] .kpi-label::before{content:"📦 ";} .kpi[data-category="drop"] .kpi-label::before{content:"🔻 ";}
+  .kpi[data-category="golive"] .kpi-label::before{content:"✅ ";} .kpi[data-category="ogp"] .kpi-label::before{content:"🚧 ";}
+  .kpi[data-category="drop"] .kpi-value{color:var(--red);} .kpi[data-category="golive"] .kpi-value{color:var(--emerald);} .kpi[data-category="all"] .kpi-value{color:var(--cyan);}
+  .kpi.clickable:hover{box-shadow:0 6px 16px rgba(10,35,66,.14);transform:translateY(-2px);}
+  [data-ic]::before{content:attr(data-ic) " ";}
+  .section-title{display:flex;align-items:center;gap:6px;}
+  .mbb-report-sub-title{background:linear-gradient(90deg,#1B2333,#2A3B5F);}
+  .pivot-table tbody td:not(.name):not(:first-child){font-variant-numeric:tabular-nums;}
+  .wo-scroll thead th{background:linear-gradient(180deg,#24304A,#1B2333) !important;}
 </style>
 </head>
 <body>
@@ -5016,12 +5031,17 @@ function renderKomitmenTrendChart(canvasId, summaryId, rows, getFn, commitField,
 }
 
 function makeStageDetailController(prefix, columns){
-  let state = { rows: [], sortField: null, sortDir: 'asc' };
+  let state = { rows: [], sortField: null, sortDir: 'asc', filters: {} };
+  const esc = t => String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const unesc = t => t.replace(/&quot;|&amp;|&lt;|&gt;/g,m=>({'&quot;':'"','&amp;':'&','&lt;':'<','&gt;':'>'}[m]));
+  const isDetail = c => /detail/i.test(c.field);
 
-  function renderBody(){
-    const body = document.getElementById(prefix + 'StageDetailBody');
-    if(!body) return;
-    let rows = state.rows.slice();
+  function visibleRows(){
+    let rows = state.rows.filter(row=> columns.every(c=>{
+      const f = state.filters[c.field]; if(!f) return true;
+      const v = String(c.get(row)||'').trim() || '(Kosong)';
+      return f.has(v);
+    }));
     if(state.sortField){
       const col = columns.find(c => c.field === state.sortField);
       if(col){
@@ -5037,30 +5057,67 @@ function makeStageDetailController(prefix, columns){
         if(state.sortDir === 'desc') rows.reverse();
       }
     }
-    body.innerHTML = rows.slice(0, 200).map(row => '<tr>' +
+    return rows;
+  }
+
+  function renderBody(){
+    const body = document.getElementById(prefix + 'StageDetailBody');
+    if(!body) return;
+    const rows = visibleRows();
+    const cnt = document.getElementById(prefix + 'StageDetailCount');
+    if(cnt) cnt.textContent = rows.length === state.rows.length ? '' : `Menampilkan ${rows.length} dari ${state.rows.length}`;
+    body.innerHTML = rows.map(row => '<tr>' +
       columns.map(c => {
-        let v = c.get(row) || '';
-        if(/detail/i.test(c.field) && v){
-          const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-          const first = String(v).split(/\n|;/)[0].trim();
-          return `<td><div class="wo-detail" style="max-width:220px;" title="${esc(v)}">${esc(first)}</div></td>`;
-        }
-        return `<td class="${c.name ? 'name' : ''}">${v || '—'}</td>`;
+        const v = c.get(row) || '';
+        if(isDetail(c) && v) return `<td style="white-space:pre-line;min-width:300px;max-width:440px;line-height:1.45;color:var(--text-dim);">${esc(v)}</td>`;
+        return `<td class="${c.name ? 'name' : ''}">${v ? v : '—'}</td>`;
       }).join('') +
       '</tr>').join('') || `<tr><td colspan="${columns.length}" style="text-align:center;padding:24px;">Tidak ada order pada kategori ini.</td></tr>`;
   }
 
-  function setupSortable(){
-    document.querySelectorAll('#' + prefix + 'StageDetailHead th.sortable').forEach(th=>{
-      th.onclick = ()=>{
-        const field = th.dataset.field;
-        if(state.sortField === field){ state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc'; }
-        else { state.sortField = field; state.sortDir = 'asc'; }
-        document.querySelectorAll('#' + prefix + 'StageDetailHead th.sortable').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
-        th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-        renderBody();
-      };
+  function buildHead(){
+    const tr = document.getElementById(prefix + 'StageDetailHead'); if(!tr) return;
+    const table = tr.closest('table'); if(table) table.classList.add('wo-table');
+    const card = table && table.closest('.table-card'); if(card){ card.classList.remove('table-card'); card.classList.add('wo-scroll'); card.style.maxHeight = '55vh'; }
+    tr.querySelectorAll('th').forEach(th=>{
+      if(!th.dataset.label) th.dataset.label = th.textContent.trim();
+      const f = th.dataset.field; if(!f) return;
+      const sIc = state.sortField===f ? (state.sortDir==='asc'?'↑':'↓') : '⇅';
+      th.className = '';
+      th.innerHTML = `<div class="wo-h"><span class="wo-hl" data-s="${f}">${esc(th.dataset.label)}</span><span class="wo-ic ${state.sortField===f?'on':''}" data-s="${f}">${sIc}</span><span class="wo-ic ${state.filters[f]?'on':''}" data-f="${f}">▽</span></div>`;
+      th.onclick = null;
     });
+    tr.querySelectorAll('[data-s]').forEach(el=> el.onclick = ()=>{
+      const f = el.dataset.s;
+      if(state.sortField!==f){ state.sortField=f; state.sortDir='asc'; }
+      else if(state.sortDir==='asc') state.sortDir='desc'; else state.sortField=null;
+      buildHead(); renderBody();
+    });
+    tr.querySelectorAll('[data-f]').forEach(el=> el.onclick = e=>{ e.stopPropagation(); openFilter(el.dataset.f, el); });
+  }
+
+  function openFilter(f, anchor){
+    const old = document.getElementById('pt3ColPop'); if(old) old.remove();
+    const col = columns.find(c=>c.field===f); if(!col) return;
+    const cnt = new Map(); state.rows.forEach(r=>{ const v=String(col.get(r)||'').trim()||'(Kosong)'; cnt.set(v,(cnt.get(v)||0)+1); });
+    const vals = [...cnt.keys()].sort((a,b)=>a.localeCompare(b,'id',{numeric:true}));
+    const sel = new Set(state.filters[f] || vals);
+    if(typeof _woPopT !== 'undefined') _woPopT = Date.now();
+    const pop = document.createElement('div'); pop.id='pt3ColPop'; pop.className='wo-pop';
+    const r = anchor.getBoundingClientRect();
+    pop.style.top=(r.bottom+6)+'px'; pop.style.left=Math.max(8,Math.min(r.left-120,innerWidth-262))+'px';
+    pop.innerHTML = `<b>${esc(f)}</b><input type="text" placeholder="Cari nilai..." style="margin-top:6px;"><div class="lst"></div><div class="acts"><button data-a="all">Semua</button><button data-a="none">Kosongkan</button><button class="pri" data-a="ok">Terapkan</button></div>`;
+    document.body.appendChild(pop);
+    const lst = pop.querySelector('.lst'), srch = pop.querySelector('input');
+    const draw = ()=>{
+      const t = srch.value.toLowerCase();
+      lst.innerHTML = vals.filter(v=>v.toLowerCase().includes(t)).slice(0,400).map(v=>`<label><input type="checkbox" data-v="${esc(v)}" ${sel.has(v)?'checked':''}><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(v)}</span><span style="margin-left:auto;color:var(--text-faint)">${cnt.get(v)}</span></label>`).join('');
+      lst.querySelectorAll('input').forEach(i=> i.onchange = ()=>{ const v=unesc(i.dataset.v); i.checked ? sel.add(v) : sel.delete(v); });
+    };
+    draw(); srch.oninput = draw; srch.focus();
+    pop.querySelector('[data-a=all]').onclick = ()=>{ vals.forEach(v=>sel.add(v)); draw(); };
+    pop.querySelector('[data-a=none]').onclick = ()=>{ sel.clear(); draw(); };
+    pop.querySelector('[data-a=ok]').onclick = ()=>{ if(sel.size===vals.length) delete state.filters[f]; else state.filters[f]=new Set(sel); pop.remove(); buildHead(); renderBody(); };
   }
 
   function show(title, matchingRows, activeEl, siblingSelector){
@@ -5071,10 +5128,9 @@ function makeStageDetailController(prefix, columns){
     document.querySelectorAll(siblingSelector).forEach(x=>x.classList.remove('active'));
     if(activeEl) activeEl.classList.add('active');
 
-    state = { rows: matchingRows, sortField: null, sortDir: 'asc' };
-    titleEl.textContent = `Detail Order — ${title} (${matchingRows.length.toLocaleString('id-ID')})`;
-    document.querySelectorAll('#' + prefix + 'StageDetailHead th.sortable').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
-    setupSortable();
+    state = { rows: matchingRows, sortField: null, sortDir: 'asc', filters: {} };
+    titleEl.innerHTML = `Detail Order — ${esc(title)} (${matchingRows.length.toLocaleString('id-ID')}) <span id="${prefix}StageDetailCount" style="font-size:11.5px;font-weight:500;color:var(--text-faint);margin-left:8px;"></span>`;
+    buildHead();
     renderBody();
 
     wrap.style.display = 'block';
@@ -8650,10 +8706,7 @@ function pt3RenderAllOrderReport(){
   const kendalaRows = nyRows.filter(r=>pt3HasKendala(r));
 
   el.innerHTML = `
-    <p class="mbb-report-sub-title" style="border-radius:6px;">ALL ORDER PT3 TA</p>
-    ${pt3RegionTableHTML(rows)}
-
-    <div class="mbb-report-subgrid" style="grid-template-columns:1.4fr 1fr;margin-top:16px;">
+    <div class="mbb-report-subgrid" style="grid-template-columns:1.4fr 1fr;margin-top:6px;">
       <div>
         <p class="mbb-report-sub-title" style="border-radius:6px;">LoP NY Golive</p>
         ${pt3ProgresBatchTableHTML(nyRows)}
@@ -8819,6 +8872,8 @@ const PT3_COLS = [
 const _woEsc = t => String(t==null?'':t).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const _woBlank = v => (v===''||v==null||v==='—') ? '(Kosong)' : v;
 
+(function(){ const m={'Breakdown Status Lapangan':'🧭','Pivot Branch × Status':'📊','Komitmen Golive Bulan Ini':'🎯','Tren Harian Komitmen Golive':'📈','Resume Overdue':'⏰','Laporan All Order PT3 TA':'📑','Breakdown OGP':'🔎','Daftar Work Order PT3 TA':'📋'};
+  document.querySelectorAll('#pagePt3 .section-title').forEach(t=>{ const x=t.textContent.trim(); for(const k in m) if(x.indexOf(k)===0){ t.setAttribute('data-ic', m[k]); break; } }); })();
 let pt3Hidden = new Set(); try{ pt3Hidden = new Set(JSON.parse(localStorage.getItem('pt3ta_hidden_cols')||'[]')); }catch(e){}
 function pt3VisCols(){ return PT3_COLS.filter(c=>!pt3Hidden.has(c.k)); }
 function pt3SetupFilters(){
