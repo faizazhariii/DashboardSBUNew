@@ -662,6 +662,16 @@
   @media (max-width:900px){ .page-tab[data-i]::before{display:none;} .side-foot{display:none;} .page-tab:hover{transform:none;} }
   .wo-table td.g{color:var(--emerald);font-weight:700;} .wo-table td.d{color:var(--red);font-weight:700;} .wo-table td.w{color:var(--amber);font-weight:700;}
   .pt3pf:hover{background:var(--cyan-dim) !important;text-decoration:underline;}
+
+  .copy-id{cursor:copy !important;position:relative;}
+  .copy-id:hover{color:var(--cyan) !important;text-decoration:underline dotted;}
+  #copyToast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:#0F1B2D;color:#fff;padding:9px 16px;border-radius:999px;font:600 12.5px Inter,sans-serif;z-index:99999;opacity:0;pointer-events:none;transition:.2s;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+  #copyToast.show{opacity:1;transform:translate(-50%,0);}
+  .pt2-switch{display:inline-flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:4px;margin:0 0 14px;box-shadow:0 1px 3px rgba(11,31,58,.06);}
+  .pt2-switch .pt2-sw-t{font:700 12px 'Space Grotesk',sans-serif;letter-spacing:.12em;color:var(--text-faint);padding:0 12px 0 10px;}
+  .pt2-switch button{border:none;background:transparent;font:600 12.5px Inter,sans-serif;color:var(--text-dim);padding:7px 14px;border-radius:9px;cursor:pointer;}
+  .pt2-switch button:hover{background:var(--panel-2);}
+  .pt2-switch button.on{background:var(--navy,#0B1F3A);color:#fff;}
 </style>
 </head>
 <body>
@@ -685,8 +695,8 @@
   <button type="button" id="sideToggle" class="side-toggle" title="Sembunyikan / tampilkan menu" aria-label="Sembunyikan menu">‹</button>
   <div class="page-tabs">
     <div class="tab-group">Program Deployment</div>
-    <button class="page-tab active" id="tabBtnPT2" data-i="📥" type="button">Feeding PT2</button>
-    <button class="page-tab" id="tabBtnLapPt2" data-i="📋" type="button">PT2</button>
+    <button class="page-tab active" id="tabBtnPT2" data-i="📥" type="button">PT2</button>
+    <button class="page-tab" id="tabBtnLapPt2" type="button" style="display:none;">PT2 Laporan</button>
     <button class="page-tab" id="tabBtnPt3" data-i="📡" type="button">PT3 TA</button>
     <button class="page-tab" id="tabBtnPt3Fh" data-i="🧵" type="button">PT3 FH</button>
     <button class="page-tab" id="tabBtnResume" data-i="📊" type="button">Resume PT3</button>
@@ -714,6 +724,7 @@
   </div>
 
   <div id="pagePT2">
+<div class="pt2-switch capture-hide"><span class="pt2-sw-t">PT2</span><button type="button" class="on" onclick="switchTab('pt2')">📥 Feeding</button><button type="button" class="" onclick="switchTab('lapPt2')">📋 Laporan All Order</button></div>
 
   <div id="loadingState" class="state-msg">Memuat data produksi dari Google Sheets…</div>
   <div id="errorState" class="state-msg" style="display:none;">
@@ -1731,12 +1742,13 @@
       </div>
 
       <div class="section" id="pt3ExtraSection">
-        <p class="section-title" data-ic="🏅">Performa per Mitra / Waspang / STO</p>
+        <p class="section-title" data-ic="🏅">Performa per Branch / Batch / Prioritas / Sub Status</p>
         <p class="section-desc">Ringkasan jumlah order, Port Plan, dan capaian per kelompok. Klik angka untuk memfilter Daftar Work Order.</p>
         <div class="wo-quick" id="pt3PerfTabs" style="margin-bottom:8px;">
-          <button type="button" class="on" data-g="mitra">Mitra</button>
-          <button type="button" data-g="wasp">Waspang</button>
-          <button type="button" data-g="sto">STO</button>
+          <button type="button" class="on" data-g="branch">Branch</button>
+          <button type="button" data-g="batch">Batch Program</button>
+          <button type="button" data-g="prio">Prioritas TSEL</button>
+          <button type="button" data-g="sub">Sub Status</button>
         </div>
         <div class="wo-scroll" style="max-height:340px;"><table class="wo-table" id="pt3PerfTable"><thead><tr id="pt3PerfHead"></tr></thead><tbody id="pt3PerfBody"></tbody></table></div>
 
@@ -2008,6 +2020,7 @@
   </div>
 
     <div id="pageLapPt2" style="display:none;">
+<div class="pt2-switch capture-hide"><span class="pt2-sw-t">PT2</span><button type="button" class="" onclick="switchTab('pt2')">📥 Feeding</button><button type="button" class="on" onclick="switchTab('lapPt2')">📋 Laporan All Order</button></div>
       <div id="lapPt2ReportCaptureArea">
       <div class="section" style="margin-top:0;">
         <p class="section-title">Laporan All Order PT2 SBU</p>
@@ -6139,6 +6152,7 @@ function switchTab(active){
     document.getElementById(btnId).classList.toggle('active', isActive);
     document.getElementById(pageId).style.display = isActive ? 'block' : 'none';
   });
+  document.getElementById('tabBtnPT2').classList.toggle('active', active==='pt2'||active==='lapPt2');
   if(window.qeMenuSync) window.qeMenuSync(active);
 }
 document.getElementById('tabBtnPT2').onclick = ()=> switchTab('pt2');
@@ -6514,19 +6528,19 @@ function renderResumeKomitmenChart(program, pre, rows, getFn, categoryFn, commit
 
 function renderResumePT3TA(){
   if(!pt3AGG) return;
-  renderRekapPivotGeneric('PT3 TA', 'rekapPt3KpiRow', 'rekapPt3PivotHead', 'rekapPt3PivotBody', pt3AGG, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
-  renderRekapKomitmenBulanan('PT3 TA', 'rekapPt3CommitMonth', 'rekapPt3CommitHead', 'rekapPt3CommitBody', pt3AGG, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')), 'KOMITMEN GOLIVE', 'BRANCH FMC');
+  renderRekapPivotGeneric('PT3 TA', 'rekapPt3KpiRow', 'rekapPt3PivotHead', 'rekapPt3PivotBody', pt3AGG, pt3Get, pt3GlMerge(pt3RowStatusLabel), pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
+  renderRekapKomitmenBulanan('PT3 TA', 'rekapPt3CommitMonth', 'rekapPt3CommitHead', 'rekapPt3CommitBody', pt3AGG, pt3Get, pt3GlMerge(pt3RowStatusLabel), pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')), 'KOMITMEN GOLIVE', 'BRANCH FMC');
   renderResumeKomitmenChart('PT3 TA', 'rekapPt3', pt3AGG.rows, pt3Get, pt3Category, 'KOMITMEN GOLIVE');
   const p1Rows = pt3AGG.rows.filter(row => { const v=(pt3Get(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim(); return v.startsWith('PRIO') && !v.startsWith('NON'); });
-  renderRekapPivotGeneric('PT3 TA', 'rekapPt3P1KpiRowDUMMY', 'rekapPt3P1PivotHead', 'rekapPt3P1PivotBody', {rows:p1Rows}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
+  renderRekapPivotGeneric('PT3 TA', 'rekapPt3P1KpiRowDUMMY', 'rekapPt3P1PivotHead', 'rekapPt3P1PivotBody', {rows:p1Rows}, pt3Get, pt3GlMerge(pt3RowStatusLabel), pt3Category, pt3StageOrderIndex, (row)=> pt3ParseNum(pt3Get(row,'PORT PLAN')));
 }
 function renderResumePT3FH(){
   if(!pt3fhAGG) return;
-  renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhKpiRow', 'rekapPt3fhPivotHead', 'rekapPt3fhPivotBody', pt3fhAGG, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
-  renderRekapKomitmenBulanan('PT3 FH', 'rekapPt3fhCommitMonth', 'rekapPt3fhCommitHead', 'rekapPt3fhCommitBody', pt3fhAGG, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')), 'KOMITMEN GOLIVE', 'BRANCH FMC');
+  renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhKpiRow', 'rekapPt3fhPivotHead', 'rekapPt3fhPivotBody', pt3fhAGG, pt3fhGet, pt3GlMerge(pt3fhRowStatusLabel), pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
+  renderRekapKomitmenBulanan('PT3 FH', 'rekapPt3fhCommitMonth', 'rekapPt3fhCommitHead', 'rekapPt3fhCommitBody', pt3fhAGG, pt3fhGet, pt3GlMerge(pt3fhRowStatusLabel), pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')), 'KOMITMEN GOLIVE', 'BRANCH FMC');
   renderResumeKomitmenChart('PT3 FH', 'rekapPt3fh', pt3fhAGG.rows, pt3fhGet, pt3fhCategory, 'KOMITMEN GOLIVE');
   const p1Rows = pt3fhAGG.rows.filter(row => (pt3fhGet(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim() === 'P1');
-  renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhP1KpiRowDUMMY', 'rekapPt3fhP1PivotHead', 'rekapPt3fhP1PivotBody', {rows:p1Rows}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
+  renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhP1KpiRowDUMMY', 'rekapPt3fhP1PivotHead', 'rekapPt3fhP1PivotBody', {rows:p1Rows}, pt3fhGet, pt3GlMerge(pt3fhRowStatusLabel), pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
 }
 
 /* ---------- Gabungan PT3 TA + PT3 FH ---------- */
@@ -6537,7 +6551,7 @@ function renderResumePT3Gab(){
   const isFh = r => fhSet.has(r);
   const all = taRows.concat(fhRows);
   const getFn = (r,c)=> isFh(r) ? pt3fhGet(r,c) : pt3Get(r,c);
-  const statusFn = r => isFh(r) ? pt3fhRowStatusLabel(r) : pt3RowStatusLabel(r);
+  const statusFn = pt3GlMerge(r => isFh(r) ? pt3fhRowStatusLabel(r) : pt3RowStatusLabel(r));
   const catFn = r => isFh(r) ? pt3fhCategory(r) : pt3Category(r);
   const valFn = r => isFh(r) ? pt3fhParseNum(pt3fhGet(r,'PORT PLAN')) : pt3ParseNum(pt3Get(r,'PORT PLAN'));
   window.__pt3GabIsFh = isFh;
@@ -6626,11 +6640,11 @@ function renderPrioBlock(kind){
     } else if(kind === 'ta'){
       const r = prioChips('ta', 'prioTaChips', base.ta);
       prioClearRegistry('PT3 TA');
-      renderRekapPivotGeneric('PT3 TA', 'prioTaKpi', 'prioTaHead', 'prioTaBody', {rows:r}, pt3Get, pt3RowStatusLabel, pt3Category, pt3StageOrderIndex, x => pt3ParseNum(pt3Get(x,'PORT PLAN')));
+      renderRekapPivotGeneric('PT3 TA', 'prioTaKpi', 'prioTaHead', 'prioTaBody', {rows:r}, pt3Get, pt3GlMerge(pt3RowStatusLabel), pt3Category, pt3StageOrderIndex, x => pt3ParseNum(pt3Get(x,'PORT PLAN')));
       prioSums['PT3 TA'] = prioSumOf(r, x=>pt3ParseNum(pt3Get(x,'PORT PLAN')), pt3Category);
     } else if(kind === 'fh'){
       prioClearRegistry('PT3 FH');
-      renderRekapPivotGeneric('PT3 FH', 'prioFhKpi', 'prioFhHead', 'prioFhBody', {rows:base.fh}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, x => pt3fhParseNum(pt3fhGet(x,'PORT PLAN')));
+      renderRekapPivotGeneric('PT3 FH', 'prioFhKpi', 'prioFhHead', 'prioFhBody', {rows:base.fh}, pt3fhGet, pt3GlMerge(pt3fhRowStatusLabel), pt3fhCategory, pt3fhStageOrderIndex, x => pt3fhParseNum(pt3fhGet(x,'PORT PLAN')));
       prioSums['PT3 FH'] = prioSumOf(base.fh, x=>pt3fhParseNum(pt3fhGet(x,'PORT PLAN')), pt3fhCategory);
     } else if(kind === 'mbb'){
       prioClearRegistry('MBB New Infra');
@@ -8309,6 +8323,8 @@ function pt3HideStageDetail(){
   document.querySelectorAll('#pt3KpiRow .kpi.clickable, #pt3ProgressFlow .flow-chevron').forEach(x=>x.classList.remove('active'));
 }
 
+function pt3GlStage(label){ const st = hemStripStatusPrefix(label).toUpperCase(); return (st==='UJI TERIMA'||st==='REKON') ? 'GOLIVE' : st; }
+function pt3GlMerge(fn){ return r=>{ const l = fn(r); const st = hemStripStatusPrefix(l).toUpperCase(); return (st==='UJI TERIMA'||st==='REKON') ? 'GOLIVE' : l; }; }
 function pt3RenderPivotBranch(){
   const headEl = document.getElementById('pt3PivotBranchHead');
   const bodyEl = document.getElementById('pt3PivotBranchBody');
@@ -8316,14 +8332,14 @@ function pt3RenderPivotBranch(){
 
   const rows = pt3AGG.rows || [];
   const stagesPresent = new Set();
-  rows.forEach(r => stagesPresent.add(hemStripStatusPrefix(pt3RowStatusLabel(r)).toUpperCase()));
+  rows.forEach(r => stagesPresent.add(pt3GlStage(pt3RowStatusLabel(r))));
   const columns = [...stagesPresent].sort((a,b)=> pt3StageOrderIndex(a) - pt3StageOrderIndex(b));
 
   const pivot = {};
   const branchTotals = {};
   rows.forEach(row=>{
     const branch = pt3Get(row,'BRANCH FMC') || 'Tidak Diketahui';
-    const stage = hemStripStatusPrefix(pt3RowStatusLabel(row)).toUpperCase();
+    const stage = pt3GlStage(pt3RowStatusLabel(row));
     const port = pt3ParseNum(pt3Get(row,'PORT PLAN'));
     if(!pivot[branch]) pivot[branch] = {};
     pivot[branch][stage] = (pivot[branch][stage]||0) + port;
@@ -8339,7 +8355,7 @@ function pt3RenderPivotBranch(){
 
   headEl.innerHTML = `<th class="pivot-sticky-col">Branch</th>` + columns.map(c=>`<th>${c}</th>`).join('') + `<th>Total</th><th>% Achievement</th>`;
 
-  const achievementStages = ['GOLIVE', 'UJI TERIMA', 'REKON'];
+  const achievementStages = ['GOLIVE'];
   const colTotals = Object.fromEntries(columns.map(c=>[c,0]));
   let grandTotal = 0;
   let grandAchievement = 0;
@@ -8368,7 +8384,7 @@ function pt3RenderPivotBranch(){
 
   wireClickableCells('pt3PivotBranchBody', pt3FilterCtl, (spec)=>{
     return row => (pt3Get(row,'BRANCH FMC')||'Tidak Diketahui') === spec.branch
-      && hemStripStatusPrefix(pt3RowStatusLabel(row)).toUpperCase() === spec.stage;
+      && pt3GlStage(pt3RowStatusLabel(row)) === spec.stage;
   });
 }
 
@@ -8951,19 +8967,18 @@ function pt3RenderOgpBars(id, rows, labelFn, chartLabel){
 }
 
 
-let pt3PerfGroup = 'mitra';
+let pt3PerfGroup = 'branch';
 function pt3RenderExtra(){
   if(!pt3AGG) return;
   const rows = pt3AGG.rows, today = new Date(); today.setHours(0,0,0,0);
-  const gf = { mitra:r=>pt3Get(r,'Mitra'), wasp:r=>pt3Get(r,'WASPANG'), sto:r=>pt3Get(r,'STO') }[pt3PerfGroup];
-  const gl = { mitra:'Mitra', wasp:'Waspang', sto:'STO' }[pt3PerfGroup];
+  const gf = { branch:r=>pt3Get(r,'BRANCH FMC'), batch:r=>pt3Get(r,'BATCH PROGRAM'), prio:r=>pt3Get(r,'PRIORITAS 1 BY TSEL'), sub:r=>pt3Get(r,'SUB STATUS KONS') }[pt3PerfGroup];
+  const gl = { branch:'Branch', batch:'Batch', prio:'Prioritas', sub:'Sub Status' }[pt3PerfGroup];
   const gap = r=>{ const d=pt3ExtractLatestUpdateDate(pt3Get(r,'DETAIL STATUS')); return d ? Math.round((today-d)/86400000) : -1; };
   const groups = {};
   rows.forEach(r=>{ const k=(gf(r)||'').trim()||'(Kosong)'; (groups[k]=groups[k]||[]).push(r); });
   const ent = Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
   const head = document.getElementById('pt3PerfHead'), body = document.getElementById('pt3PerfBody');
   if(head) head.innerHTML = `<th>${gl}</th><th>Order</th><th>Port Plan</th><th>Golive</th><th>OGP</th><th>Drop</th><th style="min-width:150px">% Golive</th><th>Komitmen Terlewat</th><th>Tanpa Update &gt;${PT3_STALE_THRESHOLD_DAYS}h</th>`;
-  const fld = {mitra:'Mitra', wasp:'WASPANG', sto:'STO'}[pt3PerfGroup];
   const cell = (arr,label,txt,cls)=> arr.length ? `<td class="num pt3pf ${cls||''}" data-k="${_woEsc(label)}" style="cursor:pointer;">${txt}</td>` : `<td class="num" style="color:var(--text-faint)">—</td>`;
   window.__pt3Perf = {};
   if(body) body.innerHTML = ent.map(([k,arr],i)=>{
@@ -9123,7 +9138,7 @@ function pt3OpenWoDrawer(row, list, idx){
   const cat = pt3Category(row), id = pt3Get(row,'ID-IHLD');
   const kv = PT3_COLS.filter(c=>c.k!=='detail'&&c.k!=='my').map(c=>{ const v=c.val(row); return `<dt>${c.label}</dt><dd>${_woEsc(c.fmt?c.fmt(v):(v||'—'))}</dd>`; }).join('');
   const my = pt3MyLoad()[id];
-  dr.innerHTML = `<div class="hd"><div><h3>${_woEsc(pt3Get(row,'NAMA LOP')||'—')}</h3><div style="margin-top:6px;"><span class="wo-pill ${cat}">${_woEsc(pt3Get(row,'Status')||'—')}</span> <span style="font-size:12px;color:var(--text-faint);margin-left:6px;">${_woEsc(id)}</span></div></div><div style="display:flex;gap:6px;"><button type="button" id="pt3WoPrev" title="Sebelumnya">↑</button><button type="button" id="pt3WoNext" title="Berikutnya">↓</button><button type="button" id="pt3WoDrawerX">✕</button></div></div><div class="bd"><p style="font-weight:700;font-size:13px;margin:0 0 6px;">✎ Update Saya</p><textarea id="pt3WoMy" rows="3" placeholder="Tulis update / follow-up..." style="width:100%;border:1px solid #F0D9A8;background:#FFFBEB;border-radius:8px;padding:8px;font:12.5px Inter,sans-serif;margin-bottom:4px;">${_woEsc(my?my.t:'')}</textarea><div style="font-size:11px;color:var(--text-faint);margin-bottom:14px;" id="pt3WoMyInfo">${my?'Disimpan '+new Date(my.ts).toLocaleString('id-ID'):'Tersimpan otomatis di browser ini'}</div><dl class="kv">${kv}</dl><p style="font-weight:700;font-size:13px;margin:0 0 6px;">Detail Status (riwayat)</p><pre>${_woEsc(pt3Get(row,'DETAIL STATUS')||'—')}</pre></div>`;
+  dr.innerHTML = `<div class="hd"><div><h3>${_woEsc(pt3Get(row,'NAMA LOP')||'—')}</h3><div style="margin-top:6px;"><span class="wo-pill ${cat}">${_woEsc(pt3Get(row,'Status')||'—')}</span> <span class="copy-id" title="Klik untuk salin" style="font-size:12px;color:var(--text-faint);margin-left:6px;">${_woEsc(id)}</span></div></div><div style="display:flex;gap:6px;"><button type="button" id="pt3WoPrev" title="Sebelumnya">↑</button><button type="button" id="pt3WoNext" title="Berikutnya">↓</button><button type="button" id="pt3WoDrawerX">✕</button></div></div><div class="bd"><p style="font-weight:700;font-size:13px;margin:0 0 6px;">✎ Update Saya</p><textarea id="pt3WoMy" rows="3" placeholder="Tulis update / follow-up..." style="width:100%;border:1px solid #F0D9A8;background:#FFFBEB;border-radius:8px;padding:8px;font:12.5px Inter,sans-serif;margin-bottom:4px;">${_woEsc(my?my.t:'')}</textarea><div style="font-size:11px;color:var(--text-faint);margin-bottom:14px;" id="pt3WoMyInfo">${my?'Disimpan '+new Date(my.ts).toLocaleString('id-ID'):'Tersimpan otomatis di browser ini'}</div><dl class="kv">${kv}</dl><p style="font-weight:700;font-size:13px;margin:0 0 6px;">Detail Status (riwayat)</p><pre>${_woEsc(pt3Get(row,'DETAIL STATUS')||'—')}</pre></div>`;
   dr.querySelector('#pt3WoDrawerX').onclick = ()=>bg.onclick();
   dr.querySelector('#pt3WoPrev').onclick = ()=>pt3WoDrawerStep(-1);
   dr.querySelector('#pt3WoNext').onclick = ()=>pt3WoDrawerStep(1);
@@ -9908,14 +9923,14 @@ function pt3fhRenderPivotBranch(){
 
   const rows = pt3fhAGG.rows || [];
   const stagesPresent = new Set();
-  rows.forEach(r => stagesPresent.add(hemStripStatusPrefix(pt3fhRowStatusLabel(r)).toUpperCase()));
+  rows.forEach(r => stagesPresent.add(pt3GlStage(pt3fhRowStatusLabel(r))));
   const columns = [...stagesPresent].sort((a,b)=> pt3fhStageOrderIndex(a) - pt3fhStageOrderIndex(b));
 
   const pivot = {};
   const branchTotals = {};
   rows.forEach(row=>{
     const branch = pt3fhGet(row,'BRANCH FMC') || 'Tidak Diketahui';
-    const stage = hemStripStatusPrefix(pt3fhRowStatusLabel(row)).toUpperCase();
+    const stage = pt3GlStage(pt3fhRowStatusLabel(row));
     const port = pt3fhParseNum(pt3fhGet(row,'PORT PLAN'));
     if(!pivot[branch]) pivot[branch] = {};
     pivot[branch][stage] = (pivot[branch][stage]||0) + port;
@@ -9931,7 +9946,7 @@ function pt3fhRenderPivotBranch(){
 
   headEl.innerHTML = `<th class="pivot-sticky-col">Branch</th>` + columns.map(c=>`<th>${c}</th>`).join('') + `<th>Total</th><th>% Achievement</th>`;
 
-  const achievementStages = ['GOLIVE', 'UJI TERIMA', 'REKON'];
+  const achievementStages = ['GOLIVE'];
   const colTotals = Object.fromEntries(columns.map(c=>[c,0]));
   let grandTotal = 0;
   let grandAchievement = 0;
@@ -9960,7 +9975,7 @@ function pt3fhRenderPivotBranch(){
 
   wireClickableCells('pt3fhPivotBranchBody', pt3fhFilterCtl, (spec)=>{
     return row => (pt3fhGet(row,'BRANCH FMC')||'Tidak Diketahui') === spec.branch
-      && hemStripStatusPrefix(pt3fhRowStatusLabel(row)).toUpperCase() === spec.stage;
+      && pt3GlStage(pt3fhRowStatusLabel(row)) === spec.stage;
   });
 }
 
@@ -11313,5 +11328,34 @@ oloLoadDataAuto();
 <script src="qe-recap.js?v=20261104b"></script>
 <script src="topo.js?v=20261111e"></script>
 <script src="kml.js?v=20261111h"></script>
+<script>
+/* ===== Klik ID IHLD = langsung tersalin ===== */
+(function(){
+  const norm = t => String(t||'').replace(/[⇅▽↑↓▲▼✎]/g,'').replace(/\s+/g,' ').trim().toUpperCase();
+  const isIdHead = t => /^(ID[- ]?IHLD|IHLD|ID LOP|ID)$/.test(t);
+  function mark(){
+    document.querySelectorAll('table').forEach(tb=>{
+      const hr = tb.tHead && tb.tHead.rows[0]; if(!hr) return;
+      const idx = []; [...hr.cells].forEach((th,i)=>{ if(isIdHead(norm(th.dataset.label||th.textContent))) idx.push(i); });
+      if(!idx.length) return;
+      tb.tBodies[0] && [...tb.tBodies[0].rows].forEach(tr=> idx.forEach(i=>{ const td=tr.cells[i]; if(td && !td.classList.contains('copy-id') && td.textContent.trim() && td.textContent.trim()!=='—') td.classList.add('copy-id'); }));
+    });
+  }
+  let t=null; new MutationObserver(()=>{ clearTimeout(t); t=setTimeout(mark,120); }).observe(document.body,{childList:true,subtree:true});
+  function toast(msg){
+    let el=document.getElementById('copyToast');
+    if(!el){ el=document.createElement('div'); el.id='copyToast'; document.body.appendChild(el); }
+    el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),1400);
+  }
+  async function copy(txt){ try{ await navigator.clipboard.writeText(txt); }catch(e){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} ta.remove(); } toast('📋 ID '+txt+' disalin'); }
+  document.addEventListener('click', e=>{
+    const c = e.target.closest('.copy-id'); if(!c) return;
+    const sel = window.getSelection && String(window.getSelection()); if(sel) return;
+    e.stopPropagation(); e.stopImmediatePropagation();
+    copy(c.textContent.replace(/📋/g,'').trim());
+  }, true);
+  window.copyIdMark = mark;
+})();
+</script>
 </body>
 </html>
