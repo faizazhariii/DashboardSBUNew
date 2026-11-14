@@ -8,6 +8,16 @@
   var S = { month: new Date().getMonth(), basis: 'ogp', flt: 'all', q: '', sort: 'selisih' };
   var MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
   var num = function(v){ var n = parseFloat(String(v || '').replace(/[^\d.,-]/g,'').replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.')); return isNaN(n) ? 0 : n; };
+  /* STO = kode 3 huruf. Cari di kolom STO (boleh ada teks lain), cadangan: kode di Nama LoP */
+  var STOP = { OLO:1, LOP:1, ODP:1, ODC:1, FTM:1, OLT:1, NEW:1, TIF:1, KPI:1 };
+  function resolveSto(raw, nama){
+    if(idleBy[raw]) return raw;
+    var t = (raw.match(/[A-Z]{3,4}/g) || []).filter(function(x){ return idleBy[x]; });
+    if(t.length) return t[0];
+    var m = String(nama || '').toUpperCase().match(/[A-Z]{3}/g) || [];
+    for(var i = 0; i < m.length; i++){ if(idleBy[m[i]] && !STOP[m[i]]) return m[i]; }
+    return raw.replace(/[^A-Z0-9]/g,'').slice(0,3) || '';
+  }
   var need = function(pp){ return Math.max(1, Math.ceil(pp / 32)); };
   var fmt = function(n){ return Number(n).toLocaleString('id-ID'); };
 
@@ -46,11 +56,13 @@
         var d = parseDMY(get(r,'KOMITMEN GOLIVE')); if(!d || d.getFullYear() !== t0 || d.getMonth() !== S.month) return;
         var cat = hemCategoryOfLabel(pt3GlStage(label(r)));
         if(S.basis === 'ogp' && cat !== 'ogp') return;
-        var sto = (get(r,'STO') || '').trim().toUpperCase(); if(!sto) return;
+        var raw = (get(r,'STO') || '').trim().toUpperCase();
+        var sto = resolveSto(raw, get(r,'NAMA LOP'));
+        if(!sto) return;
         var pp = num(get(r,'PORT PLAN')), n = need(pp);
         var o = by[sto] || (by[sto] = { sto:sto, witel:(get(r,'BRANCH FMC') || '').toUpperCase(), ta:0, fh:0, pp:0, need:0, lops:[] });
         o[kind]++; o.pp += pp; o.need += n;
-        o.lops.push({ src: kind === 'ta' ? 'PT3 TA' : 'PT3 FH', id:get(r,'ID-IHLD'), nama:get(r,'NAMA LOP'), pp:pp, n:n, komit:get(r,'KOMITMEN GOLIVE'), status:get(r,'Status') });
+        o.lops.push({ raw:raw, src: kind === 'ta' ? 'PT3 TA' : 'PT3 FH', id:get(r,'ID-IHLD'), nama:get(r,'NAMA LOP'), pp:pp, n:n, komit:get(r,'KOMITMEN GOLIVE'), status:get(r,'Status') });
       });
     };
     if(typeof pt3Rows !== 'undefined') add(pt3Rows, pt3Get, pt3RowStatusLabel, 'ta');
@@ -99,8 +111,8 @@
     var close = function(){ bg.remove(); dr.remove(); };
     bg.onclick = close;
     dr.innerHTML = '<div class="hd"><div><h3>STO ' + esc(o.sto) + ' — ' + esc(o.witel) + '</h3><div style="margin-top:6px;font-size:12.5px;">Kebutuhan <b>' + fmt(o.need) + '</b> · Idle <b>' + (o.has ? fmt(o.idle) : '—') + '</b> · Selisih <b>' + (o.has ? (o.selisih >= 0 ? '+' : '−') + fmt(Math.abs(o.selisih)) : '—') + '</b></div></div><button type="button" id="oltCapX">✕</button></div><div class="bd">' +
-      '<p style="font-weight:700;font-size:13px;margin:0 0 6px;">LoP yang dikomitmenkan (' + o.lops.length + ')</p><table class="wo-table dense" style="margin-bottom:14px;"><thead><tr><th>Sumber</th><th>ID</th><th>Nama LoP</th><th>Port Plan</th><th>Butuh</th><th>Komitmen</th></tr></thead><tbody>' +
-      o.lops.map(function(l){ return '<tr style="cursor:default"><td>' + l.src + '</td><td>' + esc(l.id) + '</td><td class="name">' + esc(l.nama) + '</td><td class="num">' + fmt(l.pp) + '</td><td class="num"><b>' + l.n + '</b></td><td>' + esc(l.komit) + '</td></tr>'; }).join('') + '</tbody></table>' +
+      '<p style="font-weight:700;font-size:13px;margin:0 0 6px;">LoP yang dikomitmenkan (' + o.lops.length + ')</p><table class="wo-table dense" style="margin-bottom:14px;"><thead><tr><th>Sumber</th><th>ID</th><th>STO (sheet)</th><th>Nama LoP</th><th>Port Plan</th><th>Butuh</th><th>Komitmen</th></tr></thead><tbody>' +
+      o.lops.map(function(l){ return '<tr style="cursor:default"><td>' + l.src + '</td><td>' + esc(l.id) + '</td><td>' + esc(l.raw) + '</td><td class="name">' + esc(l.nama) + '</td><td class="num">' + fmt(l.pp) + '</td><td class="num"><b>' + l.n + '</b></td><td>' + esc(l.komit) + '</td></tr>'; }).join('') + '</tbody></table>' +
       '<p style="font-weight:700;font-size:13px;margin:0 0 6px;">OLT di STO ini (' + o.olts.length + ')</p>' +
       (o.olts.length ? '<table class="wo-table dense"><thead><tr><th>Merk</th><th>Hostname</th><th>Lokasi</th><th>Total Port</th><th>Idle</th></tr></thead><tbody>' + o.olts.map(function(t){ return '<tr style="cursor:default"><td>' + esc(t.merk) + '</td><td>' + esc(t.ne) + '</td><td>' + esc(t.lokasi) + '</td><td class="num">' + fmt(t.total) + '</td><td class="num"><b>' + fmt(t.idle) + '</b></td></tr>'; }).join('') + '</tbody></table>' : '<div style="color:var(--text-faint);font-size:12.5px;">STO ini tidak ditemukan di data idle port (cek penulisan nama STO).</div>') + '</div>';
     document.body.appendChild(bg); document.body.appendChild(dr);
