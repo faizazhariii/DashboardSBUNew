@@ -634,6 +634,14 @@
   .mbb-report-sub-title{background:linear-gradient(90deg,#1B2333,#2A3B5F);}
   .pivot-table tbody td:not(.name):not(:first-child){font-variant-numeric:tabular-nums;}
   .wo-scroll thead th{background:linear-gradient(180deg,#24304A,#1B2333) !important;}
+
+  /* ===== Simplifikasi PT3 TA bagian atas ===== */
+  #pt3StaleAlertBar{padding:6px 12px !important;margin-top:10px !important;font-size:12px !important;border-radius:8px !important;}
+  #pt3StaleAlertBar button{padding:4px 10px !important;font-size:11px !important;}
+  #pt3KpiRow{margin-top:12px;gap:10px;}
+  #pt3KpiRow .kpi{padding:8px 12px;} #pt3KpiRow .kpi-label{margin-bottom:2px;} #pt3KpiRow .kpi-value{font-size:19px;}
+  #pt3ProgressFlow .flow-chevron{padding-top:8px;padding-bottom:8px;} #pt3ProgressFlow .flow-chevron-value{font-size:18px;}
+  #pt3ProgressFlow{margin-top:10px;}
 </style>
 </head>
 <body>
@@ -1611,11 +1619,6 @@
 
       <div id="pt3StaleAlertBar" class="stale-alert-bar" style="display:none;"></div>
 
-      <div class="section capture-hide">
-        <p class="section-title">⚠️ LoP Tanpa Update &gt;25 Hari</p>
-        <p class="section-desc">Order yang masih berjalan (belum Golive/Drop) tapi teks DETAIL STATUS-nya belum ada log baru dalam 25 hari terakhir.</p>
-        <div id="pt3StaleAlert"></div>
-      </div>
 
       <div class="section">
         <p class="section-title">Breakdown Status Lapangan</p>
