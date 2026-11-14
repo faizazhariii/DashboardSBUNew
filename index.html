@@ -4698,7 +4698,7 @@ function hemRenderSlaKpis(){
  */
 const PROGRESS_STAGE_ORDER = [
   'PERSIAPAN','AANDWIJZING','PERIZINAN','MATDEL','INSTALASI','F. INSTALASI',
-  'GOLIVE','UJI TERIMA','HOLD','PROPOSED DROP','APPROVED DROP','BISA PT1'
+  'GOLIVE','UJI TERIMA','HOLD','DROP','PROPOSED DROP','APPROVED DROP','BISA PT1'
 ];
 
 function progressStageSortIndex(rawLabel){
@@ -5237,6 +5237,7 @@ function hemHideStageDetail(){
  * Kolom mengikuti urutan tahap resmi (PROGRESS_STAGE_ORDER); tahap yang
  * memang tidak ada datanya di periode berjalan tetap ditampilkan sebagai 0.
  */
+function hemMergeStage(st){ st=String(st||'').toUpperCase(); if(st==='UJI TERIMA'||st==='REKON') return 'GOLIVE'; if(st==='PROPOSED DROP'||st==='APPROVED DROP') return 'DROP'; return st; }
 function hemRenderPivotDistrict(){
   const headEl = document.getElementById('hemPivotDistrictHead');
   const bodyEl = document.getElementById('hemPivotDistrictBody');
@@ -5246,7 +5247,7 @@ function hemRenderPivotDistrict(){
 
   // Kolom: tahap yang benar-benar ada di data periode ini, diurutkan sesuai urutan resmi
   const stagesPresent = new Set();
-  rows.forEach(r => stagesPresent.add(hemStripStatusPrefix(hemRowProgressLabel(r)).toUpperCase()));
+  rows.forEach(r => stagesPresent.add(hemMergeStage(hemStripStatusPrefix(hemRowProgressLabel(r)).toUpperCase())));
   const columns = PROGRESS_STAGE_ORDER.filter(s => stagesPresent.has(s));
   // Tambahkan tahap yang tidak dikenali daftar resmi (kalau ada) di akhir
   stagesPresent.forEach(s=>{ if(!PROGRESS_STAGE_ORDER.includes(s)) columns.push(s); });
@@ -5256,7 +5257,7 @@ function hemRenderPivotDistrict(){
   const districtTotals = {};
   rows.forEach(row=>{
     const district = hemGet(row,'DISTRICT') || 'Tidak Diketahui';
-    const stage = hemStripStatusPrefix(hemRowProgressLabel(row)).toUpperCase();
+    const stage = hemMergeStage(hemStripStatusPrefix(hemRowProgressLabel(row)).toUpperCase());
     if(!pivot[district]) pivot[district] = {};
     pivot[district][stage] = (pivot[district][stage]||0) + 1;
     districtTotals[district] = (districtTotals[district]||0) + 1;
@@ -5296,7 +5297,7 @@ function hemRenderPivotDistrict(){
 
   wireClickableCells('hemPivotDistrictBody', hemFilterCtl, (spec)=>{
     return row => (hemGet(row,'DISTRICT')||'Tidak Diketahui') === spec.district
-      && hemStripStatusPrefix(hemRowProgressLabel(row)).toUpperCase() === spec.stage;
+      && hemMergeStage(hemStripStatusPrefix(hemRowProgressLabel(row)).toUpperCase()) === spec.stage;
   });
 }
 
@@ -5887,7 +5888,7 @@ function oloRenderPivotDistrict(){
   const rows = oloAGG.rows || [];
 
   const stagesPresent = new Set();
-  rows.forEach(r => stagesPresent.add(hemStripStatusPrefix(oloRowProgressLabel(r)).toUpperCase()));
+  rows.forEach(r => stagesPresent.add(hemMergeStage(hemStripStatusPrefix(oloRowProgressLabel(r)).toUpperCase())));
   const columns = PROGRESS_STAGE_ORDER.filter(s => stagesPresent.has(s));
   stagesPresent.forEach(s=>{ if(!PROGRESS_STAGE_ORDER.includes(s)) columns.push(s); });
 
@@ -5895,7 +5896,7 @@ function oloRenderPivotDistrict(){
   const districtTotals = {};
   rows.forEach(row=>{
     const district = oloGet(row,'DISTRICT') || 'Tidak Diketahui';
-    const stage = hemStripStatusPrefix(oloRowProgressLabel(row)).toUpperCase();
+    const stage = hemMergeStage(hemStripStatusPrefix(oloRowProgressLabel(row)).toUpperCase());
     if(!pivot[district]) pivot[district] = {};
     pivot[district][stage] = (pivot[district][stage]||0) + 1;
     districtTotals[district] = (districtTotals[district]||0) + 1;
@@ -5935,7 +5936,7 @@ function oloRenderPivotDistrict(){
 
   wireClickableCells('oloPivotDistrictBody', oloFilterCtl, (spec)=>{
     return row => (oloGet(row,'DISTRICT')||'Tidak Diketahui') === spec.district
-      && hemStripStatusPrefix(oloRowProgressLabel(row)).toUpperCase() === spec.stage;
+      && hemMergeStage(hemStripStatusPrefix(oloRowProgressLabel(row)).toUpperCase()) === spec.stage;
   });
 }
 
@@ -11560,6 +11561,7 @@ oloLoadDataAuto();
 <script src="qe-recap.js?v=20261104b"></script>
 <script src="topo.js?v=20261111e"></script>
 <script src="kml.js?v=20261111h"></script>
+<script src="wotable.js?v=20261115a"></script>
 <script>
 /* Dropdown sidebar PT3 */
 (function(){
