@@ -289,7 +289,7 @@
       var head = document.getElementById(p + 'PerfHead'), body = document.getElementById(p + 'PerfBody');
       if(!head || !body) return;
       var hasOther = !!cfg.hasOther;
-      head.innerHTML = '<th>' + gdef.label + '</th><th>Order</th><th>Golive</th><th>OGP</th>' + (hasOther ? '<th>Bisa PT1 / Hold</th>' : '') + '<th>Drop</th><th style="min-width:150px">% Golive</th><th>Komitmen Terlewat</th><th>Tanpa Update &gt;' + STALE + 'h</th>';
+      head.innerHTML = '<th>' + gdef.label + '</th><th>Order</th><th>Golive</th><th>OGP</th>' + (hasOther ? '<th>' + (cfg.otherLabel || 'Bisa PT1 / Hold') + '</th>' : '') + '<th>Drop</th><th style="min-width:150px">% Golive</th><th>Komitmen Terlewat</th><th>Tanpa Update &gt;' + STALE + 'h</th>';
       var reg = {};
       body.innerHTML = ent.map(function(e, i){
         var k = e[0], arr = e[1];
@@ -468,6 +468,83 @@
   var H = install(HEMC, {title:'Daftar Work Order HEM', desc:'Klik ikon ⇅ di header untuk urutkan, ▽ untuk filter per kolom. Kolom Catatan & Status PT1 tersimpan ke Google Sheets. Klik baris untuk detail lengkap.', placeholder:'🔎 Cari IHLD / Nama LOP / STO / District...'});
   var O = install(OLOC, {title:'Daftar Work Order OLO', desc:'Klik ikon ⇅ di header untuk urutkan, ▽ untuk filter per kolom. Kolom Catatan & Status PT1 tersimpan ke Google Sheets. Klik baris untuk detail lengkap.', placeholder:'🔎 Cari IHLD / No Order / Nama Proyek / STO...'});
 
+
+  /* =================== MBB =================== */
+  var mbbCat = function(r){ var c = mbbFiOaOgp(r); return c === 'oa' ? 'golive' : (c === 'drop' ? 'drop' : (c === 'other' ? 'hold' : 'ogp')); };
+  var fmtIDRm = function(v){ var n = mbbParseNum(v); return n ? 'Rp' + Math.round(n).toLocaleString('id-ID') : '—'; };
+  var MBBC = {
+    prefix:'mbb',
+    cols:[
+      {k:'id', label:'ID', stk:1, val:function(r){ return mbbGet(r,'ID'); }},
+      {k:'site', label:'Site Name', cls:'name', stk2:1, val:function(r){ return mbbGet(r,'SITE NAME'); }},
+      {k:'branch', label:'Branch', val:function(r){ return mbbGet(r,'BRANCH'); }},
+      {k:'sto', label:'STO', val:function(r){ return mbbGet(r,'STO'); }},
+      {k:'sow', label:'SOW Order', val:function(r){ return mbbGet(r,'SOW PRE ORDER') || mbbGet(r,'SOW ORDER'); }},
+      {k:'batch', label:'Batch', val:function(r){ return mbbGet(r,'BATCH WO'); }},
+      {k:'mitra', label:'Mitra', val:function(r){ return mbbGet(r,'MITRA'); }},
+      {k:'tgl', label:'Tgl WO', val:function(r){ return mbbGet(r,'TGL WO'); }},
+      {k:'status', label:'Status', pill:1, val:function(r){ return mbbGet(r,'STATUS'); }},
+      {k:'sub', label:'Sub Status', val:function(r){ return mbbGet(r,'SUB STATUS'); }},
+      {k:'komit', label:'Komitmen OA', late:1, val:function(r){ return mbbGet(r,'TGL COMMIT OA FIX'); }, sv:function(r){ var d = parseDMY(mbbGet(r,'TGL COMMIT OA FIX')); return d ? d.getTime() : 0; }},
+      {k:'det', label:'Detil Progress', det:1, text:1, val:function(r){ return mbbGet(r,'DETIL PROGRESS'); }},
+      {k:'cat', label:'Catatan', text:1, val:function(r){ return mbbGet(r,'CATATAN'); }, html:function(r){ return renderCatatanCell('mbb', mbbGet(r,'ID'), mbbGet(r,'CATATAN')); }},
+      {k:'plan', label:'Nilai Plan', cls:'num', val:function(r){ return mbbGet(r,'NILAI PLAN'); }, sv:function(r){ return mbbParseNum(mbbGet(r,'NILAI PLAN')); }, fmt:fmtIDRm},
+      {k:'drm', label:'Nilai DRM', cls:'num', val:function(r){ return mbbGet(r,'NILAI DRM'); }, sv:function(r){ return mbbParseNum(mbbGet(r,'NILAI DRM')); }, fmt:fmtIDRm},
+      {k:'prog', label:'Progress %', val:function(r){ return mbbGet(r,'PROGRESS%'); }, sv:function(r){ return mbbParseNum(mbbGet(r,'PROGRESS%')); }},
+      {k:'spv', label:'Supervisor', val:function(r){ return mbbGet(r,'SUPERVISOR'); }},
+      {k:'sla', label:'Tgl SLA HO', val:function(r){ return mbbGet(r,'TGL SLA HO'); }},
+      {k:'csla', label:'Cat SLA HO', val:function(r){ return mbbGet(r,'CAT SLA HO'); }, html:function(r){ var v = mbbGet(r,'CAT SLA HO'), u = v.toUpperCase(); return v ? '<span class="badge ' + (u.indexOf('OUT') >= 0 ? 'badge-out' : (u.indexOf('IN') >= 0 ? 'badge-in' : 'badge-other')) + '">' + esc(v) + '</span>' : '—'; }},
+      {k:'upd', label:'Diupdate', val:function(r){ var d = extractLatestUpdateDateFromText(mbbGet(r,'DETIL PROGRESS')); return d ? d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : '—'; }, sv:function(r){ var d = extractLatestUpdateDateFromText(mbbGet(r,'DETIL PROGRESS')); return d ? d.getTime() : 0; }},
+      {k:'gap', label:'Jarak Update', gap:1, val:function(r){ return fmtGap(gapDays(mbbGet(r,'DETIL PROGRESS'))); }, sv:function(r){ return gapDays(mbbGet(r,'DETIL PROGRESS')); }}
+    ],
+    quickCats:[['ogp','🔵 OGP'],['golive','🟢 On Air'],['drop','🔴 Drop']],
+    hasOther:false,
+    perf:[
+      {g:'branch', label:'Branch', get:function(r){ return mbbGet(r,'BRANCH'); }},
+      {g:'mitra', label:'Mitra', get:function(r){ return mbbGet(r,'MITRA'); }},
+      {g:'sow', label:'SOW Order', get:function(r){ return mbbGet(r,'SOW PRE ORDER'); }},
+      {g:'batch', label:'Batch', get:function(r){ return mbbGet(r,'BATCH WO'); }}
+    ],
+    base:function(){ return (mbbAGG && mbbAGG.rows) ? mbbAGG.rows : mbbRows; },
+    filterCtl:function(){ return mbbFilterCtl; },
+    page:{ get:function(){ return mbbCurrentPage; }, set:function(v){ mbbCurrentPage = v; } },
+    cat:mbbCat,
+    komit:function(r){ return mbbGet(r,'TGL COMMIT OA FIX'); },
+    detail:function(r){ return mbbGet(r,'DETIL PROGRESS'); },
+    search:function(r){ return [mbbGet(r,'ID'), mbbGet(r,'SITE NAME'), mbbGet(r,'SITE ID'), mbbGet(r,'STO'), mbbGet(r,'BRANCH'), mbbGet(r,'MITRA')].join(' '); },
+    id:function(r){ return mbbGet(r,'ID'); }, name:function(r){ return mbbGet(r,'SITE NAME'); },
+    status:function(r){ return mbbGet(r,'STATUS'); }, district:function(r){ return mbbGet(r,'BRANCH'); },
+    after:function(){ wireCatatanUI('mbb','MBB'); }
+  };
+  replaceSection('mbbPriorityChart',
+    '<div class="section"><p class="section-title" data-ic="🎯">Ringkasan Priority, Mitra &amp; SOW Order</p><p class="section-desc">Klik baris untuk memfilter Daftar Work Order.</p>' +
+    '<div class="ogp-grid"><div class="ogp-card"><div class="ogp-h">NY Priority vs Priority</div><div id="mbbPriorityBars"></div></div><div class="ogp-card"><div class="ogp-h">Distribusi Mitra</div><div id="mbbMitraBars"></div></div><div class="ogp-card"><div class="ogp-h">SOW Order</div><div id="mbbSowBars"></div></div></div></div>');
+  replaceSection('mbbOgpStatusDonut',
+    '<div class="section"><p class="section-title" data-ic="🔎">Breakdown OGP</p><p class="section-desc">Sebaran order yang masih OGP. Klik baris untuk memfilter Daftar Work Order.</p>' +
+    '<div class="ogp-grid"><div class="ogp-card"><div class="ogp-h">Berdasarkan Status</div><div id="mbbOgpStatusBars"></div></div><div class="ogp-card"><div class="ogp-h">Berdasarkan Sub Status</div><div id="mbbOgpSubBars"></div></div></div></div>');
+  var M = install(MBBC, {title:'Daftar Work Order MBB', desc:'Klik ikon ⇅ di header untuk urutkan, ▽ untuk filter per kolom. Kolom Catatan tersimpan ke Google Sheets. Klik baris untuk detail lengkap.', placeholder:'🔎 Cari ID / Site Name / STO / Branch / Mitra...'});
+  if(M){
+    window.mbbGetFilteredRows = function(){ return M.wo.rows(); };
+    window.mbbRenderTable = function(){ M.wo.render(); };
+    window.mbbSetupFilters = function(){ M.wo.setup(); };
+    window.mbbSetupSortableHeaders = function(){};
+    var cntBy = function(rows, fn){ var a = {}; rows.forEach(function(r){ var k = fn(r); a[k] = (a[k] || 0) + 1; }); return Object.keys(a).map(function(k){ return [k, a[k]]; }).sort(function(x,y){ return y[1] - x[1]; }); };
+    window.mbbRenderPriorityChart = function(){
+      if(!mbbAGG) return;
+      var rows = mbbAGG.rows, tot = rows.length;
+      barList('mbbPriorityBars', cntBy(rows, mbbPriorityBucket), { total:tot, colors:function(l){ return l === 'Priority' ? '#C2417A' : '#0B5CAB'; }, onPick:function(l){ mbbFilterCtl.set(function(r){ return mbbPriorityBucket(r) === l; }, 'Priority: ' + l); } });
+      barList('mbbMitraBars', cntBy(rows, function(r){ return mbbGet(r,'MITRA') || 'Tidak Diketahui'; }), { total:tot, limit:8, onPick:function(l){ mbbFilterCtl.set(function(r){ return (mbbGet(r,'MITRA') || 'Tidak Diketahui') === l; }, 'Mitra: ' + l); } });
+      barList('mbbSowBars', cntBy(rows, function(r){ return mbbGet(r,'SOW PRE ORDER') || 'Tidak Diketahui'; }), { total:tot, limit:8, onPick:function(l){ mbbFilterCtl.set(function(r){ return (mbbGet(r,'SOW PRE ORDER') || 'Tidak Diketahui') === l; }, 'SOW: ' + l); } });
+      var ogp = rows.filter(function(r){ return mbbFiOaOgp(r) === 'ogp'; });
+      var stg = function(r){ return hemStripStatusPrefix(mbbRowStatusLabel(r)).toUpperCase(); };
+      var sub = function(r){ return mbbGet(r,'SUB STATUS') || 'Tidak Diketahui'; };
+      barList('mbbOgpStatusBars', cntBy(ogp, stg), { total:ogp.length, limit:10, onPick:function(l){ mbbFilterCtl.set(function(r){ return mbbFiOaOgp(r) === 'ogp' && stg(r) === l; }, 'Status: ' + l); } });
+      barList('mbbOgpSubBars', cntBy(ogp, sub), { total:ogp.length, limit:10, onPick:function(l){ mbbFilterCtl.set(function(r){ return mbbFiOaOgp(r) === 'ogp' && sub(r) === l; }, 'Sub Status: ' + l); } });
+      M.perf.render();
+    };
+    window.mbbRenderMitraChart = function(){}; window.mbbRenderSowChart = function(){};
+  }
+
   var progLabel = function(r){ return hemStripStatusPrefix(hemRowProgressLabel(r)).toUpperCase(); };
   var progLabelO = function(r){ return hemStripStatusPrefix(oloRowProgressLabel(r)).toUpperCase(); };
 
@@ -546,5 +623,6 @@
   try{ window.hemRenderCommitTable(); }catch(e){}
   try{ window.oloRenderCommitTable(); }catch(e){}
   try{ if(typeof hemAGG !== 'undefined' && hemAGG){ window.hemRenderSlaChart(); H.wo.setup(); H.wo.render(); } }catch(e){}
+  try{ if(M && typeof mbbAGG !== 'undefined' && mbbAGG){ window.mbbRenderPriorityChart(); M.wo.setup(); M.wo.render(); } }catch(e){}
   try{ if(typeof oloAGG !== 'undefined' && oloAGG){ window.oloRenderDistrictChart(); O.wo.setup(); O.wo.render(); } }catch(e){}
 })();
