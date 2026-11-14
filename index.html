@@ -725,8 +725,6 @@
     </div>
     <div class="tab-group">Monitoring</div>
     <button class="page-tab" id="tabBtnPrio" data-i="⭐" type="button">Priority TSEL</button>
-    <button class="page-tab" id="tabBtnAlerts" data-i="🔔" type="button">Peringatan</button>
-    <button class="page-tab" id="tabBtnCompare" data-i="⚖️" type="button">Perbandingan</button>
     <button class="page-tab" id="tabBtnChecklist" data-i="✅" type="button">Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" data-i="🔌" type="button">Need Modul OLT</button>
     <button class="page-tab" id="tabBtnGolive" data-i="🚀" type="button">Golive</button>
@@ -2560,8 +2558,6 @@
       </div>
     </div>
 
-    <div id="pageAlerts" style="display:none;"><div id="alertsHost"></div></div>
-    <div id="pageCompare" style="display:none;"><div id="compareHost"></div></div>
     <div id="pageRekapPpt" style="display:none;"><div id="rekapPptHost"></div></div>
 
     <div id="pageQeLp" style="display:none;"></div>
@@ -6153,7 +6149,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], alerts:['tabBtnAlerts','pageAlerts'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], compare:['tabBtnCompare','pageCompare'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -6935,8 +6931,6 @@ document.getElementById('tabBtnQe').onclick = ()=>{ switchTab('qe'); qeLoad(); }
   btn.onclick = ()=>{ c = !c; apply(c); try{ localStorage.setItem('sideCollapsed', c ? '1' : '0'); }catch(e){} setTimeout(()=> window.dispatchEvent(new Event('resize')), 300); };
 })();
 document.getElementById('tabBtnRekapPpt').onclick = ()=> { switchTab('rekapPpt'); if(window.rekapPptOpen) window.rekapPptOpen(); };
-document.getElementById('tabBtnAlerts').onclick = ()=> { switchTab('alerts'); if(window.monitorOpenAlerts) window.monitorOpenAlerts(); };
-document.getElementById('tabBtnCompare').onclick = ()=> { switchTab('compare'); if(window.monitorOpenCompare) window.monitorOpenCompare(); };
 document.getElementById('tabBtnBrt').onclick = ()=> { switchTab('brt'); if(window.qeBrtOpen) qeBrtOpen(); brtLoadZona(brtCurrentZona); };
 const BRT_BASE = 'https://faizazhariii.github.io/QEUtilitasregSBU/CekUpdateBRT.html?zona=';
 let brtCurrentZona = '1', brtLoadedZona = null;
