@@ -609,6 +609,9 @@
   .wo-table th.stk,.wo-table td.stk{min-width:92px;max-width:92px;width:92px;overflow:hidden;text-overflow:ellipsis;}
   .wo-table th.stk2,.wo-table td.stk2{position:sticky;left:92px;z-index:4;box-shadow:2px 0 0 var(--line);}
   .wo-table thead th.stk2{z-index:7;}
+  td.ck-gl{background:#d9f2e3 !important;color:#167A4B;text-align:center;}
+  td.ck-dr{background:#fbdcdc !important;color:#C0262D;text-align:center;}
+  td.ck-hd{background:#ffe8c7 !important;color:#B86A00;text-align:center;}
   #mbbWoTable th.stk,#mbbWoTable td.stk{min-width:150px;max-width:150px;width:150px;}
   #mbbWoTable th.stk2,#mbbWoTable td.stk2{left:150px;}
   .wo-sum{padding:5px 12px;min-width:90px;} .wo-sum b{font-size:16px;} .wo-sum[data-qq]{cursor:pointer;} .wo-sum[data-qq]:hover{background:var(--panel-2);}
@@ -10877,16 +10880,21 @@ function renderChecklistSection(prefix, rows, dateField, getFn, titleBase, rowSt
   body.innerHTML = matching.map(row=>{
     const stageRaw = rowStageFn(row);
     const stageIdx = PROGRESS_STAGE_ORDER.indexOf(stageRaw);
-    const isNormalProgress = stageIdx >= 0 && stageIdx <= 6; // PERSIAPAN..GOLIVE, di luar itu (Hold/Drop/Bisa PT1) gak dicentang
+    const cat = hemCategoryOfLabel(stageRaw);
+    const mode = cat === 'golive' ? 'gl' : (cat === 'drop' ? 'dr' : (cat === 'hold' ? 'hd' : ''));
+    const isNormalProgress = stageIdx >= 0 && stageIdx <= 6 && !mode;
 
+    const mark = {gl:'✅', dr:'✖', hd:'⏸'};
     const checkCells = CHECKLIST_STAGES.map(s=>{
+      if(mode) return `<td class="ck-${mode}">${mark[mode]}</td>`;
       const colIdx = PROGRESS_STAGE_ORDER.indexOf(s.match);
       const checked = isNormalProgress && stageIdx >= colIdx;
       return `<td style="text-align:center;">${checked ? '✅' : '—'}</td>`;
     }).join('');
 
     const completedCount = isNormalProgress ? stageIdx : 0;
-    const bars = Array.from({length: 6}, (_,i)=> i < completedCount ? '🟩' : '⬜').join('');
+    const bars = mode ? Array.from({length: 6}, ()=> ({gl:'🟩', dr:'🟥', hd:'🟧'})[mode]).join('')
+                      : Array.from({length: 6}, (_,i)=> i < completedCount ? '🟩' : '⬜').join('');
 
     const identityCells = rowCellsFn(row).map((v,i)=> `<td${i===0?' class="name pivot-sticky-col"':(i===1?' class="name"':'')}>${v||'—'}</td>`).join('');
 
@@ -10895,7 +10903,7 @@ function renderChecklistSection(prefix, rows, dateField, getFn, titleBase, rowSt
       ${checkCells}
       <td>${getFn(row, dateField)||'—'}</td>
       <td style="letter-spacing:2px;">${bars}</td>
-      <td>${stageRaw || '—'}</td>
+      <td${mode ? ` class="ck-${mode}" style="font-weight:700;"` : ''}>${stageRaw || '—'}</td>
     </tr>`;
   }).join('');
 }
