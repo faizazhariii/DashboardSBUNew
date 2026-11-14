@@ -9349,7 +9349,9 @@ const pt3fhFilterCtl = makeAdvancedFilterController('pt3fhWorkOrderSection', 'pt
 /* Pasang event delegation di sebuah container: klik <td class="clickable-cell" data-flt="...JSON...">
    akan langsung menerapkan filter ke controller yang sesuai. predicateBuilder(spec) mengubah
    spec JSON jadi fungsi predicate row->boolean. */
+const _wireReg = {};
 function wireClickableCells(containerId, filterCtl, predicateBuilder){
+  _wireReg[containerId] = { ctl: filterCtl, build: predicateBuilder };
   const container = document.getElementById(containerId);
   if(!container) return;
   if(container.dataset.wired === '1') return; // sudah dipasangi listener, jangan dobel
@@ -9363,6 +9365,31 @@ function wireClickableCells(containerId, filterCtl, predicateBuilder){
     if(predicate) filterCtl.set(predicate, spec.label);
   });
 }
+
+/* Baris TOTAL di semua tabel pivot ikut bisa diklik: gabungan (OR) semua sel
+   terklik di kolom itu (atau seluruh tabel kalau klik label/kolom Total). */
+document.addEventListener('click', (e)=>{
+  const td = e.target.closest('tr.pivot-total td, tr.total-row td');
+  if(!td) return;
+  const tbody = td.closest('tbody'); if(!tbody) return;
+  const reg = _wireReg[tbody.id]; if(!reg) return;
+  const tr = td.parentElement, idx = Array.prototype.indexOf.call(tr.children, td);
+  const bodyRows = Array.from(tbody.querySelectorAll('tr')).filter(r=> r !== tr && !r.matches('.pivot-total,.total-row'));
+  let cells = bodyRows.map(r=> r.children[idx]).filter(c=> c && c.classList.contains('clickable-cell'));
+  const all = bodyRows.flatMap(r=> Array.from(r.querySelectorAll('td.clickable-cell')));
+  if(!cells.length || idx === 0) cells = all;
+  const seen = new Set(), preds = [];
+  let label = '';
+  cells.forEach(c=>{
+    if(seen.has(c.dataset.flt)) return; seen.add(c.dataset.flt);
+    try{ const sp = JSON.parse(c.dataset.flt); const p = reg.build(sp); if(p) preds.push(p); }catch(err){}
+  });
+  if(!preds.length) return;
+  const table = tbody.closest('table'); const th = table && table.querySelectorAll('thead th')[idx];
+  const col = (idx === 0 || cells === all) ? 'Semua' : (th ? th.textContent.trim() : '');
+  const ttl = (document.querySelector('.page-tab.active') || {}).textContent;
+  reg.ctl.set(row=> preds.some(p=> p(row)), 'TOTAL ' + col);
+}, true);
 
 pt3LoadDataAuto();
 
