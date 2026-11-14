@@ -519,6 +519,63 @@
 .kml-lbl{background:rgba(255,255,255,.88);border:1px solid #aaa;color:#111;font-size:11px;font-weight:600;padding:0 4px;box-shadow:none}
 .kml-lbl:before{display:none}
 .kml-nolbl .kml-lbl{display:none}
+
+  /* ---------- Daftar Work Order PT3 TA (header filter + sticky) ---------- */
+  .wo-jump-btn{border:1px solid var(--line);background:var(--panel);color:var(--cyan);font:600 12px Inter,sans-serif;padding:7px 12px;border-radius:8px;cursor:pointer;}
+  .wo-jump-btn:hover{background:var(--cyan-dim);}
+  .wo-summary{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 12px;}
+  .wo-sum{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--cyan);border-radius:10px;padding:8px 14px;min-width:110px;}
+  .wo-sum b{display:block;font-size:19px;line-height:1.2;}
+  .wo-sum span{font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
+  .wo-sum.g{border-left-color:var(--emerald);} .wo-sum.o{border-left-color:var(--cyan);} .wo-sum.d{border-left-color:var(--red);} .wo-sum.p{border-left-color:var(--amber);}
+  .wo-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+  .wo-toolbar input[type=text]{flex:0 1 300px;min-width:200px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:13px Inter,sans-serif;background:#fff;}
+  .wo-toolbar .count{font-size:12px;color:var(--text-dim);font-weight:600;}
+  .wo-tools{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .wo-btn{border:1px solid var(--line);background:var(--panel);font:600 12px Inter,sans-serif;color:var(--text-dim);padding:7px 12px;border-radius:8px;cursor:pointer;}
+  .wo-btn:hover{background:var(--panel-2);}
+  .wo-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .wo-chip{background:var(--cyan-dim);color:var(--cyan);border-radius:999px;padding:3px 6px 3px 10px;font-size:11.5px;font-weight:600;display:inline-flex;gap:6px;align-items:center;}
+  .wo-chip button{border:none;background:transparent;color:inherit;cursor:pointer;font-size:12px;padding:0 2px;}
+  .wo-scroll{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:auto;max-height:68vh;box-shadow:0 1px 3px rgba(27,35,51,0.05);}
+  .wo-table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font-size:12.5px;}
+  .wo-table thead th{position:sticky;top:0;z-index:5;background:#1B2333;color:#fff;text-align:left;padding:10px 12px;white-space:nowrap;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+  .wo-table thead th .wo-h{display:flex;align-items:center;gap:6px;}
+  .wo-table thead th .wo-hl{cursor:pointer;user-select:none;}
+  .wo-ic{cursor:pointer;opacity:.55;font-size:12px;padding:2px 3px;border-radius:4px;line-height:1;user-select:none;}
+  .wo-ic:hover{opacity:1;background:rgba(255,255,255,.15);}
+  .wo-ic.on{opacity:1;color:#FFB454;}
+  .wo-table tbody td{padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle;background:#fff;}
+  .wo-table tbody tr:nth-child(even) td{background:#F8FAFD;}
+  .wo-table tbody tr{cursor:pointer;}
+  .wo-table tbody tr:hover td{background:#E8F1FB;}
+  .wo-table tbody td.name{font-weight:600;white-space:normal;min-width:220px;max-width:300px;}
+  .wo-table th.stk,.wo-table td.stk{position:sticky;left:0;z-index:4;box-shadow:2px 0 0 var(--line);}
+  .wo-table thead th.stk{z-index:7;}
+  .wo-table.dense tbody td{padding:5px 10px;font-size:12px;}
+  .wo-table td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .wo-pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;}
+  .wo-pill.golive{background:var(--emerald-dim);color:var(--emerald);} .wo-pill.ogp{background:var(--cyan-dim);color:var(--cyan);} .wo-pill.drop{background:var(--red-dim);color:var(--red);}
+  .wo-gap{font-weight:700;} .wo-gap.warn{color:var(--amber);} .wo-gap.bad{color:var(--red);}
+  .wo-late{color:var(--red);font-weight:700;}
+  .wo-detail{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-dim);}
+  .wo-pop{position:fixed;z-index:9999;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(15,27,45,.22);width:250px;padding:10px;font-size:12.5px;}
+  .wo-pop input[type=text]{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:6px;margin-bottom:6px;font:12.5px Inter,sans-serif;}
+  .wo-pop .lst{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:6px;padding:4px;}
+  .wo-pop label{display:flex;gap:7px;align-items:center;padding:3px 4px;cursor:pointer;border-radius:4px;}
+  .wo-pop label:hover{background:var(--panel-2);}
+  .wo-pop .acts{display:flex;gap:6px;margin-top:8px;}
+  .wo-pop .acts button{flex:1;border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:5px;font:600 12px Inter,sans-serif;cursor:pointer;}
+  .wo-pop .acts button.pri{background:var(--cyan);color:#fff;border-color:var(--cyan);}
+  .wo-drawer-bg{position:fixed;inset:0;background:rgba(15,27,45,.35);z-index:9990;display:none;}
+  .wo-drawer{position:fixed;top:0;right:0;bottom:0;width:min(480px,100vw);background:#fff;z-index:9991;box-shadow:-10px 0 30px rgba(15,27,45,.25);display:none;flex-direction:column;}
+  .wo-drawer.open,.wo-drawer-bg.open{display:flex;}
+  .wo-drawer h3{margin:0;font-size:15px;} .wo-drawer .hd{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:flex-start;}
+  .wo-drawer .hd button{border:none;background:var(--panel-2);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;}
+  .wo-drawer .bd{padding:14px 18px;overflow:auto;flex:1;}
+  .wo-drawer .kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;font-size:12.5px;margin-bottom:14px;}
+  .wo-drawer .kv dt{color:var(--text-faint);font-weight:600;} .wo-drawer .kv dd{margin:0;font-weight:500;word-break:break-word;}
+  .wo-drawer pre{white-space:pre-wrap;font:12.5px/1.5 Inter,sans-serif;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin:0;}
 </style>
 </head>
 <body>
@@ -1484,10 +1541,11 @@
             <select id="pt3MtdMonth" class="period-select"></select>
             <select id="pt3MtdYear" class="period-select"></select>
           </div>
-          <span class="kpi-sub capture-hide" style="margin:0;">Filter MTD berdasarkan kolom "Tgl Order".</span>
+          <span class="kpi-sub capture-hide" style="margin:0;">Filter MTD berdasarkan kolom "KOMITMEN GOLIVE".</span>
           <select id="pt3BranchPageFilter" class="period-select capture-hide" style="margin-left:8px;">
             <option value="">Semua Branch</option>
           </select>
+          <button type="button" class="capture-hide wo-jump-btn" onclick="document.getElementById('pt3WorkOrderSection').scrollIntoView({behavior:'smooth',block:'start'})">📋 Ke Daftar Work Order</button>
           <button type="button" class="capture-hide ppt-capture-btn" id="pt3PptCaptureBtn" title="Capture untuk PPT">📷</button>
         </div>
       </div>
@@ -1619,48 +1677,23 @@
 
       <div class="section" id="pt3WorkOrderSection">
         <p class="section-title">Daftar Work Order PT3 TA</p>
-        <p class="section-desc">Semua order PT3, bisa dicari &amp; difilter.</p>
+        <p class="section-desc">Klik ikon ⇅ di header untuk urutkan, ikon ▽ untuk filter per kolom. Klik baris untuk lihat detail lengkap.</p>
         <div id="pt3ActiveFilterBadge" class="active-filter-badge" style="display:none;"></div>
-        <div class="filters">
-          <input type="text" id="pt3SearchInput" placeholder="Cari ID / Nama LOP / STO...">
-          <div class="multiselect" id="pt3FilterBranchWrap">
-            <button type="button" class="multiselect-btn" id="pt3FilterBranchBtn">Semua Branch <span class="chev">▾</span></button>
-            <div class="multiselect-panel" id="pt3FilterBranchPanel" style="display:none;"></div>
-          </div>
-          <div class="multiselect" id="pt3FilterStatusWrap">
-            <button type="button" class="multiselect-btn" id="pt3FilterStatusBtn">Semua Status <span class="chev">▾</span></button>
-            <div class="multiselect-panel" id="pt3FilterStatusPanel" style="display:none;"></div>
-          </div>
-          <div class="multiselect" id="pt3FilterSubStatusWrap">
-            <button type="button" class="multiselect-btn" id="pt3FilterSubStatusBtn">Semua Sub Status <span class="chev">▾</span></button>
-            <div class="multiselect-panel" id="pt3FilterSubStatusPanel" style="display:none;"></div>
-          </div>
+        <div class="wo-summary" id="pt3WoSummary"></div>
+        <div class="wo-toolbar">
+          <input type="text" id="pt3SearchInput" placeholder="🔎 Cari ID / Nama LOP / STO / Waspang...">
           <span class="count" id="pt3ResultCount"></span>
-          <button type="button" class="download-btn" id="pt3DownloadBtn" style="margin-top:0;margin-left:auto;">📥 Download CSV</button>
+          <div class="wo-chips" id="pt3ColChips"></div>
+          <div class="wo-tools">
+            <select id="pt3PageSizeSel" class="period-select" title="Baris per halaman"><option value="15">15 baris</option><option value="25" selected>25 baris</option><option value="50">50 baris</option><option value="100">100 baris</option></select>
+            <button type="button" class="wo-btn" id="pt3DensityBtn" title="Ubah kerapatan baris">↕ Rapat</button>
+            <button type="button" class="wo-btn" id="pt3ResetFilterBtn">✕ Reset Filter</button>
+            <button type="button" class="download-btn" id="pt3DownloadBtn" style="margin:0;">📥 Download CSV</button>
+          </div>
         </div>
-        <div class="table-card">
-          <table>
-            <thead>
-              <tr id="pt3TableHead">
-                <th class="sortable" data-field="ID-IHLD">ID<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="BRANCH FMC">Branch<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="STO">STO<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="NAMA LOP">Nama LOP<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="Mitra">Mitra<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="Tgl Order">Tgl Order<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="Status">Status<span class="sort-arrow">▲▼</span></th>
-                <th>Sub Status</th>
-                <th>Detail Status</th>
-                <th class="sortable" data-field="PORT PLAN" data-numeric="true">Port Plan<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="BOQ" data-numeric="true">BOQ<span class="sort-arrow">▲▼</span></th>
-                <th class="sortable" data-field="CPP AKHIR" data-numeric="true" title="BOQ Aanwijzing / Port Plan">CPP Akhir<span class="sort-arrow">▲▼</span></th>
-                <th>Komitmen Golive</th>
-                <th>Status Golive</th>
-                <th>Waspang</th>
-                <th>Diupdate</th>
-                <th>Jarak Update</th>
-              </tr>
-            </thead>
+        <div class="wo-scroll" id="pt3WoScroll">
+          <table class="wo-table" id="pt3WoTable">
+            <thead><tr id="pt3TableHead"></tr></thead>
             <tbody id="pt3TableBody"></tbody>
           </table>
         </div>
@@ -7928,7 +7961,7 @@ function pt3GetPeriodRows(){
   let baseRows;
   if(pt3PeriodMode === 'mtd'){
     baseRows = pt3Rows.filter(row=>{
-      const d = parseDMY(pt3Get(row,'Tgl Order'));
+      const d = parseDMY(pt3Get(row,'KOMITMEN GOLIVE'));
       if(!d) return false;
       return d.getFullYear() === pt3MtdYear && d.getMonth() === pt3MtdMonth;
     });
@@ -7976,7 +8009,7 @@ function pt3SetupPeriodFilter(){
   if(yearSel.options.length === 0){
     const years = new Set([new Date().getFullYear()]);
     pt3Rows.forEach(row=>{
-      const d = parseDMY(pt3Get(row,'Tgl Order'));
+      const d = parseDMY(pt3Get(row,'KOMITMEN GOLIVE'));
       if(d) years.add(d.getFullYear());
     });
     Array.from(years).sort((a,b)=>b-a).forEach(y=>{
@@ -8597,20 +8630,6 @@ function pt3RenderAllOrderReport(){
       </div>
     </div>
 
-    <div class="pt3-report-grid-3">
-      <div class="pt3-note-panel">
-        <div class="pt3-note-header">Current Conditions</div>
-        <div class="pt3-note-body" contenteditable="true"><ol><li>Tulis kondisi terkini di sini...</li></ol></div>
-      </div>
-      <div class="pt3-note-panel">
-        <div class="pt3-note-header">Action to be Taken</div>
-        <div class="pt3-note-body" contenteditable="true"><ol><li>Tulis rencana aksi di sini...</li></ol></div>
-      </div>
-      <div class="pt3-note-panel">
-        <div class="pt3-note-header">Support Needed</div>
-        <div class="pt3-note-body" contenteditable="true"><ol><li>Tulis kebutuhan dukungan di sini...</li></ol></div>
-      </div>
-    </div>
   `;
   pt3SetupKomitmenPortDropdown();
   if(!pt3ReportWired){
@@ -8710,62 +8729,156 @@ function pt3SetupCommitDropdown(){
   pt3RenderCommitTable();
 }
 
-const pt3BranchMultiSelect = makeMultiSelect('pt3FilterBranch', 'Semua Branch', ()=>{ pt3CurrentPage=1; pt3RenderTable(); });
-const pt3StatusMultiSelect = makeMultiSelect('pt3FilterStatus', 'Semua Status', ()=>{ pt3CurrentPage=1; pt3RenderTable(); });
-const pt3SubStatusMultiSelect = makeMultiSelect('pt3FilterSubStatus', 'Semua Sub Status', ()=>{ pt3CurrentPage=1; pt3RenderTable(); });
+
+/* ===== Daftar Work Order PT3 TA: filter & sort langsung di header kolom ===== */
+const pt3BranchMultiSelect = null, pt3StatusMultiSelect = null, pt3SubStatusMultiSelect = null;
+let pt3ColF = {};            // key -> Set(values) | {text:'..'}
+let pt3Dense = false;
+let pt3PageSize = 25;
+const _woDate = v => { const d = parseDMY(v); return d ? d.getTime() : 0; };
+const PT3_COLS = [
+  {k:'id',    label:'ID',            stk:1, val:r=>pt3Get(r,'ID-IHLD')},
+  {k:'branch',label:'Branch',        val:r=>pt3Get(r,'BRANCH FMC')},
+  {k:'sto',   label:'STO',           val:r=>pt3Get(r,'STO')},
+  {k:'lop',   label:'Nama LOP',      cls:'name', val:r=>pt3Get(r,'NAMA LOP')},
+  {k:'mitra', label:'Mitra',         val:r=>pt3Get(r,'Mitra')},
+  {k:'tgl',   label:'Tgl Order',     val:r=>pt3Get(r,'Tgl Order'), sv:r=>_woDate(pt3Get(r,'Tgl Order'))},
+  {k:'status',label:'Status',        val:r=>pt3Get(r,'Status'), pill:1},
+  {k:'sub',   label:'Sub Status',    val:r=>pt3Get(r,'SUB STATUS KONS')},
+  {k:'detail',label:'Detail Status', val:r=>pt3Get(r,'DETAIL STATUS'), text:1},
+  {k:'port',  label:'Port Plan',     cls:'num', val:r=>pt3Get(r,'PORT PLAN'), sv:r=>pt3ParseNum(pt3Get(r,'PORT PLAN'))},
+  {k:'boq',   label:'BOQ',           cls:'num', val:r=>pt3Get(r,'BOQ'), sv:r=>pt3ParseNum(pt3Get(r,'BOQ')), fmt:v=>{const n=pt3ParseNum(v);return n?'Rp'+Math.round(n).toLocaleString('id-ID'):'—';}},
+  {k:'cpp',   label:'CPP Akhir',     cls:'num', val:r=>pt3Get(r,'CPP AKHIR'), sv:r=>pt3ParseNum(pt3Get(r,'CPP AKHIR')), fmt:v=>{const n=pt3ParseNum(v);return n?'Rp'+Math.round(n).toLocaleString('id-ID'):'—';}},
+  {k:'komit', label:'Komitmen Golive', val:r=>pt3Get(r,'KOMITMEN GOLIVE'), sv:r=>_woDate(pt3Get(r,'KOMITMEN GOLIVE')), late:1},
+  {k:'sgl',   label:'Status Golive', val:r=>pt3Get(r,'STATUS GOLIVE')},
+  {k:'wasp',  label:'Waspang',       val:r=>pt3Get(r,'WASPANG')},
+  {k:'upd',   label:'Diupdate',      val:r=>pt3FormatUpdateDate(pt3Get(r,'DETAIL STATUS')), sv:r=>{const d=pt3ExtractLatestUpdateDate(pt3Get(r,'DETAIL STATUS'));return d?d.getTime():0;}},
+  {k:'gap',   label:'Jarak Update',  val:r=>pt3FormatUpdateGap(pt3Get(r,'DETAIL STATUS')), sv:r=>{const d=pt3ExtractLatestUpdateDate(pt3Get(r,'DETAIL STATUS'));if(!d)return -1;const n=new Date();n.setHours(0,0,0,0);return Math.round((n-d)/86400000);}, gap:1},
+];
+const _woEsc = t => String(t==null?'':t).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const _woBlank = v => (v===''||v==null||v==='—') ? '(Kosong)' : v;
 
 function pt3SetupFilters(){
-  const branches = [...new Set(pt3Rows.map(r=>pt3Get(r,'BRANCH FMC')).filter(Boolean))].sort();
-  const statuses = [...new Set(pt3Rows.map(r=>pt3Get(r,'Status')).filter(Boolean))].sort();
-  const subStatuses = [...new Set(pt3Rows.map(r=>pt3Get(r,'SUB STATUS KONS')).filter(Boolean))].sort();
-
-  if(pt3BranchMultiSelect) pt3BranchMultiSelect.setOptions(branches);
-  if(pt3StatusMultiSelect) pt3StatusMultiSelect.setOptions(statuses);
-  if(pt3SubStatusMultiSelect) pt3SubStatusMultiSelect.setOptions(subStatuses);
-
   document.getElementById('pt3SearchInput').oninput = ()=>{ pt3CurrentPage=1; pt3RenderTable(); };
+  const ps = document.getElementById('pt3PageSizeSel');
+  if(ps) ps.onchange = ()=>{ pt3PageSize = parseInt(ps.value)||25; pt3CurrentPage=1; pt3RenderTable(); };
+  const rb = document.getElementById('pt3ResetFilterBtn');
+  if(rb) rb.onclick = ()=>{ pt3ColF = {}; pt3SortField = null; document.getElementById('pt3SearchInput').value=''; pt3FilterCtl.clear(); pt3CurrentPage=1; pt3BuildWoHeader(); pt3RenderTable(); };
+  const db = document.getElementById('pt3DensityBtn');
+  if(db) db.onclick = ()=>{ pt3Dense = !pt3Dense; document.getElementById('pt3WoTable').classList.toggle('dense', pt3Dense); db.textContent = pt3Dense ? '↕ Longgar' : '↕ Rapat'; };
 }
 
 function pt3GetFilteredRows(){
   const q = document.getElementById('pt3SearchInput').value.trim().toLowerCase();
-  const branchFilters = pt3BranchMultiSelect ? pt3BranchMultiSelect.getSelected() : [];
-  const statusFilters = pt3StatusMultiSelect ? pt3StatusMultiSelect.getSelected() : [];
-  const subStatusFilters = pt3SubStatusMultiSelect ? pt3SubStatusMultiSelect.getSelected() : [];
-
   const baseRows = pt3FilterCtl.apply(pt3AGG && pt3AGG.rows ? pt3AGG.rows : pt3Rows);
+  const active = PT3_COLS.filter(c=> pt3ColF[c.k]);
   const filtered = baseRows.filter(row=>{
-    if(branchFilters.length && !branchFilters.includes(pt3Get(row,'BRANCH FMC'))) return false;
-    if(statusFilters.length && !statusFilters.includes(pt3Get(row,'Status'))) return false;
-    if(subStatusFilters.length && !subStatusFilters.includes(pt3Get(row,'SUB STATUS KONS'))) return false;
+    for(const c of active){
+      const f = pt3ColF[c.k], v = c.val(row)||'';
+      if(f.text !== undefined){ if(!v.toLowerCase().includes(f.text.toLowerCase())) return false; }
+      else if(!f.has(_woBlank(v))) return false;
+    }
     if(q){
-      const hay = [pt3Get(row,'ID-IHLD'), pt3Get(row,'NAMA LOP'), pt3Get(row,'STO'), pt3Get(row,'BRANCH FMC')].join(' ').toLowerCase();
+      const hay = [pt3Get(row,'ID-IHLD'), pt3Get(row,'NAMA LOP'), pt3Get(row,'STO'), pt3Get(row,'BRANCH FMC'), pt3Get(row,'WASPANG')].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
   });
-
   if(!pt3SortField) return filtered;
-  const th = document.querySelector(`#pt3TableHead th[data-field="${pt3SortField}"]`);
-  const numeric = th && th.dataset.numeric === 'true';
+  const col = PT3_COLS.find(c=>c.k===pt3SortField); if(!col) return filtered;
+  const sv = col.sv || (r=> (col.val(r)||'').toString());
   const sorted = filtered.slice().sort((a,b)=>{
-    if(numeric) return pt3ParseNum(pt3Get(a,pt3SortField)) - pt3ParseNum(pt3Get(b,pt3SortField));
-    return pt3Get(a,pt3SortField).localeCompare(pt3Get(b,pt3SortField), 'id', {numeric:true, sensitivity:'base'});
+    const x=sv(a), y=sv(b);
+    return (typeof x==='number' && typeof y==='number') ? x-y : String(x).localeCompare(String(y),'id',{numeric:true,sensitivity:'base'});
   });
   return pt3SortDir === 'asc' ? sorted : sorted.reverse();
 }
 
-function pt3SetupSortableHeaders(){
-  document.querySelectorAll('#pt3TableHead th.sortable').forEach(th=>{
-    th.onclick = ()=>{
-      const field = th.dataset.field;
-      if(pt3SortField === field){ pt3SortDir = pt3SortDir === 'asc' ? 'desc' : 'asc'; }
-      else{ pt3SortField = field; pt3SortDir = 'asc'; }
-      document.querySelectorAll('#pt3TableHead th.sortable').forEach(t=>t.classList.remove('sort-asc','sort-desc'));
-      th.classList.add(pt3SortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-      pt3CurrentPage = 1;
-      pt3RenderTable();
-    };
+function pt3BuildWoHeader(){
+  const tr = document.getElementById('pt3TableHead'); if(!tr) return;
+  tr.innerHTML = PT3_COLS.map(c=>{
+    const sIc = pt3SortField===c.k ? (pt3SortDir==='asc'?'↑':'↓') : '⇅';
+    return `<th class="${c.stk?'stk':''}" data-k="${c.k}"><div class="wo-h"><span class="wo-hl" data-sort="${c.k}">${c.label}</span><span class="wo-ic ${pt3SortField===c.k?'on':''}" data-sort="${c.k}" title="Urutkan">${sIc}</span><span class="wo-ic ${pt3ColF[c.k]?'on':''}" data-flt="${c.k}" title="Filter">▽</span></div></th>`;
+  }).join('');
+  tr.querySelectorAll('[data-sort]').forEach(el=> el.onclick = e=>{
+    e.stopPropagation(); const k = el.dataset.sort;
+    if(pt3SortField!==k){ pt3SortField=k; pt3SortDir='asc'; }
+    else if(pt3SortDir==='asc') pt3SortDir='desc';
+    else pt3SortField=null;
+    pt3CurrentPage=1; pt3BuildWoHeader(); pt3RenderTable();
   });
+  tr.querySelectorAll('[data-flt]').forEach(el=> el.onclick = e=>{ e.stopPropagation(); pt3OpenColFilter(el.dataset.flt, el); });
+}
+function pt3SetupSortableHeaders(){ pt3BuildWoHeader(); }
+
+function pt3CloseColPop(){ const o=document.getElementById('pt3ColPop'); if(o) o.remove(); }
+document.addEventListener('mousedown', e=>{ const o=document.getElementById('pt3ColPop'); if(o && !o.contains(e.target) && !(e.target.dataset && e.target.dataset.flt)) o.remove(); });
+let _woPopT=0;
+document.addEventListener('scroll', e=>{ const o=document.getElementById('pt3ColPop'); if(o && !o.contains(e.target) && Date.now()-_woPopT>400) o.remove(); }, true);
+
+function pt3OpenColFilter(k, anchor){
+  pt3CloseColPop();
+  const col = PT3_COLS.find(c=>c.k===k); if(!col) return;
+  _woPopT = Date.now();
+  const pop = document.createElement('div'); pop.id='pt3ColPop'; pop.className='wo-pop';
+  const r = anchor.getBoundingClientRect();
+  pop.style.top = (r.bottom+6)+'px'; pop.style.left = Math.max(8, Math.min(r.left-120, innerWidth-262))+'px';
+  const apply = ()=>{ pt3CurrentPage=1; pt3BuildWoHeader(); pt3RenderTable(); };
+  if(col.text){
+    const cur = pt3ColF[k] ? pt3ColF[k].text : '';
+    pop.innerHTML = `<b>${col.label}</b><input type="text" id="woTxt" placeholder="Mengandung kata..." value="${_woEsc(cur)}" style="margin-top:6px;"><div class="acts"><button id="woClr">Hapus</button><button class="pri" id="woOk">Terapkan</button></div>`;
+    document.body.appendChild(pop);
+    const inp = pop.querySelector('#woTxt'); inp.focus();
+    const go = ()=>{ const v=inp.value.trim(); if(v) pt3ColF[k]={text:v}; else delete pt3ColF[k]; pop.remove(); apply(); };
+    pop.querySelector('#woOk').onclick = go; inp.onkeydown = e=>{ if(e.key==='Enter') go(); };
+    pop.querySelector('#woClr').onclick = ()=>{ delete pt3ColF[k]; pop.remove(); apply(); };
+    return;
+  }
+  const base = pt3FilterCtl.apply(pt3AGG && pt3AGG.rows ? pt3AGG.rows : pt3Rows);
+  const cnt = new Map(); base.forEach(row=>{ const v=_woBlank(col.val(row)||''); cnt.set(v,(cnt.get(v)||0)+1); });
+  let vals = [...cnt.keys()].sort((a,b)=> col.sv ? 0 : String(a).localeCompare(String(b),'id',{numeric:true,sensitivity:'base'}));
+  if(col.sv && !col.fmt) vals.sort((a,b)=> String(a).localeCompare(String(b),'id',{numeric:true}));
+  const sel = new Set(pt3ColF[k] && pt3ColF[k].has ? pt3ColF[k] : vals);
+  pop.innerHTML = `<b>${col.label}</b><input type="text" id="woSrch" placeholder="Cari nilai..." style="margin-top:6px;"><div class="lst" id="woLst"></div><div class="acts"><button id="woAll">Semua</button><button id="woNone">Kosongkan</button><button class="pri" id="woOk">Terapkan</button></div>`;
+  document.body.appendChild(pop);
+  const lst = pop.querySelector('#woLst'), srch = pop.querySelector('#woSrch');
+  const draw = ()=>{
+    const t = srch.value.toLowerCase();
+    lst.innerHTML = vals.filter(v=>String(v).toLowerCase().includes(t)).slice(0,400).map(v=>`<label><input type="checkbox" data-v="${_woEsc(v)}" ${sel.has(v)?'checked':''}><span>${_woEsc(v)}</span><span style="margin-left:auto;color:var(--text-faint)">${cnt.get(v)}</span></label>`).join('') || '<div style="padding:8px;color:var(--text-faint)">Tidak ada.</div>';
+    lst.querySelectorAll('input').forEach(i=> i.onchange = ()=>{ const v=i.dataset.v.replace(/&quot;|&amp;|&lt;|&gt;/g,m=>({'&quot;':'"','&amp;':'&','&lt;':'<','&gt;':'>'}[m])); i.checked ? sel.add(v) : sel.delete(v); });
+  };
+  draw(); srch.oninput = draw; srch.focus();
+  pop.querySelector('#woAll').onclick = ()=>{ vals.forEach(v=>sel.add(v)); draw(); };
+  pop.querySelector('#woNone').onclick = ()=>{ sel.clear(); draw(); };
+  pop.querySelector('#woOk').onclick = ()=>{
+    if(sel.size === vals.length) delete pt3ColF[k]; else pt3ColF[k] = new Set(sel);
+    pop.remove(); apply();
+  };
+}
+
+function pt3RenderWoChips(){
+  const el = document.getElementById('pt3ColChips'); if(!el) return;
+  el.innerHTML = PT3_COLS.filter(c=>pt3ColF[c.k]).map(c=>{
+    const f = pt3ColF[c.k];
+    const d = f.text!==undefined ? `"${_woEsc(f.text)}"` : (f.size===1 ? _woEsc([...f][0]) : f.size+' dipilih');
+    return `<span class="wo-chip">${c.label}: ${d}<button data-rm="${c.k}" title="Hapus">✕</button></span>`;
+  }).join('');
+  el.querySelectorAll('[data-rm]').forEach(b=> b.onclick = ()=>{ delete pt3ColF[b.dataset.rm]; pt3CurrentPage=1; pt3BuildWoHeader(); pt3RenderTable(); });
+}
+
+function pt3OpenWoDrawer(row){
+  let bg = document.getElementById('pt3WoDrawerBg'), dr = document.getElementById('pt3WoDrawer');
+  if(!dr){
+    bg = document.createElement('div'); bg.id='pt3WoDrawerBg'; bg.className='wo-drawer-bg';
+    dr = document.createElement('div'); dr.id='pt3WoDrawer'; dr.className='wo-drawer';
+    document.body.appendChild(bg); document.body.appendChild(dr);
+    bg.onclick = ()=>{ bg.classList.remove('open'); dr.classList.remove('open'); };
+  }
+  const cat = pt3Category(row);
+  const kv = PT3_COLS.filter(c=>c.k!=='detail').map(c=>{ const v=c.val(row); return `<dt>${c.label}</dt><dd>${_woEsc(c.fmt?c.fmt(v):(v||'—'))}</dd>`; }).join('');
+  dr.innerHTML = `<div class="hd"><div><h3>${_woEsc(pt3Get(row,'NAMA LOP')||'—')}</h3><div style="margin-top:6px;"><span class="wo-pill ${cat}">${_woEsc(pt3Get(row,'Status')||'—')}</span> <span style="font-size:12px;color:var(--text-faint);margin-left:6px;">${_woEsc(pt3Get(row,'ID-IHLD')||'')}</span></div></div><button type="button" id="pt3WoDrawerX">✕</button></div><div class="bd"><dl class="kv">${kv}</dl><p style="font-weight:700;font-size:13px;margin:0 0 6px;">Detail Status (riwayat)</p><pre>${_woEsc(pt3Get(row,'DETAIL STATUS')||'—')}</pre></div>`;
+  dr.querySelector('#pt3WoDrawerX').onclick = ()=>{ bg.classList.remove('open'); dr.classList.remove('open'); };
+  bg.classList.add('open'); dr.classList.add('open');
 }
 
 /* Format nilai "LAST EDIT TIME" (dari Apps Script, format Date JS default
@@ -8897,36 +9010,38 @@ function pt3RenderTable(){
   const filtered = pt3GetFilteredRows();
   document.getElementById('pt3ResultCount').textContent = `${filtered.length.toLocaleString('id-ID')} order`;
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PT3_PAGE_SIZE));
+  // ringkasan dari hasil filter
+  const sum = filtered.reduce((a,r)=>{ const c=pt3Category(r); a.port+=pt3ParseNum(pt3Get(r,'PORT PLAN')); a[c]=(a[c]||0)+1; return a; }, {port:0});
+  const sm = document.getElementById('pt3WoSummary');
+  if(sm) sm.innerHTML = `<div class="wo-sum"><b>${filtered.length.toLocaleString('id-ID')}</b><span>Order</span></div><div class="wo-sum p"><b>${Math.round(sum.port).toLocaleString('id-ID')}</b><span>Port Plan</span></div><div class="wo-sum g"><b>${(sum.golive||0).toLocaleString('id-ID')}</b><span>Golive</span></div><div class="wo-sum o"><b>${(sum.ogp||0).toLocaleString('id-ID')}</b><span>OGP</span></div><div class="wo-sum d"><b>${(sum.drop||0).toLocaleString('id-ID')}</b><span>Drop</span></div>`;
+  pt3RenderWoChips();
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pt3PageSize));
   if(pt3CurrentPage > totalPages) pt3CurrentPage = totalPages;
-  const pageRows = filtered.slice((pt3CurrentPage-1)*PT3_PAGE_SIZE, pt3CurrentPage*PT3_PAGE_SIZE);
+  const pageRows = filtered.slice((pt3CurrentPage-1)*pt3PageSize, pt3CurrentPage*pt3PageSize);
+  const today = new Date(); today.setHours(0,0,0,0);
 
-  const fmtIDR = (n)=> n ? 'Rp' + Math.round(n).toLocaleString('id-ID') : '—';
-
-  document.getElementById('pt3TableBody').innerHTML = pageRows.map(row=>`
-    <tr>
-      <td>${pt3Get(row,'ID-IHLD')||'—'}</td>
-      <td>${pt3Get(row,'BRANCH FMC')||'—'}</td>
-      <td>${pt3Get(row,'STO')||'—'}</td>
-      <td class="name">${pt3Get(row,'NAMA LOP')||'—'}</td>
-      <td>${pt3Get(row,'Mitra')||'—'}</td>
-      <td>${pt3Get(row,'Tgl Order')||'—'}</td>
-      <td>${pt3Get(row,'Status')||'—'}</td>
-      <td>${pt3Get(row,'SUB STATUS KONS')||'—'}</td>
-      <td style="max-width:260px;"><div style="max-height:48px;overflow-y:auto;white-space:normal;font-size:11.5px;color:var(--text-dim);line-height:1.4;" title="${(pt3Get(row,'DETAIL STATUS')||'').replace(/"/g,'&quot;')}">${pt3Get(row,'DETAIL STATUS')||'—'}</div></td>
-      <td>${pt3Get(row,'PORT PLAN')||'—'}</td>
-      <td>${fmtIDR(pt3ParseNum(pt3Get(row,'BOQ')))}</td>
-      <td>${fmtIDR(pt3ParseNum(pt3Get(row,'CPP AKHIR')))}</td>
-      <td>${pt3Get(row,'KOMITMEN GOLIVE')||'—'}</td>
-      <td>${pt3Get(row,'STATUS GOLIVE')||'—'}</td>
-      <td>${pt3Get(row,'WASPANG')||'—'}</td>
-      <td>${pt3FormatUpdateDate(pt3Get(row,'DETAIL STATUS'))}</td>
-      <td>${pt3FormatUpdateGap(pt3Get(row,'DETAIL STATUS'))}</td>
-    </tr>`).join('') || `<tr><td colspan="17" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
+  const tbody = document.getElementById('pt3TableBody');
+  tbody.innerHTML = pageRows.map((row,i)=>{
+    const cat = pt3Category(row);
+    return `<tr data-i="${i}">` + PT3_COLS.map(c=>{
+      let v = c.val(row)||'';
+      let inner;
+      if(c.pill) inner = v ? `<span class="wo-pill ${cat}">${_woEsc(v)}</span>` : '—';
+      else if(c.k==='detail') inner = v ? `<div class="wo-detail" title="${_woEsc(v)}">${_woEsc(v.replace(/\s*\n\s*/g,' • '))}</div>` : '—';
+      else if(c.fmt) inner = _woEsc(c.fmt(v));
+      else if(c.gap){ const n=c.sv(row); inner = v && v!=='—' ? `<span class="wo-gap ${n>5?'bad':(n>3?'warn':'')}">${_woEsc(v)}</span>` : '—'; }
+      else if(c.late){ const d=parseDMY(v); inner = v ? (d && d<today && cat==='ogp' ? `<span class="wo-late" title="Komitmen terlewat">${_woEsc(v)} ⚠</span>` : _woEsc(v)) : '—'; }
+      else inner = v ? _woEsc(v) : '—';
+      return `<td class="${(c.cls||'')} ${c.stk?'stk':''}">${inner}</td>`;
+    }).join('') + '</tr>';
+  }).join('') || `<tr><td colspan="${PT3_COLS.length}" style="text-align:center;padding:30px;cursor:default;">Tidak ada data yang cocok.</td></tr>`;
+  tbody.querySelectorAll('tr[data-i]').forEach(tr=> tr.onclick = ()=> pt3OpenWoDrawer(pageRows[+tr.dataset.i]));
 
   document.getElementById('pt3PageInfo').textContent = `Halaman ${pt3CurrentPage} dari ${totalPages}`;
   document.getElementById('pt3PrevPage').disabled = pt3CurrentPage <= 1;
   document.getElementById('pt3NextPage').disabled = pt3CurrentPage >= totalPages;
+  const sc = document.getElementById('pt3WoScroll'); if(sc) sc.scrollTop = 0;
 }
 
 document.getElementById('pt3PrevPage').onclick = ()=>{ if(pt3CurrentPage>1){ pt3CurrentPage--; pt3RenderTable(); } };
