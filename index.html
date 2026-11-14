@@ -724,6 +724,7 @@
       <button class="page-tab" id="tabBtnQeDusem" type="button">Dusem</button>
     </div>
     <div class="tab-group">Monitoring</div>
+    <button class="page-tab" id="tabBtnUpd" data-i="🆕" type="button">Update Terbaru</button>
     <button class="page-tab" id="tabBtnPrio" data-i="⭐" type="button">Priority TSEL</button>
     <button class="page-tab" id="tabBtnChecklist" data-i="✅" type="button">Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" data-i="🔌" type="button">Need Modul OLT</button>
@@ -2579,6 +2580,7 @@
         </div>
       </div>
     </div>
+    <div id="pageUpd" style="display:none;"><div id="updHost"></div></div>
     <div id="pageGolive" style="display:none;">
 
     <div id="goliveCaptureArea">
@@ -6149,7 +6151,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], upd:['tabBtnUpd','pageUpd'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -6169,6 +6171,7 @@ document.getElementById('tabBtnLapPt2').onclick = ()=> switchTab('lapPt2');
 document.getElementById('tabBtnChecklist').onclick = ()=> switchTab('checklist');
 document.getElementById('tabBtnNeedOlt').onclick = ()=> switchTab('needOlt');
 document.getElementById('tabBtnGolive').onclick = ()=> switchTab('golive');
+document.getElementById('tabBtnUpd').onclick = ()=> { switchTab('upd'); if(window.updOpen) window.updOpen(); };
 
 /* ============================================================
    Halaman "Resume PT3 TA & PT3 FH" — KPI, Priority TSEL, Pivot Branch × Status
@@ -11584,6 +11587,7 @@ oloLoadDataAuto();
 <script src="wotable.js?v=20261115c"></script>
 <script src="idleport.js?v=20261112"></script>
 <script src="needoltcap.js?v=20261115b"></script>
+<script src="updates.js?v=20261115a"></script>
 <script>
 /* Dropdown sidebar PT3 */
 (function(){
