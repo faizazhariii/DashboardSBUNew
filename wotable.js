@@ -42,7 +42,7 @@
     try{ S.hidden = new Set(JSON.parse(localStorage.getItem(p + '_hidden_cols') || '[]')); }catch(e){}
     var $ = function(id){ return document.getElementById(p + id); };
     var cols = cfg.cols;
-    var vis = function(){ return cols.filter(function(c){ return !S.hidden.has(c.k); }); };
+    var vis = function(){ return cols.filter(function(c){ return !c.drawerOnly && !S.hidden.has(c.k); }); };
     var getPage = function(){ return cfg.page.get(); }, setPage = function(v){ cfg.page.set(v); };
 
     function catOf(r){ return cfg.cat(r); }
@@ -241,7 +241,7 @@
         var o = document.getElementById('pt3ColPop'); if(o) o.remove();
         var pop = document.createElement('div'); pop.id = 'pt3ColPop'; pop.className = 'wo-pop'; _woPopT = Date.now();
         var r = cb.getBoundingClientRect(); pop.style.top = (r.bottom + 6) + 'px'; pop.style.left = Math.max(8, r.right - 250) + 'px';
-        pop.innerHTML = '<b>Tampilkan kolom</b><div class="lst" style="margin-top:6px;">' + cols.map(function(c){ return '<label><input type="checkbox" data-k="' + c.k + '" ' + (S.hidden.has(c.k) ? '' : 'checked') + ' ' + (c.stk ? 'disabled' : '') + '>' + esc(c.label) + '</label>'; }).join('') + '</div>';
+        pop.innerHTML = '<b>Tampilkan kolom</b><div class="lst" style="margin-top:6px;">' + cols.filter(function(c){ return !c.drawerOnly; }).map(function(c){ return '<label><input type="checkbox" data-k="' + c.k + '" ' + (S.hidden.has(c.k) ? '' : 'checked') + ' ' + (c.stk ? 'disabled' : '') + '>' + esc(c.label) + '</label>'; }).join('') + '</div>';
         document.body.appendChild(pop);
         pop.querySelectorAll('input').forEach(function(i){ i.onchange = function(){ i.checked ? S.hidden.delete(i.dataset.k) : S.hidden.add(i.dataset.k); try{ localStorage.setItem(p + '_hidden_cols', JSON.stringify(Array.from(S.hidden))); }catch(e){} buildHead(); render(); }; });
       };
@@ -341,6 +341,8 @@
     return { wo: wo, perf: perf };
   }
 
+  var hemPjg = function(r){ return hemGet(r,'Panjang Kabel (m)') || hemGet(r,'Panjang Kabel') || hemGet(r,'Panjang (m)') || hemGet(r,'Panjang'); };
+  var oloPjg = function(r){ return oloGet(r,'Panjang Kabel (m)') || oloGet(r,'Panjang Kabel') || oloGet(r,'Panjang (m)') || oloGet(r,'Panjang'); };
   /* =================== HEM =================== */
   function hemCat(r){ return hemCategoryOfLabel(hemRowProgressLabel(r)); }
   var fmtIDR = function(v){ var n = hemParseNum(v); return n ? 'Rp' + Math.round(n).toLocaleString('id-ID') : '—'; };
@@ -359,9 +361,10 @@
       {k:'prog', label:'Progres Lapangan', pill:1, val:function(r){ return hemGet(r,'Progress Lapangan'); }},
       {k:'tgl', label:'Tgl Submit Order NDE', val:function(r){ return hemGet(r,'Tanggal submit order nde'); }},
       {k:'det', label:'Detail Progres', det:1, text:1, val:function(r){ return hemGet(r,'Detail Progres'); }},
+      {k:'cat', label:'Catatan', text:1, noDrawer:0, val:function(r){ return hemGet(r,'CATATAN') || hemGet(r,'W'); }, html:function(r){ return renderCatatanCell('hem', hemGet(r,'IHLD'), hemGet(r,'CATATAN') || hemGet(r,'W')); }},
       {k:'pt1', label:'Status PT1', val:function(r){ return getByColLetter(r,'Y'); }, html:function(r){ return renderStatusPT1Cell('hem', hemGet(r,'IHLD'), getByColLetter(r,'Y')); }},
       {k:'kabel', label:'Jenis Kabel', val:function(r){ return hemGet(r,'Jenis Kabel'); }},
-      {k:'pjg', label:'Panjang (m)', cls:'num', val:function(r){ return hemGet(r,'Panjang Kabel (m)'); }, sv:function(r){ return hemParseNum(hemGet(r,'Panjang Kabel (m)')); }},
+      {k:'pjg', label:'Panjang Kabel (m)', drawerOnly:1, val:function(r){ return hemPjg(r); }},
       {k:'ohem', label:'No Order HEM', val:function(r){ return hemGet(r,'NO ORDER HEM'); }},
       {k:'ounsc', label:'No Order UNSC', val:function(r){ return hemGet(r,'NO ORDER UNSC'); }},
       {k:'rev', label:'Revenue', cls:'num', val:function(r){ return hemGet(r,'REVENEU'); }, sv:function(r){ return hemParseNum(hemGet(r,'REVENEU')); }, fmt:fmtIDR},
@@ -370,8 +373,7 @@
       {k:'sla', label:'SLA', val:function(r){ return hemGet(r,'SLA'); }, html:function(r){ var s = hemSlaClass(hemGet(r,'SLA')); return '<span class="badge ' + (s==='in' ? 'badge-in' : s==='out' ? 'badge-out' : 'badge-other') + '">' + esc(hemGet(r,'SLA') || '—') + '</span>'; }},
       {k:'ttd', label:'TTD', val:function(r){ return hemGet(r,'TTD'); }, sv:function(r){ return hemParseNum(hemGet(r,'TTD')); }},
       {k:'upd', label:'Diupdate', val:function(r){ var d = extractLatestUpdateDateFromText(hemGet(r,'Detail Progres')); return d ? d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : '—'; }, sv:function(r){ var d = extractLatestUpdateDateFromText(hemGet(r,'Detail Progres')); return d ? d.getTime() : 0; }},
-      {k:'gap', label:'Jarak Update', gap:1, val:function(r){ return fmtGap(gapDays(hemGet(r,'Detail Progres'))); }, sv:function(r){ return gapDays(hemGet(r,'Detail Progres')); }},
-      {k:'cat', label:'Catatan', text:1, noDrawer:0, val:function(r){ return hemGet(r,'CATATAN') || hemGet(r,'W'); }, html:function(r){ return renderCatatanCell('hem', hemGet(r,'IHLD'), hemGet(r,'CATATAN') || hemGet(r,'W')); }}
+      {k:'gap', label:'Jarak Update', gap:1, val:function(r){ return fmtGap(gapDays(hemGet(r,'Detail Progres'))); }, sv:function(r){ return gapDays(hemGet(r,'Detail Progres')); }}
     ],
     quickCats:[['ogp','🔵 OGP'],['golive','🟢 Golive'],['drop','🔴 Drop'],['bisa','🟣 Bisa PT1'],['hold','🟠 Hold']],
     hasOther:true,
@@ -390,7 +392,6 @@
     search:function(r){ return [hemGet(r,'IHLD'), hemGet(r,'NAMA LOP'), hemGet(r,'STO'), hemGet(r,'DISTRICT'), hemGet(r,'NO ORDER HEM')].join(' '); },
     id:function(r){ return hemGet(r,'IHLD'); }, name:function(r){ return hemGet(r,'NAMA LOP'); },
     status:function(r){ return hemGet(r,'Progress Lapangan'); }, district:function(r){ return hemGet(r,'DISTRICT'); },
-    metric:{ label:'Panjang Kabel (m)', get:function(rs){ return Math.round(rs.reduce(function(a,r){ return a + hemParseNum(hemGet(r,'Panjang Kabel (m)')); }, 0)).toLocaleString('id-ID'); } },
     after:function(){ wireCatatanUI('hem','HEM'); wireStatusPT1UI('hem','HEM'); }
   };
 
@@ -408,11 +409,12 @@
       {k:'sto', label:'STO', val:function(r){ return oloGet(r,'STO'); }},
       {k:'prog', label:'Progres Lapangan', pill:1, val:function(r){ return oloGet(r,'Progress Lapangan'); }},
       {k:'sub', label:'Sub Status', val:function(r){ return oloGet(r,'SUB STATUS'); }},
-      {k:'pjg', label:'Panjang Kabel (m)', cls:'num', val:function(r){ return oloGet(r,'Panjang Kabel (m)'); }, sv:function(r){ return oloParseNum(oloGet(r,'Panjang Kabel (m)')); }},
+      {k:'pjg', label:'Panjang Kabel (m)', drawerOnly:1, val:function(r){ return oloPjg(r); }},
       {k:'nde', label:'NDE Work Order', val:function(r){ return oloGet(r,'NDE WORK ORDER KE TA'); }},
       {k:'tgl', label:'Tanggal Order', val:function(r){ return oloGet(r,'TANGGAL ORDER'); }},
       {k:'komit', label:'Komitmen Golive', late:1, val:function(r){ return oloGet(r,'Komitmen Golive'); }, sv:function(r){ var d = parseDMY(oloGet(r,'Komitmen Golive')); return d ? d.getTime() : 0; }},
       {k:'det', label:'Detail Progres', det:1, text:1, val:function(r){ return oloGet(r,'Detail Progres'); }},
+      {k:'cat', label:'Catatan', text:1, val:function(r){ return oloGet(r,'CATATAN'); }, html:function(r){ return renderCatatanCell('olo', oloGet(r,'IHLD'), oloGet(r,'CATATAN')); }},
       {k:'pt1', label:'Status PT1', val:function(r){ return oloGet(r,'STATUS PT1'); }, html:function(r){ return renderStatusPT1Cell('olo', oloGet(r,'IHLD'), oloGet(r,'STATUS PT1')); }},
       {k:'ttd', label:'TTD', val:function(r){ return oloGet(r,'TTD'); }, sv:function(r){ return oloParseNum(oloGet(r,'TTD')); }},
       {k:'boq', label:'BOQ', cls:'num', val:function(r){ return oloGet(r,'BOQ'); }, sv:function(r){ return oloParseNum(oloGet(r,'BOQ')); }, fmt:fmtIDRo},
@@ -420,8 +422,7 @@
       {k:'svc', label:'Service', val:function(r){ return oloGet(r,'SERVICE'); }},
       {k:'bw', label:'BW', val:function(r){ return oloGet(r,'BW'); }},
       {k:'upd', label:'Diupdate', val:function(r){ var d = extractLatestUpdateDateFromText(oloGet(r,'Detail Progres')); return d ? d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : '—'; }, sv:function(r){ var d = extractLatestUpdateDateFromText(oloGet(r,'Detail Progres')); return d ? d.getTime() : 0; }},
-      {k:'gap', label:'Jarak Update', gap:1, val:function(r){ return fmtGap(gapDays(oloGet(r,'Detail Progres'))); }, sv:function(r){ return gapDays(oloGet(r,'Detail Progres')); }},
-      {k:'cat', label:'Catatan', text:1, val:function(r){ return oloGet(r,'CATATAN'); }, html:function(r){ return renderCatatanCell('olo', oloGet(r,'IHLD'), oloGet(r,'CATATAN')); }}
+      {k:'gap', label:'Jarak Update', gap:1, val:function(r){ return fmtGap(gapDays(oloGet(r,'Detail Progres'))); }, sv:function(r){ return gapDays(oloGet(r,'Detail Progres')); }}
     ],
     quickCats:[['ogp','🔵 OGP'],['golive','🟢 Golive'],['drop','🔴 Drop'],['bisa','🟣 Bisa PT1'],['hold','🟠 Hold']],
     hasOther:true,
@@ -440,7 +441,6 @@
     search:function(r){ return [oloGet(r,'IHLD'), oloGet(r,'NO ORDER'), oloGet(r,'NAMA PROYEK'), oloGet(r,'STO'), oloGet(r,'DISTRICT')].join(' '); },
     id:function(r){ return oloGet(r,'IHLD'); }, name:function(r){ return oloGet(r,'NAMA PROYEK'); },
     status:function(r){ return oloGet(r,'Progress Lapangan'); }, district:function(r){ return oloGet(r,'DISTRICT'); },
-    metric:{ label:'Panjang Kabel (m)', get:function(rs){ return Math.round(rs.reduce(function(a,r){ return a + oloParseNum(oloGet(r,'Panjang Kabel (m)')); }, 0)).toLocaleString('id-ID'); } },
     after:function(){ wireCatatanUI('olo','OLO'); wireStatusPT1UI('olo','OLO'); }
   };
 
@@ -508,7 +508,43 @@
       O.perf.render();
     };
   }
+
+  /* ---- Komitmen Golive Bulan Ini: format pivot District x Status ---- */
+  function installCommit(pre, G, rowProg, ctl, aggFn){
+    var body = document.getElementById(pre + 'CommitTableBody'); if(!body) return;
+    var card = body.closest('.table-card'); card.style.overflowX = 'auto';
+    card.innerHTML = '<table class="pivot-table"><thead><tr id="' + pre + 'CommitHead"></tr></thead><tbody id="' + pre + 'CommitTableBody"></tbody></table>';
+    var stg = function(r){ return hemMergeStage(hemStripStatusPrefix(rowProg(r)).toUpperCase()); };
+    var dist = function(r){ return G(r,'DISTRICT') || 'Tidak Diketahui'; };
+    window[pre + 'RenderCommitTable'] = function(){
+      var agg = aggFn(); var bodyEl = document.getElementById(pre + 'CommitTableBody'), headEl = document.getElementById(pre + 'CommitHead');
+      if(!bodyEl || !agg) return;
+      var month = window[pre + 'CommitMonthGet'](), yr = new Date().getFullYear();
+      var inM = function(r){ var d = parseDMY(G(r,'Komitmen Golive')); return d && d.getFullYear() === yr && d.getMonth() === month; };
+      var rows = agg.rows.filter(inM);
+      var cols = Array.from(new Set(rows.map(stg))).sort(function(a,b){ return progressStageSortIndex(a) - progressStageSortIndex(b); });
+      if(!rows.length){ headEl.innerHTML = '<th>District</th><th>Total</th>'; bodyEl.innerHTML = '<tr><td colspan="2" style="text-align:center;padding:14px;">Tidak ada komitmen di bulan ini.</td></tr>'; return; }
+      var pv = {}, tot = {};
+      rows.forEach(function(r){ var d = dist(r), s2 = stg(r); (pv[d] = pv[d] || {})[s2] = (pv[d][s2] || 0) + 1; tot[d] = (tot[d] || 0) + 1; });
+      var ds = Object.keys(pv).sort(function(a,b){ return tot[b] - tot[a]; });
+      headEl.innerHTML = '<th class="pivot-sticky-col">District</th>' + cols.map(function(c){ return '<th class="cat-' + hemCategoryOfLabel(c) + '">' + esc(c) + '</th>'; }).join('') + '<th>Total</th>';
+      var ct = {}; cols.forEach(function(c){ ct[c] = 0; });
+      var spec = function(o){ return JSON.stringify(o).replace(/"/g,'&quot;'); };
+      bodyEl.innerHTML = ds.map(function(d){
+        return '<tr><td class="name pivot-sticky-col">' + esc(d) + '</td>' + cols.map(function(c){
+          var v = pv[d][c] || 0; ct[c] += v;
+          return '<td class="cat-' + hemCategoryOfLabel(c) + (v ? ' clickable-cell" data-flt="' + spec({district:d, stage:c, month:month, label:'Komitmen ' + d + ' \u2014 ' + c}) : '') + '">' + (v || '\u2014') + '</td>';
+        }).join('') + '<td><strong>' + tot[d] + '</strong></td></tr>';
+      }).join('') + '<tr class="pivot-total"><td class="name pivot-sticky-col">TOTAL</td>' + cols.map(function(c){ return '<td>' + ct[c] + '</td>'; }).join('') + '<td>' + rows.length + '</td></tr>';
+      wireClickableCells(pre + 'CommitTableBody', ctl, function(sp){ return function(r){ return inM(r) && dist(r) === sp.district && stg(r) === sp.stage; }; });
+    };
+  }
+  window.hemCommitMonthGet = function(){ return hemCommitMonth; }; window.oloCommitMonthGet = function(){ return oloCommitMonth; };
+  installCommit('hem', hemGet, hemRowProgressLabel, hemFilterCtl, function(){ return hemAGG; });
+  installCommit('olo', oloGet, oloRowProgressLabel, oloFilterCtl, function(){ return oloAGG; });
   // render ulang bila data sudah dimuat sebelum script ini jalan
+  try{ window.hemRenderCommitTable(); }catch(e){}
+  try{ window.oloRenderCommitTable(); }catch(e){}
   try{ if(typeof hemAGG !== 'undefined' && hemAGG){ window.hemRenderSlaChart(); H.wo.setup(); H.wo.render(); } }catch(e){}
   try{ if(typeof oloAGG !== 'undefined' && oloAGG){ window.oloRenderDistrictChart(); O.wo.setup(); O.wo.render(); } }catch(e){}
 })();

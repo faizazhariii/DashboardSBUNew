@@ -1297,16 +1297,6 @@
         </div>
       </div>
 
-      <div class="section">
-        <p class="section-title">Prioritas</p>
-        <p class="section-desc">Jumlah order per level prioritas (kolom PRIORITAS). Klik baris buat lihat detail order-nya.</p>
-        <div class="table-card">
-          <table class="mbb-report-table">
-            <thead><tr><th>Status</th><th>Jumlah</th></tr></thead>
-            <tbody id="oloPrioritasTableBody"></tbody>
-          </table>
-        </div>
-      </div>
 
       <div class="section">
 
@@ -4626,7 +4616,7 @@ function hemSetupCommitDropdown(){
 
 /* Buang nomor urut di depan label status, misal "07 Golive" -> "Golive" */
 function hemStripStatusPrefix(label){
-  return (label||'').replace(/^\s*\d+[\.\-\)]?\s*/, '').trim() || label;
+  return (label||'').replace(/^\s*\d+(?:\.\d+)*[\.\-\)]?\s*/, '').trim() || label;
 }
 
 /* Nilai "Progress Lapangan" apa adanya dari baris, dengan fallback konsisten */
@@ -4697,7 +4687,7 @@ function hemRenderSlaKpis(){
  * urutan ditentukan lewat daftar ini, bukan cuma parseInt prefix angka.
  */
 const PROGRESS_STAGE_ORDER = [
-  'PERSIAPAN','AANDWIJZING','PERIZINAN','MATDEL','INSTALASI','F. INSTALASI',
+  'PERSIAPAN','AANDWIJZING','AANWIJZING','DONE AANWIJZING','PERIZINAN','MATDEL','INSTALASI','F. INSTALASI',
   'GOLIVE','UJI TERIMA','HOLD','DROP','PROPOSED DROP','APPROVED DROP','BISA PT1'
 ];
 
@@ -5767,7 +5757,6 @@ function oloBuildDashboard(){
   oloRenderProgressChart();
   oloRenderPivotDistrict();
   renderOgpBreakdownDonut('oloOgpStatusDonut', oloAGG.rows.filter(r=>hemCategoryOfLabel(oloRowProgressLabel(r))==='ogp'), (r)=> hemStripStatusPrefix(oloRowProgressLabel(r)).toUpperCase(), 8, oloFilterCtl, (r)=> hemStripStatusPrefix(oloRowProgressLabel(r)).toUpperCase(), 'Status');
-  oloRenderPrioritasTable();
   oloRenderDistrictChart();
   oloSetupFilters();
   oloSetupSortableHeaders();
@@ -7247,7 +7236,7 @@ function mbbRenderSecondaryKpis(){
 
 /* Urutan tahap resmi status MBB (beda dikit dari PT2 SBU: pakai "Aanwijzing" 1 huruf-d,
    "Finish Install", "On Air", "Uji Terima" — tidak ada Bisa PT1/Hold). */
-const MBB_STAGE_ORDER = ['DROP','AANWIJZING','PERIZINAN','MATDEL','INSTALASI','FINISH INSTALL','ON AIR','UJI TERIMA'];
+const MBB_STAGE_ORDER = ['DROP','AANWIJZING','DONE AANWIJZING','PERIZINAN','MATDEL','INSTALASI','FINISH INSTALL','ON AIR','UJI TERIMA'];
 
 function mbbStageSortIndex(rawLabel){
   const clean = hemStripStatusPrefix(rawLabel).toUpperCase();
@@ -7822,7 +7811,7 @@ function mbbPbStage(row){
 function mbbPbBatch(row){
   return (mbbGet(row,'BATCH WO') || '').replace(/\s+/g,' ').trim().toUpperCase() || 'TANPA BATCH';
 }
-const MBB_PB_STAGE_ORDER = ['ORDER BARU','AANWIJZING','PERIZINAN','MATDEL','INSTALASI','XX HOLD ISSUE','XX ISSUE TSEL','XX REDESIGN','FINISH INSTALL','ON AIR','UJI TERIMA','DROP'];
+const MBB_PB_STAGE_ORDER = ['ORDER BARU','AANWIJZING','DONE AANWIJZING','PERIZINAN','MATDEL','INSTALASI','XX HOLD ISSUE','XX ISSUE TSEL','XX REDESIGN','FINISH INSTALL','ON AIR','UJI TERIMA','DROP'];
 function mbbPbBatchSort(a,b){
   const pa = a.replace(/\d+.*$/,'').trim(), pb = b.replace(/\d+.*$/,'').trim();
   if(pa !== pb) return pa.localeCompare(pb);
@@ -11561,7 +11550,7 @@ oloLoadDataAuto();
 <script src="qe-recap.js?v=20261104b"></script>
 <script src="topo.js?v=20261111e"></script>
 <script src="kml.js?v=20261111h"></script>
-<script src="wotable.js?v=20261115a"></script>
+<script src="wotable.js?v=20261115b"></script>
 <script>
 /* Dropdown sidebar PT3 */
 (function(){
