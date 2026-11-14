@@ -588,9 +588,37 @@
   .wo-table tbody tr.c-drop td.stk{box-shadow:inset 4px 0 0 var(--red),2px 0 0 var(--line);}
   .wo-table tbody td.my{background:#FFFBEB !important;min-width:230px;}
   .wo-table thead th.my{background:#B45F06;}
-  .wo-my{width:100%;min-width:210px;border:1px solid #F0D9A8;background:#fff;border-radius:6px;padding:5px 8px;font:12px Inter,sans-serif;}
+  .wo-my{width:100%;min-width:210px;border:1px solid #F0D9A8;background:#fff;border-radius:5px;padding:2px 7px;font:11.5px Inter,sans-serif;}
   .wo-my:focus{outline:2px solid var(--amber);border-color:var(--amber);}
   .wo-my.saved{border-color:var(--emerald);}
+
+  /* ===== Kompak & profesional ===== */
+  .ppt-capture-btn{display:none !important;}
+  .section{margin-top:22px;}
+  .kpi{padding:11px 14px;} .kpi-value{font-size:21px;}
+  .pivot-table thead th{padding:6px 9px;font-size:9.5px;}
+  .pivot-table tbody td{padding:5px 9px;font-size:11.5px;}
+  .pivot-table tbody td.name{font-size:11.5px;}
+  .table-card thead th,.bordered-table th{padding:6px 9px;font-size:9.5px;}
+  .table-card tbody td,.bordered-table td{padding:5px 9px;font-size:11.5px;}
+  .mbb-report-table{font-size:10.5px;margin-bottom:8px;} .mbb-report-table th,.mbb-report-table td{padding:3px 6px;}
+  .trend-chart-card>div{height:200px !important;}
+  .section-desc{font-size:12px;margin-bottom:8px;}
+  .wo-table{font-size:11.5px;} .wo-table tbody td{padding:5px 10px;} .wo-table thead th{padding:7px 10px;font-size:10.5px;}
+  .wo-table.dense tbody td{padding:2px 8px;font-size:11px;}
+  .wo-table th.stk,.wo-table td.stk{min-width:92px;max-width:92px;width:92px;overflow:hidden;text-overflow:ellipsis;}
+  .wo-table th.stk2,.wo-table td.stk2{position:sticky;left:92px;z-index:4;box-shadow:2px 0 0 var(--line);}
+  .wo-table thead th.stk2{z-index:7;}
+  .wo-sum{padding:5px 12px;min-width:90px;} .wo-sum b{font-size:16px;} .wo-sum[data-qq]{cursor:pointer;} .wo-sum[data-qq]:hover{background:var(--panel-2);}
+  .ogp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:900px){.ogp-grid{grid-template-columns:1fr;}}
+  .ogp-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;}
+  .ogp-h{font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+  .ogp-row{display:grid;grid-template-columns:minmax(90px,150px) 1fr 34px 36px;gap:8px;align-items:center;padding:3px 4px;border-radius:6px;cursor:pointer;font-size:11.5px;}
+  .ogp-row:hover{background:var(--cyan-dim);}
+  .ogp-l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:var(--text);}
+  .ogp-bar{background:var(--panel-2);border-radius:4px;height:9px;overflow:hidden;} .ogp-bar i{display:block;height:100%;border-radius:4px;}
+  .ogp-n{text-align:right;font-weight:700;} .ogp-p{text-align:right;color:var(--text-faint);}
 </style>
 </head>
 <body>
@@ -1441,7 +1469,7 @@
         <p class="section-desc">Rekap per region: Order, Kendala, FI, OA, OGP, breakdown kendala, durasi order, breakdown kendala, durasi order, dan status progres OGP.</p>
         <div class="capture-hide" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <button type="button" class="ppt-capture-btn" id="mbbReportCaptureBtn" title="Capture untuk PPT">📷</button>
-          <span class="kpi-sub" style="margin:0;">Klik ikon untuk capture laporan ini jadi PNG.</span>
+          
         </div>
         <div id="mbbReportCaptureArea" class="mbb-report-grid"></div>
       </div>
@@ -1569,8 +1597,8 @@
       <div id="pt3StaleAlertBar" class="stale-alert-bar" style="display:none;"></div>
 
       <div class="section capture-hide">
-        <p class="section-title">⚠️ LoP Tanpa Update &gt;5 Hari</p>
-        <p class="section-desc">Order yang masih berjalan (belum Golive/Drop) tapi teks DETAIL STATUS-nya belum ada log baru dalam 5 hari terakhir.</p>
+        <p class="section-title">⚠️ LoP Tanpa Update &gt;25 Hari</p>
+        <p class="section-desc">Order yang masih berjalan (belum Golive/Drop) tapi teks DETAIL STATUS-nya belum ada log baru dalam 25 hari terakhir.</p>
         <div id="pt3StaleAlert"></div>
       </div>
 
@@ -1674,16 +1702,10 @@
 
       <div class="section">
         <p class="section-title">Breakdown OGP</p>
-        <p class="section-desc">Sebaran status/tahap dan sub-status untuk order yang masih OGP (belum Golive/Drop/FI). Klik salah satu bagian donut buat filter Daftar Work Order di bawah.</p>
-        <div class="mbb-report-subgrid" style="grid-template-columns:1fr 1fr;max-width:640px;">
-          <div class="table-card" style="padding:10px 12px;">
-            <p class="section-title" style="font-size:13px;margin-bottom:8px;text-align:center;">Berdasarkan Status</p>
-            <div style="height:150px;"><canvas id="pt3OgpStatusDonut"></canvas></div>
-          </div>
-          <div class="table-card" style="padding:10px 12px;">
-            <p class="section-title" style="font-size:13px;margin-bottom:8px;text-align:center;">Berdasarkan Sub Status</p>
-            <div style="height:150px;"><canvas id="pt3OgpSubStatusDonut"></canvas></div>
-          </div>
+        <p class="section-desc">Sebaran order OGP per status &amp; sub status. Klik satu baris untuk memfilter Daftar Work Order.</p>
+        <div class="ogp-grid">
+          <div class="ogp-card"><div class="ogp-h">Berdasarkan Status</div><div id="pt3OgpStatusBars"></div></div>
+          <div class="ogp-card"><div class="ogp-h">Berdasarkan Sub Status</div><div id="pt3OgpSubBars"></div></div>
         </div>
       </div>
 
@@ -1703,7 +1725,7 @@
           <button type="button" data-q="drop">🔴 Drop</button>
           <span class="wo-sep"></span>
           <button type="button" data-q="late">⚠ Komitmen Terlewat</button>
-          <button type="button" data-q="stale">⏱ Belum Update &gt;5 hari</button>
+          <button type="button" data-q="stale">⏱ Belum Update &gt;25 hari</button>
         </div>
         <div class="wo-toolbar">
           <input type="text" id="pt3SearchInput" placeholder="🔎 Cari ID / Nama LOP / STO / Waspang...">
@@ -1711,6 +1733,7 @@
           <div class="wo-chips" id="pt3ColChips"></div>
           <div class="wo-tools">
             <select id="pt3PageSizeSel" class="period-select" title="Baris per halaman"><option value="0" selected>Semua data</option><option value="25">25 baris</option><option value="50">50 baris</option><option value="100">100 baris</option></select>
+            <button type="button" class="wo-btn" id="pt3ColsBtn">⚙ Kolom</button>
             <button type="button" class="wo-btn" id="pt3DensityBtn" title="Ubah kerapatan baris">↕ Rapat</button>
             <button type="button" class="wo-btn" id="pt3ResetFilterBtn">✕ Reset Filter</button>
             <button type="button" class="download-btn" id="pt3DownloadBtn" style="margin:0;">📥 Download CSV</button>
@@ -1851,7 +1874,7 @@
         <p class="section-desc">Rekap per region (satuan PORT PLAN): Order, Drop, Kendala, FI, GL, OGP, breakdown drop, progres per batch, durasi tahapan, komitmen, dan run rate.</p>
         <div class="capture-hide" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <button type="button" class="ppt-capture-btn" id="pt3fhReportCaptureBtn" title="Capture untuk PPT">📷</button>
-          <span class="kpi-sub" style="margin:0;">Klik ikon untuk capture laporan ini jadi PNG.</span>
+          
         </div>
         <div id="pt3fhReportCaptureArea"></div>
       </div>
@@ -1936,7 +1959,7 @@
         <p class="section-desc">Rekap per Telkomsel Branch (satuan PORT ACTUAL): Order, Drop, FI (Go Deploy), Golive, OGP, dan breakdown alasan drop. Klik sel untuk lihat detail order-nya.</p>
         <div class="capture-hide" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <button type="button" class="ppt-capture-btn" id="lapPt2ReportCaptureBtn" title="Capture untuk PPT">📷</button>
-          <span class="kpi-sub" style="margin:0;">Klik ikon untuk capture laporan ini jadi PNG.</span>
+          
         </div>
         <div id="lapPt2RegionTableWrap"></div>
 
@@ -8094,8 +8117,8 @@ function pt3BuildDashboard(){
   pt3RenderPivotBranch();
   {
     const pt3OgpRows = pt3AGG.rows.filter(r=>pt3Category2(r)==='ogp');
-    renderOgpBreakdownDonut('pt3OgpStatusDonut', pt3OgpRows, (r)=> hemStripStatusPrefix(pt3RowStatusLabel(r)).toUpperCase(), 8, pt3FilterCtl, (r)=> hemStripStatusPrefix(pt3RowStatusLabel(r)).toUpperCase(), 'Status');
-    renderOgpBreakdownDonut('pt3OgpSubStatusDonut', pt3OgpRows, (r)=> pt3Get(r,'SUB STATUS KONS') || 'Tidak Diketahui', 8, pt3FilterCtl, (r)=> pt3Get(r,'SUB STATUS KONS') || 'Tidak Diketahui', 'Sub Status');
+    pt3RenderOgpBars('pt3OgpStatusBars', pt3OgpRows, r=> hemStripStatusPrefix(pt3RowStatusLabel(r)).toUpperCase(), 'Status');
+    pt3RenderOgpBars('pt3OgpSubBars', pt3OgpRows, r=> pt3Get(r,'SUB STATUS KONS') || 'Tidak Diketahui', 'Sub Status');
   }
   pt3RenderAllOrderReport();
   pt3SetupCommitDropdown();
@@ -8775,14 +8798,15 @@ function pt3MySave(id,t){ const m=pt3MyLoad(); if(t) m[id]={t,ts:Date.now()}; el
 const _woDate = v => { const d = parseDMY(v); return d ? d.getTime() : 0; };
 const PT3_COLS = [
   {k:'id',    label:'ID',            stk:1, val:r=>pt3Get(r,'ID-IHLD')},
+  {k:'lop',   label:'Nama LOP',      cls:'name', stk2:1, val:r=>pt3Get(r,'NAMA LOP')},
   {k:'branch',label:'Branch',        val:r=>pt3Get(r,'BRANCH FMC')},
   {k:'sto',   label:'STO',           val:r=>pt3Get(r,'STO')},
-  {k:'lop',   label:'Nama LOP',      cls:'name', val:r=>pt3Get(r,'NAMA LOP')},
   {k:'mitra', label:'Mitra',         val:r=>pt3Get(r,'Mitra')},
   {k:'tgl',   label:'Tgl Order',     val:r=>pt3Get(r,'Tgl Order'), sv:r=>_woDate(pt3Get(r,'Tgl Order'))},
   {k:'status',label:'Status',        val:r=>pt3Get(r,'Status'), pill:1},
   {k:'sub',   label:'Sub Status',    val:r=>pt3Get(r,'SUB STATUS KONS')},
   {k:'detail',label:'Detail Status', val:r=>pt3Get(r,'DETAIL STATUS'), text:1},
+  {k:'my',    label:'Update Saya ✎',  my:1, val:r=>{ const m=pt3MyLoad()[pt3Get(r,'ID-IHLD')]; return m?m.t:''; }},
   {k:'port',  label:'Port Plan',     cls:'num', val:r=>pt3Get(r,'PORT PLAN'), sv:r=>pt3ParseNum(pt3Get(r,'PORT PLAN'))},
   {k:'boq',   label:'BOQ',           cls:'num', val:r=>pt3Get(r,'BOQ'), sv:r=>pt3ParseNum(pt3Get(r,'BOQ')), fmt:v=>{const n=pt3ParseNum(v);return n?'Rp'+Math.round(n).toLocaleString('id-ID'):'—';}},
   {k:'cpp',   label:'CPP Akhir',     cls:'num', val:r=>pt3Get(r,'CPP AKHIR'), sv:r=>pt3ParseNum(pt3Get(r,'CPP AKHIR')), fmt:v=>{const n=pt3ParseNum(v);return n?'Rp'+Math.round(n).toLocaleString('id-ID'):'—';}},
@@ -8790,12 +8814,13 @@ const PT3_COLS = [
   {k:'sgl',   label:'Status Golive', val:r=>pt3Get(r,'STATUS GOLIVE')},
   {k:'wasp',  label:'Waspang',       val:r=>pt3Get(r,'WASPANG')},
   {k:'upd',   label:'Diupdate',      val:r=>pt3FormatUpdateDate(pt3Get(r,'DETAIL STATUS')), sv:r=>{const d=pt3ExtractLatestUpdateDate(pt3Get(r,'DETAIL STATUS'));return d?d.getTime():0;}},
-  {k:'my',    label:'Update Saya ✎',  my:1, val:r=>{ const m=pt3MyLoad()[pt3Get(r,'ID-IHLD')]; return m?m.t:''; }},
   {k:'gap',   label:'Jarak Update',  val:r=>pt3FormatUpdateGap(pt3Get(r,'DETAIL STATUS')), sv:r=>{const d=pt3ExtractLatestUpdateDate(pt3Get(r,'DETAIL STATUS'));if(!d)return -1;const n=new Date();n.setHours(0,0,0,0);return Math.round((n-d)/86400000);}, gap:1},
 ];
 const _woEsc = t => String(t==null?'':t).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const _woBlank = v => (v===''||v==null||v==='—') ? '(Kosong)' : v;
 
+let pt3Hidden = new Set(); try{ pt3Hidden = new Set(JSON.parse(localStorage.getItem('pt3ta_hidden_cols')||'[]')); }catch(e){}
+function pt3VisCols(){ return PT3_COLS.filter(c=>!pt3Hidden.has(c.k)); }
 function pt3SetupFilters(){
   document.getElementById('pt3SearchInput').oninput = ()=>{ pt3CurrentPage=1; pt3RenderTable(); };
   const qb = document.querySelectorAll('#pt3Quick button');
@@ -8804,8 +8829,29 @@ function pt3SetupFilters(){
   if(ps) ps.onchange = ()=>{ pt3PageSize = parseInt(ps.value)||0; pt3CurrentPage=1; pt3RenderTable(); };
   const rb = document.getElementById('pt3ResetFilterBtn');
   if(rb) rb.onclick = ()=>{ pt3Quick='all'; document.querySelectorAll('#pt3Quick button').forEach(x=>x.classList.toggle('on',x.dataset.q==='all')); pt3ColF = {}; pt3SortField = null; document.getElementById('pt3SearchInput').value=''; pt3FilterCtl.clear(); pt3CurrentPage=1; pt3BuildWoHeader(); pt3RenderTable(); };
+  const cb = document.getElementById('pt3ColsBtn');
+  if(cb) cb.onclick = ()=>{
+    pt3CloseColPop(); const pop=document.createElement('div'); pop.id='pt3ColPop'; pop.className='wo-pop'; _woPopT=Date.now();
+    const r=cb.getBoundingClientRect(); pop.style.top=(r.bottom+6)+'px'; pop.style.left=Math.max(8,r.right-250)+'px';
+    pop.innerHTML='<b>Tampilkan kolom</b><div class="lst" style="margin-top:6px;">'+PT3_COLS.map(c=>`<label><input type="checkbox" data-k="${c.k}" ${pt3Hidden.has(c.k)?'':'checked'} ${c.k==='id'?'disabled':''}>${c.label}</label>`).join('')+'</div>';
+    document.body.appendChild(pop);
+    pop.querySelectorAll('input').forEach(i=> i.onchange = ()=>{ i.checked ? pt3Hidden.delete(i.dataset.k) : pt3Hidden.add(i.dataset.k); try{ localStorage.setItem('pt3ta_hidden_cols', JSON.stringify([...pt3Hidden])); }catch(e){} pt3BuildWoHeader(); pt3RenderTable(); });
+  };
   const db = document.getElementById('pt3DensityBtn');
   if(db) db.onclick = ()=>{ pt3Dense = !pt3Dense; document.getElementById('pt3WoTable').classList.toggle('dense', pt3Dense); db.textContent = pt3Dense ? '↕ Longgar' : '↕ Rapat'; };
+}
+
+function pt3RenderOgpBars(id, rows, labelFn, chartLabel){
+  const el = document.getElementById(id); if(!el) return;
+  const agg = {}; rows.forEach(r=>{ const l=labelFn(r)||'Tidak Diketahui'; agg[l]=(agg[l]||0)+1; });
+  const ent = Object.entries(agg).sort((a,b)=>b[1]-a[1]);
+  const tot = rows.length || 1, max = ent.length ? ent[0][1] : 1;
+  const pal = ['#0B5CAB','#2E7DD1','#4C9BE8','#E0A030','#C2417A','#3E9E8E','#7A6BCB','#8992A8'];
+  el.innerHTML = ent.slice(0,8).map(([l,n],i)=>`<div class="ogp-row" data-l="${_woEsc(l)}" title="Klik untuk filter"><span class="ogp-l">${_woEsc(l)}</span><span class="ogp-bar"><i style="width:${Math.max(4,n/max*100)}%;background:${pal[i%pal.length]}"></i></span><span class="ogp-n">${n.toLocaleString('id-ID')}</span><span class="ogp-p">${(n/tot*100).toFixed(0)}%</span></div>`).join('') || '<div style="color:var(--text-faint);font-size:12px;">Tidak ada order OGP.</div>';
+  el.querySelectorAll('.ogp-row').forEach(r=> r.onclick = ()=>{
+    const l = r.dataset.l.replace(/&quot;|&amp;|&lt;|&gt;/g,m=>({'&quot;':'"','&amp;':'&','&lt;':'<','&gt;':'>'}[m]));
+    pt3FilterCtl.set(row=> (labelFn(row)||'Tidak Diketahui')===l && pt3Category2(row)==='ogp', `${chartLabel}: ${l}`);
+  });
 }
 
 function pt3QuickPass(row){
@@ -8848,9 +8894,9 @@ function pt3GetFilteredRows(){
 
 function pt3BuildWoHeader(){
   const tr = document.getElementById('pt3TableHead'); if(!tr) return;
-  tr.innerHTML = PT3_COLS.map(c=>{
+  tr.innerHTML = pt3VisCols().map(c=>{
     const sIc = pt3SortField===c.k ? (pt3SortDir==='asc'?'↑':'↓') : '⇅';
-    return `<th class="${c.stk?'stk':''} ${c.my?'my':''}" data-k="${c.k}"><div class="wo-h"><span class="wo-hl" data-sort="${c.k}">${c.label}</span><span class="wo-ic ${pt3SortField===c.k?'on':''}" data-sort="${c.k}" title="Urutkan">${sIc}</span><span class="wo-ic ${pt3ColF[c.k]?'on':''}" data-flt="${c.k}" title="Filter">▽</span></div></th>`;
+    return `<th class="${c.stk?'stk':''} ${c.stk2?'stk2':''} ${c.my?'my':''}" data-k="${c.k}"><div class="wo-h"><span class="wo-hl" data-sort="${c.k}">${c.label}</span><span class="wo-ic ${pt3SortField===c.k?'on':''}" data-sort="${c.k}" title="Urutkan">${sIc}</span><span class="wo-ic ${pt3ColF[c.k]?'on':''}" data-flt="${c.k}" title="Filter">▽</span></div></th>`;
   }).join('');
   tr.querySelectorAll('[data-sort]').forEach(el=> el.onclick = e=>{
     e.stopPropagation(); const k = el.dataset.sort;
@@ -8918,19 +8964,36 @@ function pt3RenderWoChips(){
   el.querySelectorAll('[data-rm]').forEach(b=> b.onclick = ()=>{ delete pt3ColF[b.dataset.rm]; pt3CurrentPage=1; pt3BuildWoHeader(); pt3RenderTable(); });
 }
 
-function pt3OpenWoDrawer(row){
+let _woDrawList = [], _woDrawIdx = 0;
+function pt3OpenWoDrawer(row, list, idx){
+  if(list){ _woDrawList = list; _woDrawIdx = idx; }
   let bg = document.getElementById('pt3WoDrawerBg'), dr = document.getElementById('pt3WoDrawer');
   if(!dr){
     bg = document.createElement('div'); bg.id='pt3WoDrawerBg'; bg.className='wo-drawer-bg';
     dr = document.createElement('div'); dr.id='pt3WoDrawer'; dr.className='wo-drawer';
     document.body.appendChild(bg); document.body.appendChild(dr);
     bg.onclick = ()=>{ bg.classList.remove('open'); dr.classList.remove('open'); };
+    document.addEventListener('keydown', e=>{
+      if(!dr.classList.contains('open')) return;
+      if(e.key==='Escape') bg.onclick();
+      if(e.target.tagName==='TEXTAREA') return;
+      if(e.key==='ArrowDown'||e.key==='ArrowRight') pt3WoDrawerStep(1);
+      if(e.key==='ArrowUp'||e.key==='ArrowLeft') pt3WoDrawerStep(-1);
+    });
   }
-  const cat = pt3Category(row);
-  const kv = PT3_COLS.filter(c=>c.k!=='detail').map(c=>{ const v=c.val(row); return `<dt>${c.label}</dt><dd>${_woEsc(c.fmt?c.fmt(v):(v||'—'))}</dd>`; }).join('');
-  dr.innerHTML = `<div class="hd"><div><h3>${_woEsc(pt3Get(row,'NAMA LOP')||'—')}</h3><div style="margin-top:6px;"><span class="wo-pill ${cat}">${_woEsc(pt3Get(row,'Status')||'—')}</span> <span style="font-size:12px;color:var(--text-faint);margin-left:6px;">${_woEsc(pt3Get(row,'ID-IHLD')||'')}</span></div></div><button type="button" id="pt3WoDrawerX">✕</button></div><div class="bd"><dl class="kv">${kv}</dl><p style="font-weight:700;font-size:13px;margin:0 0 6px;">Detail Status (riwayat)</p><pre>${_woEsc(pt3Get(row,'DETAIL STATUS')||'—')}</pre></div>`;
-  dr.querySelector('#pt3WoDrawerX').onclick = ()=>{ bg.classList.remove('open'); dr.classList.remove('open'); };
+  const cat = pt3Category(row), id = pt3Get(row,'ID-IHLD');
+  const kv = PT3_COLS.filter(c=>c.k!=='detail'&&c.k!=='my').map(c=>{ const v=c.val(row); return `<dt>${c.label}</dt><dd>${_woEsc(c.fmt?c.fmt(v):(v||'—'))}</dd>`; }).join('');
+  const my = pt3MyLoad()[id];
+  dr.innerHTML = `<div class="hd"><div><h3>${_woEsc(pt3Get(row,'NAMA LOP')||'—')}</h3><div style="margin-top:6px;"><span class="wo-pill ${cat}">${_woEsc(pt3Get(row,'Status')||'—')}</span> <span style="font-size:12px;color:var(--text-faint);margin-left:6px;">${_woEsc(id)}</span></div></div><div style="display:flex;gap:6px;"><button type="button" id="pt3WoPrev" title="Sebelumnya">↑</button><button type="button" id="pt3WoNext" title="Berikutnya">↓</button><button type="button" id="pt3WoDrawerX">✕</button></div></div><div class="bd"><p style="font-weight:700;font-size:13px;margin:0 0 6px;">✎ Update Saya</p><textarea id="pt3WoMy" rows="3" placeholder="Tulis update / follow-up..." style="width:100%;border:1px solid #F0D9A8;background:#FFFBEB;border-radius:8px;padding:8px;font:12.5px Inter,sans-serif;margin-bottom:4px;">${_woEsc(my?my.t:'')}</textarea><div style="font-size:11px;color:var(--text-faint);margin-bottom:14px;" id="pt3WoMyInfo">${my?'Disimpan '+new Date(my.ts).toLocaleString('id-ID'):'Tersimpan otomatis di browser ini'}</div><dl class="kv">${kv}</dl><p style="font-weight:700;font-size:13px;margin:0 0 6px;">Detail Status (riwayat)</p><pre>${_woEsc(pt3Get(row,'DETAIL STATUS')||'—')}</pre></div>`;
+  dr.querySelector('#pt3WoDrawerX').onclick = ()=>bg.onclick();
+  dr.querySelector('#pt3WoPrev').onclick = ()=>pt3WoDrawerStep(-1);
+  dr.querySelector('#pt3WoNext').onclick = ()=>pt3WoDrawerStep(1);
+  dr.querySelector('#pt3WoMy').onchange = e=>{ pt3MySave(id, e.target.value.trim()); dr.querySelector('#pt3WoMyInfo').textContent='✓ Tersimpan'; pt3RenderTable(); };
   bg.classList.add('open'); dr.classList.add('open');
+}
+function pt3WoDrawerStep(d){
+  const n=_woDrawIdx+d; if(n<0||n>=_woDrawList.length) return;
+  _woDrawIdx=n; pt3OpenWoDrawer(_woDrawList[n]);
 }
 
 /* Format nilai "LAST EDIT TIME" (dari Apps Script, format Date JS default
@@ -9032,9 +9095,9 @@ function pt3FormatUpdateGap(detailStatusText){
   return `${days} hari`;
 }
 
-const PT3_STALE_THRESHOLD_DAYS = 5;
+const PT3_STALE_THRESHOLD_DAYS = 25;
 /* Alert: LoP yang masih aktif (belum Golive & belum Drop) tapi kolom
-   DETAIL STATUS-nya nggak ketemu update baru dalam >5 hari terakhir. */
+   DETAIL STATUS-nya nggak ketemu update baru dalam >25 hari terakhir. */
 function pt3RenderStaleAlert(){
   const el = document.getElementById('pt3StaleAlertBar');
   if(!el || !pt3AGG) return;
@@ -9065,8 +9128,9 @@ function pt3RenderTable(){
   // ringkasan dari hasil filter
   const sum = filtered.reduce((a,r)=>{ const c=pt3Category(r); a.port+=pt3ParseNum(pt3Get(r,'PORT PLAN')); a[c]=(a[c]||0)+1; return a; }, {port:0});
   const sm = document.getElementById('pt3WoSummary');
-  if(sm) sm.innerHTML = `<div class="wo-sum"><b>${filtered.length.toLocaleString('id-ID')}</b><span>Order</span></div><div class="wo-sum p"><b>${Math.round(sum.port).toLocaleString('id-ID')}</b><span>Port Plan</span></div><div class="wo-sum g"><b>${(sum.golive||0).toLocaleString('id-ID')}</b><span>Golive</span></div><div class="wo-sum o"><b>${(sum.ogp||0).toLocaleString('id-ID')}</b><span>OGP</span></div><div class="wo-sum d"><b>${(sum.drop||0).toLocaleString('id-ID')}</b><span>Drop</span></div>`;
+  if(sm) sm.innerHTML = `<div class="wo-sum"><b>${filtered.length.toLocaleString('id-ID')}</b><span>Order</span></div><div class="wo-sum p"><b>${Math.round(sum.port).toLocaleString('id-ID')}</b><span>Port Plan</span></div><div class="wo-sum g" data-qq="golive"><b>${(sum.golive||0).toLocaleString('id-ID')}</b><span>Golive</span></div><div class="wo-sum o" data-qq="ogp"><b>${(sum.ogp||0).toLocaleString('id-ID')}</b><span>OGP</span></div><div class="wo-sum d" data-qq="drop"><b>${(sum.drop||0).toLocaleString('id-ID')}</b><span>Drop</span></div>`;
   pt3RenderWoChips();
+  if(sm) sm.querySelectorAll('[data-qq]').forEach(el=> el.onclick = ()=>{ const b=document.querySelector(`#pt3Quick [data-q=${el.dataset.qq}]`); if(b) b.click(); });
 
   const psz = pt3PageSize || Math.max(1, filtered.length);
   const totalPages = Math.max(1, Math.ceil(filtered.length / psz));
@@ -9077,20 +9141,20 @@ function pt3RenderTable(){
   const tbody = document.getElementById('pt3TableBody');
   tbody.innerHTML = pageRows.map((row,i)=>{
     const cat = pt3Category(row);
-    return `<tr data-i="${i}" class="c-${cat}">` + PT3_COLS.map(c=>{
+    return `<tr data-i="${i}" class="c-${cat}">` + pt3VisCols().map(c=>{
       let v = c.val(row)||'';
       let inner;
       if(c.my) return `<td class="my"><input class="wo-my" data-id="${_woEsc(pt3Get(row,'ID-IHLD'))}" value="${_woEsc(v)}" placeholder="Tulis update..." title="Tersimpan otomatis di browser ini"></td>`;
       if(c.pill) inner = v ? `<span class="wo-pill ${cat}">${_woEsc(v)}</span>` : '—';
       else if(c.k==='detail') inner = v ? `<div class="wo-detail" title="${_woEsc(v)}">${_woEsc(v.replace(/\s*\n\s*/g,' • '))}</div>` : '—';
       else if(c.fmt) inner = _woEsc(c.fmt(v));
-      else if(c.gap){ const n=c.sv(row); inner = v && v!=='—' ? `<span class="wo-gap ${n>5?'bad':(n>3?'warn':'')}">${_woEsc(v)}</span>` : '—'; }
+      else if(c.gap){ const n=c.sv(row); inner = v && v!=='—' ? `<span class="wo-gap ${n>25?'bad':(n>15?'warn':'')}">${_woEsc(v)}</span>` : '—'; }
       else if(c.late){ const d=parseDMY(v); inner = v ? (d && d<today && cat==='ogp' ? `<span class="wo-late" title="Komitmen terlewat">${_woEsc(v)} ⚠</span>` : _woEsc(v)) : '—'; }
       else inner = v ? _woEsc(v) : '—';
-      return `<td class="${(c.cls||'')} ${c.stk?'stk':''}">${inner}</td>`;
+      return `<td class="${(c.cls||'')} ${c.stk?'stk':''} ${c.stk2?'stk2':''}">${inner}</td>`;
     }).join('') + '</tr>';
-  }).join('') || `<tr><td colspan="${PT3_COLS.length}" style="text-align:center;padding:30px;cursor:default;">Tidak ada data yang cocok.</td></tr>`;
-  tbody.onclick = e=>{ if(e.target.closest('.wo-my')) return; const tr=e.target.closest('tr[data-i]'); if(tr) pt3OpenWoDrawer(pageRows[+tr.dataset.i]); };
+  }).join('') || `<tr><td colspan="${pt3VisCols().length}" style="text-align:center;padding:30px;cursor:default;">Tidak ada data yang cocok.</td></tr>`;
+  tbody.onclick = e=>{ if(e.target.closest('.wo-my')) return; const tr=e.target.closest('tr[data-i]'); if(tr) pt3OpenWoDrawer(pageRows[+tr.dataset.i], pageRows, +tr.dataset.i); };
   tbody.onchange = e=>{ const i=e.target.closest('.wo-my'); if(!i) return; pt3MySave(i.dataset.id, i.value.trim()); i.classList.add('saved'); setTimeout(()=>i.classList.remove('saved'),1200); };
 
   document.getElementById('pt3PageInfo').textContent = `Halaman ${pt3CurrentPage} dari ${totalPages}`;
