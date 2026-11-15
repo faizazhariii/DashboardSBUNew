@@ -44,11 +44,33 @@
   var msel = document.getElementById('oltCapMonth');
   msel.innerHTML = MONTHS.map(function(m,i){ return '<option value="' + i + '">' + m + '</option>'; }).join(''); msel.value = S.month;
 
-  var COLS = [['witel','Branch'],['sto','STO'],['ta','LoP TA'],['fh','LoP FH'],['pp','Port Plan'],['need','Kebutuhan'],['zte','Idle ZTE'],['hw','Idle HW'],['idle','Idle Total'],['selisih','Selisih'],['status','Status']];
+  var COLS = [['witel','Branch'],['sto','STO'],['ta','LoP TA'],['fh','LoP FH'],['pp','Port Plan'],['need','Kebutuhan'],['zte','Idle ZTE'],['hw','Idle HW'],['idle','Idle Total'],['selisih','Selisih'],['status','Status'],['ket','Keterangan']];
   var head = document.getElementById('oltCapHead');
-  head.innerHTML = COLS.map(function(c){ return '<th data-k="' + c[0] + '" style="cursor:pointer" title="Urutkan">' + c[1] + (S.sort === c[0] ? ' ↑' : '') + '</th>'; }).join('');
-  head.onclick = function(e){ var th = e.target.closest('th'); if(!th) return; S.sort = th.dataset.k; head.querySelectorAll('th').forEach(function(x,i){ x.textContent = COLS[i][1] + (COLS[i][0] === S.sort ? ' ↑' : ''); }); render(); };
+  head.innerHTML = COLS.map(function(c){ return '<th data-k="' + c[0] + '" style="cursor:pointer" title="Urutkan"' + (c[0] === 'ket' ? ' class="olt-ket-h"' : '') + '>' + c[1] + (S.sort === c[0] ? ' ↑' : '') + '</th>'; }).join('');
+  head.onclick = function(e){ var th = e.target.closest('th'); if(!th || th.dataset.k === 'ket') return; S.sort = th.dataset.k; head.querySelectorAll('th').forEach(function(x,i){ x.textContent = COLS[i][1] + (COLS[i][0] === S.sort ? ' ↑' : ''); }); render(); };
 
+  /* ---- Keterangan per STO: tersimpan di Google Sheets (lewat Web App write-back) + cadangan di browser ---- */
+  var KET = {}, KET_LS = 'needolt_keterangan', KET_PROG = 'NEEDOLT', ketLoaded = false;
+  try{ KET = JSON.parse(localStorage.getItem(KET_LS) || '{}') || {}; }catch(e){ KET = {}; }
+  var ketSaveLocal = function(){ try{ localStorage.setItem(KET_LS, JSON.stringify(KET)); }catch(e){} };
+  var ketApi = function(){ return (typeof WRITE_API_URL !== 'undefined' && WRITE_API_URL) ? WRITE_API_URL : ''; };
+  function ketLoad(){
+    var api = ketApi(); if(!api || typeof universalFetch !== 'function') return;
+    universalFetch(api + '?action=getKmlCatatan&_=' + Date.now(), { cache: 'no-store' }).then(function(r){ return r.json(); }).then(function(d){
+      if(!d || !d.ok) return; var n = d.notes || {};
+      Object.keys(n).forEach(function(k){ if(k.indexOf(KET_PROG + '|') === 0) KET[k.slice(KET_PROG.length + 1)] = n[k]; });
+      ketLoaded = true; ketSaveLocal();
+      var act = document.activeElement; if(!(act && act.classList && act.classList.contains('olt-ket'))) render();
+    }).catch(function(e){ console.warn('Keterangan Need OLT belum bisa dimuat dari sheet:', e.message); });
+  }
+  function ketSave(input){
+    var sto = input.dataset.sto, val = input.value.trim(); if((KET[sto] || '') === val) return;
+    KET[sto] = val; ketSaveLocal(); input.style.borderColor = 'var(--amber)';
+    var api = ketApi(); if(!api || typeof universalFetch !== 'function'){ input.style.borderColor = 'var(--amber)'; return; }
+    universalFetch(api + '?action=setKmlCatatan&program=' + KET_PROG + '&ihld=' + encodeURIComponent(sto) + '&nama=' + encodeURIComponent('Need Modul OLT ' + sto) + '&text=' + encodeURIComponent(val), { cache: 'no-store' })
+      .then(function(r){ return r.json(); }).then(function(d){ input.style.borderColor = d && d.ok ? 'var(--emerald)' : 'var(--red)'; if(!(d && d.ok)) console.error('Gagal simpan keterangan:', d && d.error); setTimeout(function(){ input.style.borderColor = ''; }, 1500); })
+      .catch(function(e){ input.style.borderColor = 'var(--red)'; console.error(e); });
+  }
   function collect(){
     var by = {}, t0 = new Date().getFullYear();
     var add = function(rows, get, label, kind){
@@ -99,9 +121,15 @@
     document.getElementById('oltCapBody').innerHTML = rows.map(function(o, i){
       var sel = o.has ? (o.selisih >= 0 ? '+' + fmt(o.selisih) : '−' + fmt(-o.selisih)) : '—';
       var col = o.status === 'kurang' ? 'var(--red)' : (o.status === 'cukup' ? 'var(--emerald)' : 'var(--text-faint)');
-      return '<tr data-i="' + i + '" class="c-' + (o.status === 'kurang' ? 'drop' : (o.status === 'cukup' ? 'golive' : 'hold')) + '" style="cursor:pointer"><td>' + esc(o.witel) + '</td><td><b>' + esc(o.sto) + '</b></td><td class="num">' + (o.ta || '—') + '</td><td class="num">' + (o.fh || '—') + '</td><td class="num">' + fmt(o.pp) + '</td><td class="num"><b>' + fmt(o.need) + '</b></td><td class="num">' + (o.has ? fmt(o.zte) : '—') + '</td><td class="num">' + (o.has ? fmt(o.hw) : '—') + '</td><td class="num"><b>' + (o.has ? fmt(o.idle) : '—') + '</b></td><td class="num" style="color:' + col + ';font-weight:700">' + sel + '</td><td>' + pill[o.status] + '</td></tr>';
-    }).join('') || '<tr><td colspan="11" style="text-align:center;padding:24px;cursor:default;">Tidak ada komitmen golive PT3 di bulan ini.</td></tr>';
+      return '<tr data-i="' + i + '" class="c-' + (o.status === 'kurang' ? 'drop' : (o.status === 'cukup' ? 'golive' : 'hold')) + '" style="cursor:pointer"><td>' + esc(o.witel) + '</td><td><b>' + esc(o.sto) + '</b></td><td class="num">' + (o.ta || '—') + '</td><td class="num">' + (o.fh || '—') + '</td><td class="num">' + fmt(o.pp) + '</td><td class="num"><b>' + fmt(o.need) + '</b></td><td class="num">' + (o.has ? fmt(o.zte) : '—') + '</td><td class="num">' + (o.has ? fmt(o.hw) : '—') + '</td><td class="num"><b>' + (o.has ? fmt(o.idle) : '—') + '</b></td><td class="num" style="color:' + col + ';font-weight:700">' + sel + '</td><td>' + pill[o.status] + '</td><td class="olt-ket-c"><input type="text" class="olt-ket" data-sto="' + esc(o.sto) + '" value="' + esc(KET[o.sto] || '') + '" placeholder="tulis keterangan…"></td></tr>';
+    }).join('') || '<tr><td colspan="12" style="text-align:center;padding:24px;cursor:default;">Tidak ada komitmen golive PT3 di bulan ini.</td></tr>';
   }
+
+  var bodyEl = document.getElementById('oltCapBody');
+  bodyEl.addEventListener('change', function(e){ if(e.target.classList.contains('olt-ket')) ketSave(e.target); });
+  bodyEl.addEventListener('keydown', function(e){ if(e.target.classList.contains('olt-ket') && e.key === 'Enter'){ e.preventDefault(); e.target.blur(); } });
+  var kst = document.createElement('style'); kst.textContent = '.olt-ket-c{min-width:220px}.olt-ket{width:100%;min-width:200px;font-size:12px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--text);box-sizing:border-box}.olt-ket:focus{outline:2px solid #0B5CAB33;border-color:#0B5CAB}.olt-ket-h{cursor:default!important}'; document.head.appendChild(kst);
+  ketLoad();
 
   /* detail */
   function openDetail(o){
@@ -118,7 +146,7 @@
     document.body.appendChild(bg); document.body.appendChild(dr);
     dr.querySelector('#oltCapX').onclick = close;
   }
-  document.getElementById('oltCapBody').onclick = function(e){ var tr = e.target.closest('tr[data-i]'); if(tr) openDetail(rowsNow[+tr.dataset.i]); };
+  document.getElementById('oltCapBody').onclick = function(e){ if(e.target.closest('.olt-ket')) return; var tr = e.target.closest('tr[data-i]'); if(tr) openDetail(rowsNow[+tr.dataset.i]); };
 
   /* kontrol */
   document.querySelectorAll('#oltCapBasis [data-b]').forEach(function(b){ b.onclick = function(){ S.basis = b.dataset.b; document.querySelectorAll('#oltCapBasis [data-b]').forEach(function(x){ x.classList.toggle('on', x === b); }); render(); }; });
@@ -127,7 +155,7 @@
   document.getElementById('oltCapSearch').oninput = function(){ S.q = this.value; render(); };
   document.getElementById('oltCapDl').onclick = function(){
     var hd = ['Branch','STO','LoP TA','LoP FH','Port Plan','Kebutuhan','Idle ZTE','Idle HW','Idle Total','Selisih','Status'];
-    var lines = [hd].concat(rowsNow.map(function(o){ return [o.witel,o.sto,o.ta,o.fh,o.pp,o.need,o.zte,o.hw,o.idle,o.has ? o.selisih : '',o.status]; }));
+    var lines = [hd.concat(['Keterangan'])].concat(rowsNow.map(function(o){ return [o.witel,o.sto,o.ta,o.fh,o.pp,o.need,o.zte,o.hw,o.idle,o.has ? o.selisih : '',o.status,KET[o.sto] || '']; }));
     var csv = lines.map(function(r){ return r.map(function(c){ return '"' + String(c).replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], {type:'text/csv'})); a.download = 'kebutuhan-vs-idle-port-olt.csv'; a.click();
   };
