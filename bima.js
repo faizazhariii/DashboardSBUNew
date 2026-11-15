@@ -283,8 +283,8 @@
     var copy = function(txt, btn, msg){ try{ navigator.clipboard.writeText(txt); var o = btn.textContent; btn.textContent = msg; setTimeout(function(){ btn.textContent = o; }, 1200); }catch(e){} };
     var cg = document.getElementById('bmCopyGeser'); if(cg) cg.onclick = function(){ copy((S.data || []).filter(function(r){ return r.geser; }).map(function(r){ return r.wo; }).join('\n'), cg, 'Tersalin ✓'); };
     var ct = document.getElementById('bmCopyTbl'); if(ct) ct.onclick = function(){
-      var q = function(v){ return String(v == null ? '' : v).replace(/[\t\r\n]+/g, ' '); };
-      copy([XH.join('\t')].concat(visibleRows().map(function(r){ return xRow(r).map(q).join('\t'); })).join('\n'), ct, 'Tersalin ✓'); };
+      var q = function(v){ return String(v == null ? '' : v).replace(/[\t\r\n]+/g, ' ').trim(); };
+      copy(['SC Order\tCustomer'].concat(visibleRows().map(function(r){ return q(r.sc1) + '\t' + q(r.cust); })).join('\n'), ct, 'Tersalin ✓'); };
     var dc = document.getElementById('bmCsv'); if(dc) dc.onclick = function(){
       var q = function(v){ v = String(v == null ? '' : v).replace(/\r?\n/g, ' '); return /[",;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
       var txt = '\ufeff' + [XH.map(q).join(',')].concat(visibleRows().map(function(r){ return xRow(r).map(q).join(','); })).join('\r\n');
