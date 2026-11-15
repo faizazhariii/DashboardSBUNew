@@ -2,10 +2,10 @@
 (function(){
   'use strict';
   var host = document.getElementById('bimaHost'); if(!host) return;
-  var SS = '1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM', GID = '1146581535', GID_SS = '571717744';
+  var SS = '1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM', GID = '1146581535', GID_SS = '571717744', GID_OLO = '1782023053';
   var urlsOf = function(gid){ return ['https://docs.google.com/spreadsheets/d/' + SS + '/gviz/tq?tqx=out:csv&gid=' + gid, 'https://docs.google.com/spreadsheets/d/' + SS + '/export?format=csv&gid=' + gid]; };
   var esc = function(t){ return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
-  var S = { data: null, ssErr: '', ssMap: null, jt: '', err: '', q: '', dist: '', desc: '', tipe: '', produk: '', aging: '', sort: 'umur', open: {}, loaded: null };
+  var S = { data: null, ssErr: '', ssMap: null, oloErr: '', oloMap: null, jt: '', geser: '', err: '', q: '', dist: '', desc: '', tipe: '', produk: '', aging: '', sort: 'umur', open: {}, loaded: null };
   var PAL = ['#0B5CAB','#167A4B','#C27A0A','#7A6BCB','#D7141A','#0891B2','#DB2777','#65A30D'];
   var BUCKET = [['0-3','0–3 hari',0,3,'#167A4B'],['4-7','4–7 hari',4,7,'#0B5CAB'],['8-14','8–14 hari',8,14,'#C27A0A'],['15-30','15–30 hari',15,30,'#E8590C'],['30+','> 30 hari',31,99999,'#D7141A']];
 
@@ -29,6 +29,10 @@
     '.bm .pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap;background:#E4EEFA;color:#0B5CAB;}.bm .pill.rv{background:#EFEAFB;color:#6B4FC4;}.bm .pill.mo{background:#FFF0D6;color:#C27A0A;}' +
     '.bm .age{font-weight:700;font-variant-numeric:tabular-nums;}.bm .age.a1{color:#167A4B}.bm .age.a2{color:#0B5CAB}.bm .age.a3{color:#C27A0A}.bm .age.a4{color:#E8590C}.bm .age.a5{color:#D7141A}' +
     '.bm tr.dt td{background:var(--panel-2,#F5F7FA);font-size:12px;color:var(--text-dim);}.bm tr.dt dl{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;margin:0;}.bm tr.dt dt{font-weight:700;color:var(--text);}.bm tr.dt dd{margin:0;word-break:break-word;}' +
+    '.bm table,.bm td,.bm th,.bm .tw{user-select:text;-webkit-user-select:text;}.bm td{cursor:text;}.bm .ihid,.bm .wo,.bm .sub.sc{user-select:all;-webkit-user-select:all;}' +
+    '.bm .pill.pgg{background:#E1F4EA;color:#167A4B}.bm .pill.pgd{background:#FBE4E5;color:#D7141A}.bm .pill.pgh{background:#FFF0D6;color:#C27A0A}.bm .pill.pgo{background:#E4EEFA;color:#0B5CAB}.bm .pill.pg0{background:#EEE;color:#666}.bm .pill.gsb{background:#C27A0A;color:#fff;margin-top:4px}' +
+    '.bm tr.gs td{background:rgba(232,89,12,.07)}.bm tr.gs td:first-child{box-shadow:inset 4px 0 0 #E8590C}.bm .ihid{font-family:ui-monospace,monospace;font-weight:700}' +
+    '.bm .geser-box{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px;padding:12px 14px;border-radius:12px;background:#FFF0D6;border:1px solid #E8B35A;color:#7A4A00}.bm .geser-box .sub{color:#7A4A00;opacity:.85;max-width:640px}' +
     '.bm .pill.jt1{background:#E1F4EA;color:#167A4B;cursor:pointer}.bm .pill.jt0{background:#FBE4E5;color:#D7141A;cursor:pointer}.bm .sub.sc{font-family:ui-monospace,monospace;}' +
     '.bm .sub{font-size:11.5px;color:var(--text-dim);margin-top:2px;}.bm .wo{font-family:ui-monospace,monospace;font-weight:700;}';
   document.head.appendChild(st);
@@ -65,13 +69,24 @@
     var rows = Papa.parse(text, { skipEmptyLines: true }).data; if(!rows.length) return {};
     var h = rows[0].map(norm), ix = function(n){ return h.indexOf(n); }, iAO = ix('ao (wajib ada)');
     if(iAO < 0) throw new Error('Kolom "AO (WAJIB ADA)" tidak ditemukan di tab Gsheet SS');
-    var cols = { cust:'customer', svc:'service / produk', lok:'lokasi/ link', am:'am', tgl:'tanggal input order', aju:'tanggal pengajuan permohonan approval', apr:'approval decision', prog:'progress', sub:'sub progress', out:'outstanding remarks', cap:'high cap / low cap' };
+    var cols = { cust:'customer', svc:'service / produk', lok:'lokasi/ link', am:'am', tgl:'tanggal input order', aju:'tanggal pengajuan permohonan approval', apr:'approval decision', prog:'progress', sub:'sub progress', out:'outstanding remarks', cap:'high cap / low cap', ihA:'id ihld site a', ihB:'id ihld site b', nmA:'nama lop ihld site a' };
     var map = {};
     rows.slice(1).forEach(function(r, n){
       var ao = String(r[iAO] || ''); var ids = ao.match(/801Mg[0-9A-Za-z]+/g); if(!ids) return;
       var o = { row: n + 2, ao: ao.trim() }; Object.keys(cols).forEach(function(k){ var i = ix(cols[k]); o[k] = i < 0 ? '' : String(r[i] == null ? '' : r[i]).trim(); });
       ids.forEach(function(id){ if(!map[id]) map[id] = o; });
     });
+    return map;
+  }
+  var ids_ = function(v){ return (String(v || '').match(/\d{5,}/g) || []); };
+  var GESER_RE = /^\s*(?:\d+[\.\-\)]?\s*)?(GOLIVE|UJI TERIMA|HOLD|PROPOSED DROP|APPROVED DROP)\s*$/i;
+  /* tab OLO KE TELE: IHLD -> progres lapangan */
+  function parseOLO(text){
+    var rows = Papa.parse(text, { skipEmptyLines: true }).data, hi = rows.findIndex(function(r){ return r.some(function(c){ return norm(c) === 'ihld'; }); });
+    if(hi < 0) throw new Error('Header IHLD tidak ditemukan di tab OLO');
+    var h = rows[hi].map(norm), ix = function(n){ return h.indexOf(n); }, map = {};
+    var iI = ix('ihld'), iP = ix('progress lapangan'), iS = ix('sub status'), iN = ix('nama proyek');
+    rows.slice(hi + 1).forEach(function(r){ var id = String(r[iI] || '').trim(); if(!id) return; map[id] = { prog: String(r[iP] || '').trim(), sub: iS < 0 ? '' : String(r[iS] || '').trim(), nama: iN < 0 ? '' : String(r[iN] || '').trim() }; });
     return map;
   }
   async function fetchCsv(gid){
@@ -88,22 +103,33 @@
   }
   async function load(){
     S.err = ''; S.ssErr = ''; render(true);
-    var rb = await Promise.allSettled([fetchCsv(GID), fetchCsv(GID_SS)]);
+    var rb = await Promise.allSettled([fetchCsv(GID), fetchCsv(GID_SS), fetchCsv(GID_OLO)]);
     if(rb[0].status === 'fulfilled'){ try{ S.data = parse(rb[0].value); }catch(e){ S.err = e.message; S.data = S.data || []; } }
     else { S.data = S.data || []; S.err = (rb[0].reason && rb[0].reason.message) || 'gagal memuat Log BIMA'; }
     if(rb[1].status === 'fulfilled'){ try{ S.ssMap = parseSS(rb[1].value); }catch(e){ S.ssErr = e.message; S.ssMap = null; } }
     else { S.ssErr = 'Gsheet SS: ' + ((rb[1].reason && rb[1].reason.message) || 'gagal memuat'); S.ssMap = null; }
+    if(rb[2].status === 'fulfilled'){ try{ S.oloMap = parseOLO(rb[2].value); S.oloErr = ''; }catch(e){ S.oloErr = e.message; S.oloMap = null; } }
+    else { S.oloErr = 'OLO: ' + ((rb[2].reason && rb[2].reason.message) || 'gagal memuat'); S.oloMap = null; }
     S.loaded = new Date(); applyJT(); render();
   }
-  function applyJT(){ (S.data || []).forEach(function(r){ r.sc1 = scShort(r.sc); r.ss = S.ssMap ? (S.ssMap[r.sc1] || null) : undefined; r.jt = r.ss === undefined ? 'na' : (r.ss ? 'ada' : 'belum'); }); }
+  function applyJT(){ (S.data || []).forEach(function(r){
+    r.sc1 = scShort(r.sc); r.ss = S.ssMap ? (S.ssMap[r.sc1] || null) : undefined; r.jt = r.ss === undefined ? 'na' : (r.ss ? 'ada' : 'belum');
+    r.ihA = r.ss ? ids_(r.ss.ihA) : []; r.ihB = r.ss ? ids_(r.ss.ihB) : [];
+    var all = r.ihA.concat(r.ihB), hit = null, hid = '';
+    if(S.oloMap) for(var i = 0; i < all.length && !hit; i++){ if(S.oloMap[all[i]]){ hit = S.oloMap[all[i]]; hid = all[i]; } }
+    r.olo = hit; r.oloId = hid; r.prog = hit ? (hit.prog || '—') : '';
+    r.geser = !!hit && GESER_RE.test(hit.prog || '');
+    r.progSt = !S.oloMap ? 'na' : (hit ? 'ada' : (all.length ? 'tidakada' : 'noid'));
+  }); }
   function filtered(skip){
     var q = S.q.trim().toLowerCase();
     return (S.data || []).filter(function(r){
       return (skip === 'dist' || !S.dist || r.dist === S.dist) && (skip === 'desc' || !S.desc || r.desc === S.desc) && (skip === 'tipe' || !S.tipe || r.tipe === S.tipe) &&
-        (skip === 'produk' || !S.produk || r.produk === S.produk) && (skip === 'aging' || !S.aging || r.bk === S.aging) && (skip === 'jt' || !S.jt || r.jt === S.jt) &&
+        (skip === 'produk' || !S.produk || r.produk === S.produk) && (skip === 'aging' || !S.aging || r.bk === S.aging) && (skip === 'jt' || !S.jt || r.jt === S.jt) && (!S.geser || r.geser) &&
         (!q || (r.wo + ' ' + r.cust + ' ' + r.dist + ' ' + r.zone + ' ' + r.addr + ' ' + r.oss + ' ' + r.sc).toLowerCase().indexOf(q) >= 0);
     });
   }
+  function visibleRows(){ return filtered().slice().sort(function(a, b){ return S.sort === 'baru' ? a.umur - b.umur : (S.sort === 'idle' ? b.idle - a.idle : b.umur - a.umur); }); }
   function tally(list, key){ var m = {}; list.forEach(function(r){ m[r[key]] = (m[r[key]] || 0) + 1; }); return Object.keys(m).map(function(k){ return [k, m[k]]; }).sort(function(a, b){ return b[1] - a[1]; }); }
   function donut(items, key, cur, label){
     var col = function(x, i){ return key === 'jtl' ? (x[0] === 'Ada permintaan JT' ? '#167A4B' : '#D7141A') : PAL[i % PAL.length]; };
@@ -113,6 +139,19 @@
       svg += '<circle cx="56" cy="56" r="' + R + '" fill="none" stroke="' + col(x, i) + '" stroke-width="13" stroke-dasharray="' + Math.max(len - gap, .1) + ' ' + C + '" stroke-dashoffset="' + (-acc) + '"/>'; acc += len; });
     var lg = items.slice(0, 7).map(function(x, i){ return '<div class="lgi' + (x[0] === cur ? ' on' : '') + '" data-k="' + key + '" data-v="' + esc(x[0]) + '"><i style="background:' + col(x, i) + '"></i><span title="' + esc(x[0]) + '">' + esc(x[0]) + '</span><b>' + x[1] + '</b></div>'; }).join('');
     return '<div class="dnr"><div class="dn">' + svg + '</svg><div class="c"><b>' + tot + '</b><span>' + label + '</span></div></div><div class="lg">' + lg + '</div></div>';
+  }
+  function ihCell(r){
+    if(r.jt === 'na') return '<span class="sub">—</span>';
+    if(!r.ihA.length && !r.ihB.length) return '<span class="sub">' + (r.jt === 'belum' ? 'tidak ada di Gsheet SS' : 'belum diisi') + '</span>';
+    var a = r.ihA.length ? '<span class="ihid">' + esc(r.ihA.join(', ')) + '</span>' : '<span class="sub">—</span>';
+    return a + (r.ihB.length ? '<div class="sub">Site B: <span class="ihid">' + esc(r.ihB.join(', ')) + '</span></div>' : '');
+  }
+  function progCell(r){
+    if(r.progSt === 'na') return '<span class="sub">tidak terbaca</span>';
+    if(r.progSt === 'noid') return '<span class="sub">tanpa ID iHLD</span>';
+    if(r.progSt === 'tidakada') return '<span class="pill pg0">ID tidak ada di OLO</span>';
+    var t = (r.prog || '').toUpperCase(), c = /GOLIVE|UJI TERIMA/.test(t) ? 'pgg' : (/DROP/.test(t) ? 'pgd' : (/HOLD/.test(t) ? 'pgh' : 'pgo'));
+    return '<span class="pill ' + c + '">' + esc(r.prog) + '</span>' + (r.geser ? '<div><span class="pill gsb">⚡ GESER BIMA</span></div>' : '') + (r.olo && r.olo.sub ? '<div class="sub">' + esc(r.olo.sub) + '</div>' : '') + '<div class="sub">iHLD ' + esc(r.oloId) + '</div>';
   }
   function jtCell(r){
     if(r.jt === 'na') return '<span class="sub">tidak terbaca</span>';
@@ -131,6 +170,7 @@
     if(loading && !S.data){ host.innerHTML = h + '<p class="section-desc">Memuat...</p></div></div>'; return; }
     if(S.err) h += '<div class="active-filter-badge" style="display:flex;background:#FBE4E5;color:#D7141A;margin-top:10px;">⚠ ' + esc(S.err) + '</div>';
     if(S.ssErr) h += '<div class="active-filter-badge" style="display:flex;background:#FFF0D6;color:#C27A0A;margin-top:10px;">⚠ Status permintaan JT tidak bisa dicek: ' + esc(S.ssErr) + '</div>';
+    if(S.oloErr) h += '<div class="active-filter-badge" style="display:flex;background:#FFF0D6;color:#C27A0A;margin-top:10px;">⚠ Progres lapangan tidak bisa dicek: ' + esc(S.oloErr) + '</div>';
     var all = S.data || [];
     if(!all.length){ host.innerHTML = h + '<div class="card" style="margin-top:12px;padding:18px;"><b>Belum ada data.</b><div class="section-desc">Tab Log BIMA kosong atau belum bisa dibaca.</div></div></div></div>'; bind(); return; }
     var list = filtered();
@@ -144,6 +184,7 @@
       '<div class="wo-sum g"><b>' + cnt(function(r){ return /new/i.test(r.tipe); }) + '</b><span>New Install</span></div>' +
       '<div class="wo-sum o"><b>' + cnt(function(r){ return /modify/i.test(r.tipe); }) + '</b><span>Modify</span></div>' +
       '<div class="wo-sum o"><b>' + avg + ' hr</b><span>Rata-rata umur</span></div>' +
+      '<div class="wo-sum o" style="cursor:pointer" data-geser="1"><b>⚡ ' + cnt(function(r){ return r.geser; }) + '</b><span>Perlu GESER di BIMA</span></div>' +
       '<div class="wo-sum g"><b>' + cnt(function(r){ return r.jt === 'ada'; }) + '</b><span>Ada permintaan JT dari SS</span></div>' +
       '<div class="wo-sum d"><b>' + cnt(function(r){ return r.jt === 'belum'; }) + '</b><span>Belum ada di Gsheet SS</span></div>' +
       '<div class="wo-sum d"><b>' + cnt(function(r){ return r.umur > 14; }) + '</b><span>Umur &gt; 14 hari</span></div>' +
@@ -165,20 +206,23 @@
         return t.map(function(x){ return '<div class="bl" data-k="q" data-v="' + esc(x[0]) + '"><span class="n" title="' + esc(x[0]) + '">' + esc(x[0]) + '</span><span class="t"><i style="width:' + (x[1] / mx * 100) + '%"></i></span><b>' + x[1] + '</b></div>'; }).join('');
       })() + '</div></div>';
 
+    var gs = all.filter(function(r){ return r.geser; });
+    if(gs.length) h += '<div class="geser-box"><div><b>⚡ ' + gs.length + ' WO perlu digeser di BIMA</b><div class="sub">Progres lapangan di OLO sudah sampai 07 GOLIVE / 08 UJI TERIMA / 10 HOLD / 11 PROPOSED DROP / APPROVED DROP, tapi WO masih STARTWORK di BIMA.</div></div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-geser="1">' + (S.geser ? '✕ Tampilkan semua' : 'Tampilkan saja') + '</button><button type="button" class="btn" id="bmCopyGeser">📋 Salin WO</button></div></div>';
     h += '<div class="wo-toolbar" style="margin-top:14px;"><input type="text" id="bmSearch" placeholder="🔎 Cari WO / customer / district / alamat..." value="' + esc(S.q) + '">' +
       '<select id="bmSort"><option value="umur"' + (S.sort === 'umur' ? ' selected' : '') + '>Urut: Umur terlama</option><option value="baru"' + (S.sort === 'baru' ? ' selected' : '') + '>Urut: Terbaru dibuat</option><option value="idle"' + (S.sort === 'idle' ? ' selected' : '') + '>Urut: Lama tak diubah</option></select>' +
-      ((S.dist || S.desc || S.tipe || S.produk || S.aging || S.jt || S.q) ? '<button type="button" class="btn" id="bmClear">✕ Reset filter</button>' : '') + '<span class="count">' + list.length + ' dari ' + all.length + ' WO</span></div>';
-    var rows = list.slice().sort(function(a, b){ return S.sort === 'baru' ? a.umur - b.umur : (S.sort === 'idle' ? b.idle - a.idle : b.umur - a.umur); });
-    h += '<div class="tw"><table><thead><tr><th>Work Order</th><th>Permintaan JT dari SS</th><th>Customer</th><th>District / STO</th><th>Produk</th><th>Tipe</th><th>Tahap</th><th>Dibuat</th><th>Umur</th><th>Terakhir diubah</th></tr></thead><tbody>';
-    if(!rows.length) h += '<tr><td colspan="10" style="text-align:center;padding:20px;color:var(--text-dim)">Tidak ada WO pada filter ini.</td></tr>';
+      ((S.dist || S.desc || S.tipe || S.produk || S.aging || S.jt || S.geser || S.q) ? '<button type="button" class="btn" id="bmClear">✕ Reset filter</button>' : '') + '<button type="button" class="btn" id="bmCopyTbl" title="Salin tabel (bisa ditempel ke Excel)">📋 Salin tabel</button><span class="count">' + list.length + ' dari ' + all.length + ' WO</span></div>';
+    var rows = visibleRows();
+    h += '<div class="tw"><table><thead><tr><th>Work Order</th><th>Permintaan JT dari SS</th><th>ID iHLD Site A</th><th>Progres Lapangan</th><th>Customer</th><th>District / STO</th><th>Produk</th><th>Tipe</th><th>Tahap</th><th>Dibuat</th><th>Umur</th><th>Terakhir diubah</th></tr></thead><tbody>';
+    if(!rows.length) h += '<tr><td colspan="12" style="text-align:center;padding:20px;color:var(--text-dim)">Tidak ada WO pada filter ini.</td></tr>';
     rows.forEach(function(r){
       var op = S.open[r.wo];
-      h += '<tr class="r" data-wo="' + esc(r.wo) + '"><td><span class="wo">' + esc(r.wo) + '</span><div class="sub sc" title="SC Order">' + esc(r.sc1) + '</div></td><td>' + jtCell(r) + '</td><td><b>' + esc(r.cust) + '</b><div class="sub">' + esc(r.addrS) + '</div></td>' +
+      h += '<tr class="r' + (r.geser ? ' gs' : '') + '" data-wo="' + esc(r.wo) + '"><td><span class="wo">' + esc(r.wo) + '</span><div class="sub sc" title="SC Order">' + esc(r.sc1) + '</div></td><td>' + jtCell(r) + '</td><td>' + ihCell(r) + '</td><td>' + progCell(r) + '</td><td><b>' + esc(r.cust) + '</b><div class="sub">' + esc(r.addrS) + '</div></td>' +
         '<td>' + esc(r.dist) + '<div class="sub">STO ' + esc(r.zone) + '</div></td><td>' + esc(r.produk) + '</td><td>' + esc(r.tipe) + '</td>' +
         '<td><span class="pill ' + (/review/i.test(r.desc) ? 'rv' : (/modify/i.test(r.tipe) ? 'mo' : '')) + '">' + esc(r.desc) + '</span><div class="sub">' + esc(r.status) + '</div></td>' +
         '<td>' + fmtD(r.c) + '</td><td><span class="age ' + ageCls(r.umur) + '">' + r.umur + ' hr</span></td><td>' + fmtD(r.m) + '<div class="sub">' + (r.idle === 0 ? 'hari ini' : r.idle + ' hr lalu') + '</div></td></tr>';
-      if(op) h += '<tr class="dt"><td colspan="10"><dl><dt>Alamat</dt><dd>' + esc(r.addr) + '</dd><dt>SC Order Number</dt><dd>' + esc(r.sc) + '</dd><dt>OSS Order Id</dt><dd>' + esc(r.oss) + '</dd><dt>Owner Group</dt><dd>' + esc(r.owner) + '</dd><dt>Product Type</dt><dd>' + esc(r.ptype) + '</dd><dt>WO Class</dt><dd>' + esc(r.cls) + '</dd><dt>Status Date</dt><dd>' + fmtD(r.sd) + '</dd>' +
-        (r.kontrak && r.kontrak.replace(/[-\s|]/g, '') ? '<dt>No. Kontrak</dt><dd>' + esc(r.kontrak) + '</dd>' : '') + (r.ordtsel ? '<dt>Order ID TSEL</dt><dd>' + esc(r.ordtsel) + '</dd>' : '') + '<dt>SC Order (lengkap)</dt><dd>' + esc(r.sc) + '</dd>' + ssDetail(r) + '</dl></td></tr>';
+      if(op) h += '<tr class="dt"><td colspan="12"><dl><dt>Alamat</dt><dd>' + esc(r.addr) + '</dd><dt>SC Order Number</dt><dd>' + esc(r.sc) + '</dd><dt>OSS Order Id</dt><dd>' + esc(r.oss) + '</dd><dt>Owner Group</dt><dd>' + esc(r.owner) + '</dd><dt>Product Type</dt><dd>' + esc(r.ptype) + '</dd><dt>WO Class</dt><dd>' + esc(r.cls) + '</dd><dt>Status Date</dt><dd>' + fmtD(r.sd) + '</dd>' +
+        (r.kontrak && r.kontrak.replace(/[-\s|]/g, '') ? '<dt>No. Kontrak</dt><dd>' + esc(r.kontrak) + '</dd>' : '') + (r.ordtsel ? '<dt>Order ID TSEL</dt><dd>' + esc(r.ordtsel) + '</dd>' : '') + '<dt>Progres Lapangan (OLO)</dt><dd>' + esc(r.prog || '—') + (r.olo && r.olo.nama ? ' · ' + esc(r.olo.nama) : '') + '</dd><dt>SC Order (lengkap)</dt><dd>' + esc(r.sc) + '</dd>' + ssDetail(r) + '</dl></td></tr>';
     });
     h += '</tbody></table></div></div></div>';
     host.innerHTML = h; bind();
@@ -190,8 +234,18 @@
     host.querySelectorAll('[data-jt]').forEach(function(el){ el.onclick = function(e){ e.stopPropagation(); S.jt = S.jt === el.dataset.jt ? '' : el.dataset.jt; render(); }; });
     var q = document.getElementById('bmSearch'); if(q) q.oninput = function(){ S.q = this.value; var p = this.selectionStart; render(); var n = document.getElementById('bmSearch'); n.focus(); n.setSelectionRange(p, p); };
     var so = document.getElementById('bmSort'); if(so) so.onchange = function(){ S.sort = this.value; render(); };
-    var cl = document.getElementById('bmClear'); if(cl) cl.onclick = function(){ S.q = S.dist = S.desc = S.tipe = S.produk = S.aging = S.jt = ''; render(); };
-    host.querySelectorAll('tr.r').forEach(function(tr){ tr.onclick = function(){ var w = tr.dataset.wo; S.open[w] = !S.open[w]; render(); }; });
+    var cl = document.getElementById('bmClear'); if(cl) cl.onclick = function(){ S.q = S.dist = S.desc = S.tipe = S.produk = S.aging = S.jt = S.geser = ''; render(); };
+    host.querySelectorAll('[data-geser]').forEach(function(el){ el.onclick = function(e){ e.stopPropagation(); S.geser = S.geser ? '' : '1'; render(); }; });
+    var copy = function(txt, btn, msg){ try{ navigator.clipboard.writeText(txt); var o = btn.textContent; btn.textContent = msg; setTimeout(function(){ btn.textContent = o; }, 1200); }catch(e){} };
+    var cg = document.getElementById('bmCopyGeser'); if(cg) cg.onclick = function(){ copy((S.data || []).filter(function(r){ return r.geser; }).map(function(r){ return r.wo; }).join('\n'), cg, 'Tersalin ✓'); };
+    var ct = document.getElementById('bmCopyTbl'); if(ct) ct.onclick = function(){
+      var H = ['Work Order','SC Order','Permintaan JT dari SS','ID iHLD Site A','ID iHLD Site B','Progres Lapangan','Geser BIMA','Customer','District','STO','Produk','Tipe','Tahap','Dibuat','Umur (hari)','Terakhir diubah'];
+      var q = function(v){ return String(v == null ? '' : v).replace(/[\t\r\n]+/g, ' '); };
+      var L = [H.join('\t')].concat(visibleRows().map(function(r){ return [r.wo, r.sc1, r.jt === 'ada' ? 'Ada' : (r.jt === 'belum' ? 'Belum ada' : ''), r.ihA.join(', '), r.ihB.join(', '), r.prog, r.geser ? 'YA' : '', r.cust, r.dist, r.zone, r.produk, r.tipe, r.desc, fmtD(r.c), r.umur, fmtD(r.m)].map(q).join('\t'); }));
+      copy(L.join('\n'), ct, 'Tersalin ✓'); };
+    host.querySelectorAll('tr.r').forEach(function(tr){ tr.onclick = function(e){
+      var sel = window.getSelection && window.getSelection().toString(); if(sel && sel.length) return;   // sedang blok teks (copy), jangan buka detail
+      var w = tr.dataset.wo; S.open[w] = !S.open[w]; render(); }; });
   }
   window.bimaOpen = function(){ if(!S.data || !S.loaded || (new Date() - S.loaded) > 300000) load(); else render(); };
 })();
