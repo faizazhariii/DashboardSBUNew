@@ -217,8 +217,13 @@ function tulisLog_(ss, perubahan){
 
 /* ---------- Pesan Telegram ---------- */
 function kirimTelegram_(teks){
-  const potong = []; let cur = '';
-  teks.split('\n').forEach(function(l){ if((cur + '\n' + l).length > 3800){ potong.push(cur); cur = l; } else cur += (cur ? '\n' : '') + l; });
+  const potong = []; let cur = '', buka = false;
+  teks.split('\n').forEach(function(l){
+    if((cur + '\n' + l).length > 3700){ potong.push(cur + (buka ? '</pre>' : '')); cur = buka ? '<pre>' : ''; }
+    cur += (cur ? '\n' : '') + l;
+    if(l.indexOf('<pre>') >= 0) buka = true;
+    if(l.indexOf('</pre>') >= 0) buka = false;
+  });
   if(cur) potong.push(cur);
   potong.forEach(function(t){
     const res = UrlFetchApp.fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
@@ -232,62 +237,51 @@ const HARI_ = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 const GARIS_ = '━━━━━━━━━━━━━━━━━━';
 const SRC_SINGKAT_ = { 'PT3 TA':'TA', 'PT3 FH':'FH', 'HEM':'HEM', 'OLO':'OLO', 'MBB':'MBB', 'QE':'QE' };
 
-function kartu_(p, baris){
-  let t = '▸ <b>' + esc_(SRC_SINGKAT_[p.src] || p.src) + '</b> · <code>' + esc_(p.id) + '</code>\n   ' + esc_(p.nama).slice(0, 52);
-  (baris || []).forEach(function(b){ t += '\n   ' + b; });
-  return t + '\n';
+function pad_(t, n){ t = String(t == null ? '' : t); return t.length >= n ? t.slice(0, n) : t + new Array(n - t.length + 1).join(' '); }
+function pendekTgl_(t){ return String(t || '').replace(/^[A-Za-z]{3},\s*/, ''); }
+function deltaKomit_(cat){
+  const m = String(cat).match(/(mundur|dimajukan) (\d+)/);
+  if(m) return (m[1] === 'mundur' ? '+' : '-') + m[2] + 'h';
+  return /baru/.test(cat) ? 'baru' : (/dihapus/.test(cat) ? 'hapus' : '');
 }
+function geserKomit_(p){ const m = String(p.catatan).match(/(mundur|dimajukan) (\d+)/); return m ? (m[1] === 'mundur' ? +m[2] : -m[2]) : 0; }
 
 function susunPesan_(perubahan, records, baseline, opsi){
   opsi = opsi || { judul: 'UPDATE ORDER', sub: 'sejak run sebelumnya', kondisi: true };
   const now = new Date();
   const jam = Utilities.formatDate(now, tz_(), 'HH.mm');
-  let t = '📊 <b>' + opsi.judul + '</b>\n🗓 ' + HARI_[now.getDay()] + ', ' + now.getDate() + ' ' + BLN_PENDEK_[now.getMonth()] + ' ' + now.getFullYear() + ' · ' + jam + ' WIB\n' + GARIS_ + '\n';
-  if(baseline){ return t + 'Baseline pertama tersimpan.\n' + records.length + ' LoP dari ' + SUMBER.length + ' sumber.\nPerbandingan mulai dikirim pada run berikutnya.'; }
+  let t = '🔔 <b>' + opsi.judul + '</b>\n' + HARI_[now.getDay()] + ', ' + now.getDate() + ' ' + BLN_PENDEK_[now.getMonth()] + ' ' + now.getFullYear() + ' · ' + jam + ' WIB\n';
+  if(baseline){ return t + '\nBaseline pertama tersimpan.\n' + records.length + ' LoP dari ' + SUMBER.length + ' sumber.\nPerbandingan mulai dikirim pada run berikutnya.'; }
   const per = function(j){ return perubahan.filter(function(p){ return p.jenis === j; }); };
-  const jml = function(j){ return per(j).length; };
   const lopUnik = {}; perubahan.forEach(function(p){ lopUnik[p.src + '|' + p.id] = 1; });
-  t += '<b>' + Object.keys(lopUnik).length + ' LoP berubah</b> ' + opsi.sub + '\n\n';
-  t += '🟢 Golive <b>' + jml('GOLIVE') + '</b>  ·  🔴 Drop <b>' + jml('DROP') + '</b>\n';
-  t += '🔼 Naik <b>' + jml('NAIK') + '</b>  ·  🔽 Mundur <b>' + jml('MUNDUR') + '</b>\n';
-  t += '⏰ Komitmen <b>' + jml('KOMIT') + '</b>  ·  📝 Update <b>' + jml('UPDATE') + '</b>  ·  🆕 Baru <b>' + jml('BARU') + '</b>\n';
+  t += '<b>' + Object.keys(lopUnik).length + ' LoP berubah</b> ' + opsi.sub + '\n';
+  const ring = [['🟢', 'GOLIVE'], ['🔴', 'DROP'], ['🔼', 'NAIK'], ['🔽', 'MUNDUR'], ['⏰', 'KOMIT'], ['📝', 'UPDATE'], ['🆕', 'BARU']]
+    .filter(function(x){ return per(x[1]).length; }).map(function(x){ return x[0] + ' ' + per(x[1]).length; });
+  if(ring.length) t += ring.join('  ') + '\n';
 
-  const judul = function(ic, nama, n){ return '\n' + GARIS_ + '\n' + ic + ' <b>' + nama + ' (' + n + ')</b>\n\n'; };
-  const lebih = function(a){ return a.length > MAX_BARIS_PER_BAGIAN ? '… +' + (a.length - MAX_BARIS_PER_BAGIAN) + ' lainnya, lihat dashboard › Update Terbaru\n' : ''; };
-  const bagian = function(ic, nama, jenis, fmt){
-    const a = per(jenis); if(!a.length) return '';
-    let s = judul(ic, nama, a.length);
-    a.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ s += fmt(p); });
-    return s + lebih(a);
+  const sing = function(p){ return pad_(SRC_SINGKAT_[p.src] || p.src, 3); };
+  const baris = function(p, kanan){
+    const ids = String(p.id).length > 8 ? String(p.id).slice(0, 7) + '…' : String(p.id);
+    return sing(p) + ' ' + pad_(ids, 8) + ' ' + kanan + '\n    ' + String(p.nama || '').replace(/\s+/g, ' ').slice(0, 34) + '\n';
   };
-  t += bagian('🟢', 'GOLIVE BARU', 'GOLIVE', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
-  t += bagian('🔴', 'DROP BARU', 'DROP', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
-  t += bagian('🔼', 'NAIK TAHAP', 'NAIK', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
-  t += bagian('🔽', 'MUNDUR TAHAP', 'MUNDUR', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
-
-  // komitmen: ringkasan arah + per sumber + yang paling jauh bergeser
-  const km = per('KOMIT');
-  if(km.length){
-    const geser = function(p){ const m = String(p.catatan).match(/(mundur|dimajukan) (\d+)/); return m ? (m[1] === 'mundur' ? +m[2] : -m[2]) : 0; };
-    const mundur = km.filter(function(p){ return /^mundur/.test(p.catatan); }).length;
-    const maju = km.filter(function(p){ return /^dimajukan/.test(p.catatan); }).length;
-    const baru = km.filter(function(p){ return p.catatan === 'komitmen baru'; }).length;
-    const hapus = km.filter(function(p){ return p.catatan === 'komitmen dihapus'; }).length;
-    t += judul('⏰', 'KOMITMEN BERUBAH', km.length);
-    t += '↗️ Mundur <b>' + mundur + '</b> · ↘️ Dimajukan <b>' + maju + '</b> · ➕ Baru <b>' + baru + '</b> · ➖ Dihapus <b>' + hapus + '</b>\n';
-    const bySrc = {}; km.forEach(function(p){ bySrc[p.src] = (bySrc[p.src] || 0) + 1; });
-    t += Object.keys(bySrc).map(function(k){ return esc_(SRC_SINGKAT_[k] || k) + ' ' + bySrc[k]; }).join(' · ') + '\n\n';
-    const top = km.slice().sort(function(a, b){ return Math.abs(geser(b)) - Math.abs(geser(a)); }).slice(0, MAX_BARIS_PER_BAGIAN);
-    top.forEach(function(p){ t += kartu_(p, ['📅 ' + esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>', '<i>' + esc_(p.catatan) + '</i>']); });
-    t += (km.length > top.length ? '… +' + (km.length - top.length) + ' lainnya, lihat dashboard › Update Terbaru\n' : '');
-  }
-  const upd = per('UPDATE');
-  if(upd.length){
-    t += judul('📝', 'UPDATE BARU', upd.length);
-    upd.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ t += kartu_(p, ['<i>' + esc_(String(p.catatan).slice(0, 90)) + '</i>']); });
-    t += lebih(upd);
-  }
-  t += bagian('🆕', 'LoP BARU', 'BARU', function(p){ return kartu_(p, [esc_(p.ke)]); });
+  const ringkas = function(x, n){ x = strip_(x); return x.length > n ? x.slice(0, n - 1) + '…' : x; };
+  const bagian = function(ic, nama, arr, fmt){
+    if(!arr.length) return '';
+    let s = '\n' + ic + ' <b>' + nama + ' (' + arr.length + ')</b>\n<pre>';
+    arr.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ s += esc_(fmt(p)); });
+    s += '</pre>';
+    if(arr.length > MAX_BARIS_PER_BAGIAN) s += '… +' + (arr.length - MAX_BARIS_PER_BAGIAN) + ' lainnya, lihat dashboard › Update Terbaru\n';
+    return s;
+  };
+  const alih = function(p){ return baris(p, ringkas(p.dari, 11) + ' ➜ ' + ringkas(p.ke, 11)); };
+  t += bagian('🟢', 'GOLIVE', per('GOLIVE'), alih);
+  t += bagian('🔴', 'DROP', per('DROP'), alih);
+  t += bagian('🔼', 'NAIK TAHAP', per('NAIK'), alih);
+  t += bagian('🔽', 'MUNDUR TAHAP', per('MUNDUR'), alih);
+  const km = per('KOMIT').sort(function(a, b){ return Math.abs(geserKomit_(b)) - Math.abs(geserKomit_(a)); });
+  t += bagian('⏰', 'KOMITMEN BERUBAH', km, function(p){ return baris(p, pendekTgl_(p.dari) + ' ➜ ' + pendekTgl_(p.ke) + ' (' + deltaKomit_(p.catatan) + ')'); });
+  t += bagian('📝', 'UPDATE DETAIL', per('UPDATE'), function(p){ return baris(p, ringkas(p.catatan, 22)); });
+  t += bagian('🆕', 'LoP BARU', per('BARU'), function(p){ return baris(p, ringkas(p.ke, 22)); });
   if(!perubahan.length) t += '\nTidak ada perubahan.\n';
   if(!opsi.kondisi) return t;
 
@@ -295,7 +289,7 @@ function susunPesan_(perubahan, records, baseline, opsi){
   const ogp = records.filter(function(r){ return r.cat === 'ogp'; });
   const terlewat = ogp.filter(function(r){ const d = keDate_(r.komit); return d && d < t0; });
   const basi = ogp.filter(function(r){ const d = lastUpdate_(r.detail); return d && Math.round((t0 - d) / 86400000) > STALE_DAYS; });
-  t += '\n' + GARIS_ + '\n⚠ <b>KONDISI SAAT INI</b>\n⏰ Komitmen terlewat: <b>' + terlewat.length + '</b>\n⏱ Belum update &gt;' + STALE_DAYS + ' hari: <b>' + basi.length + '</b>';
+  t += '\n⚠ <b>KONDISI SAAT INI</b>\n⏰ Komitmen terlewat: <b>' + terlewat.length + '</b>\n⏱ Belum update &gt;' + STALE_DAYS + ' hari: <b>' + basi.length + '</b>';
   return t;
 }
 
