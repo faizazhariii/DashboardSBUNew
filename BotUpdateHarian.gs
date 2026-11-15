@@ -22,10 +22,10 @@
  *      - Chat id pribadi: chat ke bot @userinfobot di Telegram -> dia membalas "Id: 123456789".
  *        (Fungsi cariChatId tidak jalan kalau bot punya webhook aktif, seperti bot Golive/Proyeksi.)
  *      - Bot HARUS sudah kamu START (kirim /start ke bot-nya), kalau belum Telegram menolak kirim japri.
- * 3. Run "testDigestSekarang" (izinkan akses Sheets & eksternal saat diminta).
+ * 3. Run "testCekPerubahan" (izinkan akses Sheets & eksternal saat diminta).
  *    Run PERTAMA hanya menyimpan baseline (belum ada pembanding) dan kirim pesan konfirmasi.
- * 4. Run "pasangTriggerHarian" sekali -> jadwal otomatis tiap hari jam 07.xx WIB.
- *    (Kalau mau jam lain, ubah JAM_KIRIM.) Pastikan timezone project = Asia/Jakarta
+ * 4. Run "pasangTrigger" sekali -> cek perubahan tiap INTERVAL_MENIT menit (hanya LoP yang berubah)
+ *    + rangkuman semua perubahan hari ini sekitar jam 20.00 WIB. Pastikan timezone project = Asia/Jakarta
  *    (Project Settings > Time zone).
  * 5. Run kedua dan seterusnya membandingkan dengan run sebelumnya.
  * ---------------------------------------------------------------
@@ -35,7 +35,10 @@ const TELEGRAM_BOT_TOKEN       = 'ISI_TOKEN_BOT';
 const TELEGRAM_CHAT_ID_PRIBADI = 'ISI_CHAT_ID_PRIBADI';
 
 const SPREADSHEET_ID = '1PGH5LCx2zyFn2ps8J9kJ93tc6KjnLc1Hof1F2SB8DBM';
-const JAM_KIRIM = 7;                 // 07.00-08.00 WIB
+const INTERVAL_MENIT = 10;           // cek perubahan tiap N menit (boleh: 1, 5, 10, 15, 30)
+const JAM_RANGKUMAN = 20;            // rangkuman seluruh perubahan hari ini (sekitar 20.00 WIB)
+const JAM_SENYAP_MULAI = 22;         // jam senyap: tidak kirim notifikasi (perubahan tetap tercatat)
+const JAM_SENYAP_SELESAI = 6;        // samakan kedua angka ini kalau ingin menonaktifkan
 const STALE_DAYS = 25;
 const MAX_BARIS_PER_BAGIAN = 12;     // baris per bagian di pesan Telegram
 const MAX_LOG_BARIS = 4000;          // log lama dipangkas
@@ -139,11 +142,13 @@ function bacaSumber_(ss, src){
 /* ---------- Snapshot ---------- */
 function ambilTab_(ss, nama, header){
   let sh = ss.getSheetByName(nama);
-  if(!sh){ sh = ss.insertSheet(nama); sh.getRange(1, 1, 1, header.length).setValues([header]).setFontWeight('bold'); sh.setFrozenRows(1); }
+  if(!sh){ sh = ss.insertSheet(nama); sh.setFrozenRows(1); }
+  const cur = sh.getRange(1, 1, 1, header.length).getValues()[0];
+  if(cur.join('|') !== header.join('|')) sh.getRange(1, 1, 1, header.length).setValues([header]).setFontWeight('bold');
   return sh;
 }
 const HDR_SNAP = ['key', 'src', 'id', 'nama', 'branch', 'status', 'komit', 'cat', 'detail_hash', 'detail_awal', 'tanggal'];
-const HDR_LOG = ['tanggal', 'src', 'id', 'nama', 'branch', 'jenis', 'dari', 'ke', 'catatan'];
+const HDR_LOG = ['tanggal', 'src', 'id', 'nama', 'branch', 'jenis', 'dari', 'ke', 'catatan', 'dari_raw', 'ke_raw'];
 
 function bacaSnapshot_(ss){
   const sh = ss.getSheetByName(TAB_SNAPSHOT); const map = {}; let ada = false;
@@ -155,11 +160,12 @@ function bacaSnapshot_(ss){
 }
 
 /* ---------- Deteksi perubahan ---------- */
+function norm0_(v){ return String(v == null ? '' : v); }
 function bandingkan_(lama, baru){
   const hasil = [];
-  const tambah = function(r, jenis, dari, ke, cat){ hasil.push({ src: r.src, id: r.id, nama: r.nama, branch: r.branch, jenis: jenis, dari: dari || '', ke: ke || '', catatan: cat || '' }); };
+  const tambah = function(r, jenis, dari, ke, cat){ const o = { src: r.src, id: r.id, nama: r.nama, branch: r.branch, jenis: jenis, dari: dari || '', ke: ke || '', catatan: cat || '', dr: '', kr: '' }; hasil.push(o); return o; };
   baru.forEach(function(r){
-    const o = lama[r.key];
+    const o = lama[r.key]; const o0 = o || {};
     const awalBaru = String(r.detail || '').replace(/\s+/g, ' ').slice(0, 160);
     if(!o){ tambah(r, 'BARU', '', strip_(r.status), awalBaru); return; }
     const jenisList = [];
@@ -178,7 +184,7 @@ function bandingkan_(lama, baru){
     if(md5_(r.detail) !== o.hash){
       jenisList.push(['UPDATE', '', '', awalBaru]);
     }
-    jenisList.forEach(function(j){ tambah(r, j[0], j[1], j[2], j[3] || (j[0] === 'GOLIVE' || j[0] === 'DROP' || j[0] === 'NAIK' || j[0] === 'MUNDUR' || j[0] === 'STATUS' ? awalBaru : '')); });
+    jenisList.forEach(function(j){ const ob = tambah(r, j[0], j[1], j[2], j[3] || (j[0] === 'GOLIVE' || j[0] === 'DROP' || j[0] === 'NAIK' || j[0] === 'MUNDUR' || j[0] === 'STATUS' ? awalBaru : '')); if(j[0] === 'KOMIT'){ ob.dr = norm0_(o0.komit); ob.kr = norm0_(r.komit); } });
   });
   return hasil;
 }
@@ -203,7 +209,7 @@ function tulisLog_(ss, perubahan){
   if(!perubahan.length) return;
   const sh = ambilTab_(ss, TAB_LOG, HDR_LOG), tgl = fmtTgl_(new Date());
   sh.getRange(1, 1, sh.getMaxRows(), HDR_LOG.length).setNumberFormat('@');
-  const rows = perubahan.map(function(p){ return [tgl, p.src, p.id, p.nama, p.branch, p.jenis, p.dari, p.ke, p.catatan]; });
+  const rows = perubahan.map(function(p){ return [tgl, p.src, p.id, p.nama, p.branch, p.jenis, p.dari, p.ke, p.catatan, p.dr || '', p.kr || '']; });
   sh.getRange(sh.getLastRow() + 1, 1, rows.length, HDR_LOG.length).setValues(rows);
   const lebih = sh.getLastRow() - 1 - MAX_LOG_BARIS;
   if(lebih > 0) sh.deleteRows(2, lebih);
@@ -232,15 +238,16 @@ function kartu_(p, baris){
   return t + '\n';
 }
 
-function susunPesan_(perubahan, records, baseline){
+function susunPesan_(perubahan, records, baseline, opsi){
+  opsi = opsi || { judul: 'UPDATE ORDER', sub: 'sejak run sebelumnya', kondisi: true };
   const now = new Date();
   const jam = Utilities.formatDate(now, tz_(), 'HH.mm');
-  let t = '📊 <b>UPDATE ORDER</b>\n🗓 ' + HARI_[now.getDay()] + ', ' + now.getDate() + ' ' + BLN_PENDEK_[now.getMonth()] + ' ' + now.getFullYear() + ' · ' + jam + ' WIB\n' + GARIS_ + '\n';
+  let t = '📊 <b>' + opsi.judul + '</b>\n🗓 ' + HARI_[now.getDay()] + ', ' + now.getDate() + ' ' + BLN_PENDEK_[now.getMonth()] + ' ' + now.getFullYear() + ' · ' + jam + ' WIB\n' + GARIS_ + '\n';
   if(baseline){ return t + 'Baseline pertama tersimpan.\n' + records.length + ' LoP dari ' + SUMBER.length + ' sumber.\nPerbandingan mulai dikirim pada run berikutnya.'; }
   const per = function(j){ return perubahan.filter(function(p){ return p.jenis === j; }); };
   const jml = function(j){ return per(j).length; };
   const lopUnik = {}; perubahan.forEach(function(p){ lopUnik[p.src + '|' + p.id] = 1; });
-  t += '<b>' + Object.keys(lopUnik).length + ' LoP berubah</b> sejak run sebelumnya\n\n';
+  t += '<b>' + Object.keys(lopUnik).length + ' LoP berubah</b> ' + opsi.sub + '\n\n';
   t += '🟢 Golive <b>' + jml('GOLIVE') + '</b>  ·  🔴 Drop <b>' + jml('DROP') + '</b>\n';
   t += '🔼 Naik <b>' + jml('NAIK') + '</b>  ·  🔽 Mundur <b>' + jml('MUNDUR') + '</b>\n';
   t += '⏰ Komitmen <b>' + jml('KOMIT') + '</b>  ·  📝 Update <b>' + jml('UPDATE') + '</b>  ·  🆕 Baru <b>' + jml('BARU') + '</b>\n';
@@ -281,7 +288,8 @@ function susunPesan_(perubahan, records, baseline){
     t += lebih(upd);
   }
   t += bagian('🆕', 'LoP BARU', 'BARU', function(p){ return kartu_(p, [esc_(p.ke)]); });
-  if(!perubahan.length) t += '\nTidak ada perubahan sejak run sebelumnya.\n';
+  if(!perubahan.length) t += '\nTidak ada perubahan.\n';
+  if(!opsi.kondisi) return t;
 
   const t0 = new Date(); t0.setHours(0, 0, 0, 0);
   const ogp = records.filter(function(r){ return r.cat === 'ogp'; });
@@ -292,37 +300,95 @@ function susunPesan_(perubahan, records, baseline){
 }
 
 /* ---------- Fungsi utama ---------- */
-function jalankanDigest_(kirim){
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const lama = bacaSnapshot_(ss);
+function bacaSemua_(ss){
   let records = [], gagal = [];
   SUMBER.forEach(function(s){
     try{ const r = bacaSumber_(ss, s); if(!r.length) throw new Error('0 baris'); records = records.concat(r); }
     catch(e){ gagal.push(s.key); Logger.log('GAGAL ' + s.key + ': ' + e.message); }
   });
-  // LoP dari sumber yang gagal tidak dibandingkan
-  const perbandingan = lama.ada ? bandingkan_(lama.map, records) : [];
-  if(lama.ada) tulisLog_(ss, perbandingan);
-  tulisSnapshot_(ss, records, gagal, lama.map);
-  let pesan = susunPesan_(perbandingan, records, !lama.ada);
-  if(gagal.length) pesan += '\n\n⚠ Sumber gagal dibaca: ' + gagal.join(', ');
+  return { records: records, gagal: gagal };
+}
+function jamSenyap_(){
+  if(JAM_SENYAP_MULAI === JAM_SENYAP_SELESAI) return false;
+  const h = Number(Utilities.formatDate(new Date(), tz_(), 'H'));
+  return JAM_SENYAP_MULAI > JAM_SENYAP_SELESAI ? (h >= JAM_SENYAP_MULAI || h < JAM_SENYAP_SELESAI) : (h >= JAM_SENYAP_MULAI && h < JAM_SENYAP_SELESAI);
+}
+
+/** Bandingkan sekarang vs snapshot, catat ke log, kirim laporan LoP yang berubah saja. */
+function cekPerubahan_(kirim, abaikanSenyap){
+  const lock = LockService.getScriptLock();
+  if(!lock.tryLock(20000)){ Logger.log('Masih ada proses lain, dilewati'); return -1; }
+  try{
+    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const lama = bacaSnapshot_(ss), data = bacaSemua_(ss);
+    const per = lama.ada ? bandingkan_(lama.map, data.records) : [];
+    if(!lama.ada){
+      tulisSnapshot_(ss, data.records, data.gagal, lama.map);
+      if(kirim && abaikanSenyap) kirimTelegram_(susunPesan_([], data.records, true));
+      return 0;
+    }
+    // jam senyap: laporan ditahan (snapshot tidak di-update, jadi terkirim saat jam senyap berakhir)
+    if(!abaikanSenyap && jamSenyap_() && per.length) return -2;
+    if(per.length) tulisLog_(ss, per);
+    tulisSnapshot_(ss, data.records, data.gagal, lama.map);
+    if(per.length){
+      let pesan = susunPesan_(per, data.records, false, { judul: 'PERUBAHAN LoP', sub: 'baru terdeteksi', kondisi: false });
+      if(data.gagal.length) pesan += '\n⚠ Sumber gagal dibaca: ' + data.gagal.join(', ');
+      if(kirim) kirimTelegram_(pesan); else Logger.log(pesan);
+    }
+    return per.length;
+  } finally { lock.releaseLock(); }
+}
+/** TRIGGER tiap N menit: kirim hanya kalau ada LoP yang berubah. */
+function cekPerubahan(){ cekPerubahan_(true, false); }
+
+/* ---------- Rangkuman malam: gabungan perubahan hari ini dari UPDATE_LOG ---------- */
+function perubahanHariIni_(ss){
+  const sh = ss.getSheetByName(TAB_LOG); if(!sh || sh.getLastRow() < 2) return [];
+  const tgl = fmtTgl_(new Date());
+  const rows = sh.getRange(2, 1, sh.getLastRow() - 1, HDR_LOG.length).getDisplayValues().filter(function(r){ return String(r[0]).slice(0, 10) === tgl; });
+  const gab = {}, urut = [];
+  rows.forEach(function(r){
+    const p = { src: r[1], id: r[2], nama: r[3], branch: r[4], jenis: String(r[5]).toUpperCase(), dari: r[6], ke: r[7], catatan: r[8], dr: r[9], kr: r[10] };
+    const k = p.src + '|' + p.id + '|' + p.jenis;
+    if(!gab[k]){ gab[k] = p; urut.push(k); return; }
+    const g = gab[k];                       // gabung: dari = paling awal, ke = paling akhir
+    g.ke = p.ke; g.catatan = p.catatan;
+    if(p.jenis === 'KOMIT'){
+      g.kr = p.kr;
+      const sel = selisihHari_(g.dr, g.kr);
+      g.dari = g.dr ? fmtTglPendek_(g.dr) : '—'; g.ke = g.kr ? fmtTglPendek_(g.kr) : '—';
+      g.catatan = !g.dr ? 'komitmen baru' : (!g.kr ? 'komitmen dihapus' : (sel === null ? 'komitmen digeser' : (sel > 0 ? 'mundur ' + sel + ' hari' : (sel < 0 ? 'dimajukan ' + Math.abs(sel) + ' hari' : 'kembali ke semula'))));
+    }
+  });
+  return urut.map(function(k){ return gab[k]; }).filter(function(p){ return !(p.jenis === 'KOMIT' && p.catatan === 'kembali ke semula'); });
+}
+function rangkumanMalam_(kirim){
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const data = bacaSemua_(ss), per = perubahanHariIni_(ss);
+  let pesan = susunPesan_(per, data.records, false, { judul: 'RANGKUMAN HARI INI', sub: 'berubah sepanjang hari ini', kondisi: true });
+  if(data.gagal.length) pesan += '\n\n⚠ Sumber gagal dibaca: ' + data.gagal.join(', ');
   if(kirim) kirimTelegram_(pesan); else Logger.log(pesan);
-  return perbandingan.length;
 }
+/** TRIGGER harian sekitar jam 20.00. */
+function kirimRangkumanMalam(){ rangkumanMalam_(true); }
 
-/** Dipanggil trigger harian. */
-function kirimDigestHarian(){ jalankanDigest_(true); }
-/** Coba manual (kirim ke Telegram). */
-function testDigestSekarang(){ jalankanDigest_(true); }
-/** Coba tanpa kirim Telegram (hasil di Logs). */
-function testTanpaKirim(){ jalankanDigest_(false); }
+/** Coba manual. */
+function testCekPerubahan(){ cekPerubahan_(true, true); }
+function testRangkumanMalam(){ rangkumanMalam_(true); }
+function testTanpaKirim(){ cekPerubahan_(false, true); }
 
-/** Pasang trigger harian (jalankan sekali). */
-function pasangTriggerHarian(){
-  ScriptApp.getProjectTriggers().forEach(function(t){ if(t.getHandlerFunction() === 'kirimDigestHarian') ScriptApp.deleteTrigger(t); });
-  ScriptApp.newTrigger('kirimDigestHarian').timeBased().everyDays(1).atHour(JAM_KIRIM).create();
-  Logger.log('Trigger terpasang: tiap hari sekitar jam ' + JAM_KIRIM + ':00');
+/** Pasang semua trigger (jalankan sekali). */
+function pasangTrigger(){
+  const hapus = ['cekPerubahan', 'kirimRangkumanMalam', 'kirimDigestHarian'];
+  ScriptApp.getProjectTriggers().forEach(function(t){ if(hapus.indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('cekPerubahan').timeBased().everyMinutes(INTERVAL_MENIT).create();
+  ScriptApp.newTrigger('kirimRangkumanMalam').timeBased().everyDays(1).atHour(JAM_RANGKUMAN).nearMinute(0).create();
+  Logger.log('Terpasang: cekPerubahan tiap ' + INTERVAL_MENIT + ' menit; rangkuman tiap hari sekitar ' + JAM_RANGKUMAN + ':00. Jam senyap ' + JAM_SENYAP_MULAI + '-' + JAM_SENYAP_SELESAI);
 }
+function pasangTriggerHarian(){ pasangTrigger(); }
+function lihatTrigger(){ ScriptApp.getProjectTriggers().forEach(function(t){ Logger.log(t.getHandlerFunction() + ' · ' + t.getEventType()); }); }
+
 /** Hapus snapshot (run berikutnya jadi baseline baru). */
 function resetSnapshot(){
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID), sh = ss.getSheetByName(TAB_SNAPSHOT);
@@ -336,7 +402,7 @@ function cariChatId(){
   if(!(j.result || []).length) Logger.log('Belum ada pesan. Kirim /start ke bot dulu. Catatan: jika ada webhook aktif, getUpdates kosong — pakai @userinfobot untuk lihat id.');
 }
 
-/** Hapus baris UPDATE_LOG tanggal hari ini (kalau ada run yang salah). Setelah itu jalankan resetSnapshot lalu testDigestSekarang. */
+/** Hapus baris UPDATE_LOG tanggal hari ini (kalau ada run yang salah). Setelah itu jalankan resetSnapshot lalu testCekPerubahan. */
 function bersihkanLogHariIni(){
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID), sh = ss.getSheetByName(TAB_LOG); if(!sh || sh.getLastRow() < 2) return;
   const tgl = fmtTgl_(new Date()), vals = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getDisplayValues();
