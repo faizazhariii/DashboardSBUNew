@@ -726,6 +726,7 @@
     <div class="tab-group">Monitoring</div>
     <button class="page-tab" id="tabBtnUpd" data-i="🆕" type="button">Update Terbaru</button>
     <button class="page-tab" id="tabBtnBima" data-i="📋" type="button">Log BIMA</button>
+    <button class="page-tab" id="tabBtnSto" data-i="📍" type="button">Master STO</button>
     <button class="page-tab" id="tabBtnPrio" data-i="⭐" type="button">Priority TSEL</button>
     <button class="page-tab" id="tabBtnChecklist" data-i="✅" type="button">Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" data-i="🔌" type="button">Need Modul OLT</button>
@@ -2583,6 +2584,7 @@
     </div>
     <div id="pageUpd" style="display:none;"><div id="updHost"></div></div>
     <div id="pageBima" style="display:none;"><div id="bimaHost"></div></div>
+    <div id="pageSto" style="display:none;"><div id="stoHost"></div></div>
     <div id="pageGolive" style="display:none;">
 
     <div id="goliveCaptureArea">
@@ -6153,7 +6155,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], upd:['tabBtnUpd','pageUpd'], bima:['tabBtnBima','pageBima'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], upd:['tabBtnUpd','pageUpd'], bima:['tabBtnBima','pageBima'], sto:['tabBtnSto','pageSto'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -6175,6 +6177,7 @@ document.getElementById('tabBtnNeedOlt').onclick = ()=> switchTab('needOlt');
 document.getElementById('tabBtnGolive').onclick = ()=> switchTab('golive');
 document.getElementById('tabBtnUpd').onclick = ()=> { switchTab('upd'); if(window.updOpen) window.updOpen(); };
 document.getElementById('tabBtnBima').onclick = ()=> { switchTab('bima'); if(window.bimaOpen) window.bimaOpen(); };
+document.getElementById('tabBtnSto').onclick = ()=> { switchTab('sto'); if(window.stoOpen) window.stoOpen(); };
 
 /* ============================================================
    Halaman "Resume PT3 TA & PT3 FH" — KPI, Priority TSEL, Pivot Branch × Status
@@ -11592,6 +11595,8 @@ oloLoadDataAuto();
 <script src="needoltcap.js?v=20261115b"></script>
 <script src="updates.js?v=20261115a"></script>
 <script src="bima.js?v=20261115f"></script>
+<script src="stomaster.js?v=20261115a"></script>
+<script src="stopage.js?v=20261115a"></script>
 <script>
 /* Dropdown sidebar PT3 */
 (function(){
