@@ -443,6 +443,10 @@ function cariChatId(){
 /** Hapus baris UPDATE_LOG tanggal hari ini (kalau ada run yang salah). Setelah itu jalankan resetSnapshot lalu testCekPerubahan. */
 function bersihkanLogHariIni(){
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID), sh = ss.getSheetByName(TAB_LOG); if(!sh || sh.getLastRow() < 2) return;
-  const tgl = fmtTgl_(new Date()), vals = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getDisplayValues();
-  for(let i = vals.length - 1; i >= 0; i--){ if(String(vals[i][0]).slice(0, 10) === tgl) sh.deleteRow(i + 2); }
+  const tgl = fmtTgl_(new Date()), n = sh.getLastRow() - 1, w = HDR_LOG.length;
+  const vals = sh.getRange(2, 1, n, w).getDisplayValues();
+  const sisa = vals.filter(function(r){ return String(r[0]).slice(0, 10) !== tgl; });
+  sh.getRange(2, 1, n, w).clearContent();                       // satu kali tulis, bukan hapus baris satu-satu
+  if(sisa.length){ const rg = sh.getRange(2, 1, sisa.length, w); rg.setNumberFormat('@'); rg.setValues(sisa); }
+  Logger.log('Dihapus ' + (n - sisa.length) + ' baris hari ini, sisa ' + sisa.length);
 }
