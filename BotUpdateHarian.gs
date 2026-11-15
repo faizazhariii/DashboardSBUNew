@@ -235,6 +235,7 @@ function kirimTelegram_(teks){
 }
 const HARI_ = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 const MAX_LOP_REALTIME = 25;
+const BATAS_LONJAKAN = 30;   // kalau LoP berubah sekaligus > ini, kirim 1 pesan singkat (bukan daftar panjang)
 const GARIS_ = '━━━━━━━━━━━━━━━━━━';
 const SRC_SINGKAT_ = { 'PT3 TA':'TA', 'PT3 FH':'FH', 'HEM':'HEM', 'OLO':'OLO', 'MBB':'MBB', 'QE':'QE' };
 
@@ -366,7 +367,10 @@ function cekPerubahan_(kirim, abaikanSenyap){
     if(per.length) tulisLog_(ss, per);
     tulisSnapshot_(ss, data.records, data.gagal, lama.map);
     if(per.length){
-      let pesan = susunRealtime_(per);
+      const unik = {}; per.forEach(function(p){ unik[p.src + '|' + p.id] = 1; });
+      let pesan = Object.keys(unik).length > BATAS_LONJAKAN
+        ? '🔔 <b>PERUBAHAN LoP</b>\n<b>' + Object.keys(unik).length + ' LoP</b> berubah sekaligus (kemungkinan data massal/rapi-rapi sheet).\nDaftar lengkap ada di rangkuman jam ' + JAM_RANGKUMAN + '.00 dan dashboard › Update Terbaru.'
+        : susunRealtime_(per);
       if(data.gagal.length) pesan += '\n⚠ Sumber gagal dibaca: ' + data.gagal.join(', ');
       if(kirim) kirimTelegram_(pesan); else Logger.log(pesan);
     }
