@@ -97,6 +97,24 @@ function lastUpdate_(text){
   }
   return latest;
 }
+const HARI_PENDEK_ = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+const BLN_PENDEK_ = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+/** Nilai sel (teks / Date) -> Date atau null. */
+function keDate_(v){
+  if(v instanceof Date) return isNaN(v) ? null : v;
+  if(v === '' || v == null) return null;
+  const d = parseTgl_(v); if(d) return d;
+  const t = new Date(v); return isNaN(t) ? null : t;
+}
+/** Kunci pembanding komitmen: yyyy-MM-dd (format teks berbeda tidak dianggap berubah). */
+function komitKey_(v){ const d = keDate_(v); return d ? Utilities.formatDate(d, tz_(), 'yyyy-MM-dd') : norm_(v); }
+/** Tampilan tanggal ringkas & mudah dibaca: "Kam, 26 Nov" (tahun hanya jika bukan tahun ini). */
+function fmtTglPendek_(v){
+  const d = keDate_(v); if(!d) return v ? String(v) : '—';
+  const thn = d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : '';
+  return HARI_PENDEK_[d.getDay()] + ', ' + d.getDate() + ' ' + BLN_PENDEK_[d.getMonth()] + thn;
+}
+function selisihHari_(a, b){ const x = keDate_(a), y = keDate_(b); if(!x || !y) return null; const ux = Date.UTC(x.getFullYear(), x.getMonth(), x.getDate()), uy = Date.UTC(y.getFullYear(), y.getMonth(), y.getDate()); return Math.round((uy - ux) / 86400000); }
 function nomorStatus_(raw){ const m = String(raw || '').match(/^\s*(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : null; }
 
 /* ---------- Baca satu sumber -> array record ---------- */
@@ -130,7 +148,7 @@ const HDR_LOG = ['tanggal', 'src', 'id', 'nama', 'branch', 'jenis', 'dari', 'ke'
 function bacaSnapshot_(ss){
   const sh = ss.getSheetByName(TAB_SNAPSHOT); const map = {}; let ada = false;
   if(!sh || sh.getLastRow() < 2) return { map: map, ada: false };
-  sh.getRange(2, 1, sh.getLastRow() - 1, HDR_SNAP.length).getValues().forEach(function(r){
+  sh.getRange(2, 1, sh.getLastRow() - 1, HDR_SNAP.length).getDisplayValues().forEach(function(r){
     map[r[0]] = { src: r[1], id: r[2], nama: r[3], branch: r[4], status: r[5], komit: r[6], cat: r[7], hash: r[8], awal: r[9] }; ada = true;
   });
   return { map: map, ada: ada };
@@ -152,9 +170,10 @@ function bandingkan_(lama, baru){
       const jns = (a !== null && b !== null) ? (b > a ? 'NAIK' : (b < a ? 'MUNDUR' : 'STATUS')) : 'STATUS';
       jenisList.push([jns, strip_(o.status), strip_(r.status), '']);
     }
-    if(norm_(o.komit) !== norm_(r.komit)){
-      const ket = !o.komit ? 'komitmen baru' : (!r.komit ? 'komitmen dihapus' : 'komitmen digeser');
-      jenisList.push(['KOMIT', o.komit || '—', r.komit || '—', ket]);
+    if(komitKey_(o.komit) !== komitKey_(r.komit)){
+      const sel = selisihHari_(o.komit, r.komit);
+      const ket = !o.komit ? 'komitmen baru' : (!r.komit ? 'komitmen dihapus' : (sel === null ? 'komitmen digeser' : (sel > 0 ? 'mundur ' + sel + ' hari' : 'dimajukan ' + Math.abs(sel) + ' hari')));
+      jenisList.push(['KOMIT', o.komit ? fmtTglPendek_(o.komit) : '—', r.komit ? fmtTglPendek_(r.komit) : '—', ket]);
     }
     if(md5_(r.detail) !== o.hash){
       jenisList.push(['UPDATE', '', '', awalBaru]);
@@ -173,6 +192,7 @@ function tulisSnapshot_(ss, records, sumberGagal, snapLama){
   Object.keys(snapLama).forEach(function(k){
     const o = snapLama[k]; if(sumberGagal.indexOf(o.src) >= 0) rows.push([k, o.src, o.id, o.nama, o.branch, o.status, o.komit, o.cat, o.hash, o.awal, tgl]);
   });
+  sh.getRange(1, 1, sh.getMaxRows(), HDR_SNAP.length).setNumberFormat('@');
   sh.getRange(2, 1, Math.max(sh.getMaxRows() - 1, 1), HDR_SNAP.length).clearContent();
   if(rows.length){
     if(sh.getMaxRows() < rows.length + 1) sh.insertRowsAfter(sh.getMaxRows(), rows.length + 1 - sh.getMaxRows());
@@ -182,9 +202,9 @@ function tulisSnapshot_(ss, records, sumberGagal, snapLama){
 function tulisLog_(ss, perubahan){
   if(!perubahan.length) return;
   const sh = ambilTab_(ss, TAB_LOG, HDR_LOG), tgl = fmtTgl_(new Date());
-  const rows = perubahan.map(function(p){ return ["'" + tgl, p.src, p.id, p.nama, p.branch, p.jenis, p.dari, p.ke, p.catatan]; });
+  sh.getRange(1, 1, sh.getMaxRows(), HDR_LOG.length).setNumberFormat('@');
+  const rows = perubahan.map(function(p){ return [tgl, p.src, p.id, p.nama, p.branch, p.jenis, p.dari, p.ke, p.catatan]; });
   sh.getRange(sh.getLastRow() + 1, 1, rows.length, HDR_LOG.length).setValues(rows);
-  sh.getRange(2, 1, sh.getLastRow() - 1, 1).setNumberFormat('@');
   const lebih = sh.getLastRow() - 1 - MAX_LOG_BARIS;
   if(lebih > 0) sh.deleteRows(2, lebih);
 }
@@ -203,45 +223,71 @@ function kirimTelegram_(teks){
   });
 }
 const HARI_ = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-const BLN_ = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-function baris_(p){ return '• <b>' + esc_(p.src) + '</b> · <code>' + esc_(p.id) + '</code> · ' + esc_(p.nama).slice(0, 48); }
+const GARIS_ = '━━━━━━━━━━━━━━━━━━';
+const SRC_SINGKAT_ = { 'PT3 TA':'TA', 'PT3 FH':'FH', 'HEM':'HEM', 'OLO':'OLO', 'MBB':'MBB', 'QE':'QE' };
+
+function kartu_(p, baris){
+  let t = '▸ <b>' + esc_(SRC_SINGKAT_[p.src] || p.src) + '</b> · <code>' + esc_(p.id) + '</code>\n   ' + esc_(p.nama).slice(0, 52);
+  (baris || []).forEach(function(b){ t += '\n   ' + b; });
+  return t + '\n';
+}
 
 function susunPesan_(perubahan, records, baseline){
   const now = new Date();
-  let t = '📊 <b>UPDATE ORDER — ' + HARI_[now.getDay()] + ', ' + now.getDate() + ' ' + BLN_[now.getMonth()] + ' ' + now.getFullYear() + '</b>\n';
-  if(baseline){ return t + '\nBaseline pertama tersimpan (' + records.length + ' LoP dari ' + SUMBER.length + ' sumber).\nPerbandingan mulai dikirim pada run berikutnya.'; }
+  const jam = Utilities.formatDate(now, tz_(), 'HH.mm');
+  let t = '📊 <b>UPDATE ORDER</b>\n🗓 ' + HARI_[now.getDay()] + ', ' + now.getDate() + ' ' + BLN_PENDEK_[now.getMonth()] + ' ' + now.getFullYear() + ' · ' + jam + ' WIB\n' + GARIS_ + '\n';
+  if(baseline){ return t + 'Baseline pertama tersimpan.\n' + records.length + ' LoP dari ' + SUMBER.length + ' sumber.\nPerbandingan mulai dikirim pada run berikutnya.'; }
   const per = function(j){ return perubahan.filter(function(p){ return p.jenis === j; }); };
   const jml = function(j){ return per(j).length; };
   const lopUnik = {}; perubahan.forEach(function(p){ lopUnik[p.src + '|' + p.id] = 1; });
-  t += 'Dibanding run sebelumnya · <b>' + Object.keys(lopUnik).length + '</b> LoP berubah\n';
-  t += '\n🟢 Golive ' + jml('GOLIVE') + '  🔴 Drop ' + jml('DROP') + '  🔼 Naik ' + jml('NAIK') + '  🔽 Mundur ' + jml('MUNDUR') + '\n⏰ Komit berubah ' + jml('KOMIT') + '  📝 Update baru ' + jml('UPDATE') + '  🆕 LoP baru ' + jml('BARU') + '\n';
-  const bagian = function(judul, jenis, fmt){
+  t += '<b>' + Object.keys(lopUnik).length + ' LoP berubah</b> sejak run sebelumnya\n\n';
+  t += '🟢 Golive <b>' + jml('GOLIVE') + '</b>  ·  🔴 Drop <b>' + jml('DROP') + '</b>\n';
+  t += '🔼 Naik <b>' + jml('NAIK') + '</b>  ·  🔽 Mundur <b>' + jml('MUNDUR') + '</b>\n';
+  t += '⏰ Komitmen <b>' + jml('KOMIT') + '</b>  ·  📝 Update <b>' + jml('UPDATE') + '</b>  ·  🆕 Baru <b>' + jml('BARU') + '</b>\n';
+
+  const judul = function(ic, nama, n){ return '\n' + GARIS_ + '\n' + ic + ' <b>' + nama + ' (' + n + ')</b>\n\n'; };
+  const lebih = function(a){ return a.length > MAX_BARIS_PER_BAGIAN ? '… +' + (a.length - MAX_BARIS_PER_BAGIAN) + ' lainnya, lihat dashboard › Update Terbaru\n' : ''; };
+  const bagian = function(ic, nama, jenis, fmt){
     const a = per(jenis); if(!a.length) return '';
-    let s = '\n<b>' + judul + ' (' + a.length + ')</b>\n';
-    a.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ s += fmt(p) + '\n'; });
-    if(a.length > MAX_BARIS_PER_BAGIAN) s += '… dan ' + (a.length - MAX_BARIS_PER_BAGIAN) + ' lainnya (lihat dashboard)\n';
-    return s;
+    let s = judul(ic, nama, a.length);
+    a.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ s += fmt(p); });
+    return s + lebih(a);
   };
-  t += bagian('🟢 GOLIVE BARU', 'GOLIVE', baris_);
-  t += bagian('🔴 DROP BARU', 'DROP', baris_);
-  t += bagian('🔼 NAIK TAHAP', 'NAIK', function(p){ return baris_(p) + '\n   ' + esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>'; });
-  t += bagian('🔽 MUNDUR', 'MUNDUR', function(p){ return baris_(p) + '\n   ' + esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>'; });
-  t += bagian('⏰ KOMITMEN BERUBAH', 'KOMIT', function(p){ return baris_(p) + '\n   ' + esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b> (' + esc_(p.catatan) + ')'; });
+  t += bagian('🟢', 'GOLIVE BARU', 'GOLIVE', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
+  t += bagian('🔴', 'DROP BARU', 'DROP', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
+  t += bagian('🔼', 'NAIK TAHAP', 'NAIK', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
+  t += bagian('🔽', 'MUNDUR TAHAP', 'MUNDUR', function(p){ return kartu_(p, [esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>']); });
+
+  // komitmen: ringkasan arah + per sumber + yang paling jauh bergeser
+  const km = per('KOMIT');
+  if(km.length){
+    const geser = function(p){ const m = String(p.catatan).match(/(mundur|dimajukan) (\d+)/); return m ? (m[1] === 'mundur' ? +m[2] : -m[2]) : 0; };
+    const mundur = km.filter(function(p){ return /^mundur/.test(p.catatan); }).length;
+    const maju = km.filter(function(p){ return /^dimajukan/.test(p.catatan); }).length;
+    const baru = km.filter(function(p){ return p.catatan === 'komitmen baru'; }).length;
+    const hapus = km.filter(function(p){ return p.catatan === 'komitmen dihapus'; }).length;
+    t += judul('⏰', 'KOMITMEN BERUBAH', km.length);
+    t += '↗️ Mundur <b>' + mundur + '</b> · ↘️ Dimajukan <b>' + maju + '</b> · ➕ Baru <b>' + baru + '</b> · ➖ Dihapus <b>' + hapus + '</b>\n';
+    const bySrc = {}; km.forEach(function(p){ bySrc[p.src] = (bySrc[p.src] || 0) + 1; });
+    t += Object.keys(bySrc).map(function(k){ return esc_(SRC_SINGKAT_[k] || k) + ' ' + bySrc[k]; }).join(' · ') + '\n\n';
+    const top = km.slice().sort(function(a, b){ return Math.abs(geser(b)) - Math.abs(geser(a)); }).slice(0, MAX_BARIS_PER_BAGIAN);
+    top.forEach(function(p){ t += kartu_(p, ['📅 ' + esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>', '<i>' + esc_(p.catatan) + '</i>']); });
+    t += (km.length > top.length ? '… +' + (km.length - top.length) + ' lainnya, lihat dashboard › Update Terbaru\n' : '');
+  }
   const upd = per('UPDATE');
   if(upd.length){
-    t += '\n<b>📝 UPDATE BARU (' + upd.length + ')</b>\n';
-    upd.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ t += baris_(p) + '\n   <i>' + esc_(String(p.catatan).slice(0, 90)) + '</i>\n'; });
-    if(upd.length > MAX_BARIS_PER_BAGIAN) t += '… dan ' + (upd.length - MAX_BARIS_PER_BAGIAN) + ' lainnya\n';
+    t += judul('📝', 'UPDATE BARU', upd.length);
+    upd.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ t += kartu_(p, ['<i>' + esc_(String(p.catatan).slice(0, 90)) + '</i>']); });
+    t += lebih(upd);
   }
-  t += bagian('🆕 LoP BARU', 'BARU', baris_);
+  t += bagian('🆕', 'LoP BARU', 'BARU', function(p){ return kartu_(p, [esc_(p.ke)]); });
   if(!perubahan.length) t += '\nTidak ada perubahan sejak run sebelumnya.\n';
 
-  // kondisi saat ini
   const t0 = new Date(); t0.setHours(0, 0, 0, 0);
   const ogp = records.filter(function(r){ return r.cat === 'ogp'; });
-  const terlewat = ogp.filter(function(r){ const d = parseTgl_(r.komit); return d && d < t0; });
+  const terlewat = ogp.filter(function(r){ const d = keDate_(r.komit); return d && d < t0; });
   const basi = ogp.filter(function(r){ const d = lastUpdate_(r.detail); return d && Math.round((t0 - d) / 86400000) > STALE_DAYS; });
-  t += '\n<b>⚠ Kondisi saat ini</b>\n⏰ Komitmen terlewat: <b>' + terlewat.length + '</b> · ⏱ Belum update &gt;' + STALE_DAYS + ' hari: <b>' + basi.length + '</b>';
+  t += '\n' + GARIS_ + '\n⚠ <b>KONDISI SAAT INI</b>\n⏰ Komitmen terlewat: <b>' + terlewat.length + '</b>\n⏱ Belum update &gt;' + STALE_DAYS + ' hari: <b>' + basi.length + '</b>';
   return t;
 }
 
@@ -288,4 +334,11 @@ function cariChatId(){
   const j = JSON.parse(res.getContentText());
   (j.result || []).forEach(function(u){ const m = u.message || u.edited_message; if(m && m.chat && m.chat.type === 'private') Logger.log('Chat id: ' + m.chat.id + ' (' + (m.from.first_name || '') + ')'); });
   if(!(j.result || []).length) Logger.log('Belum ada pesan. Kirim /start ke bot dulu. Catatan: jika ada webhook aktif, getUpdates kosong — pakai @userinfobot untuk lihat id.');
+}
+
+/** Hapus baris UPDATE_LOG tanggal hari ini (kalau ada run yang salah). Setelah itu jalankan resetSnapshot lalu testDigestSekarang. */
+function bersihkanLogHariIni(){
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID), sh = ss.getSheetByName(TAB_LOG); if(!sh || sh.getLastRow() < 2) return;
+  const tgl = fmtTgl_(new Date()), vals = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getDisplayValues();
+  for(let i = vals.length - 1; i >= 0; i--){ if(String(vals[i][0]).slice(0, 10) === tgl) sh.deleteRow(i + 2); }
 }
