@@ -128,12 +128,15 @@ function bacaSumber_(ss, src){
   const hi = data.findIndex(function(r){ return r.some(function(c){ return norm_(c) === norm_(src.req); }); });
   if(hi < 0) throw new Error('Header "' + src.req + '" tidak ditemukan');
   const map = {}; data[hi].forEach(function(h, i){ const k = norm_(h); if(!(k in map)) map[k] = i; });
-  const out = [];
+  const out = [], dup = {};
   data.slice(hi + 1).forEach(function(row){
     const g = function(n){ const i = map[norm_(n)]; return i === undefined ? '' : String(row[i] || '').trim(); };
     if(src.region && g(src.region.col).toUpperCase() !== src.region.val) return;
     const id = g(src.f.id), nama = g(src.f.nama); if(!id && !nama) return;
-    out.push({ key: src.key + '|' + (id || nama), src: src.key, id: id, nama: nama || '(tanpa nama)', branch: g(src.f.branch),
+    // ID yang muncul lebih dari sekali di sheet diberi nomor urut (#2, #3), supaya tiap baris dibandingkan dengan dirinya sendiri
+    // (tanpa ini baris kembar saling menimpa dan terus-menerus terdeteksi 'berubah' tiap run)
+    const k0 = src.key + '|' + (id || nama); dup[k0] = (dup[k0] || 0) + 1;
+    out.push({ key: dup[k0] > 1 ? k0 + '#' + dup[k0] : k0, src: src.key, id: id, nama: nama || '(tanpa nama)', branch: g(src.f.branch),
       status: g(src.f.status), komit: src.f.komit ? g(src.f.komit) : '', detail: g(src.f.detail), cat: src.cat(g) });
   });
   return out;
