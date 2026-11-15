@@ -56,6 +56,22 @@
   .k:active{transform:scale(.97);}
   .k b{display:block;font-family:'Space Grotesk';font-size:21px;line-height:1.1;} .k span{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;font-weight:600;}
   .k.ok b{color:var(--ok);} .k.og b{color:var(--ogp);} .k.dr b{color:var(--drop);}
+  /* donut + komitmen */
+  .dn{position:relative;flex:0 0 auto;} .dn svg{width:100%;height:100%;transform:rotate(-90deg);}
+  .dn .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center;}
+  .dn .c b{font-family:'Space Grotesk';font-size:22px;line-height:1;} .dn .c span{font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;font-weight:600;}
+  .kp1{display:flex!important;flex-direction:column;gap:2px!important;}
+  .lg{display:flex;align-items:center;gap:8px;padding:7px 4px;font-size:12.5px;cursor:pointer;border-radius:8px;} .lg:active{background:var(--panel2);}
+  .lg i{width:10px;height:10px;border-radius:3px;flex:0 0 auto;} .lg span{flex:1;color:var(--dim);} .lg b{font-family:'Space Grotesk';font-size:14px;}
+  .kfoot{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);text-align:center;} .kfoot b{color:var(--text);}
+  .minis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px;}
+  .mini{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 6px 9px;text-align:center;cursor:pointer;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;}
+  .mini:active{background:var(--panel2);} .mini .dn .c b{font-size:15px;} .mini .mn{font-weight:700;font-size:12.5px;margin-top:7px;} .mini .ms{font-size:10.5px;color:var(--faint);margin-top:1px;}
+  .wk{display:flex;gap:8px;align-items:flex-end;} .wc{flex:1;text-align:center;padding:6px 2px;border-radius:10px;} .wc.cur{background:var(--panel2);outline:1px solid var(--line);}
+  .wv{font:700 13px 'Space Grotesk';margin-bottom:5px;} .wb{height:90px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;}
+  .wb i{display:block;width:100%;border-radius:4px;min-height:0;} .wl{font-size:10.5px;color:var(--faint);margin-top:6px;font-weight:600;} .wp{font:700 12px 'Space Grotesk';color:var(--ok);margin-top:1px;}
+  .wleg{display:flex;gap:14px;justify-content:center;margin-top:10px;font-size:11px;color:var(--faint);} .wleg i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;}
+  .src .top{display:flex;align-items:center;gap:12px;margin-bottom:11px;} .src .dn .c b{font-size:14px;}
   /* source cards */
   .src{cursor:pointer;} .src:active{background:var(--panel2);}
   .src .top{display:flex;align-items:center;gap:10px;}
@@ -323,43 +339,98 @@ const cnt = (arr,k)=> arr.filter(r=> r.cat === k).length;
 function goCek(patch){ Object.assign(state, {src:'',cat:'',q:'',quick:'',sort:'',limit:30}, patch||{}); document.getElementById('q').value = state.q; document.getElementById('sortSel').value = state.sort; show('cek'); renderCek(); haptic(); }
 
 /* ---------- Ringkasan ---------- */
-function ring(pct, col){
-  const r = 46, c = 2*Math.PI*r, off = c*(1 - Math.min(pct,100)/100);
-  return `<svg viewBox="0 0 112 112"><circle cx="56" cy="56" r="${r}" fill="none" stroke="var(--track)" stroke-width="11"/><circle cx="56" cy="56" r="${r}" fill="none" stroke="${col}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg>`;
+function donut(segs, size, sw, center){
+  const r = (size - sw)/2, c = 2*Math.PI*r, tot = segs.reduce((a,x)=> a + x.v, 0) || 1, mid = size/2;
+  let acc = 0, h = `<svg viewBox="0 0 ${size} ${size}"><circle cx="${mid}" cy="${mid}" r="${r}" fill="none" stroke="var(--track)" stroke-width="${sw}"/>`;
+  const live = segs.filter(x=> x.v > 0);
+  live.forEach(x=>{
+    const len = x.v/tot*c, gap = live.length > 1 ? Math.min(2.5, len*0.4) : 0;
+    h += `<circle cx="${mid}" cy="${mid}" r="${r}" fill="none" stroke="${x.col}" stroke-width="${sw}" stroke-dasharray="${Math.max(len-gap,0.1)} ${c}" stroke-dashoffset="${-acc}" stroke-linecap="butt"/>`;
+    acc += len;
+  });
+  return `<div class="dn" style="width:${size}px;height:${size}px">${h}</svg><div class="c">${center||''}</div></div>`;
 }
+const fmt = (n)=> n.toLocaleString('id-ID');
 function renderSum(){
-  const now = new Date(), ym = [now.getFullYear(), now.getMonth()];
+  const now = new Date(), ym = [now.getFullYear(), now.getMonth()], t0 = today0();
   const all = allRecs(), g = cnt(all,'golive'), o = cnt(all,'ogp'), d = cnt(all,'drop');
   const pct = all.length ? Math.round(g/all.length*100) : 0;
-  let h = `<div class="card"><div class="hero"><div class="ring">${ring(pct,'var(--ok)')}<div class="c"><b>${pct}%</b><span>Golive</span></div></div>
+  let h = `<div class="card"><div class="hero">${donut([{v:g,col:'var(--ok)'},{v:o,col:'var(--ogp)'},{v:d,col:'var(--drop)'}], 120, 14, `<b>${pct}%</b><span>Golive</span>`)}
     <div class="kp">
-      <div class="k" data-go=""><b>${all.length.toLocaleString('id-ID')}</b><span>Total LoP</span></div>
-      <div class="k ok" data-go="golive"><b>${g.toLocaleString('id-ID')}</b><span>OA / Golive</span></div>
-      <div class="k og" data-go="ogp"><b>${o.toLocaleString('id-ID')}</b><span>OGP</span></div>
-      <div class="k dr" data-go="drop"><b>${d.toLocaleString('id-ID')}</b><span>Drop</span></div></div></div></div>`;
+      <div class="k" data-go=""><b>${fmt(all.length)}</b><span>Total LoP</span></div>
+      <div class="k ok" data-go="golive"><b>${fmt(g)}</b><span>OA / Golive</span></div>
+      <div class="k og" data-go="ogp"><b>${fmt(o)}</b><span>OGP</span></div>
+      <div class="k dr" data-go="drop"><b>${fmt(d)}</b><span>Drop</span></div></div></div></div>`;
+
+  /* ===== Komitmen bulan ini (semua sumber yang punya komitmen) ===== */
+  const inM = (r)=> r.kd && r.kd.getFullYear()===ym[0] && r.kd.getMonth()===ym[1];
+  const komSrc = SOURCES.filter(s=> s.f.komit);
+  const kmAll = []; komSrc.forEach(s=> (DATA[s.key]||[]).forEach(r=>{ if(inM(r)) kmAll.push(r); }));
+  const stat = (arr)=>{
+    const oa = arr.filter(r=> r.cat==='golive').length, dr = arr.filter(r=> r.cat==='drop').length;
+    const og = arr.filter(r=> r.cat==='ogp'), lt = og.filter(r=> r.kd < t0).length;
+    return { n: arr.length, oa, dr, lt, pend: og.length - lt, p: arr.length ? Math.round(oa/arr.length*100) : 0 };
+  };
+  const colP = (p)=> p >= 100 ? 'var(--ok)' : (p >= 50 ? 'var(--warn)' : 'var(--drop)');
+  h += `<div class="sec">Komitmen ${BULAN[ym[1]]} ${ym[0]} <small>% tercapai</small></div>`;
+  if(!kmAll.length) h += `<div class="card"><div class="empty">Belum ada komitmen golive di bulan ini.</div></div>`;
+  else{
+    const T = stat(kmAll);
+    h += `<div class="card"><div class="hero">${donut([{v:T.oa,col:'var(--ok)'},{v:T.pend,col:'var(--ogp)'},{v:T.lt,col:'var(--warn)'},{v:T.dr,col:'var(--drop)'}], 120, 14, `<b style="color:${colP(T.p)}">${T.p}%</b><span>Tercapai</span>`)}
+      <div class="kp kp1">
+        <div class="lg" data-p="komitbulan" data-cat="golive"><i style="background:var(--ok)"></i><span>Golive (OA)</span><b>${T.oa}</b></div>
+        <div class="lg" data-p="komitbulan" data-cat="ogp"><i style="background:var(--ogp)"></i><span>OGP belum jatuh tempo</span><b>${T.pend}</b></div>
+        <div class="lg" data-p="late"><i style="background:var(--warn)"></i><span>OGP terlewat</span><b>${T.lt}</b></div>
+        <div class="lg" data-p="komitbulan" data-cat="drop"><i style="background:var(--drop)"></i><span>Drop</span><b>${T.dr}</b></div>
+      </div></div>
+      <div class="kfoot">Total <b>${fmt(T.n)}</b> LoP berkomitmen bulan ini · sisa target <b>${fmt(T.n - T.oa - T.dr)}</b></div></div>`;
+
+    /* per sumber: donut mini */
+    h += `<div class="minis">`;
+    komSrc.forEach(s=>{
+      const km = (DATA[s.key]||[]).filter(inM); if(!km.length) return;
+      const x = stat(km);
+      h += `<div class="mini" data-src="${s.key}" data-quick="komitbulan">${donut([{v:x.oa,col:'var(--ok)'},{v:x.pend,col:'var(--ogp)'},{v:x.lt,col:'var(--warn)'},{v:x.dr,col:'var(--drop)'}], 78, 9, `<b style="color:${colP(x.p)}">${x.p}%</b>`)}
+        <div class="mn">${s.key}</div><div class="ms">${x.oa} dari ${x.n}</div></div>`;
+    });
+    h += `</div>`;
+
+    /* per minggu */
+    const wk = [0,0,0,0,0].map(()=> ({oa:0, og:0, dr:0}));
+    kmAll.forEach(r=>{ const i = Math.min(4, Math.floor((r.kd.getDate()-1)/7)); const w = wk[i]; if(r.cat==='golive') w.oa++; else if(r.cat==='drop') w.dr++; else w.og++; });
+    const dim = new Date(ym[0], ym[1]+1, 0).getDate(), mx = Math.max(1, ...wk.map(w=> w.oa+w.og+w.dr));
+    const curW = Math.min(4, Math.floor((now.getDate()-1)/7));
+    h += `<div class="sec">Komitmen per Minggu <small>hijau = sudah golive</small></div><div class="card"><div class="wk">`;
+    wk.forEach((w,i)=>{
+      const lo = i*7+1, hi = i === 4 ? dim : Math.min(dim, lo+6); if(lo > dim) return;
+      const tt = w.oa+w.og+w.dr, hh = (v)=> (v/mx*100) + '%';
+      h += `<div class="wc${i===curW?' cur':''}"><div class="wv">${tt}</div><div class="wb">
+        <i style="height:${hh(w.dr)};background:var(--drop)"></i><i style="height:${hh(w.og)};background:var(--ogp)"></i><i style="height:${hh(w.oa)};background:var(--ok)"></i></div>
+        <div class="wl">${lo}–${hi}</div><div class="wp">${tt ? Math.round(w.oa/tt*100) : 0}%</div></div>`;
+    });
+    h += `</div><div class="wleg"><span><i style="background:var(--ok)"></i>Golive</span><span><i style="background:var(--ogp)"></i>OGP</span><span><i style="background:var(--drop)"></i>Drop</span></div></div>`;
+  }
+
+  /* ===== Komposisi LoP per kategori ===== */
+  const PAL = ['#0B5CAB','#167A4B','#C27A0A','#7C3AED','#D9202B','#0891B2'];
+  h += `<div class="sec">Komposisi LoP <small>per kategori</small></div><div class="card"><div class="hero">${donut(SOURCES.map((s,i)=>({v:(DATA[s.key]||[]).length, col:PAL[i%PAL.length]})), 120, 14, `<b>${fmt(all.length)}</b><span>LoP</span>`)}
+    <div class="kp kp1">${SOURCES.map((s,i)=>{ const n = (DATA[s.key]||[]).length; return `<div class="lg" data-src="${s.key}"><i style="background:${PAL[i%PAL.length]}"></i><span>${s.key}</span><b>${fmt(n)}</b></div>`; }).join('')}</div></div></div>`;
+
+  /* ===== Per kategori ===== */
   h += `<div class="sec">Per Kategori <small>ketuk untuk detail</small></div>`;
   SOURCES.forEach(s=>{
-    const a = DATA[s.key]||[], t = a.length || 1, sg = cnt(a,'golive'), so = cnt(a,'ogp'), sd = cnt(a,'drop');
-    h += `<div class="card src" data-src="${s.key}"><div class="top"><div class="ic">${SRC_ICON[s.key]||'📋'}</div><div><div class="nm">${s.key}</div><div class="tot">${a.length.toLocaleString('id-ID')} LoP</div></div>
-      <div class="pc">${Math.round(sg/t*100)}%<small>Golive</small></div></div>
-      <div class="bar"><i style="width:${sg/t*100}%;background:var(--ok)"></i><i style="width:${so/t*100}%;background:var(--ogp)"></i><i style="width:${sd/t*100}%;background:var(--drop)"></i></div>
-      <div class="legend"><span class="pill ok" data-src="${s.key}" data-cat="golive">OA <b>${sg}</b></span><span class="pill og" data-src="${s.key}" data-cat="ogp">OGP <b>${so}</b></span><span class="pill dr" data-src="${s.key}" data-cat="drop">Drop <b>${sd}</b></span>${(a.filter(r=>r.late).length) ? `<span class="pill wr" data-src="${s.key}" data-quick="late">⚠ Terlewat <b>${a.filter(r=>r.late).length}</b></span>` : ''}</div></div>`;
+    const a = DATA[s.key]||[], t = a.length || 1, sg = cnt(a,'golive'), so = cnt(a,'ogp'), sd = cnt(a,'drop'), lt = a.filter(r=>r.late).length;
+    h += `<div class="card src" data-src="${s.key}"><div class="top">
+      ${donut([{v:sg,col:'var(--ok)'},{v:so,col:'var(--ogp)'},{v:sd,col:'var(--drop)'}], 64, 8, `<b>${Math.round(sg/t*100)}%</b>`)}
+      <div style="min-width:0"><div class="nm">${SRC_ICON[s.key]||'📋'} ${s.key}</div><div class="tot">${fmt(a.length)} LoP</div></div>
+      <div class="pc">${sg}<small>Golive</small></div></div>
+      <div class="legend"><span class="pill ok" data-src="${s.key}" data-cat="golive">OA <b>${sg}</b></span><span class="pill og" data-src="${s.key}" data-cat="ogp">OGP <b>${so}</b></span><span class="pill dr" data-src="${s.key}" data-cat="drop">Drop <b>${sd}</b></span>${lt ? `<span class="pill wr" data-src="${s.key}" data-quick="late">⚠ Terlewat <b>${lt}</b></span>` : ''}</div></div>`;
   });
-  h += `<div class="sec">Komitmen Golive — ${BULAN[ym[1]]} ${ym[0]}</div><div class="card">`;
-  let any = false;
-  SOURCES.filter(s=> s.f.komit).forEach(s=>{
-    const km = (DATA[s.key]||[]).filter(r=> r.kd && r.kd.getFullYear()===ym[0] && r.kd.getMonth()===ym[1]);
-    if(!km.length) return; any = true;
-    const oa = km.filter(r=> r.cat==='golive').length, p = Math.round(oa/km.length*100);
-    const col = p >= 100 ? 'var(--ok)' : (p >= 50 ? 'var(--warn)' : 'var(--drop)');
-    h += `<div class="kom" data-src="${s.key}" data-quick="komitbulan"><div class="n">${s.key}</div><div class="m"><div class="t">${oa} OA dari ${km.length} komitmen</div><div class="pbar"><i style="width:${Math.min(p,100)}%;background:${col}"></i></div></div><div class="p" style="color:${col}">${p}%</div></div>`;
-  });
-  if(!any) h += `<div class="empty">Belum ada komitmen golive di bulan ini.</div>`;
-  h += `</div>`;
   const el = document.getElementById('vSum'); el.innerHTML = h;
   el.querySelectorAll('[data-go]').forEach(x=> x.onclick = ()=> goCek({cat:x.dataset.go}));
   el.querySelectorAll('.pill').forEach(x=> x.onclick = (e)=>{ e.stopPropagation(); goCek({src:x.dataset.src, cat:x.dataset.cat||'', quick:x.dataset.quick||''}); });
-  el.querySelectorAll('.kom').forEach(x=> x.onclick = ()=> goCek({src:x.dataset.src, quick:'komitbulan'}));
+  el.querySelectorAll('.lg').forEach(x=> x.onclick = ()=> goCek({src:x.dataset.src||'', cat:x.dataset.cat||'', quick:x.dataset.p||''}));
+  el.querySelectorAll('.mini').forEach(x=> x.onclick = ()=> goCek({src:x.dataset.src, quick:'komitbulan'}));
   el.querySelectorAll('.src').forEach(x=> x.onclick = ()=> goCek({src:x.dataset.src}));
 }
 
