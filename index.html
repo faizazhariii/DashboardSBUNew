@@ -722,6 +722,7 @@
       <button class="page-tab" id="tabBtnBrt" type="button">BRT Medan</button>
       <button class="page-tab" id="tabBtnQeLp" type="button">QE Lubuk Pakam</button>
       <button class="page-tab" id="tabBtnQeDusem" type="button">Dusem</button>
+      <button class="page-tab" id="tabBtnQe" type="button">QE General</button>
     </div>
     <div class="tab-group">Monitoring</div>
     <button class="page-tab" id="tabBtnUpd" data-i="🆕" type="button">Update Terbaru</button>
@@ -731,7 +732,6 @@
     <button class="page-tab" id="tabBtnChecklist" data-i="✅" type="button">Checklist</button>
     <button class="page-tab" id="tabBtnNeedOlt" data-i="🔌" type="button">Need Modul OLT</button>
     <button class="page-tab" id="tabBtnGolive" data-i="🚀" type="button">Golive</button>
-    <button class="page-tab" id="tabBtnQe" type="button" style="display:none;">QE SBU</button>
     <div class="tab-group">Peta &amp; Laporan</div>
     <button class="page-tab" id="tabBtnKml" data-i="🗺️" type="button">L0 Kendala</button>
     <button class="page-tab" id="tabBtnRekapPpt" data-i="🎞️" type="button">Rekap PPT</button>
@@ -6851,8 +6851,9 @@ async function qeLoad(){
   const hi = data.findIndex(r=> r.some(c=> qeNorm(c)==='NAMA LOP'));
   if(hi < 0){ errEl.style.display='block'; errEl.textContent='Header "NAMA LOP" tidak ditemukan di sheet QE.'; return; }
   qeHeaderMap = {}; data[hi].forEach((h,i)=>{ qeHeaderMap[qeNorm(h)] = i; });
-  qeRows = data.slice(hi+1).filter(r=> qeGet(r,'NAMA LOP') && qeGet(r,'REGION').toUpperCase()==='SBU');
-  document.getElementById('qeSource').textContent = 'Sumber: sheet QE, filter REGION = SBU · ' + qeRows.length + ' LoP · dimuat ' + new Date().toLocaleString('id-ID');
+  qeRows = data.slice(hi+1).filter(r=> qeGet(r,'NAMA LOP') && qeGet(r,'REGION').toUpperCase()==='SBU'
+    && !/BRT|LUBUK\s*PAKAM|\bLBP\b|DUSEM/i.test([qeGet(r,'NAMA LOP'),qeGet(r,'STO'),qeGet(r,'DISTRICT TIF')].join(' ')));
+  document.getElementById('qeSource').textContent = 'QE General (di luar Dusem, BRT Medan, QE Lubuk Pakam) · sheet QE, REGION = SBU · ' + qeRows.length + ' LoP · dimuat ' + new Date().toLocaleString('id-ID');
   qeInitFilters(); qeRender();
 }
 function qeFill(id, allLabel, fn){
@@ -11587,7 +11588,7 @@ oloLoadDataAuto();
 <script src="pptxgen.bundle.js?v=20261103b"></script>
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
-<script src="qe-recap.js?v=20261104b"></script>
+<script src="qe-recap.js?v=20261116a"></script>
 <script src="topo.js?v=20261111e"></script>
 <script src="kml.js?v=20261111h"></script>
 <script src="wotable.js?v=20261115c"></script>

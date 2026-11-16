@@ -575,7 +575,7 @@
   /* ============================================================
      Menu: grup QE (dropdown)
      ============================================================ */
-  var GROUP = ['brt', 'qeLp', 'qeDusem'];
+  var GROUP = ['brt', 'qeLp', 'qeDusem', 'qe'];
   window.qeMenuSync = function(active){
     var g = $('tabBtnQeGroup'), sub = $('qeSub');
     if (!g || !sub) return;
