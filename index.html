@@ -2422,6 +2422,7 @@
         <div class="filters">
           <input type="text" id="qeSearch" placeholder="Cari Nama LoP, ID DIGASSS, STO, detail...">
           <select id="qeFStatus" class="period-select"></select>
+          <select id="qeFKlas" class="period-select"></select>
           <select id="qeFDistrict" class="period-select"></select>
           <select id="qeFBatch" class="period-select"></select>
           <select id="qeFTahun" class="period-select"></select>
@@ -6811,7 +6812,8 @@ const QE_CSV_URLS = [
 let qeRows = [], qeHeaderMap = {}, qeCharts = {};
 const qeNorm = (s)=> (s||'').toString().replace(/\s+/g,' ').trim().toUpperCase();
 const qeEsc = (t)=> (t==null?'':String(t)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-function qeGet(r,name){ const i = qeHeaderMap[qeNorm(name)]; return i===undefined ? '' : ((r[i]||'')+'').trim(); }
+const QE_ALIAS = {'DISTRICT TIF':'DISTRICT'};
+function qeGet(r,name){ let i = qeHeaderMap[qeNorm(name)]; if(i===undefined && QE_ALIAS[qeNorm(name)]) i = qeHeaderMap[QE_ALIAS[qeNorm(name)]]; return i===undefined ? '' : ((r[i]||'')+'').trim(); }
 function qeNum(v){ const n = parseFloat((v||'').toString().replace(/[^\d.-]/g,'')); return isNaN(n) ? 0 : n; }
 function qeStatusLabel(r){ return qeGet(r,'STATUS PROGRES').replace(/^(\d{2}|XX)\s+/i,'').toUpperCase() || 'TIDAK DIKETAHUI'; }
 function qeStatusOrder(r){ const m = qeGet(r,'STATUS PROGRES').match(/^(\d{2}|XX)/i); return m ? (m[1].toUpperCase()==='XX' ? 99 : parseInt(m[1],10)) : 100; }
@@ -6822,6 +6824,21 @@ function qeStatusColor(label){
   if(label==='FINISH INSTALASI') return '#2F855A';
   if(label==='INSTALASI') return '#0B5CAB';
   return '#718096';
+}
+/* Klasifikasi LoP: pakai kolom "KLASIFIKASI LOP" di sheet kalau ada; kalau tidak, diturunkan dari kata kunci NAMA LOP */
+function qeKlas(r){
+  const sh = qeGet(r,'KLASIFIKASI LOP'); if(sh) return sh;
+  const n = qeGet(r,'NAMA LOP').toUpperCase();
+  if(/SJUT|PENATAAN/.test(n)) return 'Penataan Jaringan Utilitas (SJUT)';
+  if(/PIPA GAS/.test(n)) return 'Proyek Pipa Gas';
+  if(/BRT/.test(n)) return 'Proyek BRT';
+  if(/DRAINASE/.test(n)) return 'Proyek Drainase';
+  if(/PELEBARAN|JALAN TOL|FLYOVER|PRESERVASI|STRUKTUR JALAN|JEMBATAN|PERUMAHAN|RUKO|HOTEL|GEDUNG|RUMAH DINAS|DPRD|RAPP/.test(n)) return 'Pelebaran Jalan / Proyek Pihak Lain';
+  if(/PIHAK KE ?-?3|\bP3\b|PERMINTAAN/.test(n)) return 'Permintaan Pihak ke-3';
+  if(/PENTANAHAN|PERTAHANAN|PENGAMANAN|PENGGANTIAN|KONTINGENSI|KU ?-?NISASI|KU MENJADI KT|KT MENJADI KU|PENURUNAN/.test(n)) return 'Pengamanan / Penggantian Aset';
+  if(/CAPEX/.test(n)) return 'Capex QE';
+  if(/RELOK|PEMINDAHAN|PINDAH|ALIH RUTE/.test(n)) return 'Relokasi / Pemindahan Utilitas';
+  return 'Lainnya';
 }
 const qeFmtIDR = (n)=> n ? 'Rp' + Math.round(n).toLocaleString('id-ID') : '—';
 
@@ -6861,6 +6878,7 @@ function qeFill(id, allLabel, fn){
 }
 function qeInitFilters(){
   qeFill('qeFStatus','Semua Status', qeStatusLabel);
+  qeFill('qeFKlas','Semua Klasifikasi', qeKlas);
   qeFill('qeFDistrict','Semua District', r=> qeGet(r,'DISTRICT TIF'));
   qeFill('qeFBatch','Semua Batch', r=> qeGet(r,'BATCH'));
   qeFill('qeFTahun','Semua Tahun', r=> qeGet(r,'TAHUN PENGERJAAN'));
@@ -6869,12 +6887,13 @@ function qeInitFilters(){
 function qeFiltered(){
   const q = document.getElementById('qeSearch').value.trim().toLowerCase();
   const f = (id,fn)=>{ const v=msVals(id); return v.length ? (r)=> v.includes(fn(r)||'(kosong)') : null; };
-  const fs = [f('qeFStatus',qeStatusLabel), f('qeFDistrict',r=>qeGet(r,'DISTRICT TIF')), f('qeFBatch',r=>qeGet(r,'BATCH')), f('qeFTahun',r=>qeGet(r,'TAHUN PENGERJAAN')), f('qeFSubcon',r=>qeGet(r,'SUBCON TA'))].filter(Boolean);
+  const fs = [f('qeFStatus',qeStatusLabel), f('qeFKlas',qeKlas), f('qeFDistrict',r=>qeGet(r,'DISTRICT TIF')), f('qeFBatch',r=>qeGet(r,'BATCH')), f('qeFTahun',r=>qeGet(r,'TAHUN PENGERJAAN')), f('qeFSubcon',r=>qeGet(r,'SUBCON TA'))].filter(Boolean);
   return qeRows.filter(r=> fs.every(fn=>fn(r)) && (!q || r.join(' ').toLowerCase().includes(q)) && qeColOk(r));
 }
 const QE_COLS = [
   {k:'id',h:'ID DIGASSS',t:'text',v:r=>qeGet(r,'ID DIGASSS')},
   {k:'nama',h:'Nama LoP',t:'text',v:r=>qeGet(r,'NAMA LOP')},
+  {k:'klas',h:'Klasifikasi LoP',t:'sel',v:qeKlas},
   {k:'dist',h:'District',t:'sel',v:r=>qeGet(r,'DISTRICT TIF')},
   {k:'sto',h:'STO',t:'sel',v:r=>qeGet(r,'STO')},
   {k:'batch',h:'Batch',t:'sel',v:r=>qeGet(r,'BATCH')},
@@ -6966,13 +6985,13 @@ function qeRender(){
   else srt.sort((a,b)=> qeStatusOrder(a)-qeStatusOrder(b));
   document.getElementById('qeTableBody').innerHTML = srt.map(r=>{
     const lab = qeStatusLabel(r);
-    return `<tr><td>${qeEsc(qeGet(r,'ID DIGASSS'))||'—'}</td><td class="name">${qeEsc(qeGet(r,'NAMA LOP'))}</td><td>${qeEsc(qeGet(r,'DISTRICT TIF'))||'—'}</td><td>${qeEsc(qeGet(r,'STO'))||'—'}</td><td>${qeEsc(qeGet(r,'BATCH'))||'—'}</td><td>${qeEsc(qeGet(r,'TAHUN PENGERJAAN'))||'—'}</td>
+    return `<tr><td>${qeEsc(qeGet(r,'ID DIGASSS'))||'—'}</td><td class="name">${qeEsc(qeGet(r,'NAMA LOP'))}</td><td>${qeEsc(qeKlas(r))}</td><td>${qeEsc(qeGet(r,'DISTRICT TIF'))||'—'}</td><td>${qeEsc(qeGet(r,'STO'))||'—'}</td><td>${qeEsc(qeGet(r,'BATCH'))||'—'}</td><td>${qeEsc(qeGet(r,'TAHUN PENGERJAAN'))||'—'}</td>
       <td>${qeFmtIDR(qeNum(qeGet(r,'NILAI PLAN')))}</td><td>${qeFmtIDR(qeNum(qeGet(r,'NILAI REALISASI')))}</td>
       <td><span style="font-weight:700;color:${qeStatusColor(lab)};">${qeEsc(lab)}</span></td>${long(qeGet(r,'DETAIL STATUS'))}<td>${qeEsc(qeGet(r,'TGT DARI INSTANSI'))||'—'}</td>
       <td>${qeEsc(qeGet(r,'Tim Waspang'))||'—'}</td><td>${qeEsc(qeGet(r,'Tim UT'))||'—'}</td><td>${qeEsc(qeGet(r,'SUBCON TA'))||'—'}</td></tr>`;
-  }).join('') || '<tr><td colspan="14" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>';
+  }).join('') || '<tr><td colspan="15" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>';
 }
-['qeFStatus','qeFDistrict','qeFBatch','qeFTahun','qeFSubcon'].forEach(id=> document.getElementById(id).onchange = qeRender);
+['qeFStatus','qeFKlas','qeFDistrict','qeFBatch','qeFTahun','qeFSubcon'].forEach(id=> document.getElementById(id).onchange = qeRender);
 document.getElementById('qeSearch').oninput = qeRender;
 document.getElementById('qeDownloadBtn').onclick = ()=>{
   const rows = qeFiltered(), cols = Object.keys(qeHeaderMap);
