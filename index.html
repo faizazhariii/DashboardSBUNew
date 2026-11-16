@@ -2430,11 +2430,7 @@
         </div>
         <div class="table-card" style="overflow-x:auto;">
           <table class="mbb-report-table">
-            <thead><tr>
-              <th>ID DIGASSS</th><th>Nama LoP</th><th>District</th><th>STO</th><th>Batch</th><th>Tahun</th>
-              <th>Nilai Plan</th><th>Nilai Realisasi</th><th>Status</th><th>Detail Status</th><th>Tgt Instansi</th>
-              <th>Tim Waspang</th><th>Tim UT</th><th>Subcon TA</th>
-            </tr></thead>
+            <thead id="qeThead"></thead>
             <tbody id="qeTableBody"></tbody>
           </table>
         </div>
@@ -6854,7 +6850,7 @@ async function qeLoad(){
   qeRows = data.slice(hi+1).filter(r=> qeGet(r,'NAMA LOP') && qeGet(r,'REGION').toUpperCase()==='SBU'
     && !/BRT|LUBUK\s*PAKAM|\bLBP\b|DUSEM/i.test([qeGet(r,'NAMA LOP'),qeGet(r,'STO'),qeGet(r,'DISTRICT TIF')].join(' ')));
   document.getElementById('qeSource').textContent = 'QE General (di luar Dusem, BRT Medan, QE Lubuk Pakam) · sheet QE, REGION = SBU · ' + qeRows.length + ' LoP · dimuat ' + new Date().toLocaleString('id-ID');
-  qeInitFilters(); qeRender();
+  qeInitFilters(); qeBuildHead(); qeRender();
 }
 function qeFill(id, allLabel, fn){
   const el = document.getElementById(id), cur = el.value;
@@ -6874,7 +6870,60 @@ function qeFiltered(){
   const q = document.getElementById('qeSearch').value.trim().toLowerCase();
   const f = (id,fn)=>{ const v=msVals(id); return v.length ? (r)=> v.includes(fn(r)||'(kosong)') : null; };
   const fs = [f('qeFStatus',qeStatusLabel), f('qeFDistrict',r=>qeGet(r,'DISTRICT TIF')), f('qeFBatch',r=>qeGet(r,'BATCH')), f('qeFTahun',r=>qeGet(r,'TAHUN PENGERJAAN')), f('qeFSubcon',r=>qeGet(r,'SUBCON TA'))].filter(Boolean);
-  return qeRows.filter(r=> fs.every(fn=>fn(r)) && (!q || r.join(' ').toLowerCase().includes(q)));
+  return qeRows.filter(r=> fs.every(fn=>fn(r)) && (!q || r.join(' ').toLowerCase().includes(q)) && qeColOk(r));
+}
+const QE_COLS = [
+  {k:'id',h:'ID DIGASSS',t:'text',v:r=>qeGet(r,'ID DIGASSS')},
+  {k:'nama',h:'Nama LoP',t:'text',v:r=>qeGet(r,'NAMA LOP')},
+  {k:'dist',h:'District',t:'sel',v:r=>qeGet(r,'DISTRICT TIF')},
+  {k:'sto',h:'STO',t:'sel',v:r=>qeGet(r,'STO')},
+  {k:'batch',h:'Batch',t:'sel',v:r=>qeGet(r,'BATCH')},
+  {k:'tahun',h:'Tahun',t:'sel',v:r=>qeGet(r,'TAHUN PENGERJAAN')},
+  {k:'plan',h:'Nilai Plan',t:'num',v:r=>qeNum(qeGet(r,'NILAI PLAN'))},
+  {k:'real',h:'Nilai Realisasi',t:'num',v:r=>qeNum(qeGet(r,'NILAI REALISASI'))},
+  {k:'status',h:'Status',t:'sel',v:qeStatusLabel},
+  {k:'detail',h:'Detail Status',t:'text',v:r=>qeGet(r,'DETAIL STATUS')},
+  {k:'tgt',h:'Tgt Instansi',t:'text',v:r=>qeGet(r,'TGT DARI INSTANSI')},
+  {k:'wasp',h:'Tim Waspang',t:'sel',v:r=>qeGet(r,'Tim Waspang')},
+  {k:'ut',h:'Tim UT',t:'sel',v:r=>qeGet(r,'Tim UT')},
+  {k:'subcon',h:'Subcon TA',t:'sel',v:r=>qeGet(r,'SUBCON TA')}
+];
+let qeSort = {k:null,dir:1}, qeColF = {};
+function qeColOk(r){
+  for(const c of QE_COLS){
+    const f = qeColF[c.k]; if(f===undefined || f==='') continue;
+    const v = c.v(r);
+    if(c.t==='sel'){ if((v||'(kosong)') !== f) return false; }
+    else if(c.t==='num'){
+      const m = String(f).trim().match(/^(>=|<=|>|<|=)?\s*([\d.,]+)$/);
+      if(m){ const n = parseFloat(m[2].replace(/,/g,'')); const op = m[1]||'=';
+        if(op==='>'&&!(v>n)) return false; if(op==='<'&&!(v<n)) return false; if(op==='>='&&!(v>=n)) return false; if(op==='<='&&!(v<=n)) return false; if(op==='='&&v!==n) return false; }
+      else if(!String(v).includes(String(f).trim())) return false;
+    } else if(!String(v).toLowerCase().includes(String(f).toLowerCase())) return false;
+  }
+  return true;
+}
+function qeBuildHead(){
+  const th = QE_COLS.map(c=>`<th class="qe-sort" data-k="${c.k}" style="cursor:pointer;user-select:none;white-space:nowrap;">${c.h} <span class="qe-arr" data-k="${c.k}" style="opacity:.5;">${qeSort.k===c.k?(qeSort.dir>0?'▲':'▼'):'⇅'}</span></th>`).join('');
+  const fr = QE_COLS.map(c=>{
+    if(c.t==='sel'){
+      const vals = [...new Set(qeRows.map(r=> c.v(r)||'(kosong)'))].sort();
+      return `<th><select class="qe-cf" data-k="${c.k}" style="width:100%;min-width:80px;font-size:11px;"><option value="">Semua</option>${vals.map(v=>`<option${qeColF[c.k]===v?' selected':''}>${qeEsc(v)}</option>`).join('')}</select></th>`;
+    }
+    return `<th><input class="qe-cf" data-k="${c.k}" value="${qeEsc(qeColF[c.k]||'')}" placeholder="${c.t==='num'?'>1000':'filter'}" style="width:100%;min-width:70px;font-size:11px;box-sizing:border-box;"></th>`;
+  }).join('');
+  const h = document.getElementById('qeThead');
+  h.innerHTML = `<tr>${th}</tr><tr>${fr}</tr>`;
+  h.querySelectorAll('.qe-sort').forEach(el=> el.onclick = ()=>{
+    const k = el.dataset.k;
+    if(qeSort.k===k){ if(qeSort.dir>0) qeSort.dir=-1; else qeSort={k:null,dir:1}; } else qeSort={k,dir:1};
+    h.querySelectorAll('.qe-arr').forEach(a=> a.textContent = qeSort.k===a.dataset.k ? (qeSort.dir>0?'▲':'▼') : '⇅');
+    qeRender();
+  });
+  h.querySelectorAll('.qe-cf').forEach(el=>{
+    const fn = ()=>{ qeColF[el.dataset.k] = el.value; qeRender(); };
+    if(el.tagName==='SELECT') el.onchange = fn; else el.oninput = fn;
+  });
 }
 function qeChart(id, type, labels, datasets, opts){
   if(typeof Chart==='undefined') return;
@@ -6912,7 +6961,10 @@ function qeRender(){
 
   document.getElementById('qeCount').textContent = rows.length + ' LoP';
   const long = (t)=> `<td style="min-width:260px;max-width:340px;"><div style="max-height:90px;overflow-y:auto;white-space:pre-wrap;font-size:11.5px;color:var(--text-dim);line-height:1.4;">${qeEsc(t)||'—'}</div></td>`;
-  document.getElementById('qeTableBody').innerHTML = rows.slice().sort((a,b)=> qeStatusOrder(a)-qeStatusOrder(b)).map(r=>{
+  const srt = rows.slice();
+  if(qeSort.k){ const c = QE_COLS.find(x=>x.k===qeSort.k); srt.sort((a,b)=>{ const x=c.v(a), y=c.v(b); return (c.t==='num' ? x-y : String(x).localeCompare(String(y),'id',{numeric:true,sensitivity:'base'})) * qeSort.dir; }); }
+  else srt.sort((a,b)=> qeStatusOrder(a)-qeStatusOrder(b));
+  document.getElementById('qeTableBody').innerHTML = srt.map(r=>{
     const lab = qeStatusLabel(r);
     return `<tr><td>${qeEsc(qeGet(r,'ID DIGASSS'))||'—'}</td><td class="name">${qeEsc(qeGet(r,'NAMA LOP'))}</td><td>${qeEsc(qeGet(r,'DISTRICT TIF'))||'—'}</td><td>${qeEsc(qeGet(r,'STO'))||'—'}</td><td>${qeEsc(qeGet(r,'BATCH'))||'—'}</td><td>${qeEsc(qeGet(r,'TAHUN PENGERJAAN'))||'—'}</td>
       <td>${qeFmtIDR(qeNum(qeGet(r,'NILAI PLAN')))}</td><td>${qeFmtIDR(qeNum(qeGet(r,'NILAI REALISASI')))}</td>
