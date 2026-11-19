@@ -11,20 +11,65 @@
     'Kabel':          {c:'#E31B23', line:1},
     'Rute / Catuan':  {c:'#1E6BFF', line:1, dash:'8 6'},
     'Garis lain':     {c:'#8E44AD', line:1},
-    'Site / STO':     {c:'#0a2342', r:8},
-    'Closure':        {c:'#E31B23', r:6.5},
-    'HH / MH':        {c:'#22B14C', r:6.5},
-    'ODP':            {c:'#F28C28', r:6},
-    'ODC':            {c:'#8E44AD', r:7},
-    'OTB':            {c:'#00A8A8', r:6},
-    'Tiang Baru':     {c:'#1E6BFF', r:4.5},
-    'Tiang Existing': {c:'#7B8794', r:4},
-    'Tiang':          {c:'#3B82F6', r:4},
-    'Slack / Hanging':{c:'#F2C94C', r:5.5},
-    'Jembatan':       {c:'#6D4C41', r:6},
-    'Penanda':        {c:'#B0B8C4', r:3.5},
-    'Lainnya':        {c:'#9AA5B1', r:4}
+    'Site / STO':     {c:'#0a2342', r:10, shape:'star', ring:'#F2C94C'},
+    'Closure':        {c:'#E31B23', r:7.5, shape:'diamond', inner:'dot'},
+    'HH / MH':        {c:'#22B14C', r:6.5, shape:'square', inner:'sq'},
+    'ODP':            {c:'#F28C28', r:7, shape:'tri'},
+    'ODC':            {c:'#8E44AD', r:8, shape:'hex', inner:'dot'},
+    'OTB':            {c:'#00A8A8', r:6.5, shape:'diamond'},
+    'Tiang Baru':     {c:'#1E6BFF', r:5, shape:'circle', inner:'dot'},
+    'Tiang Existing': {c:'#7B8794', r:4.6, shape:'ring'},
+    'Tiang':          {c:'#3B82F6', r:4.4, shape:'square'},
+    'Slack / Hanging':{c:'#F2C94C', r:6, shape:'ring', dark:1},
+    'Jembatan':       {c:'#6D4C41', r:7, shape:'rect'},
+    'Penanda':        {c:'#8892A0', r:4, shape:'cross'},
+    'Lainnya':        {c:'#9AA5B1', r:4, shape:'circle'}
   };
+  var UNIT = {
+    diamond:[[0,-1.25],[1.25,0],[0,1.25],[-1.25,0]],
+    square:[[-1,-1],[1,-1],[1,1],[-1,1]],
+    rect:[[-1.5,-.8],[1.5,-.8],[1.5,.8],[-1.5,.8]],
+    tri:[[0,-1.2],[1.2,.95],[-1.2,.95]],
+    hex:[[1.15,0],[.575,1],[-.575,1],[-1.15,0],[-.575,-1],[.575,-1]],
+    star:(function(){ var p = []; for(var i = 0; i < 10; i++){ var a = -Math.PI/2 + i*Math.PI/5, r = i % 2 ? .5 : 1.25; p.push([r*Math.cos(a), r*Math.sin(a)]); } return p; })()
+  };
+  function zf(z){ return z <= 11 ? .55 : z <= 13 ? .75 : z <= 15 ? .95 : z <= 17 ? 1.2 : 1.55; }
+  /* marker simbol di atas canvas (cepat untuk ribuan titik) */
+  L.Canvas.include({
+    _updateSymbol: function(l){
+      if(!this._drawing || l._empty()) return;
+      var ctx = this._ctx, p = l._point, r = l._radius, o = l.options, sh = o.shape;
+      ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      var poly = function(unit, k){ ctx.beginPath(); unit.forEach(function(u, i){ var x = p.x + u[0]*k, y = p.y + u[1]*k; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); };
+      if(sh === 'cross'){
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(p.x-r, p.y-r); ctx.lineTo(p.x+r, p.y+r); ctx.moveTo(p.x+r, p.y-r); ctx.lineTo(p.x-r, p.y+r); ctx.stroke();
+        ctx.strokeStyle = o.fillColor; ctx.lineWidth = 2; ctx.stroke();
+      } else {
+        var outline = function(){ ctx.lineWidth = 2.6; ctx.strokeStyle = o.ring || '#fff'; ctx.stroke(); };
+        if(sh === 'circle' || sh === 'ring'){ ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI*2); }
+        else poly(UNIT[sh] || UNIT.square, r);
+        outline();
+        if(sh === 'ring'){ ctx.fillStyle = o.dark ? '#fff' : '#fff'; ctx.fill(); ctx.lineWidth = Math.max(2, r*.5); ctx.strokeStyle = o.fillColor; ctx.stroke(); }
+        else { ctx.fillStyle = o.fillColor; ctx.fill(); }
+        if(o.inner === 'dot'){ ctx.beginPath(); ctx.arc(p.x, p.y, r*.32, 0, Math.PI*2); ctx.fillStyle = '#fff'; ctx.fill(); }
+        else if(o.inner === 'sq'){ ctx.fillStyle = '#fff'; var q = r*.45; ctx.fillRect(p.x - q, p.y - q, q*2, q*2); }
+      }
+      ctx.restore();
+    }
+  });
+  L.SymbolMarker = L.CircleMarker.extend({
+    _project: function(){ this._radius = this.options.base * zf(this._map.getZoom()); this._radiusY = this._radius; L.CircleMarker.prototype._project.call(this); },
+    _updatePath: function(){ this._renderer._updateSymbol(this); }
+  });
+  function svgSym(c){
+    var k = 8, cx = 12, col = c.c, st = 'stroke="#fff" stroke-width="2" stroke-linejoin="round"', t = '';
+    if(c.shape === 'circle') t = '<circle cx="12" cy="12" r="7" fill="' + col + '" ' + st + '/>';
+    else if(c.shape === 'ring') t = '<circle cx="12" cy="12" r="6" fill="#fff" stroke="' + col + '" stroke-width="3"/>';
+    else if(c.shape === 'cross') t = '<path d="M6 6L18 18M18 6L6 18" stroke="' + col + '" stroke-width="2.6" stroke-linecap="round"/>';
+    else { var u = UNIT[c.shape] || UNIT.square; t = '<polygon points="' + u.map(function(a){ return (12 + a[0]*k) + ',' + (12 + a[1]*k) ; }).join(' ') + '" fill="' + col + '" ' + st + '/>'; }
+    if(c.inner === 'dot') t += '<circle cx="12" cy="12" r="2.4" fill="#fff"/>'; else if(c.inner === 'sq') t += '<rect x="9" y="9" width="6" height="6" fill="#fff"/>';
+    return '<svg width="20" height="20" viewBox="0 0 24 24" style="flex:none;filter:drop-shadow(0 0 1px rgba(0,0,0,.6))">' + t + '</svg>';
+  }
   function classify(name, isLine, folder){
     var n = (name||'').toUpperCase().trim(), f = (folder||'').toUpperCase().trim();
     if(isLine){
@@ -158,7 +203,7 @@
     items.forEach(function(it){
       var cat = CATS[it.cat] || CATS['Lainnya'];
       if(it.pt){
-        it.lyr = L.circleMarker(it.ll, {renderer:ptsR, radius:cat.r, color:'#fff', weight:1.2, fillColor:cat.c, fillOpacity:.95});
+        it.lyr = new L.SymbolMarker(it.ll, {renderer:ptsR, radius:cat.r, base:cat.r, shape:cat.shape || 'circle', inner:cat.inner, ring:cat.ring, dark:cat.dark, fillColor:cat.c, fillOpacity:1, stroke:false});
       } else if(it.poly){
         it.lyr = L.polygon(it.poly, {renderer:linesR, color:cat.c, weight:2, fillColor:(it.col && lum(it.col) < .82) ? it.col : cat.c, fillOpacity:.2});
       } else {
@@ -247,7 +292,7 @@
     var ks = Object.keys(CATS).filter(function(k){ return cnt[k]; });
     el.innerHTML = ks.length ? ks.map(function(k){
       var c = CATS[k];
-      var sym = c.line ? '<i class="mk-ln" style="background:' + c.c + (c.dash ? ';background:repeating-linear-gradient(90deg,' + c.c + ' 0 6px,transparent 6px 10px)' : '') + '"></i>' : '<i class="mk-dot" style="background:' + c.c + '"></i>';
+      var sym = c.line ? '<i class="mk-ln" style="background:' + c.c + (c.dash ? ';background:repeating-linear-gradient(90deg,' + c.c + ' 0 6px,transparent 6px 10px)' : '') + '"></i>' : svgSym(c);
       return '<label class="mk-lg"><input type="checkbox" data-cat="' + esc(k) + '"' + (catOn[k] ? ' checked' : '') + '>' + sym + '<span>' + esc(k) + '</span><em>' + cnt[k] + '</em></label>';
     }).join('') : '<div style="opacity:.6;font-size:12px;padding:4px 2px">Centang file untuk melihat layer</div>';
     el.querySelectorAll('input[data-cat]').forEach(function(cb){ cb.onchange = function(){ catOn[cb.dataset.cat] = cb.checked; applyVis(); }; });
