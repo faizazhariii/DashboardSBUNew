@@ -1,0 +1,5141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>PMR311.kml</name>
+	<StyleMap id="__managed_style_018F6F30B13B5B7CE3691">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#failed9</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#failed8</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="failed8">
+		<LineStyle>
+			<color>ff00ffff</color>
+			<width>2.2</width>
+		</LineStyle>
+	</Style>
+	<Style id="failed9">
+		<LineStyle>
+			<color>ff00ffff</color>
+			<width>2.2</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="msn_flag1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_flag5</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_flag15</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_flag10">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_flag16</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_flag4</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_flag6">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_flag14</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_flag13</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_flag7">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_flag</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_flag16</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_grn-circle">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_grn-circle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_grn-circle1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_picnic3">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_picnic5</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_picnic7</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_flag13">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sh_flag15">
+		<IconStyle>
+			<color>ffff5500</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sh_flag16">
+		<IconStyle>
+			<color>ffff5500</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sh_flag4">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sh_grn-circle1">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/grn-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="sh_picnic7">
+		<IconStyle>
+			<scale>1.4</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/picnic.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_flag">
+		<IconStyle>
+			<color>ffff5500</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_flag14">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_flag16">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_flag5">
+		<IconStyle>
+			<color>ffff5500</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_grn-circle">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/grn-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="sn_picnic5">
+		<IconStyle>
+			<scale>1.2</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/picnic.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Folder id="165DEC258D03B27486EB1">
+		<name>PMR311</name>
+		<open>1</open>
+		<Placemark id="A2FDFF1007A3B53D60C75">
+			<name>ODP-KBJ-FAM/126</name>
+			<LookAt>
+				<longitude>98.55711508280963</longitude>
+				<latitude>3.05901457935943</latitude>
+				<altitude>0</altitude>
+				<heading>-0.000174868938263683</heading>
+				<tilt>28.54943039425294</tilt>
+				<range>412.9891873878514</range>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</LookAt>
+			<styleUrl>#msn_grn-circle</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>98.55638460722936,3.058530278510204,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark id="17E77E1F3F53B27486EB1">
+			<name>PMR311</name>
+			<Camera>
+				<longitude>99.88676699224102</longitude>
+				<latitude>1.488954310425268</latitude>
+				<altitude>3784.69732985967</altitude>
+				<heading>0.6144556501830289</heading>
+				<tilt>21.19575094309318</tilt>
+				<roll>0.6687191266996755</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_picnic3</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>98.58579397,3.035745620000001,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>NEW KABEL ADSS</name>
+			<styleUrl>#__managed_style_018F6F30B13B5B7CE3691</styleUrl>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>
+					98.55636358039125,3.058494322125779,0 98.55635184507157,3.05849480740333,0 98.55635273273759,3.058506814266151,0 98.55634011034687,3.058495292656799,0 98.55635184507157,3.05849480740333,0 98.55635273273759,3.058506814266151,0 98.55635184507157,3.05849480740333,0 98.55632926080116,3.058507784266244,0 98.55636358039125,3.058494322125779,0 98.55632749186221,3.058483774612947,0 98.55632749186221,3.058483774612947,0 98.55573879429403,3.058640573423096,0 98.55578896170998,3.058740827221038,0 98.55605036306181,3.059429856653086,0 98.55673738417846,3.059894302222643,0 98.5571278571046,3.060116043097299,0 98.55759770708913,3.060451215867254,0 98.55779779052327,3.060621895988614,0 98.5578420387896,3.060726011893473,0 98.55786126387711,3.060810653660112,0 98.55784745413497,3.061266658573748,0 98.55784268960493,3.061507223554779,0 98.55783102289972,3.061830480782989,0 98.55783723274203,3.062085387684048,0 98.55788070502358,3.062311138162043,0 98.55793217183502,3.062470148401512,0 98.55798739802673,3.06275581054218,0 98.55799839276072,3.062919154039985,0 98.55802643731785,3.063299013146373,0 98.55811185454365,3.063677864834972,0 98.55818677437799,3.064094085904892,0 98.55829482006646,3.064513878234807,0 98.55843539896898,3.064886964051276,0 98.55852577766323,3.064994408398091,0 98.55866405524111,3.065095393797112,0 98.55880312650221,3.065135331012581,0 98.55895345987165,3.065175454250387,0 98.55904450296219,3.06523707969744,0 98.55913031125246,3.065394425852315,0 98.55920503754697,3.065522694659378,0 98.55937502992387,3.06585149945898,0 98.55949374065544,3.065880207602053,0 98.55982846510103,3.065831591650707,0 98.56010641668426,3.065799580134307,0 98.5602562312266,3.065797411614814,0 98.56055614114982,3.065813364526027,0 98.56064149311084,3.065825719710499,0 98.56072779082812,3.065848306846931,0 98.5609507968433,3.065913662092213,0 98.56116751540959,3.06597933981481,0 98.56132264090461,3.065981087811029,0 98.56146786272477,3.065972720798722,0 98.56179388341262,3.065993259092701,0 98.56226650985056,3.066050833078971,0 98.5625095089954,3.066059763611015,0 98.56265949744251,3.066096409196772,0 98.56278197151036,3.066171656560265,0 98.56299544369733,3.066396262675769,0 98.56320496637042,3.066635792824755,0 98.56333756243639,3.066744862075101,0 98.56343781809096,3.066814570647066,0 98.56350202764564,3.066851102041495,0 98.56360733199452,3.066880375490332,0 98.56368276208913,3.066872493040098,0 98.56378905886703,3.066857304392116,0 98.56409199340956,3.066718934401372,0 98.56442972497079,3.066575998938991,0 98.5647635495106,3.066486692195749,0 98.56504743525532,3.066435165122299,0 98.56547766624296,3.066391759777846,0 98.56598679940535,3.066313946001467,0 98.56634075283387,3.066207593773397,0 98.56682253552773,3.066108519684271,0 98.56732143186281,3.066025694417696,0 98.56789149774755,3.065910883228841,0 98.56842570911061,3.065783018626199,0 98.56880208941078,3.065709852623494,0 98.56898827029917,3.065696738675742,0 98.56918805820686,3.06571395603702,0 98.56977544174325,3.065817816258898,0 98.57012270700747,3.065850809289112,0 98.57048315024704,3.065901423929076,0 98.57078781722193,3.0659797104475,0 98.57082197039894,3.066026591574881,0 98.57083609075038,3.066080747330417,0 98.5708563041007,3.066725177849439,0 98.57085938637026,3.067261693255483,0 98.57083298523702,3.067425888731288,0 98.57084168059541,3.067707256119069,0 98.57085315892266,3.067822883967152,0 98.57088643293956,3.067904536012177,0 98.57093739348798,3.067989798691697,0 98.57098563646608,3.068034087647663,0 98.5710728446101,3.068085087555346,0 98.57116947889855,3.068099804131917,0 98.57158956029267,3.068072056953542,0 98.57185722004115,3.068059238834733,0 98.5722503031819,3.068038455417999,0 98.57252250471062,3.068063579175656,0 98.57281381916414,3.068074548084379,0 98.57299625134834,3.068093679009825,0 98.57324312204702,3.068074399129506,0 98.57345808971549,3.068020586243684,0 98.57357568714797,3.068005613732757,0 98.57373124491019,3.067976314180208,0 98.57384924842859,3.067954245132308,0 98.5742429481576,3.067633718369672,0 98.57451759606614,3.067366011344984,0 98.57470992861506,3.067239428021518,0 98.57491547211022,3.067083625621013,0 98.5751614284798,3.067003823098932,0 98.5753578834353,3.06685984032725,0 98.57567791167197,3.066607667885032,0 98.57584029499884,3.06620006990746,0 98.57608664352526,3.065468276720008,0 98.5767776354772,3.064636206898537,0 98.57687885340188,3.064463212281899,0 98.57690376501337,3.064429275558114,0 98.57707334314922,3.064295441327403,0 98.57725097528751,3.064206032010135,0 98.57743427576526,3.064086102268026,0 98.57769122035583,3.063961343208668,0 98.57788284066689,3.063850699716796,0 98.57805028731072,3.063777093113578,0 98.57810665314811,3.063759194785007,0 98.57817621952394,3.063764562359509,0 98.57830194286475,3.06380765980556,0 98.57865751383613,3.063939161512701,0 98.5788429959066,3.063978994501147,0 98.57914966969945,3.064040626956817,0 98.57943803226111,3.064123868308141,0 98.57963548077916,3.064189086647,0 98.5800420166329,3.064393569892977,0 98.58048129255727,3.064637476302471,0 98.58091827740881,3.064887940549529,0 98.58131772888426,3.065101864251746,0 98.58166016624162,3.06525004716904,0 98.58195970412331,3.065322339611313,0 98.58230421708284,3.065384943932402,0 98.58254189942592,3.065449237404791,0 98.58277195354232,3.065495600873637,0 98.5829683880537,3.065496461952559,0 98.58312966403115,3.065504560110926,0 98.58327188096497,3.06551635161099,0 98.58345443016917,3.065507296999623,0 98.58367123889897,3.065480689892443,0 98.5838532998654,3.065478351874276,0 98.58406919574821,3.065414789582726,0 98.58438724459683,3.065332809444939,0 98.58458853229861,3.065279102464723,0 98.58474721715419,3.065229273037471,0 98.58489425779477,3.065199658556514,0 98.58507054360356,3.065189596669,0 98.58521728522426,3.065183437898459,0 98.58539260625884,3.065180109403969,0 98.58546027738289,3.065206007872555,0 98.58549378053387,3.065236022559266,0 98.58554444759797,3.065306803538347,0 98.58559132301708,3.065371115226611,0 98.58566633418883,3.065476083651082,0 98.58579885215416,3.065674323731014,0 98.58585441005091,3.065781309102205,0 98.58598978420768,3.066026904785351,0 98.58608914616258,3.066124126993438,0 98.58620376492466,3.066248553502519,0 98.5863084722352,3.066354137749873,0 98.58648937968486,3.066490163936225,0 98.58653848979685,3.066552252375029,0 98.58671212921696,3.066729493024782,0 98.58688439653135,3.066896129853348,0 98.58701101456668,3.067022650870148,0 98.58716440246083,3.067129990430763,0 98.58732061764394,3.067198040049599,0 98.587437029619,3.067250326242153,0 98.58770812974618,3.067277272402503,0 98.58786874273493,3.06729226378333,0 98.58807223736471,3.067317117185123,0 98.58827647212973,3.067328432935238,0 98.58834151324551,3.067317346894652,0 98.5885262847508,3.067283153898011,0 98.5886341278626,3.06729833380141,0 98.58876505273926,3.067296379514377,0 98.58897236511513,3.067339821686622,0 98.58916415396074,3.067433546076372,0 98.58933977100445,3.067573617476467,0 98.58946938123115,3.067703032991013,0 98.58967644588299,3.067898224941218,0 98.58992849591199,3.068042594673906,0 98.59019235658906,3.068284267100185,0 98.59044403459549,3.068610899590806,0 98.59067749015226,3.068939861794476,0 98.59103066954827,3.069577486953195,0 98.59112957549114,3.069784527068139,0 98.59135263998074,3.06988677377612,0 98.59167834372592,3.069866596923704,0 98.59203397393289,3.069856868853007,0 98.59208049885167,3.069764879571926,0 98.5922497799852,3.069622985812936,0 98.59230755224824,3.069401340702547,0 98.59216177944234,3.06904549412802,0 98.59212790191276,3.068661631625446,0 98.59218184602162,3.0683163292073,0 98.59227346917284,3.067736798503795,0 98.59237794438292,3.067144619485755,0 98.59239029258231,3.066001220081353,0 98.5923511805118,3.063554743314901,0 98.59230410182002,3.061883368669494,0 98.59228539465417,3.06025564414871,0 98.59245825508769,3.05874078368059,0 98.59261188810663,3.057695413429976,0 98.59258552069414,3.055923362386312,0 98.59255802251425,3.055397709061807,0 98.59258450344159,3.055139795206922,0 98.59266068559097,3.054950767761844,0 98.59280414434777,3.054808544375447,0 98.59299600388714,3.054740404959889,0 98.59317492545038,3.054669646175766,0 98.59327310193396,3.054551547119913,0 98.59331325224025,3.054203676088655,0 98.59313878116913,3.053917345653153,0 98.5928085902391,3.053651249672904,0 98.59263007806958,3.053467514510059,0 98.59263421750254,3.053285623054941,0 98.59272830608033,3.053020320485551,0 98.5926754662874,3.052826405650314,0 98.59250869954086,3.052581799519352,0 98.59240227857663,3.052154052220569,0 98.59224737230197,3.051785016636582,0 98.59211996574167,3.051689886472142,0 98.59202528867912,3.05163398350481,0 98.59186201952441,3.051583315679822,0 98.59174542305081,3.051548420804845,0 98.59165742390485,3.051465756349411,0 98.59152984771211,3.051232295464517,0 98.59144706978516,3.05099959365439,0 98.59125394756246,3.050835017220518,0 98.59080178785942,3.050705697000913,0 98.59054729191999,3.050577274817659,0 98.59027241407786,3.050204767543022,0 98.58988134872919,3.049579971105272,0 98.58903239710004,3.048279888799178,0 98.58837398275483,3.047237907564559,0 98.58756749971604,3.045952637425343,0 98.58643067111514,3.04418742166526,0 98.58555122832847,3.042727223991609,0 98.58540543943343,3.042542622552386,0 98.58522024901332,3.042332314631028,0 98.58518377321006,3.04228242860897,0 98.58496053910881,3.042071625391398,0 98.58472672733451,3.041908436907014,0 98.58420416671702,3.041959318437386,0 98.58363998447845,3.041890070645066,0 98.5832716555871,3.041743826381448,0 98.58299049313393,3.041497870716304,0 98.58279411023919,3.040889323296741,0 98.58277299735191,3.040642337642248,0 98.58298213630056,3.040430441270952,0 98.58335062844559,3.040154753431106,0 98.5835022420794,3.039431971157101,0 98.5836022811533,3.039341628234457,0 98.58398091034775,3.038249571605042,0 98.5842011281983,3.037699480759583,0 98.58455203547705,3.037192378901661,0 98.58514833655885,3.036659398973108,0 98.58570686568147,3.036107772820965,0 98.58600936111705,3.035827333432806,0 98.58594058941492,3.03575186143972,0 98.58579456120304,3.035737408799517,0 
+				</coordinates>
+			</LineString>
+		</Placemark>
+		<Folder id="43AE592B6E3B53D60C74">
+			<name>TIANG</name>
+			<open>1</open>
+			<Placemark>
+				<name>TE</name>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55552353765715</longitude>
+					<latitude>3.057197663705977</latitude>
+					<altitude>0</altitude>
+					<heading>-174.8816856985686</heading>
+					<tilt>13.23486998663933</tilt>
+					<range>993.8707908029527</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag7</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55629870140783,3.058518186571693,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TE</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55654258278679</longitude>
+					<latitude>3.05901230405272</latitude>
+					<altitude>0</altitude>
+					<heading>103.4984697959566</heading>
+					<tilt>0</tilt>
+					<range>967.4773914267639</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag1</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55573946371875,3.058619018816656,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5565712481647</longitude>
+					<latitude>3.058939612545667</latitude>
+					<altitude>0</altitude>
+					<heading>103.4984713243863</heading>
+					<tilt>0</tilt>
+					<range>967.4773914280212</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag6</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55594715237402,3.059181361603889,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55654258278692</longitude>
+					<latitude>3.05901230405273</latitude>
+					<altitude>0</altitude>
+					<heading>133.1158155202087</heading>
+					<tilt>0</tilt>
+					<range>967.4773914038202</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55624969021636,3.059575483055553,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55654258278692</longitude>
+					<latitude>3.05901230405273</latitude>
+					<altitude>0</altitude>
+					<heading>133.1158155202087</heading>
+					<tilt>0</tilt>
+					<range>967.4773914038202</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55668813988633,3.059893267197265,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55654258278692</longitude>
+					<latitude>3.05901230405273</latitude>
+					<altitude>0</altitude>
+					<heading>133.1158155202087</heading>
+					<tilt>0</tilt>
+					<range>967.4773914038202</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55716929433441,3.060153589782145,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55654258278692</longitude>
+					<latitude>3.05901230405273</latitude>
+					<altitude>0</altitude>
+					<heading>133.1158155202087</heading>
+					<tilt>0</tilt>
+					<range>967.4773914038202</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55755398685069,3.060451497384618,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55654258278692</longitude>
+					<latitude>3.05901230405273</latitude>
+					<altitude>0</altitude>
+					<heading>133.1158155202087</heading>
+					<tilt>0</tilt>
+					<range>967.4773914038202</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55782499246901,3.060759255692514,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55848014752887</longitude>
+					<latitude>3.061364293778459</latitude>
+					<altitude>0</altitude>
+					<heading>86.1643899820864</heading>
+					<tilt>0.3708086033140934</tilt>
+					<range>967.4976498882619</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55782456505742,3.061230641822736,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55848014752887</longitude>
+					<latitude>3.061364293778459</latitude>
+					<altitude>0</altitude>
+					<heading>86.1643899820864</heading>
+					<tilt>0.3708086033140934</tilt>
+					<range>967.4976498882619</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55780259089505,3.061844685539338,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55848014752887</longitude>
+					<latitude>3.061364293778459</latitude>
+					<altitude>0</altitude>
+					<heading>86.1643899820864</heading>
+					<tilt>0.3708086033140934</tilt>
+					<range>967.4976498882619</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5579122645357,3.06240995912429,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55919001301456</longitude>
+					<latitude>3.061861345078434</latitude>
+					<altitude>0</altitude>
+					<heading>86.16442793541542</heading>
+					<tilt>0.3708086033131105</tilt>
+					<range>967.4976498895232</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55799099888222,3.063037311651557,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55974030459886</longitude>
+					<latitude>3.062162030212502</latitude>
+					<altitude>0</altitude>
+					<heading>86.16445736381469</heading>
+					<tilt>0.3708086033150763</tilt>
+					<range>967.4976498885179</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5580926937977,3.063621526469979,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55974030459886</longitude>
+					<latitude>3.062162030212502</latitude>
+					<altitude>0</altitude>
+					<heading>86.16445736381469</heading>
+					<tilt>0.3708086033150763</tilt>
+					<range>967.4976498885179</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55823704874179,3.06424019364072,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55965225100077</longitude>
+					<latitude>3.062632758300724</latitude>
+					<altitude>0</altitude>
+					<heading>110.4681516937365</heading>
+					<tilt>0</tilt>
+					<range>967.4773914180364</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.559300114509,3.065763057206938,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55965225100077</longitude>
+					<latitude>3.062632758300724</latitude>
+					<altitude>0</altitude>
+					<heading>110.4681516937365</heading>
+					<tilt>0</tilt>
+					<range>967.4773914180364</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.559453745404,3.065862923929582,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55962958687543</longitude>
+					<latitude>3.063742394034311</latitude>
+					<altitude>0</altitude>
+					<heading>160.1294481680715</heading>
+					<tilt>0</tilt>
+					<range>967.4773913855812</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55984344959316,3.065844180455841,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55965225100077</longitude>
+					<latitude>3.062632758300724</latitude>
+					<altitude>0</altitude>
+					<heading>110.4681516937365</heading>
+					<tilt>0</tilt>
+					<range>967.4773914180364</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55839004452646,3.064865738490248,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55965225100077</longitude>
+					<latitude>3.062632758300724</latitude>
+					<altitude>0</altitude>
+					<heading>110.4681516937365</heading>
+					<tilt>0</tilt>
+					<range>967.4773914180364</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55905404133293,3.065287747789223,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55965225100077</longitude>
+					<latitude>3.062632758300724</latitude>
+					<altitude>0</altitude>
+					<heading>110.4681516937365</heading>
+					<tilt>0</tilt>
+					<range>967.4773914180364</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.55870546654796,3.065123910712547,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.55962958687543</longitude>
+					<latitude>3.063742394034312</latitude>
+					<altitude>0</altitude>
+					<heading>160.1294481680708</heading>
+					<tilt>0</tilt>
+					<range>967.477391391311</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56036960441,3.065802684984908,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56083816823957,3.06591400206183,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56130002641096,3.066006054890032,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56174694215854,3.066011674860948,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56221776850073,3.066085390210889,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56259031981085,3.06610741588747,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56285343012263,3.066297279975689,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56309853418496,3.066562170801958,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5633695735547,3.066823215405244,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56129396641902</longitude>
+					<latitude>3.064119494313602</latitude>
+					<altitude>0</altitude>
+					<heading>172.6422927120953</heading>
+					<tilt>3.49125492912606</tilt>
+					<range>997.6312786672883</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5637619136816,3.066880256899744,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56234244464245</longitude>
+					<latitude>3.065019068533121</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6437917639363</heading>
+					<tilt>0</tilt>
+					<range>995.7800687081769</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56409759730383,3.066731186149565,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56234244464245</longitude>
+					<latitude>3.065019068533121</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6437917639363</heading>
+					<tilt>0</tilt>
+					<range>995.7800687081769</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56448571355524,3.066580004154812,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56234244464245</longitude>
+					<latitude>3.065019068533121</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6437917639363</heading>
+					<tilt>0</tilt>
+					<range>995.7800687081769</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56492993171395,3.066478854632863,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56234244464245</longitude>
+					<latitude>3.065019068533121</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6437917639363</heading>
+					<tilt>0</tilt>
+					<range>995.7800687081769</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56546507373208,3.066434777319303,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5645919020736</longitude>
+					<latitude>3.064985497582411</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6437025315364</heading>
+					<tilt>0</tilt>
+					<range>899.047061835556</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56600003778546,3.066327706536166,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56441895582508</longitude>
+					<latitude>3.065198436424063</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6437117890662</heading>
+					<tilt>0</tilt>
+					<range>899.0470618374577</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56643997051458,3.066217195159827,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56665400085262</longitude>
+					<latitude>3.06490544731774</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6435922724533</heading>
+					<tilt>0</tilt>
+					<range>899.0470618356625</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56690439980737,3.066108253681171,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56665400085262</longitude>
+					<latitude>3.06490544731774</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6435922724533</heading>
+					<tilt>0</tilt>
+					<range>899.0470618356625</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56732145993784,3.066038192076249,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56694656644939</longitude>
+					<latitude>3.065015301010317</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6435766292154</heading>
+					<tilt>0</tilt>
+					<range>899.0470618338621</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56773316725092,3.065938877102935,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56694656644939</longitude>
+					<latitude>3.065015301010317</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6435766292154</heading>
+					<tilt>0</tilt>
+					<range>899.0470618338621</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.568186452861,3.065868250978576,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56694656644939</longitude>
+					<latitude>3.065015301010317</latitude>
+					<altitude>0</altitude>
+					<heading>-169.6435766292154</heading>
+					<tilt>0</tilt>
+					<range>899.0470618338621</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56865196330888,3.065765164211985,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56927253206543</longitude>
+					<latitude>3.064451673752185</latitude>
+					<altitude>0</altitude>
+					<heading>171.4152195618442</heading>
+					<tilt>0</tilt>
+					<range>899.0470618178551</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5690108199129,3.065744522077012,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56927253206543</longitude>
+					<latitude>3.064451673752185</latitude>
+					<altitude>0</altitude>
+					<heading>171.4152195618442</heading>
+					<tilt>0</tilt>
+					<range>899.0470618178551</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56951229997759,3.065814104570068,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56927253206543</longitude>
+					<latitude>3.064451673752185</latitude>
+					<altitude>0</altitude>
+					<heading>171.4152195618442</heading>
+					<tilt>0</tilt>
+					<range>899.0470618178551</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.56998111195347,3.065860717989175,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56927253206543</longitude>
+					<latitude>3.064451673752185</latitude>
+					<altitude>0</altitude>
+					<heading>171.4152195618442</heading>
+					<tilt>0</tilt>
+					<range>899.0470618178551</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57042458973004,3.065915542566246,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.56927253206543</longitude>
+					<latitude>3.064451673752185</latitude>
+					<altitude>0</altitude>
+					<heading>171.4152195618442</heading>
+					<tilt>0</tilt>
+					<range>899.0470618178551</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57077083823467,3.06601585944748,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57114495414928</longitude>
+					<latitude>3.066400730083108</latitude>
+					<altitude>0</altitude>
+					<heading>115.8540955885378</heading>
+					<tilt>0</tilt>
+					<range>899.0470618177836</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57081631332757,3.066480447977604,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57114495414928</longitude>
+					<latitude>3.06640073008309</latitude>
+					<altitude>0</altitude>
+					<heading>96.22399217924715</heading>
+					<tilt>0</tilt>
+					<range>899.0470618349831</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57083441249105,3.066931118460051,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57114495414928</longitude>
+					<latitude>3.066400730083092</latitude>
+					<altitude>0</altitude>
+					<heading>96.22399217924715</heading>
+					<tilt>0</tilt>
+					<range>899.0470618349831</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57081448284808,3.067352083170952,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57114495414928</longitude>
+					<latitude>3.06640073008309</latitude>
+					<altitude>0</altitude>
+					<heading>96.22399217924715</heading>
+					<tilt>0</tilt>
+					<range>899.0470618349831</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57082803206886,3.067805299913139,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57116167967985</longitude>
+					<latitude>3.066380634223613</latitude>
+					<altitude>0</altitude>
+					<heading>140.2701744318173</heading>
+					<tilt>0.1854016418180675</tilt>
+					<range>899.0517680874704</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57099052395348,3.068074259341722,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57095558687962</longitude>
+					<latitude>3.066968249694162</latitude>
+					<altitude>0</altitude>
+					<heading>-177.484940000449</heading>
+					<tilt>0</tilt>
+					<range>899.0470618455023</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57135180138638,3.068114730513581,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57095558687962</longitude>
+					<latitude>3.066968249694162</latitude>
+					<altitude>0</altitude>
+					<heading>-177.484940000449</heading>
+					<tilt>0</tilt>
+					<range>899.0470618455023</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57178022410828,3.068095939679573,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57095558687962</longitude>
+					<latitude>3.066968249694162</latitude>
+					<altitude>0</altitude>
+					<heading>-177.484940000449</heading>
+					<tilt>0</tilt>
+					<range>899.0470618455023</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57223218774203,3.068070163385079,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57130253570101</longitude>
+					<latitude>3.06699470575942</latitude>
+					<altitude>0</altitude>
+					<heading>-177.4849214318947</heading>
+					<tilt>0</tilt>
+					<range>899.0470618457736</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57273410731746,3.06809577534957,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57130253570101</longitude>
+					<latitude>3.06699470575942</latitude>
+					<altitude>0</altitude>
+					<heading>-177.4849214318947</heading>
+					<tilt>0</tilt>
+					<range>899.0470618457736</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57323472180457,3.06809167864716,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57130253570101</longitude>
+					<latitude>3.066994705759427</latitude>
+					<altitude>0</altitude>
+					<heading>-164.2833917501872</heading>
+					<tilt>0</tilt>
+					<range>899.0470618766284</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57369799235309,3.068029953688159,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57130253570108</longitude>
+					<latitude>3.066994705759422</latitude>
+					<altitude>0</altitude>
+					<heading>-164.2833917501669</heading>
+					<tilt>0</tilt>
+					<range>899.0470618737837</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57406545328149,3.067796950455497,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57318366412828</longitude>
+					<latitude>3.066385692197934</latitude>
+					<altitude>0</altitude>
+					<heading>-141.7864224605889</heading>
+					<tilt>0</tilt>
+					<range>899.0470618693132</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57443638232908,3.067493828213053,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57318366412828</longitude>
+					<latitude>3.066385692197934</latitude>
+					<altitude>0</altitude>
+					<heading>-141.7864224605889</heading>
+					<tilt>0</tilt>
+					<range>899.0470618693132</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57483316476723,3.067189456617249,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57429157733908</longitude>
+					<latitude>3.065666068050513</latitude>
+					<altitude>0</altitude>
+					<heading>-141.7863631966363</heading>
+					<tilt>0</tilt>
+					<range>899.04706186869</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57519829318005,3.067008375288557,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57429157733908</longitude>
+					<latitude>3.065666068050513</latitude>
+					<altitude>0</altitude>
+					<heading>-141.7863631966363</heading>
+					<tilt>0</tilt>
+					<range>899.04706186869</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57561548710207,3.066710664073677,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57429157733912</longitude>
+					<latitude>3.065666068050526</latitude>
+					<altitude>0</altitude>
+					<heading>-124.2225880148642</heading>
+					<tilt>0</tilt>
+					<range>899.0470618751335</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57585349440433,3.066201842023171,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57429157733912</longitude>
+					<latitude>3.065666068050526</latitude>
+					<altitude>0</altitude>
+					<heading>-124.2225880148642</heading>
+					<tilt>0</tilt>
+					<range>899.0470618751335</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5760216013104,3.065711816477683,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57429157733912</longitude>
+					<latitude>3.065666068050526</latitude>
+					<altitude>0</altitude>
+					<heading>-124.2225880148642</heading>
+					<tilt>0</tilt>
+					<range>899.0470618751335</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57623638475479,3.065354192764837,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57429157733912</longitude>
+					<latitude>3.065666068050526</latitude>
+					<altitude>0</altitude>
+					<heading>-124.2225880148642</heading>
+					<tilt>0</tilt>
+					<range>899.0470618751335</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57652741575502,3.064969231928214,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57429157733912</longitude>
+					<latitude>3.065666068050526</latitude>
+					<altitude>0</altitude>
+					<heading>-124.2225880148642</heading>
+					<tilt>0</tilt>
+					<range>899.0470618751335</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57682829857687,3.064590958809947,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57553625123916</longitude>
+					<latitude>3.06434636610689</latitude>
+					<altitude>0</altitude>
+					<heading>-147.8704800939405</heading>
+					<tilt>0</tilt>
+					<range>899.0470618879345</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57717223760633,3.064286086018192,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57591652022387</longitude>
+					<latitude>3.063855061600274</latitude>
+					<altitude>0</altitude>
+					<heading>-147.8704597477872</heading>
+					<tilt>0</tilt>
+					<range>899.0470618862472</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57755557608969,3.064045688366678,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57591652022387</longitude>
+					<latitude>3.063855061600274</latitude>
+					<altitude>0</altitude>
+					<heading>-147.8704597477872</heading>
+					<tilt>0</tilt>
+					<range>899.0470618862472</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57801598332506,3.063827190395896,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.57707481262474</longitude>
+					<latitude>3.063365992523217</latitude>
+					<altitude>0</altitude>
+					<heading>177.6908256636391</heading>
+					<tilt>0</tilt>
+					<range>899.047061896609</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5784547443901,3.063882864211214,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.578447813045</longitude>
+					<latitude>3.062135563039838</latitude>
+					<altitude>0</altitude>
+					<heading>177.6908990879866</heading>
+					<tilt>0</tilt>
+					<range>899.0470618974979</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57894960866578,3.064027784827168,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58040225764002</longitude>
+					<latitude>3.06314912253818</latitude>
+					<altitude>0</altitude>
+					<heading>148.7624324922072</heading>
+					<tilt>0</tilt>
+					<range>899.0470619061878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57937456874411,3.064130049591277,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58040225764002</longitude>
+					<latitude>3.06314912253818</latitude>
+					<altitude>0</altitude>
+					<heading>148.7624324922072</heading>
+					<tilt>0</tilt>
+					<range>899.0470619061878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.57980175609288,3.064298348375597,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58040225764002</longitude>
+					<latitude>3.06314912253818</latitude>
+					<altitude>0</altitude>
+					<heading>148.7624324922072</heading>
+					<tilt>0</tilt>
+					<range>899.0470619061878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58025207009469,3.064543258299566,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58040225764002</longitude>
+					<latitude>3.06314912253818</latitude>
+					<altitude>0</altitude>
+					<heading>148.7624324922072</heading>
+					<tilt>0</tilt>
+					<range>899.0470619061878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58069019580893,3.064773830746807,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58040225764002</longitude>
+					<latitude>3.06314912253818</latitude>
+					<altitude>0</altitude>
+					<heading>148.7624324922072</heading>
+					<tilt>0</tilt>
+					<range>899.0470619061878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58115470486054,3.065041250786446,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58205833200286</longitude>
+					<latitude>3.063519138199005</latitude>
+					<altitude>0</altitude>
+					<heading>148.7625210633202</heading>
+					<tilt>0</tilt>
+					<range>899.047061906863</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58170629445343,3.065257074033396,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58205833200286</longitude>
+					<latitude>3.063519138199012</latitude>
+					<altitude>0</altitude>
+					<heading>168.8518064183456</heading>
+					<tilt>0</tilt>
+					<range>899.047061888184</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58219615256434,3.065373924675789,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58205833200286</longitude>
+					<latitude>3.063519138199013</latitude>
+					<altitude>0</altitude>
+					<heading>168.851806418307</heading>
+					<tilt>0</tilt>
+					<range>899.0470618838408</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58266019095126,3.065483426900354,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58205833200286</longitude>
+					<latitude>3.063519138199022</latitude>
+					<altitude>0</altitude>
+					<heading>168.8518064182721</heading>
+					<tilt>0</tilt>
+					<range>899.0470618996136</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58314504456591,3.065518220711232,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5817044262966</longitude>
+					<latitude>3.063383107465355</latitude>
+					<altitude>0</altitude>
+					<heading>168.851787496103</heading>
+					<tilt>0</tilt>
+					<range>899.0470619036299</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58364196128736,3.065493409055823,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5829402196054</longitude>
+					<latitude>3.063569541640546</latitude>
+					<altitude>0</altitude>
+					<heading>-175.1481447236449</heading>
+					<tilt>0</tilt>
+					<range>899.0470619120284</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58410052409469,3.065423266369641,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5829402196054</longitude>
+					<latitude>3.063569541640546</latitude>
+					<altitude>0</altitude>
+					<heading>-175.1481447236449</heading>
+					<tilt>0</tilt>
+					<range>899.0470619120284</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5845898044775,3.06529860153183,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5829402196054</longitude>
+					<latitude>3.063569541640546</latitude>
+					<altitude>0</altitude>
+					<heading>-175.1481447236449</heading>
+					<tilt>0</tilt>
+					<range>899.0470619120284</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58503332436599,3.065195643167917,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5829402196054</longitude>
+					<latitude>3.063569541640546</latitude>
+					<altitude>0</altitude>
+					<heading>-175.1481447236449</heading>
+					<tilt>0</tilt>
+					<range>899.0470619120284</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58542088247404,3.06520439240678,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58678472566694</longitude>
+					<latitude>3.064570713834605</latitude>
+					<altitude>0</altitude>
+					<heading>154.6806346270124</heading>
+					<tilt>2.966432006919105</tilt>
+					<range>900.2532080933574</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58587035159876,3.065903712483486,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58685132149807</longitude>
+					<latitude>3.064713862161966</latitude>
+					<altitude>0</altitude>
+					<heading>133.7663534518802</heading>
+					<tilt>2.410226908263406</tilt>
+					<range>899.8430050784336</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58612305603205,3.066195946433654,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58678472566694</longitude>
+					<latitude>3.064570713834605</latitude>
+					<altitude>0</altitude>
+					<heading>154.6806346270124</heading>
+					<tilt>2.966432006919105</tilt>
+					<range>900.2532080933574</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58567681222642,3.065541601258986,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58757225083482</longitude>
+					<latitude>3.065388988004329</latitude>
+					<altitude>0</altitude>
+					<heading>133.7663920161799</heading>
+					<tilt>2.410226908263557</tilt>
+					<range>899.8430050781878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58645276513664,3.066480089494434,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58757225083482</longitude>
+					<latitude>3.065388988004329</latitude>
+					<altitude>0</altitude>
+					<heading>133.7663920161799</heading>
+					<tilt>2.410226908263557</tilt>
+					<range>899.8430050781878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5867376383782,3.066785512779401,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58757225083482</longitude>
+					<latitude>3.065388988004329</latitude>
+					<altitude>0</altitude>
+					<heading>133.7663920161799</heading>
+					<tilt>2.410226908263557</tilt>
+					<range>899.8430050781878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58704809284609,3.067058544804931,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58757225083482</longitude>
+					<latitude>3.065388988004329</latitude>
+					<altitude>0</altitude>
+					<heading>133.7663920161799</heading>
+					<tilt>2.410226908263557</tilt>
+					<range>899.8430050781878</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58741039033018,3.067250467291153,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5881457275236</longitude>
+					<latitude>3.065688764953489</latitude>
+					<altitude>0</altitude>
+					<heading>159.137849509438</heading>
+					<tilt>0</tilt>
+					<range>899.0470619137712</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58781607689887,3.067309020681863,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58815258595706</longitude>
+					<latitude>3.065704048084109</latitude>
+					<altitude>0</altitude>
+					<heading>159.1378498764146</heading>
+					<tilt>0</tilt>
+					<range>899.0470619133837</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58822611673853,3.067331998869952,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58815258595706</longitude>
+					<latitude>3.065704048084109</latitude>
+					<altitude>0</altitude>
+					<heading>159.1378498764146</heading>
+					<tilt>0</tilt>
+					<range>899.0470619133837</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58856491973818,3.067308857652602,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58815258595706</longitude>
+					<latitude>3.065704048084109</latitude>
+					<altitude>0</altitude>
+					<heading>159.1378498764146</heading>
+					<tilt>0</tilt>
+					<range>899.0470619133837</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58887152501286,3.067336828777285,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58815258595706</longitude>
+					<latitude>3.065704048084109</latitude>
+					<altitude>0</altitude>
+					<heading>159.1378498764146</heading>
+					<tilt>0</tilt>
+					<range>899.0470619133837</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58924671555886,3.067517631987702,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58815258595706</longitude>
+					<latitude>3.065704048084109</latitude>
+					<altitude>0</altitude>
+					<heading>159.1378498764146</heading>
+					<tilt>0</tilt>
+					<range>899.0470619133837</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58952769569953,3.067795650374511,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58882198711645</longitude>
+					<latitude>3.065895435590912</latitude>
+					<altitude>0</altitude>
+					<heading>159.1378857005313</heading>
+					<tilt>0</tilt>
+					<range>899.0470619133538</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58982636543819,3.068010699912131,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5910579274625</longitude>
+					<latitude>3.067128782044713</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808623879755</heading>
+					<tilt>0</tilt>
+					<range>899.0470619211666</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59011196225283,3.068260183144141,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.5910579274625</longitude>
+					<latitude>3.067128782044713</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808623879755</heading>
+					<tilt>0</tilt>
+					<range>899.0470619211666</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5903772557018,3.068588964838708,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59112711586627</longitude>
+					<latitude>3.067194676892712</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808660926992</heading>
+					<tilt>0</tilt>
+					<range>899.0470619228229</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59087292012551,3.069353327102413,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59112711586627</longitude>
+					<latitude>3.067194676892712</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808660926992</heading>
+					<tilt>0</tilt>
+					<range>899.0470619228229</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59065826374767,3.068966205492873,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59129058977484</longitude>
+					<latitude>3.067551318630445</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808748442458</heading>
+					<tilt>0</tilt>
+					<range>899.0470619246543</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59110434622994,3.069767581947563,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59129058977484</longitude>
+					<latitude>3.067551318630445</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808748442458</heading>
+					<tilt>0</tilt>
+					<range>899.0470619246543</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59150831443195,3.069889459059775,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59129058977484</longitude>
+					<latitude>3.067551318630445</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808748442458</heading>
+					<tilt>0</tilt>
+					<range>899.0470619246543</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59195055381559,3.069870176654421,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59129058977484</longitude>
+					<latitude>3.067551318630445</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808748442458</heading>
+					<tilt>0</tilt>
+					<range>899.0470619246543</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59211323465527,3.069710492366018,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59129058977484</longitude>
+					<latitude>3.067551318630445</latitude>
+					<altitude>0</altitude>
+					<heading>143.4808748442458</heading>
+					<tilt>0</tilt>
+					<range>899.0470619246543</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59225259853982,3.0694230517015,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59325471272436</longitude>
+					<latitude>3.065687810463309</latitude>
+					<altitude>0</altitude>
+					<heading>93.30955084813895</heading>
+					<tilt>13.71978747812942</tilt>
+					<range>925.4488699228953</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59216194403891,3.069065140863671,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59325471272436</longitude>
+					<latitude>3.065687810463309</latitude>
+					<altitude>0</altitude>
+					<heading>93.30955084813895</heading>
+					<tilt>13.71978747812942</tilt>
+					<range>925.4488699228953</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.592107862785,3.068735807993427,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59325471272436</longitude>
+					<latitude>3.065687810463309</latitude>
+					<altitude>0</altitude>
+					<heading>93.30955084813895</heading>
+					<tilt>13.71978747812942</tilt>
+					<range>925.4488699228953</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59216048619635,3.068333140944686,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59344740273852</longitude>
+					<latitude>3.065527964308947</latitude>
+					<altitude>0</altitude>
+					<heading>93.30956115454165</heading>
+					<tilt>13.71978747812947</tilt>
+					<range>925.4488699244329</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59222930663509,3.067948968657485,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59344740273852</longitude>
+					<latitude>3.065527964308947</latitude>
+					<altitude>0</altitude>
+					<heading>93.30956115454165</heading>
+					<tilt>13.71978747812947</tilt>
+					<range>925.4488699244329</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59228382438297,3.067480812305308,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59344740273852</longitude>
+					<latitude>3.065527964308947</latitude>
+					<altitude>0</altitude>
+					<heading>93.30956115454165</heading>
+					<tilt>13.71978747812947</tilt>
+					<range>925.4488699244329</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59234379391239,3.066998540558127,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59363687719021</longitude>
+					<latitude>3.063955933346177</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957124620372</heading>
+					<tilt>13.71978747812956</tilt>
+					<range>925.448869923056</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59224395874541,3.060227359907353,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59368388365324</longitude>
+					<latitude>3.058182785225605</latitude>
+					<altitude>0</altitude>
+					<heading>81.88100280325207</heading>
+					<tilt>20.39435003684044</tilt>
+					<range>959.1620774348295</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59230856973922,3.059773713672147,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59368388365324</longitude>
+					<latitude>3.058182785225605</latitude>
+					<altitude>0</altitude>
+					<heading>81.88100280325207</heading>
+					<tilt>20.39435003684044</tilt>
+					<range>959.1620774348295</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59237931790798,3.059278479518728,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59368388365324</longitude>
+					<latitude>3.058182785225605</latitude>
+					<altitude>0</altitude>
+					<heading>81.88100280325207</heading>
+					<tilt>20.39435003684044</tilt>
+					<range>959.1620774348295</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59245594496771,3.058698672363517,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59368388365324</longitude>
+					<latitude>3.058182785225605</latitude>
+					<altitude>0</altitude>
+					<heading>81.88100280325207</heading>
+					<tilt>20.39435003684044</tilt>
+					<range>959.1620774348295</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59253849706039,3.058077423654805,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59368388365324</longitude>
+					<latitude>3.058182785225605</latitude>
+					<altitude>0</altitude>
+					<heading>81.88100280325207</heading>
+					<tilt>20.39435003684044</tilt>
+					<range>959.1620774348295</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59259873638217,3.057569027802082,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59289033584254</longitude>
+					<latitude>3.056096595609435</latitude>
+					<altitude>0</altitude>
+					<heading>94.56667451390089</heading>
+					<tilt>6.303671492515204</tilt>
+					<range>904.5150576968636</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59258087056878,3.057057616202066,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59289033584254</longitude>
+					<latitude>3.056096595609435</latitude>
+					<altitude>0</altitude>
+					<heading>94.56667451390089</heading>
+					<tilt>6.303671492515204</tilt>
+					<range>904.5150576968636</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59255302893038,3.056560526660815,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59289033584254</longitude>
+					<latitude>3.056096595609435</latitude>
+					<altitude>0</altitude>
+					<heading>94.56667451390089</heading>
+					<tilt>6.303671492515204</tilt>
+					<range>904.5150576968636</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59256074100485,3.056060410950082,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59289033584254</longitude>
+					<latitude>3.056096595609435</latitude>
+					<altitude>0</altitude>
+					<heading>94.56667451390089</heading>
+					<tilt>6.303671492515204</tilt>
+					<range>904.5150576968636</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59254473350391,3.055561723720361,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59298017536206</longitude>
+					<latitude>3.054782906720872</latitude>
+					<altitude>0</altitude>
+					<heading>94.56667928843486</heading>
+					<tilt>6.303671492515262</tilt>
+					<range>904.5150576973125</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59255506024346,3.055116770091898,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59298017536206</longitude>
+					<latitude>3.054782906720872</latitude>
+					<altitude>0</altitude>
+					<heading>94.56667928843486</heading>
+					<tilt>6.303671492515262</tilt>
+					<range>904.5150576973125</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59277221282174,3.054772676345253,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59300974682384</longitude>
+					<latitude>3.054462071443435</latitude>
+					<altitude>0</altitude>
+					<heading>58.90953502631787</heading>
+					<tilt>1.297812864742435</tilt>
+					<range>899.2777169655848</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59313051377768,3.054635128837031,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59300974682384</longitude>
+					<latitude>3.054462071443435</latitude>
+					<altitude>0</altitude>
+					<heading>58.90953502631787</heading>
+					<tilt>1.297812864742435</tilt>
+					<range>899.2777169655848</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5932848913566,3.054299099120962,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59300974682384</longitude>
+					<latitude>3.054462071443435</latitude>
+					<altitude>0</altitude>
+					<heading>58.90953502631787</heading>
+					<tilt>1.297812864742435</tilt>
+					<range>899.2777169655848</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59317353206889,3.053955746356027,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59300974682384</longitude>
+					<latitude>3.054462071443435</latitude>
+					<altitude>0</altitude>
+					<heading>58.90953502631787</heading>
+					<tilt>1.297812864742435</tilt>
+					<range>899.2777169655848</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59284995956563,3.053644258734525,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59285730818405</longitude>
+					<latitude>3.053771439117508</latitude>
+					<altitude>0</altitude>
+					<heading>124.05238300934</heading>
+					<tilt>0</tilt>
+					<range>899.0470619452459</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59257483399905,3.053443953330756,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59285730818405</longitude>
+					<latitude>3.053771439117508</latitude>
+					<altitude>0</altitude>
+					<heading>124.05238300934</heading>
+					<tilt>0</tilt>
+					<range>899.0470619452459</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59262525367689,3.053095479466055,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59285730818405</longitude>
+					<latitude>3.053771439117508</latitude>
+					<altitude>0</altitude>
+					<heading>124.05238300934</heading>
+					<tilt>0</tilt>
+					<range>899.0470619452459</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59259520662991,3.052765577833451,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59285730818405</longitude>
+					<latitude>3.053771439117508</latitude>
+					<altitude>0</altitude>
+					<heading>124.05238300934</heading>
+					<tilt>0</tilt>
+					<range>899.0470619452459</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59243356726682,3.052431579500461,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59286727199439</longitude>
+					<latitude>3.051449241352212</latitude>
+					<altitude>0</altitude>
+					<heading>124.0523835048737</heading>
+					<tilt>0</tilt>
+					<range>899.047061945638</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59231919439588,3.052029950462316,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59286727199439</longitude>
+					<latitude>3.051449241352212</latitude>
+					<altitude>0</altitude>
+					<heading>124.0523835048737</heading>
+					<tilt>0</tilt>
+					<range>899.047061945638</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59210829329851,3.051707760287989,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59293958875817</longitude>
+					<latitude>3.052437611450298</latitude>
+					<altitude>0</altitude>
+					<heading>93.30953364268939</heading>
+					<tilt>13.71978747812947</tilt>
+					<range>925.4488699197371</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59175735179652,3.051533855889289,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59158680635129</longitude>
+					<latitude>3.050905272675884</latitude>
+					<altitude>0</altitude>
+					<heading>135.2915965250159</heading>
+					<tilt>6.480371060412642</tilt>
+					<range>904.8275681810567</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59147780065361,3.051221900846443,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59158680635129</longitude>
+					<latitude>3.050905272675884</latitude>
+					<altitude>0</altitude>
+					<heading>135.2915965250159</heading>
+					<tilt>6.480371060412642</tilt>
+					<range>904.8275681810567</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59125335159027,3.050882747054583,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59158680635129</longitude>
+					<latitude>3.050905272675884</latitude>
+					<altitude>0</altitude>
+					<heading>135.2915965250159</heading>
+					<tilt>6.480371060412642</tilt>
+					<range>904.8275681810567</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59089570531032,3.050730130299061,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59158680635129</longitude>
+					<latitude>3.050905272675884</latitude>
+					<altitude>0</altitude>
+					<heading>135.2915965250159</heading>
+					<tilt>6.480371060412642</tilt>
+					<range>904.8275681810567</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59052273605269,3.050569890145406,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945746920875</longitude>
+					<latitude>3.044257096239177</latitude>
+					<altitude>0</altitude>
+					<heading>114.6077074040315</heading>
+					<tilt>0</tilt>
+					<range>1384.329407324496</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58551252955077,3.042716993764941,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945746920875</longitude>
+					<latitude>3.044257096239178</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934209991833</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335951</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58573625786089,3.043106610286264,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945746920875</longitude>
+					<latitude>3.044257096239178</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934209991833</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335951</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58594617030823,3.043480797813526,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945746920875</longitude>
+					<latitude>3.044257096239178</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934209991833</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335951</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58624289198322,3.043908610045718,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945746920875</longitude>
+					<latitude>3.044257096239178</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934209991833</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335951</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5864767851937,3.044321582726361,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945746920875</longitude>
+					<latitude>3.044257096239178</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934209991833</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335951</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58675019787468,3.044763762459286,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945746920875</longitude>
+					<latitude>3.044257096239178</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934209991833</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335951</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58703617446221,3.045208909302137,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945084758373</longitude>
+					<latitude>3.044229033813549</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934206463197</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335521</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58734613345612,3.04569284379823,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58945084758373</longitude>
+					<latitude>3.044229033813549</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934206463197</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335521</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58770635285308,3.046188649228525,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58999584565488</longitude>
+					<latitude>3.045093095643016</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934496140093</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335523</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58802178811882,3.046733507467812,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59000361430478</longitude>
+					<latitude>3.045088305504583</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934500272332</heading>
+					<tilt>0</tilt>
+					<range>1384.329407336672</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58858711761184,3.047595741071058,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59000361430478</longitude>
+					<latitude>3.045088305504583</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934500272332</heading>
+					<tilt>0</tilt>
+					<range>1384.329407336672</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58903982984893,3.048345261585919,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59000361430478</longitude>
+					<latitude>3.045088305504583</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934500272332</heading>
+					<tilt>0</tilt>
+					<range>1384.329407336672</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58882397923195,3.04799616837465,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59000361430478</longitude>
+					<latitude>3.045088305504583</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934500272332</heading>
+					<tilt>0</tilt>
+					<range>1384.329407336672</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58938383649502,3.048797496841196,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58999584565488</longitude>
+					<latitude>3.045093095643016</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934496140093</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335523</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59021070094521,3.050152143309941,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58999584565488</longitude>
+					<latitude>3.045093095643016</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934496140093</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335523</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58992174772486,3.049719525491528,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58999584565488</longitude>
+					<latitude>3.045093095643016</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934496140093</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335523</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5896476555527,3.049224171848109,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58999584565488</longitude>
+					<latitude>3.045093095643016</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934496140093</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335523</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58829931720557,3.047130287424229,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58999584565488</longitude>
+					<latitude>3.045093095643016</latitude>
+					<altitude>0</altitude>
+					<heading>121.6934496140093</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335523</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58522363814117,3.042329681059171,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58604245356671</longitude>
+					<latitude>3.041701639940993</latitude>
+					<altitude>0</altitude>
+					<heading>121.6932395375163</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335039</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58480083023109,3.041958235677363,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58604245356671</longitude>
+					<latitude>3.041701639940993</latitude>
+					<altitude>0</altitude>
+					<heading>121.6932395375163</heading>
+					<tilt>0</tilt>
+					<range>1384.329407335039</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58433065449451,3.041926684607914,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58471218025041</longitude>
+					<latitude>3.040682580047603</latitude>
+					<altitude>0</altitude>
+					<heading>155.4074534157737</heading>
+					<tilt>0</tilt>
+					<range>1384.329407343207</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58380904246913,3.041919196838601,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58471218025041</longitude>
+					<latitude>3.040682580047603</latitude>
+					<altitude>0</altitude>
+					<heading>155.4074534157737</heading>
+					<tilt>0</tilt>
+					<range>1384.329407343207</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58323283384355,3.041796223711884,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58368644096458</longitude>
+					<latitude>3.039371544078813</latitude>
+					<altitude>0</altitude>
+					<heading>155.4073989282818</heading>
+					<tilt>0</tilt>
+					<range>1384.329407340343</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58284700929642,3.041389278384536,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58384220053816</longitude>
+					<latitude>3.039330177961164</latitude>
+					<altitude>0</altitude>
+					<heading>104.8931227400236</heading>
+					<tilt>0.7416650054214543</tilt>
+					<range>1384.445369365657</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58274022492211,3.040842800919453,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58384220053816</longitude>
+					<latitude>3.039330177961164</latitude>
+					<altitude>0</altitude>
+					<heading>104.8931227400236</heading>
+					<tilt>0.7416650054214543</tilt>
+					<range>1384.445369365657</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58279263701205,3.040367409219082,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58488324039499</longitude>
+					<latitude>3.041552875249075</latitude>
+					<altitude>0</altitude>
+					<heading>77.46460552205251</heading>
+					<tilt>1.668744499973076</tilt>
+					<range>1384.916630400118</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5832272582176,3.040055085261819,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58407090846666</longitude>
+					<latitude>3.038968760968074</latitude>
+					<altitude>0</altitude>
+					<heading>47.75027851969163</heading>
+					<tilt>16.34553352890349</tilt>
+					<range>553.52411374312</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5834888646456,3.03942628886201,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58488324039499</longitude>
+					<latitude>3.041552875249075</latitude>
+					<altitude>0</altitude>
+					<heading>77.46460552205251</heading>
+					<tilt>1.668744499973076</tilt>
+					<range>1384.916630400118</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58361738348653,3.039219911047863,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58625978629182</longitude>
+					<latitude>3.038899815771207</latitude>
+					<altitude>0</altitude>
+					<heading>77.46467835324722</heading>
+					<tilt>1.668744499973076</tilt>
+					<range>1384.916630398357</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58377206182435,3.038807334552823,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58625978629182</longitude>
+					<latitude>3.038899815771207</latitude>
+					<altitude>0</altitude>
+					<heading>77.46467835324722</heading>
+					<tilt>1.668744499973076</tilt>
+					<range>1384.916630398357</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58394221039902,3.038334140214251,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58625978629182</longitude>
+					<latitude>3.038899815771207</latitude>
+					<altitude>0</altitude>
+					<heading>77.46467835324722</heading>
+					<tilt>1.668744499973076</tilt>
+					<range>1384.916630398357</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5840800179017,3.037881526447002,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58625978629182</longitude>
+					<latitude>3.038899815771207</latitude>
+					<altitude>0</altitude>
+					<heading>77.46467835324722</heading>
+					<tilt>1.668744499973076</tilt>
+					<range>1384.916630398357</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58436806652409,3.037378198651784,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58590570975014</longitude>
+					<latitude>3.038821200494391</latitude>
+					<altitude>0</altitude>
+					<heading>47.75037563935293</heading>
+					<tilt>0</tilt>
+					<range>1384.329407361832</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58475678318592,3.0369723207075,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58590570975014</longitude>
+					<latitude>3.038821200494391</latitude>
+					<altitude>0</altitude>
+					<heading>47.75037563935291</heading>
+					<tilt>0</tilt>
+					<range>1384.329407362534</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58515889229649,3.036598047387344,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58590570975014</longitude>
+					<latitude>3.038821200494391</latitude>
+					<altitude>0</altitude>
+					<heading>47.75037563935291</heading>
+					<tilt>0</tilt>
+					<range>1384.329407362534</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58545416630717,3.036286985961593,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58590570975014</longitude>
+					<latitude>3.038821200494391</latitude>
+					<altitude>0</altitude>
+					<heading>47.75037563935291</heading>
+					<tilt>0</tilt>
+					<range>1384.329407362534</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58573840236187,3.036015178643685,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58575622078479</longitude>
+					<latitude>3.036260476961647</latitude>
+					<altitude>0</altitude>
+					<heading>47.75036776525304</heading>
+					<tilt>16.34553352890352</tilt>
+					<range>553.5241137449715</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5860009002843,3.035814695297614,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58575622078479</longitude>
+					<latitude>3.036260476961647</latitude>
+					<altitude>0</altitude>
+					<heading>47.75036776525304</heading>
+					<tilt>16.34553352890352</tilt>
+					<range>553.5241137449715</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58594177271674,3.035735562710967,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.58575622078479</longitude>
+					<latitude>3.036260476961647</latitude>
+					<altitude>0</altitude>
+					<heading>47.75036776525304</heading>
+					<tilt>16.34553352890352</tilt>
+					<range>553.5241137449715</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.58579526708148,3.035699662929658,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59363687719021</longitude>
+					<latitude>3.063955933346177</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957124620372</heading>
+					<tilt>13.71978747812956</tilt>
+					<range>925.448869923056</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59225648988978,3.06064678080569,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59363687719021</longitude>
+					<latitude>3.063955933346177</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957124620372</heading>
+					<tilt>13.71978747812956</tilt>
+					<range>925.448869923056</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59225155594513,3.061068455033642,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59225860211285,3.061493671018543,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59228443484017,3.061939793695494,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59230512725244,3.062398266706317,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59231795341161,3.062821911568404,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59233364114024,3.063698411544181,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59233888179384,3.06419193297851,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59235980815984,3.064754596797603,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59235098678622,3.065305723338628,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59237667054677,3.065849582994411,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.59238215474222,3.066445530630872,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<gx:TimeStamp><when>2024-03-18</when>
+</gx:TimeStamp>
+					<gx:ViewerOptions>
+						<gx:option name="historicalimagery"></gx:option>
+						<gx:option enabled="0" name="sunlight"></gx:option>
+						<gx:option enabled="0" name="streetview"></gx:option>
+					</gx:ViewerOptions>
+					<longitude>98.59364099806996</longitude>
+					<latitude>3.063925761471259</latitude>
+					<altitude>0</altitude>
+					<heading>93.30957146615862</heading>
+					<tilt>13.7197874781295</tilt>
+					<range>925.4488699254963</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag10</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.5923249523367,3.063245729123405,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>
+	</Folder>
+</Document>
+</kml>

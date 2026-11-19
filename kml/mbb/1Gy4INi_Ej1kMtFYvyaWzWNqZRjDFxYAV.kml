@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>TRT717.kml</name>
+	<StyleMap id="__managed_style_018F6F30B13B5B7CE369">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1915B258963B5B7CE369</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2423D2CB993B5B7CE369</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="__managed_style_018F6F30B13B5B7CE3695">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#failed10</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#failed6</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="failed10">
+		<LineStyle>
+			<color>ff0055ff</color>
+			<width>3.1</width>
+		</LineStyle>
+	</Style>
+	<Style id="failed6">
+		<LineStyle>
+			<color>ff0055ff</color>
+			<width>3.1</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="m_ylw-pushpin0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#s_ylw-pushpin0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#s_ylw-pushpin_hl0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_flag">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_flag</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_flag</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_grn-circle4">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_grn-circle3</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_grn-circle2</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_picnic7">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_picnic10</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_picnic5</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="s_ylw-pushpin0">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="s_ylw-pushpin_hl0">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sh_flag">
+		<IconStyle>
+			<color>ffffaa55</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+	</Style>
+	<Style id="sh_grn-circle2">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>mirth-vfs://mbey/files/grn-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="sh_picnic5">
+		<IconStyle>
+			<scale>1.4</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/picnic.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_flag">
+		<IconStyle>
+			<color>ffffaa55</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+	</Style>
+	<Style id="sn_grn-circle3">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/paddle/grn-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>mirth-vfs://mbey/files/grn-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="sn_picnic10">
+		<IconStyle>
+			<scale>1.2</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/picnic.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Folder id="3756E236AFD3B27486EB1">
+		<name>TRT717</name>
+		<Folder>
+			<name>KABEL</name>
+			<open>1</open>
+			<Placemark id="072459A19B3B39D9EF2B">
+				<name>NEW KABEL ADSS 12 C</name>
+				<LookAt>
+					<longitude>98.96608860141738</longitude>
+					<latitude>2.135797520692718</latitude>
+					<altitude>1140.997901038973</altitude>
+					<heading>70.75772347200608</heading>
+					<tilt>0</tilt>
+					<range>419.4088122035464</range>
+					<altitudeMode>absolute</altitudeMode>
+					<gx:fovy>35</gx:fovy>
+				</LookAt>
+				<styleUrl>#__managed_style_018F6F30B13B5B7CE3695</styleUrl>
+				<LineString>
+					<coordinates>
+						98.96500246069131,2.135601283657346,0 98.9654560760204,2.135779499288393,0 98.96600711402232,2.135668394112924,0 98.96608534231312,2.135796228433605,0 
+					</coordinates>
+				</LineString>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>ODC &amp; ODP</name>
+			<open>1</open>
+			<Placemark id="398222D94DE3B27486EB1">
+				<name>ODP-SIB-FAH/014</name>
+				<LookAt>
+					<longitude>98.97990553344454</longitude>
+					<latitude>2.134122570354047</latitude>
+					<altitude>0</altitude>
+					<heading>-0.00270713997747444</heading>
+					<tilt>23.87699607032524</tilt>
+					<range>9693.486226520981</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_grn-circle4</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.965002,2.135609,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="054C92FDE73B38B4703A">
+				<name>ODC-SIB-FAH</name>
+				<LookAt>
+					<longitude>98.96740241126174</longitude>
+					<latitude>2.182492494186926</latitude>
+					<altitude>1214.029402386527</altitude>
+					<heading>127.3163887389499</heading>
+					<tilt>0</tilt>
+					<range>485.7331815586804</range>
+					<altitudeMode>absolute</altitudeMode>
+					<gx:fovy>35</gx:fovy>
+				</LookAt>
+				<styleUrl>#__managed_style_018F6F30B13B5B7CE369</styleUrl>
+				<Point>
+					<coordinates>98.96740241126174,2.182492494186926,1214.029402386527</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>SITE</name>
+			<open>1</open>
+			<Placemark id="38CB007633E3B27486EB1">
+				<name>TRT717</name>
+				<LookAt>
+					<longitude>98.24887449949478</longitude>
+					<latitude>2.841213132151076</latitude>
+					<altitude>0</altitude>
+					<heading>72.40830863823543</heading>
+					<tilt>21.63348683710192</tilt>
+					<range>4017.276200646449</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_picnic7</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.96608999999999,2.13577,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>TIANG</name>
+			<open>1</open>
+			<Placemark>
+				<name>TN</name>
+				<LookAt>
+					<longitude>98.96585313927784</longitude>
+					<latitude>2.135994731679139</latitude>
+					<altitude>0</altitude>
+					<heading>0.02134301573948794</heading>
+					<tilt>31.18576793497908</tilt>
+					<range>325.0423382555524</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#m_ylw-pushpin0</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.96609805197996,2.135796941457221,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<longitude>98.96585313927784</longitude>
+					<latitude>2.135994731679139</latitude>
+					<altitude>0</altitude>
+					<heading>0.02134301573948794</heading>
+					<tilt>31.18576793497908</tilt>
+					<range>325.0423382555524</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#m_ylw-pushpin0</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.96601065924192,2.135653433577261,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TN</name>
+				<open>1</open>
+				<LookAt>
+					<longitude>98.96585313927784</longitude>
+					<latitude>2.135994731679139</latitude>
+					<altitude>0</altitude>
+					<heading>0.02134301573948794</heading>
+					<tilt>31.18576793497908</tilt>
+					<range>325.0423382555524</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#m_ylw-pushpin0</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.96547739692937,2.135764683824631,0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>TE</name>
+				<open>1</open>
+				<LookAt>
+					<longitude>98.96585313927784</longitude>
+					<latitude>2.135994731679139</latitude>
+					<altitude>0</altitude>
+					<heading>0.02134301573948794</heading>
+					<tilt>31.18576793497908</tilt>
+					<range>325.0423382555524</range>
+					<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+				</LookAt>
+				<styleUrl>#msn_flag</styleUrl>
+				<Point>
+					<gx:drawOrder>1</gx:drawOrder>
+					<coordinates>98.96501667969272,2.135599042127232,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>
+	</Folder>
+</Document>
+</kml>

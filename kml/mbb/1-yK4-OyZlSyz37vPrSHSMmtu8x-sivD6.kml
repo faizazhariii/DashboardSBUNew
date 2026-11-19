@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>LBP402.kml</name>
+	<StyleMap id="failed1">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#failed</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#failed0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="dir_route0">
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<Style id="sh_ylw-circle">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/paddle/ylw-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>mirth-vfs://4j2s/files/ylw-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="failed">
+		<IconStyle>
+			<scale>1.2</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/dollar.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_ylw-circle">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/paddle/ylw-circle.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>mirth-vfs://4j2s/files/ylw-circle-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="failed0">
+		<IconStyle>
+			<scale>1.4</scale>
+			<Icon>
+				<href>https://maps.google.com/mapfiles/kml/shapes/dollar.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+	</Style>
+	<Style id="dir_route1">
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>4</width>
+		</LineStyle>
+	</Style>
+	<StyleMap id="dir_route">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#dir_route0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#dir_route1</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_ylw-circle">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-circle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-circle</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Folder id="0F9F8E5D433B3BA0958C">
+		<name>LBP402</name>
+		<open>1</open>
+		<Folder id="19D6A7F2F93B3BA0958C">
+			<name>Catuan</name>
+			<open>1</open>
+			<Placemark id="247FE1408E3B3BA0958C">
+				<name>ODP-TMU/D05/104</name>
+				<styleUrl>#msn_ylw-circle</styleUrl>
+				<Point>
+					<coordinates>98.79000009332729,3.593925885820342,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="3635E4FD433B3BA0958C">
+			<name>Route</name>
+			<open>1</open>
+			<Placemark id="4CEADF4AA93B3BA0958C">
+				<name>Route</name>
+				<description>700 m</description>
+				<styleUrl>#dir_route</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>
+						98.79002122586553,3.593945825910689,0 98.79085130445104,3.593946635050801,0 98.78976428093732,3.596269513841348,0 98.78936499962076,3.59699336083994,0 98.78909354688207,3.597832663651328,0 98.7896983256218,3.597810231214397,0 98.78966993143295,3.598728914875851,0 98.78978026208736,3.59873978096866,0 98.7898369026877,3.598739496577669,0 98.79014531949866,3.598728920957805,0 98.79036742665861,3.598704220211112,0 98.7905212656942,3.598636659609468,0 98.79049926336728,3.598797728278422,0 98.79049923780777,3.598797554127362,0 98.79049911176951,3.598797350718655,0 98.79050082409267,3.598797586164147,0 98.79050062800613,3.598797907871262,0 
+					</coordinates>
+				</LineString>
+			</Placemark>
+		</Folder>
+		<Folder id="5E19CD506A3B3BA0958C">
+			<name>Site</name>
+			<open>1</open>
+			<Placemark id="6758C757CB3B3BA0958C">
+				<name>LBP402</name>
+				<styleUrl>#failed1</styleUrl>
+				<Point>
+					<coordinates>98.79050894699658,3.598803249656616,0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<atom:link rel="app" href="https://www.google.com/earth/about/versions/#earth-pro" title="Google Earth Pro 7.3.6.10441"></atom:link>
+	</Folder>
+</Document>
+</kml>

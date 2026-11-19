@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>BGE009</name>
+	<gx:CascadingStyle kml:id="__managed_style_218EF957483B544824D7">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.28571</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_1A2C977CF83B544824D7">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>1.52381</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0342B1B76E3B544824D7">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1A2C977CF83B544824D7</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_218EF957483B544824D7</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_20F5F2EE1A3B5446C7AA">
+		<Style>
+			<IconStyle>
+				<scale>1.8</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.5</scale>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.28571</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_15110137983B5446C7AA">
+		<Style>
+			<IconStyle>
+				<scale>1.5</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.5</scale>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>1.52381</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_09D2E2D54B3B5446C7AA">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_15110137983B5446C7AA</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_20F5F2EE1A3B5446C7AA</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Placemark id="022F1E913D3B5446A4C0">
+		<name>BGE009</name>
+		<LookAt>
+			<longitude>99.33964673143008</longitude>
+			<latitude>2.312924236894843</latitude>
+			<altitude>1060.464309869446</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>186.5157278495099</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_09D2E2D54B3B5446C7AA</styleUrl>
+		<Point>
+			<coordinates>99.33964673143008,2.312924236894843,1060.464309869446</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="02F24BBED83B544824CF">
+		<name>TE 1</name>
+		<LookAt>
+			<longitude>99.33978865614083</longitude>
+			<latitude>2.31294030680931</latitude>
+			<altitude>1060.651482563486</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>186.3285687346797</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0342B1B76E3B544824D7</styleUrl>
+		<Point>
+			<coordinates>99.33978865614083,2.31294030680931,1060.651482563486</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0104F0C7043B544A5989">
+		<name>TE 2</name>
+		<LookAt>
+			<longitude>99.33985301959211</longitude>
+			<latitude>2.312803713611876</latitude>
+			<altitude>1060.266847393593</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>186.7132125848548</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0342B1B76E3B544824D7</styleUrl>
+		<Point>
+			<coordinates>99.33985301959211,2.312803713611876,1060.266847393593</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="030AAD83733B544A83FA">
+		<name>ODP-PSA-FAL/003 D01</name>
+		<LookAt>
+			<longitude>99.33991399383964</longitude>
+			<latitude>2.312656866804579</latitude>
+			<altitude>1059.64736448379</altitude>
+			<heading>359.9999999999998</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>187.3327034605427</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_09D2E2D54B3B5446C7AA</styleUrl>
+		<Point>
+			<coordinates>99.33991399383964,2.312656866804579,1059.64736448379</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="02E04250723B544B8B2C">
+		<name>TE 2</name>
+		<LookAt>
+			<longitude>99.3397197285818</longitude>
+			<latitude>2.313117709940734</latitude>
+			<altitude>1061.430885725599</altitude>
+			<heading>353.0001424118295</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>500.0235158647412</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0342B1B76E3B544824D7</styleUrl>
+		<Point>
+			<coordinates>99.3397197285818,2.313117709940734,1061.430885725599</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0E36B14D063B544BD876">
+		<name>TE 3</name>
+		<LookAt>
+			<longitude>99.33960661917165</longitude>
+			<latitude>2.313399080750586</latitude>
+			<altitude>1062.816535912803</altitude>
+			<heading>321.4057282373086</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>500.4341302149988</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0342B1B76E3B544824D7</styleUrl>
+		<Point>
+			<coordinates>99.33960661917165,2.313399080750586,1062.816535912803</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0D5EB668C73B544C4153">
+		<name>ODP-PSA-FAL/004 D01</name>
+		<LookAt>
+			<longitude>99.33945121378768</longitude>
+			<latitude>2.313788112863966</latitude>
+			<altitude>1064.588122186224</altitude>
+			<heading>310.0001720218028</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>500.4566124863778</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0342B1B76E3B544824D7</styleUrl>
+		<Point>
+			<coordinates>99.33945121378768,2.313788112863966,1064.588122186224</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0BCADD70943B544D95D0">
+		<name>BGE009</name>
+		<LookAt>
+			<longitude>99.3399071929143</longitude>
+			<latitude>2.312693145803969</latitude>
+			<altitude>1059.812239963682</altitude>
+			<heading>359.9964501501755</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30.00105606918869</gx:fovy>
+			<range>203.5564783387963</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0342B1B76E3B544824D7</styleUrl>
+		<LineString>
+			<coordinates>
+				99.33964299790335,2.312958408410418,0 99.33978559632331,2.312965049197822,0 99.33985139213905,2.312826568213346,0 99.33990717772018,2.312692751638977,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark id="06C6B9D6533B544E50A9">
+		<name>BGE 009</name>
+		<LookAt>
+			<longitude>99.33988291187836</longitude>
+			<latitude>2.312897899189477</latitude>
+			<altitude>1060.545062801344</altitude>
+			<heading>359.9964286331931</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30.00105606918869</gx:fovy>
+			<range>865.5639250954846</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0342B1B76E3B544824D7</styleUrl>
+		<LineString>
+			<coordinates>
+				99.33964550926659,2.312958142734776,0 99.33978229113039,2.312962697891107,0 99.33971436333947,2.313143973488546,0 99.33960405324638,2.313421583502591,0 99.33944775514971,2.313815237498952,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>

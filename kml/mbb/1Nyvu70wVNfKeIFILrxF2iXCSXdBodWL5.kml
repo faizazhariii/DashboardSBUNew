@@ -1,0 +1,1316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>NEW PROJECT PMR114</name>
+	<Schema name="__managed_schema" id="__managed_schema">
+		<SimpleField type="int" name="1D8A701E153B5F8CAAB5">
+			<displayName>Akurasi (m)</displayName>
+		</SimpleField>
+	</Schema>
+	<gx:CascadingStyle kml:id="__managed_style_1D20BE1E073C672A04E0">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>1.52381</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0A0B3662003C672A04E0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_1D20BE1E073C672A04E0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_236DEDB67C3C672A04E0</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_236DEDB67C3C672A04E0">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.28571</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_3B1A7ED8033C67279BC4">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.28571</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0A258C03513C6728D9A4">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_10A53C87893C6728D9A4</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_267B5EA8ED3C6728D9A4</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_25FA35EE823C67279BC4">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>1.52381</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_046C9A0FCE3C67279BC4">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.5</scale>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.28571</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_3F791FDE813C67279BC3">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_47CAECDF2D3C67279BC3</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_046C9A0FCE3C67279BC4</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_267B5EA8ED3C6728D9A4">
+		<Style>
+			<IconStyle>
+				<scale>1.8</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=42a5f5&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.5</scale>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.28571</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_161E4AD9BE3C67279BC4">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_25FA35EE823C67279BC4</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_3B1A7ED8033C67279BC4</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_10A53C87893C6728D9A4">
+		<Style>
+			<IconStyle>
+				<scale>1.5</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=42a5f5&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.5</scale>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>1.52381</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_47CAECDF2D3C67279BC3">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/document/icon?color=d32f2f&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.5</scale>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>1.52381</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<Placemark id="025ED4931A3B5F8B5AB8">
+		<name>SITE PMR080</name>
+		<LookAt>
+			<longitude>98.8472</longitude>
+			<latitude>3.17035</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>2513.245645200411</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A258C03513C6728D9A4</styleUrl>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>98.8472,3.17035,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0DA5AF3FA73B5F8CAAB5">
+		<name>SITE PMR114</name>
+		<LookAt>
+			<longitude>98.86106641272106</longitude>
+			<latitude>3.188807572492627</latitude>
+			<altitude>226.3592528804846</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>34.99984000008473</gx:fovy>
+			<range>764.8248535933817</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_3F791FDE813C67279BC3</styleUrl>
+		<ExtendedData>
+			<SchemaData schemaUrl="#__managed_schema">
+				<SimpleData name="1D8A701E153B5F8CAAB5">0</SimpleData>
+			</SchemaData>
+		</ExtendedData>
+		<Point>
+			<extrude>1</extrude>
+			<coordinates>98.86060817856249,3.190223014085034,225.0763653177001</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0C9352119A3B5F8E5E4B">
+		<name>SITE PMR114</name>
+		<LookAt>
+			<longitude>98.84718350043285</longitude>
+			<latitude>3.170431523095024</latitude>
+			<altitude>264.8032679795994</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>34.99984000008473</gx:fovy>
+			<range>684.9875729699124</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_161E4AD9BE3C67279BC4</styleUrl>
+		<LineString>
+			<coordinates>
+				98.86059421416276,3.190302340484206,0 98.86085407285437,3.189911449773091,0 98.86119021262358,3.189636854118456,0 98.861457871716,3.189364898958662,0 98.8610841717328,3.189022813019383,0 98.86076133583286,3.188683052401939,0 98.86039835344201,3.188404726090339,0 98.86006519615896,3.188088377274167,0 98.85976601053612,3.187779534696001,0 98.85940986574678,3.187494066257822,0 98.84786145230973,3.176454213888753,0 98.84719200816761,3.172284926537536,0 98.84652460204876,3.170764456477447,0 98.8471795053657,3.170444661349276,0 98.8471835004751,3.170431523348615,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark id="041A218D123C67290683">
+		<name>TN 61</name>
+		<LookAt>
+			<longitude>98.86078068523071</longitude>
+			<latitude>3.189985851440922</latitude>
+			<altitude>224.0653804285803</altitude>
+			<heading>359.9999999999998</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1128.315018739959</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_3F791FDE813C67279BC3</styleUrl>
+		<Point>
+			<coordinates>98.86078068523071,3.189985851440922,224.0653804285803</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="02BB8A14DA3C67293F75">
+		<name>TN 60</name>
+		<LookAt>
+			<longitude>98.86109908579095</longitude>
+			<latitude>3.189658901205524</latitude>
+			<altitude>226.8497874213733</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1125.530647373671</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_3F791FDE813C67279BC3</styleUrl>
+		<Point>
+			<coordinates>98.86109908579095,3.189658901205524,226.8497874213733</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0511BE80073C672959C7">
+		<name>TN 59</name>
+		<LookAt>
+			<longitude>98.86147959200596</longitude>
+			<latitude>3.189281189399708</latitude>
+			<altitude>225.0084860611089</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1127.371968577208</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_3F791FDE813C67279BC3</styleUrl>
+		<Point>
+			<coordinates>98.86147959200596,3.189281189399708,225.0084860611089</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="00A22732123C67297BEA">
+		<name>TN 58</name>
+		<LookAt>
+			<longitude>98.861060169597</longitude>
+			<latitude>3.18891692454756</latitude>
+			<altitude>225.1275043423711</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1127.252928426897</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_3F791FDE813C67279BC3</styleUrl>
+		<Point>
+			<coordinates>98.861060169597,3.18891692454756,225.1275043423711</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="093543E8033C67299770">
+		<name>TN 57</name>
+		<LookAt>
+			<longitude>98.86067087586846</longitude>
+			<latitude>3.188497629374828</latitude>
+			<altitude>226.0493046626953</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1126.331201655557</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_3F791FDE813C67279BC3</styleUrl>
+		<Point>
+			<coordinates>98.86067087586846,3.188497629374828,226.0493046626953</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="04F3C7E5713C6729B387">
+		<name>TN 56</name>
+		<LookAt>
+			<longitude>98.86026788675399</longitude>
+			<latitude>3.188172210023691</latitude>
+			<altitude>226.3733884447979</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1126.007178816508</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_3F791FDE813C67279BC3</styleUrl>
+		<Point>
+			<coordinates>98.86026788675399,3.188172210023691,226.3733884447979</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="04FB0C54F13C672A04DC">
+		<name>TN 1</name>
+		<LookAt>
+			<longitude>98.84686573611759</longitude>
+			<latitude>3.170550489502681</latitude>
+			<altitude>264.9676834130024</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>540.4134494818574</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84686573611759,3.170550489502681,264.9676834130024</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="015659496F3C672A1E3B">
+		<name>TN 2</name>
+		<LookAt>
+			<longitude>98.84651822540654</longitude>
+			<latitude>3.170734268567885</latitude>
+			<altitude>266.5313389340832</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>538.8497959186498</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84651822540654,3.170734268567885,266.5313389340832</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="03227D33BE3C672A326A">
+		<name>TN 3</name>
+		<LookAt>
+			<longitude>98.846673150925</longitude>
+			<latitude>3.171089350730411</latitude>
+			<altitude>265.4035082590517</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>539.9776179034961</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.846673150925,3.171089350730411,265.4035082590517</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0401CD0E783C672A46BE">
+		<name>TN 4</name>
+		<LookAt>
+			<longitude>98.84683910740029</longitude>
+			<latitude>3.171488929733731</latitude>
+			<altitude>263.1111078039772</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>542.2700215457735</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84683910740029,3.171488929733731,263.1111078039772</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="05B3AEE3E43C672A5A25">
+		<name>TN 5</name>
+		<LookAt>
+			<longitude>98.84701725322098</longitude>
+			<latitude>3.171897177072523</latitude>
+			<altitude>262.1212735720403</altitude>
+			<heading>359.9999999998881</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>543.2598441040318</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84701725322098,3.171897177072523,262.1212735720403</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0EDD8E88BA3C672A6D19">
+		<name>TN 6</name>
+		<LookAt>
+			<longitude>98.84719757844901</longitude>
+			<latitude>3.172292127101697</latitude>
+			<altitude>262.3459471182297</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>543.0351604558382</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84719757844901,3.172292127101697,262.3459471182297</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="00C77315EB3C672A8B9E">
+		<name>TN 7</name>
+		<LookAt>
+			<longitude>98.84727021345425</longitude>
+			<latitude>3.172760263680977</latitude>
+			<altitude>260.6262722194064</altitude>
+			<heading>359.9999999987712</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>544.7548456179356</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84727021345425,3.172760263680977,260.6262722194064</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0C269E17BB3C672AA40B">
+		<name>TN 8</name>
+		<LookAt>
+			<longitude>98.84732540998081</longitude>
+			<latitude>3.173193166528376</latitude>
+			<altitude>260.2833087449025</altitude>
+			<heading>359.9999999999998</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>545.0978277332615</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84732540998081,3.173193166528376,260.2833087449025</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0DBB4C84E93C672AB7A0">
+		<name>TN 9</name>
+		<LookAt>
+			<longitude>98.8474105809813</longitude>
+			<latitude>3.173631582938652</latitude>
+			<altitude>257.4702551687247</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>547.910846612358</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.8474105809813,3.173631582938652,257.4702551687247</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0F282DDE393C672ACBEB">
+		<name>TN 10</name>
+		<LookAt>
+			<longitude>98.84747664370687</longitude>
+			<latitude>3.174093866624797</latitude>
+			<altitude>257.4404245854604</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>547.9406993603334</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84747664370687,3.174093866624797,257.4404245854604</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0B422E48A73C672AE17A">
+		<name>TN 11</name>
+		<LookAt>
+			<longitude>98.84752044988244</longitude>
+			<latitude>3.174561808189088</latitude>
+			<altitude>256.6628264468002</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>548.7183078188536</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84752044988244,3.174561808189088,256.6628264468002</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0E5B58AA523C672AF498">
+		<name>TN 12</name>
+		<LookAt>
+			<longitude>98.84758399397198</longitude>
+			<latitude>3.174981684598309</latitude>
+			<altitude>255.3374805083114</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>550.0436493054441</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84758399397198,3.174981684598309,255.3374805083114</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0979DD3C1F3C672B1535">
+		<name>TN 13</name>
+		<LookAt>
+			<longitude>98.8476649712354</longitude>
+			<latitude>3.175410728993255</latitude>
+			<altitude>254.6420427677784</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>550.7390699966346</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.8476649712354,3.175410728993255,254.6420427677784</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="090AEBB9313C672B2A08">
+		<name>TN 14</name>
+		<LookAt>
+			<longitude>98.84768390815179</longitude>
+			<latitude>3.175811716380877</latitude>
+			<altitude>253.6731206154013</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>551.7080327154691</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84768390815179,3.175811716380877,253.6731206154013</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="01C0C04EA33C672D0DBF">
+		<name>TN 15</name>
+		<LookAt>
+			<longitude>98.84776021783976</longitude>
+			<latitude>3.176208425204685</latitude>
+			<altitude>253.0993571698157</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>552.2817710100209</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84776021783976,3.176208425204685,253.0993571698157</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0467A173283C672D22F8">
+		<name>TN 16</name>
+		<LookAt>
+			<longitude>98.84793265659944</longitude>
+			<latitude>3.176498591067157</latitude>
+			<altitude>252.5295467271772</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>552.8515691126813</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84793265659944,3.176498591067157,252.5295467271772</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="05EB1724023C672D3957">
+		<name>TN 17</name>
+		<LookAt>
+			<longitude>98.84819758121205</longitude>
+			<latitude>3.17676419253154</latitude>
+			<altitude>251.6054612460747</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>553.7756599991554</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84819758121205,3.17676419253154,251.6054612460747</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0C3F901C1D3C672D4E89">
+		<name>TN 18</name>
+		<LookAt>
+			<longitude>98.84849422178451</longitude>
+			<latitude>3.177024461922794</latitude>
+			<altitude>251.1391350881013</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>554.241993298274</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84849422178451,3.177024461922794,251.1391350881013</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="09DF0CA4203C672D67F6">
+		<name>TN 19</name>
+		<LookAt>
+			<longitude>98.84875267207005</longitude>
+			<latitude>3.177290287199201</latitude>
+			<altitude>250.7226529616059</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>554.6584947587689</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84875267207005,3.177290287199201,250.7226529616059</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="01B867ADCD3C672D7DB6">
+		<name>TN 20</name>
+		<LookAt>
+			<longitude>98.8490573000837</longitude>
+			<latitude>3.177564373188803</latitude>
+			<altitude>250.2459359338749</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>555.1352116224008</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.8490573000837,3.177564373188803,250.2459359338749</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0FB6A282F03C672D911D">
+		<name>TN 21</name>
+		<LookAt>
+			<longitude>98.84937405926962</longitude>
+			<latitude>3.177884410598473</latitude>
+			<altitude>248.8069049796107</altitude>
+			<heading>359.9999999995381</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>556.5742624114501</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84937405926962,3.177884410598473,248.8069049796107</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="00DC21F5463C672DA77C">
+		<name>TN 22</name>
+		<LookAt>
+			<longitude>98.84968843907393</longitude>
+			<latitude>3.178151443060681</latitude>
+			<altitude>248.3646304841444</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>557.0164910072344</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84968843907393,3.178151443060681,248.3646304841444</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0D3C54FC183C672DBC51">
+		<name>TN 23</name>
+		<LookAt>
+			<longitude>98.84997853558266</longitude>
+			<latitude>3.178427689016974</latitude>
+			<altitude>247.4858595298137</altitude>
+			<heading>359.9999999978605</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>557.8952928645596</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.84997853558266,3.178427689016974,247.4858595298137</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="06742691B93C672DD140">
+		<name>TN 24</name>
+		<LookAt>
+			<longitude>98.85026690496771</longitude>
+			<latitude>3.178687268579122</latitude>
+			<altitude>246.9853650408747</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>558.3957435899356</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85026690496771,3.178687268579122,246.9853650408747</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="052AD94A213C672DE58E">
+		<name>RN 25</name>
+		<LookAt>
+			<longitude>98.85054519502347</longitude>
+			<latitude>3.178945078472288</latitude>
+			<altitude>246.5176149982634</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>558.8635139002145</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85054519502347,3.178945078472288,246.5176149982634</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="071009A46D3C672DFA7E">
+		<name>TN 26</name>
+		<LookAt>
+			<longitude>98.85083477251338</longitude>
+			<latitude>3.179217712694762</latitude>
+			<altitude>245.3898807060566</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>559.9912431746634</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85083477251338,3.179217712694762,245.3898807060566</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0BC8408A9A3C672E124D">
+		<name>TN 27</name>
+		<LookAt>
+			<longitude>98.85111715776397</longitude>
+			<latitude>3.179498762673777</latitude>
+			<altitude>244.5365848461833</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>560.8445496726927</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85111715776397,3.179498762673777,244.5365848461833</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="09AE5C52613C672E2811">
+		<name>TN 28</name>
+		<LookAt>
+			<longitude>98.85140804001668</longitude>
+			<latitude>3.179762068767038</latitude>
+			<altitude>244.195836865268</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>561.1853067384801</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85140804001668,3.179762068767038,244.195836865268</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="09EF0F1B653C672E3F93">
+		<name>TN 29</name>
+		<LookAt>
+			<longitude>98.85169861533689</longitude>
+			<latitude>3.180033876625874</latitude>
+			<altitude>243.3966656822914</altitude>
+			<heading>6.488770366512053e-14</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>561.9844703644048</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85169861533689,3.180033876625874,243.3966656822914</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0790DFE81A3C672E55CE">
+		<name>TN 30</name>
+		<LookAt>
+			<longitude>98.85197393301515</longitude>
+			<latitude>3.180273727088283</latitude>
+			<altitude>243.0712431462623</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>562.3098838594161</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85197393301515,3.180273727088283,243.0712431462623</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="00DDF4541F3C672E6AF9">
+		<name>TN 31</name>
+		<LookAt>
+			<longitude>98.85223463833712</longitude>
+			<latitude>3.180549594771187</latitude>
+			<altitude>242.3528349519198</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>563.0282967291714</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85223463833712,3.180549594771187,242.3528349519198</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="070C2A38FA3C672E8BB8">
+		<name>TN 32</name>
+		<LookAt>
+			<longitude>98.8525100338651</longitude>
+			<latitude>3.180811593950257</latitude>
+			<altitude>242.321985929322</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>563.05912293632</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.8525100338651,3.180811593950257,242.321985929322</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0A36826DAA3C672E9FE0">
+		<name>TN 33</name>
+		<LookAt>
+			<longitude>98.85279265796922</longitude>
+			<latitude>3.181085461671413</latitude>
+			<altitude>241.5059117732734</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>563.8752062097774</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85279265796922,3.181085461671413,241.5059117732734</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0229971B603C672EB410">
+		<name>TN 35</name>
+		<LookAt>
+			<longitude>98.853122547646</longitude>
+			<latitude>3.18138862450042</latitude>
+			<altitude>241.1723582046442</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>564.2087782197633</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.853122547646,3.18138862450042,241.1723582046442</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0FA9FA69613C672EC931">
+		<name>TN 36</name>
+		<LookAt>
+			<longitude>98.85341326039755</longitude>
+			<latitude>3.181687029950943</latitude>
+			<altitude>241.1557777671631</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>564.2253733809049</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85341326039755,3.181687029950943,241.1557777671631</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="08119189313C672EDEEB">
+		<name>TN 37</name>
+		<LookAt>
+			<longitude>98.85365977513528</longitude>
+			<latitude>3.181940469783431</latitude>
+			<altitude>241.0396060187738</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>564.3415395088961</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85365977513528,3.181940469783431,241.0396060187738</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0526976A8A3C672EF2E2">
+		<name>TN 38</name>
+		<LookAt>
+			<longitude>98.85393521426464</longitude>
+			<latitude>3.182170870352846</latitude>
+			<altitude>239.2452053258463</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>566.1359028961306</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85393521426464,3.182170870352846,239.2452053258463</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0DB95F68053C672F06C2">
+		<name>TN 39</name>
+		<LookAt>
+			<longitude>98.85423448697509</longitude>
+			<latitude>3.18243287570251</latitude>
+			<altitude>239.2842411507282</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>566.0969181740074</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85423448697509,3.18243287570251,239.2842411507282</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="03D561C5533C672F1F7E">
+		<name>TN 40</name>
+		<LookAt>
+			<longitude>98.85449316600864</longitude>
+			<latitude>3.182691677464102</latitude>
+			<altitude>238.3904191381292</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>566.990692760519</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85449316600864,3.182691677464102,238.3904191381292</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0C528465733C672F33A8">
+		<name>TN 41</name>
+		<LookAt>
+			<longitude>98.8547834489373</longitude>
+			<latitude>3.182970168290731</latitude>
+			<altitude>237.8690975857552</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>567.5120496805175</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.8547834489373,3.182970168290731,237.8690975857552</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="02F5EAA7D33C672F4820">
+		<name>TN 42</name>
+		<LookAt>
+			<longitude>98.85503555552982</longitude>
+			<latitude>3.183206971162488</latitude>
+			<altitude>236.8840509017097</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>568.4970976533078</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85503555552982,3.183206971162488,236.8840509017097</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="02D42AA2F83C672F7FA6">
+		<name>TN 55</name>
+		<LookAt>
+			<longitude>98.85992475328339</longitude>
+			<latitude>3.187832559332764</latitude>
+			<altitude>228.0047161306762</altitude>
+			<heading>359.9999999999998</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1042.216726846236</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85992475328339,3.187832559332764,228.0047161306762</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="08DB01CEAC3C672F94D2">
+		<name>TN 54</name>
+		<LookAt>
+			<longitude>98.85952311332586</longitude>
+			<latitude>3.187504117189906</latitude>
+			<altitude>228.3275438054411</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1041.893816531956</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85952311332586,3.187504117189906,228.3275438054411</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="047FE6E3373C672FBBC9">
+		<name>TN 53</name>
+		<LookAt>
+			<longitude>98.85922280243847</longitude>
+			<latitude>3.187132742248482</latitude>
+			<altitude>228.7258003814424</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1041.495625374955</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85922280243847,3.187132742248482,228.7258003814424</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0B44B4E5E53C672FD1E4">
+		<name>TN 52</name>
+		<LookAt>
+			<longitude>98.85886357324387</longitude>
+			<latitude>3.186862447102882</latitude>
+			<altitude>230.3419974860075</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1039.879312306002</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85886357324387,3.186862447102882,230.3419974860075</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0E924714613C672FEA74">
+		<name>TN 51</name>
+		<LookAt>
+			<longitude>98.85854159007535</longitude>
+			<latitude>3.186532912341696</latitude>
+			<altitude>230.6130281010816</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1039.608412524685</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85854159007535,3.186532912341696,230.6130281010816</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="00F34AF49F3C6730025B">
+		<name>TN 50</name>
+		<LookAt>
+			<longitude>98.85822177517342</longitude>
+			<latitude>3.186180122295766</latitude>
+			<altitude>231.9067945222473</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1038.314638928423</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85822177517342,3.186180122295766,231.9067945222473</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="084BB7C52A3C6730326C">
+		<name>TN 43</name>
+		<LookAt>
+			<longitude>98.85541893374064</longitude>
+			<latitude>3.183613151811225</latitude>
+			<altitude>236.0525333926601</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1170.949007527088</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85541893374064,3.183613151811225,236.0525333926601</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="06AED303E63C673049C3">
+		<name>TN 44</name>
+		<LookAt>
+			<longitude>98.85580999890793</longitude>
+			<latitude>3.184025202971908</latitude>
+			<altitude>236.3001719476773</altitude>
+			<heading>359.9999999999998</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1170.701378055528</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85580999890793,3.184025202971908,236.3001719476773</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="07D4FDDBB93C67305FBE">
+		<name>TN 45</name>
+		<LookAt>
+			<longitude>98.85627739842725</longitude>
+			<latitude>3.184455129335564</latitude>
+			<altitude>235.3876195743765</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1171.613926497521</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85627739842725,3.184455129335564,235.3876195743765</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0551281E673C67308481">
+		<name>TN 46</name>
+		<LookAt>
+			<longitude>98.85675861759648</longitude>
+			<latitude>3.184880868770867</latitude>
+			<altitude>234.5171471314552</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1172.484477129474</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85675861759648,3.184880868770867,234.5171471314552</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="077FB11E8A3C67309D67">
+		<name>TN 47</name>
+		<LookAt>
+			<longitude>98.85713097803001</longitude>
+			<latitude>3.185264737445026</latitude>
+			<altitude>233.2329595265977</altitude>
+			<heading>359.9999999999998</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1173.7687015548</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85713097803001,3.185264737445026,233.2329595265977</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="055BE6610D3C6730B6C4">
+		<name>TN 48</name>
+		<LookAt>
+			<longitude>98.8575307520973</longitude>
+			<latitude>3.185640707108006</latitude>
+			<altitude>232.9069809616009</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1174.094671312196</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.8575307520973,3.185640707108006,232.9069809616009</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="0B56FDB8083C6730CFAE">
+		<name>TN 49</name>
+		<LookAt>
+			<longitude>98.85793202247079</longitude>
+			<latitude>3.185986017762729</latitude>
+			<altitude>232.0617060704385</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>30</gx:fovy>
+			<range>1174.939819295251</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0A0B3662003C672A04E0</styleUrl>
+		<Point>
+			<coordinates>98.85793202247079,3.185986017762729,232.0617060704385</coordinates>
+		</Point>
+	</Placemark>
+</Document>
+</kml>
