@@ -22,7 +22,7 @@
     var files = ((window.KML_FILES||{}).mbb) || [];
     var idx = {};
     if(typeof mbbRows !== 'undefined' && mbbRows && mbbRows.length){
-      mbbRows.forEach(function(r){ var n = norm(mbbGet(r,'SITE NAME')); if(n && !idx[n]) idx[n] = r; });
+      mbbRows.forEach(function(r){ var n = norm(mbbGet(r,'SITE NAME')), m = norm(mbbGet(r,'SITE ID')); if(n && !idx[n]) idx[n] = r; if(m && !idx[m]) idx[m] = r; });
     }
     return files.map(function(f){ return {id:f[0], name:f[1], ext:f[2]||'kml', size:f[3]||0, date:f[4]||'', mbb: idx[norm(f[1])] || null}; });
   }
@@ -58,7 +58,7 @@
     host.innerHTML =
       '<div class="section" style="margin-top:0;">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">' +
-      '<div><p class="section-title" style="margin-bottom:2px;">MBB — KML / KMZ</p><p class="section-desc" style="margin:0;">File KML & KMZ MBB yang sudah di-share di Google Drive (folder MBB). Dicocokkan ke data MBB lewat Site Name.</p></div>' +
+      '<div><p class="section-title" style="margin-bottom:2px;">MBB — KML / KMZ</p><p class="section-desc" style="margin:0;">File KML & KMZ MBB yang sudah di-share di Google Drive (folder MBB). Dicocokkan ke data MBB lewat Site ID / Site Name.</p></div>' +
       '<a class="download-btn" href="'+folder+'" target="_blank" rel="noopener" style="margin-top:0;text-decoration:none;">📁 Buka folder Drive</a></div>' +
       '<div class="kpi-row"><div class="kpi"><div class="accent" style="background:#0a2342"></div><p class="kpi-label">File KML/KMZ</p><p class="kpi-value">'+all.length+'</p></div>' +
       '<div class="kpi"><div class="accent" style="background:#167A4B"></div><p class="kpi-label">Cocok dengan data MBB</p><p class="kpi-value">'+matched+'</p></div>' +

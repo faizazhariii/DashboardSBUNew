@@ -478,7 +478,7 @@
     cols:[
       {k:'id', label:'ID', stk:1, val:function(r){ return mbbGet(r,'ID'); }},
       {k:'site', label:'Site Name', cls:'name', stk2:1, val:function(r){ return mbbGet(r,'SITE NAME'); }},
-      {k:'kml', label:'KML', val:function(r){ return (window.kmlCell && kmlCell('mbb', mbbGet(r,'SITE NAME')) !== '—') ? 'Ada KML' : 'Belum ada'; }, html:function(r){ return window.kmlCell ? kmlCell('mbb', mbbGet(r,'SITE NAME')) : '—'; }},
+      {k:'kml', label:'KML', val:function(r){ return (window.kmlCell && kmlCell('mbb', mbbGet(r,'SITE NAME'), mbbGet(r,'SITE ID')) !== '—') ? 'Ada KML' : 'Belum ada'; }, html:function(r){ return window.kmlCell ? kmlCell('mbb', mbbGet(r,'SITE NAME'), mbbGet(r,'SITE ID')) : '—'; }},
       {k:'branch', label:'Branch', val:function(r){ return mbbGet(r,'BRANCH'); }},
       {k:'sto', label:'STO', val:function(r){ return mbbGet(r,'STO'); }},
       {k:'sow', label:'SOW Order', val:function(r){ return mbbGet(r,'SOW PRE ORDER') || mbbGet(r,'SOW ORDER'); }},
