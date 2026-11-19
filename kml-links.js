@@ -13,7 +13,12 @@
       ['1Pc3wirS60u7ZxBGPbjmi-QCxlsBHrLlD','SMU OLO PT3 GST XLSMART SUM-SU-GST-1722'],
       ['1M5-pZC1mwyNjYb3xfKriJoKMBXIuZ70N','1ACH OLO PT3 MBO-FG ACEHLINK_KT PADANG']
     ],
-    hem: [], mbb: [], pt3: []
+    hem: [],
+    mbb: [
+      ['1b8PwSsDjeimNUtksk2tiivSxe9Xv1STS','DH GPON00-D1-TRT-2SRL'],
+      ['1v9L8HBeLTljmjftRIJ_8VHJenTDD9jRe','DH GPON00-D1-TRT-2PGN']
+    ],
+    pt3: []
   };
   const norm = s => String(s||'').toUpperCase().replace(/\.KML$/,'').replace(/[^A-Z0-9]+/g,'');
   const idx = {};
@@ -21,6 +26,6 @@
   /* kembalikan HTML sel "KML" untuk satu baris */
   window.kmlCell = function(kat, namaProyek){
     const id = (idx[kat]||{})[norm(namaProyek)];
-    return id ? `<a href="https://drive.google.com/file/d/${id}/view" target="_blank" rel="noopener" title="Buka KML di Google Drive" style="font-weight:700;text-decoration:none;">🗺️ KML</a>` : '—';
+    return id ? `<a href="https://drive.google.com/file/d/${id}/view" target="_blank" rel="noopener" title="Buka KML/KMZ di Google Drive" style="font-weight:700;text-decoration:none;">🗺️ KML</a>` : '—';
   };
 })();
