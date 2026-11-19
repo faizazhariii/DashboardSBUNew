@@ -212,7 +212,7 @@
         }).join('') + '</tr>';
       }).join('') || '<tr><td colspan="' + vc.length + '" style="text-align:center;padding:30px;cursor:default;">Tidak ada data yang cocok.</td></tr>';
       tbody.onclick = function(e){
-        if(e.target.closest('select,input,button,textarea,.hem-catatan-history,.hem-catatan-row')) return;
+        if(e.target.closest('a,select,input,button,textarea,.hem-catatan-history,.hem-catatan-row')) return;
         var tr = e.target.closest('tr[data-i]'); if(tr) openDrawer(pageRows[+tr.dataset.i], pageRows, +tr.dataset.i);
       };
       $('PageInfo').textContent = 'Halaman ' + getPage() + ' dari ' + totalPages;
@@ -415,6 +415,7 @@
       {k:'komit', label:'Komitmen Golive', late:1, val:function(r){ return oloGet(r,'Komitmen Golive'); }, sv:function(r){ var d = parseDMY(oloGet(r,'Komitmen Golive')); return d ? d.getTime() : 0; }},
       {k:'det', label:'Detail Progres', det:1, text:1, val:function(r){ return oloGet(r,'Detail Progres'); }},
       {k:'cat', label:'Catatan', text:1, val:function(r){ return oloGet(r,'CATATAN'); }, html:function(r){ return renderCatatanCell('olo', oloGet(r,'IHLD'), oloGet(r,'CATATAN')); }},
+      {k:'kml', label:'KML', val:function(r){ return (window.kmlCell && kmlCell('olo', oloGet(r,'NAMA PROYEK')) !== '—') ? 'Ada KML' : 'Belum ada'; }, html:function(r){ return window.kmlCell ? kmlCell('olo', oloGet(r,'NAMA PROYEK')) : '—'; }},
       {k:'pt1', label:'Status PT1', val:function(r){ return oloGet(r,'STATUS PT1'); }, html:function(r){ return renderStatusPT1Cell('olo', oloGet(r,'IHLD'), oloGet(r,'STATUS PT1')); }},
       {k:'ttd', label:'TTD', val:function(r){ return oloGet(r,'TTD'); }, sv:function(r){ return oloParseNum(oloGet(r,'TTD')); }},
       {k:'boq', label:'BOQ', cls:'num', val:function(r){ return oloGet(r,'BOQ'); }, sv:function(r){ return oloParseNum(oloGet(r,'BOQ')); }, fmt:fmtIDRo},
