@@ -716,7 +716,11 @@
     </div>
     <button class="page-tab" id="tabBtnHem" data-i="🏠" type="button">HEM</button>
     <button class="page-tab" id="tabBtnOlo" data-i="🏢" type="button">OLO</button>
-    <button class="page-tab" id="tabBtnMbb" data-i="📶" type="button">MBB</button>
+    <button class="page-tab tab-parent" id="tabBtnMbbGroup" data-i="📶" type="button" aria-expanded="false" aria-controls="mbbSub"><span>MBB</span> <span class="tab-caret">&#9662;</span></button>
+    <div class="tab-sub" id="mbbSub">
+      <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
+      <button class="page-tab" id="tabBtnMbbKml" type="button">KML</button>
+    </div>
     <button class="page-tab tab-parent" id="tabBtnQeGroup" data-i="🏗️" type="button" aria-expanded="false" aria-controls="qeSub"><span>QE</span> <span class="tab-caret">&#9662;</span></button>
     <div class="tab-sub" id="qeSub">
       <button class="page-tab" id="tabBtnBrt" type="button">BRT Medan</button>
@@ -2582,6 +2586,7 @@
     </div>
     <div id="pageUpd" style="display:none;"><div id="updHost"></div></div>
     <div id="pageBima" style="display:none;"><div id="bimaHost"></div></div>
+    <div id="pageMbbKml" style="display:none;"><div id="mbbKmlHost"></div></div>
     <div id="pageSto" style="display:none;"><div id="stoHost"></div></div>
     <div id="pageGolive" style="display:none;">
 
@@ -6154,7 +6159,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], upd:['tabBtnUpd','pageUpd'], bima:['tabBtnBima','pageBima'], sto:['tabBtnSto','pageSto'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], resume:['tabBtnResume','pageResume'], };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], mbbKml:['tabBtnMbbKml','pageMbbKml'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], lapPt2:['tabBtnLapPt2','pageLapPt2'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], upd:['tabBtnUpd','pageUpd'], bima:['tabBtnBima','pageBima'], sto:['tabBtnSto','pageSto'], brt:['tabBtnBrt','pageBrt'], qe:['tabBtnQe','pageQe'], qeLp:['tabBtnQeLp','pageQeLp'], qeDusem:['tabBtnQeDusem','pageQeDusem'], rekapPpt:['tabBtnRekapPpt','pageRekapPpt'], prio:['tabBtnPrio','pagePrio'], kml:['tabBtnKml','pageKml'], resume:['tabBtnResume','pageResume'], };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -6168,6 +6173,7 @@ document.getElementById('tabBtnPT2').onclick = ()=> switchTab('pt2');
 document.getElementById('tabBtnHem').onclick = ()=> switchTab('hem');
 document.getElementById('tabBtnOlo').onclick = ()=> switchTab('olo');
 document.getElementById('tabBtnMbb').onclick = ()=> switchTab('mbb');
+document.getElementById('tabBtnMbbKml').onclick = ()=> { switchTab('mbbKml'); if(window.mbbKmlOpen) window.mbbKmlOpen(); };
 document.getElementById('tabBtnPt3').onclick = ()=> switchTab('pt3');
 document.getElementById('tabBtnPt3Fh').onclick = ()=> switchTab('pt3fh');
 document.getElementById('tabBtnLapPt2').onclick = ()=> switchTab('lapPt2');
@@ -11672,6 +11678,23 @@ oloLoadDataAuto();
 <script src="bima.js?v=20261115f"></script>
 <script src="stomaster.js?v=20261115a"></script>
 <script src="stopage.js?v=20261115a"></script>
+<script src="mbbkml.js?v=20261119a"></script>
+<script>
+/* Dropdown sidebar MBB */
+(function(){
+  var GROUP=['mbb','mbbKml'];
+  var g=document.getElementById('tabBtnMbbGroup'), sub=document.getElementById('mbbSub');
+  if(!g||!sub) return;
+  g.onclick=function(){ var o=sub.classList.toggle('open'); g.setAttribute('aria-expanded',o?'true':'false'); };
+  var prev=window.qeMenuSync;
+  window.qeMenuSync=function(a){
+    if(prev) prev(a);
+    var inG=GROUP.indexOf(a)>=0;
+    g.classList.toggle('active-parent',inG);
+    if(inG){ sub.classList.add('open'); g.setAttribute('aria-expanded','true'); }
+  };
+})();
+</script>
 <script>
 /* Dropdown sidebar PT3 */
 (function(){

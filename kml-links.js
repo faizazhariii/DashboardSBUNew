@@ -15,11 +15,13 @@
     ],
     hem: [],
     mbb: [
-      ['1b8PwSsDjeimNUtksk2tiivSxe9Xv1STS','DH GPON00-D1-TRT-2SRL'],
-      ['1v9L8HBeLTljmjftRIJ_8VHJenTDD9jRe','DH GPON00-D1-TRT-2PGN']
+      ['1b8PwSsDjeimNUtksk2tiivSxe9Xv1STS','DH GPON00-D1-TRT-2SRL','kmz',88531,'2026-11-19'],
+      ['1v9L8HBeLTljmjftRIJ_8VHJenTDD9jRe','DH GPON00-D1-TRT-2PGN','kmz',73860,'2026-11-19']
     ],
     pt3: []
   };
+  window.KML_FILES = L;
+  window.KML_FOLDERS = {mbb:'12oYzeI6sbR5fep4boX8-aXZJD-LHvNtF', olo:'1WT8QRwZjPJW7LUMzfeP28Waq32-frh4y'};
   const norm = s => String(s||'').toUpperCase().replace(/\.KML$/,'').replace(/[^A-Z0-9]+/g,'');
   const idx = {};
   Object.keys(L).forEach(k=>{ idx[k] = {}; L[k].forEach(([id,name])=>{ idx[k][norm(name)] = id; }); });
