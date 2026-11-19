@@ -64,15 +64,21 @@
     g._n = n; return g;
   }
   async function fetchKml(f){
-    var url = 'kml/mbb/' + f.id + '.' + f.ext + '?v=20261120a';
-    var r = await fetch(url); if(!r.ok) throw new Error('HTTP ' + r.status);
+    var buf = null, txt = null;
+    var r = await fetch('kml/mbb/' + f.id + '.' + f.ext + '?v=20261120a').catch(function(){ return null; });
+    if(r && r.ok){ if(f.ext === 'kmz') buf = await r.arrayBuffer(); else txt = await r.text(); }
+    else if(window.KML_API_URL){ /* file baru (belum dibundel): ambil lewat Apps Script */
+      var j = await (await fetch(window.KML_API_URL + '?action=get&id=' + f.id)).json(); if(!j.ok) throw new Error(j.error || 'gagal');
+      var bin = atob(j.b64), u8 = new Uint8Array(bin.length); for(var i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+      if(f.ext === 'kmz') buf = u8.buffer; else txt = new TextDecoder('utf-8').decode(u8);
+    } else throw new Error('file belum ada di dashboard');
+    if(txt !== null) return txt;
     if(f.ext === 'kmz'){
-      var z = await JSZip.loadAsync(await r.arrayBuffer());
+      var z = await JSZip.loadAsync(buf);
       var k = Object.keys(z.files).filter(function(n){ return /\.kml$/i.test(n); })[0];
       if(!k) throw new Error('KMZ kosong');
       return z.files[k].async('string');
     }
-    return r.text();
   }
   function status(t, err){ var el = $('mbbKmlStatus'); if(el){ el.textContent = t; el.style.color = err ? '#E31B23' : ''; } }
   async function show(f, on, fit){
@@ -151,6 +157,7 @@
     $('mbbKmlLbl').onchange = function(){ labelsOn = this.checked; Object.keys(layers).forEach(function(id){ layers[id].eachLayer(function(l){ if(l.getTooltip && l.getTooltip()){ l.unbindTooltip(); } }); layers[id].eachLayer(function(l){ if(l instanceof L.CircleMarker && l.getPopup()){ var m = (l.getPopup().getContent()||'').match(/<b>(.*?)<\/b>/); if(m) l.bindTooltip(m[1], {permanent:labelsOn, direction:'top', className:'mbbkml-tt'}); } }); }); };
     renderList(); inited = true;
   }
+  document.addEventListener('kmllinks', function(){ if(inited){ files = list(); renderList(); var kv = document.querySelector('#mbbKmlHost .kpi-value'); if(kv) kv.textContent = files.length; } });
   window.mbbKmlOpen = function(){ if(!inited) init(); else setTimeout(function(){ map.invalidateSize(); }, 60); };
   window.mbbKmlDebug = function(){ return {files:files, shown:inited ? shownIds() : []}; };
 })();

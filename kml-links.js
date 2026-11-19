@@ -91,9 +91,31 @@
   const norm = s => String(s||'').toUpperCase().replace(/\.KML$/,'').replace(/[^A-Z0-9]+/g,'');
   const idx = {};
   Object.keys(L).forEach(k=>{ idx[k] = {}; L[k].forEach(([id,name])=>{ idx[k][norm(name)] = id; }); });
+  /* Isi dengan URL Web App KmlDriveAPI.gs (…/exec) supaya file baru di Drive terbaca otomatis. Kosong = pakai daftar tanam saja. */
+  window.KML_API_URL = '';
+  window.kmlAdd = function(kat, id, name){ if(!idx[kat]) idx[kat] = {}; if(!L[kat]) L[kat] = []; if(!L[kat].some(function(x){ return x[0]===id; })) L[kat].push([id,name]); idx[kat][norm(name)] = id; };
   /* kembalikan HTML sel "KML" untuk satu baris */
   window.kmlCell = function(kat, namaProyek, alt){
     const id = (idx[kat]||{})[norm(namaProyek)] || (alt ? (idx[kat]||{})[norm(alt)] : '');
     return id ? `<a href="https://drive.google.com/file/d/${id}/view" target="_blank" rel="noopener" title="Buka KML/KMZ di Google Drive" style="font-weight:700;text-decoration:none;">🗺️ KML</a>` : '—';
   };
+
+  /* Sinkron otomatis dari Drive (kalau KML_API_URL diisi): tambahkan file yang belum ada di daftar tanam */
+  window.kmlLiveSync = async function(){
+    if(!window.KML_API_URL) return false;
+    var changed = false;
+    for(const kat of Object.keys(window.KML_FOLDERS||{})){
+      try{
+        const r = await fetch(window.KML_API_URL + '?action=list&folder=' + window.KML_FOLDERS[kat]); const j = await r.json();
+        if(!j.ok) continue;
+        j.files.forEach(function(f){
+          if(!L[kat]) L[kat] = [];
+          if(!L[kat].some(function(x){ return x[0]===f.id; })){ L[kat].push([f.id,f.name,f.ext,f.size,f.date]); idx[kat] = idx[kat]||{}; idx[kat][norm(f.name)] = f.id; changed = true; }
+        });
+      }catch(e){}
+    }
+    if(changed){ try{ window.oloRenderTable && oloRenderTable(); window.mbbRenderTable && mbbRenderTable(); }catch(e){} document.dispatchEvent(new Event('kmllinks')); }
+    return changed;
+  };
+  window.addEventListener('load', function(){ setTimeout(function(){ window.kmlLiveSync && kmlLiveSync(); }, 2500); });
 })();
