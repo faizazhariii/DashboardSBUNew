@@ -6,16 +6,7 @@
   var norm = function(s){ return String(s||'').toUpperCase().replace(/\.(KML|KMZ)$/,'').replace(/[^A-Z0-9]+/g,''); };
   var S = { q:'', tipe:'', status:'', sort:null, dir:1 };
   var COLS = [
-    {k:'file', h:'File', get:function(r){ return r.name; }},
-    {k:'tipe', h:'Tipe', get:function(r){ return r.ext.toUpperCase(); }, sel:1},
-    {k:'id', h:'ID MBB', get:function(r){ return r.mbb ? mbbGet(r.mbb,'ID') : ''; }},
-    {k:'branch', h:'Branch', get:function(r){ return r.mbb ? mbbGet(r.mbb,'BRANCH') : ''; }, sel:1},
-    {k:'sto', h:'STO', get:function(r){ return r.mbb ? mbbGet(r.mbb,'STO') : ''; }},
-    {k:'status', h:'Status MBB', get:function(r){ return r.mbb ? mbbGet(r.mbb,'STATUS') : ''; }, sel:1},
-    {k:'sub', h:'Sub Status', get:function(r){ return r.mbb ? mbbGet(r.mbb,'SUB STATUS') : ''; }},
-    {k:'komit', h:'Komitmen OA', get:function(r){ return r.mbb ? mbbGet(r.mbb,'TGL COMMIT OA FIX') : ''; }},
-    {k:'size', h:'Ukuran', get:function(r){ return r.size; }, num:1, fmt:function(v){ return v ? (v/1024).toFixed(0) + ' KB' : '—'; }},
-    {k:'tgl', h:'Diupload', get:function(r){ return r.date; }}
+    {k:'file', h:'File', get:function(r){ return r.name; }}
   ];
   var F = {};
   function rows(){
@@ -58,11 +49,9 @@
     host.innerHTML =
       '<div class="section" style="margin-top:0;">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">' +
-      '<div><p class="section-title" style="margin-bottom:2px;">MBB — KML / KMZ</p><p class="section-desc" style="margin:0;">File KML & KMZ MBB yang sudah di-share di Google Drive (folder MBB). Dicocokkan ke data MBB lewat Site ID / Site Name.</p></div>' +
+      '<div><p class="section-title" style="margin-bottom:2px;">MBB — KML / KMZ</p><p class="section-desc" style="margin:0;">File KML & KMZ MBB yang sudah di-share di Google Drive (folder MBB). </p></div>' +
       '<a class="download-btn" href="'+folder+'" target="_blank" rel="noopener" style="margin-top:0;text-decoration:none;">📁 Buka folder Drive</a></div>' +
-      '<div class="kpi-row"><div class="kpi"><div class="accent" style="background:#0a2342"></div><p class="kpi-label">File KML/KMZ</p><p class="kpi-value">'+all.length+'</p></div>' +
-      '<div class="kpi"><div class="accent" style="background:#167A4B"></div><p class="kpi-label">Cocok dengan data MBB</p><p class="kpi-value">'+matched+'</p></div>' +
-      '<div class="kpi"><div class="accent" style="background:#d69e2e"></div><p class="kpi-label">Belum cocok</p><p class="kpi-value">'+(all.length-matched)+'</p></div></div>' +
+      '<div class="kpi-row"><div class="kpi"><div class="accent" style="background:#0a2342"></div><p class="kpi-label">Jumlah file KML/KMZ</p><p class="kpi-value">'+all.length+'</p></div></div>' +
       '<div class="filters"><input type="text" id="mbbKmlSearch" placeholder="Cari nama file, ID, STO, status..." value="'+esc(S.q)+'"><span class="count">'+data.length+' file</span></div>' +
       '<div class="table-card" style="overflow-x:auto;"><table class="mbb-report-table"><thead>'+head+'</thead><tbody>'+body+'</tbody></table></div></div>';
     var sb = document.getElementById('mbbKmlSearch');
