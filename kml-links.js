@@ -92,7 +92,7 @@
   const idx = {};
   Object.keys(L).forEach(k=>{ idx[k] = {}; L[k].forEach(([id,name])=>{ idx[k][norm(name)] = id; }); });
   /* Isi dengan URL Web App KmlDriveAPI.gs (…/exec) supaya file baru di Drive terbaca otomatis. Kosong = pakai daftar tanam saja. */
-  window.KML_API_URL = '';
+  window.KML_API_URL = 'https://script.google.com/macros/s/AKfycbzExB4lq_kIlTeGHZDU8KZ4lhIHUOTP-GP4dvIcVBXd_Kp9wMA00ylVkdVeOHr1Y3ag/exec';
   window.kmlAdd = function(kat, id, name){ if(!idx[kat]) idx[kat] = {}; if(!L[kat]) L[kat] = []; if(!L[kat].some(function(x){ return x[0]===id; })) L[kat].push([id,name]); idx[kat][norm(name)] = id; };
   /* kembalikan HTML sel "KML" untuk satu baris */
   window.kmlCell = function(kat, namaProyek, alt){
