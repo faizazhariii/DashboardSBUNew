@@ -1399,6 +1399,7 @@
                 <th class="sortable" data-field="REVENEU" data-numeric="true">Revenue<span class="sort-arrow">▲▼</span></th>
                 <th class="sortable" data-field="SERVICE">Service<span class="sort-arrow">▲▼</span></th>
                 <th class="sortable" data-field="BW">BW<span class="sort-arrow">▲▼</span></th>
+                <th>KML</th>
                 <th>Catatan</th>
               </tr>
             </thead>
@@ -6133,11 +6134,12 @@ function oloRenderTable(){
       <td>${fmtIDR(oloParseNum(oloGet(row,'REVENEU')))}</td>
       <td>${oloGet(row,'SERVICE')||'—'}</td>
       <td>${oloGet(row,'BW')||'—'}</td>
+      <td>${window.kmlCell ? kmlCell('olo', oloGet(row,'NAMA PROYEK')) : '—'}</td>
       <td>
         ${renderCatatanCell('olo', ihld, catatan)}
       </td>
     </tr>`;
-  }).join('') || `<tr><td colspan="18" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
+  }).join('') || `<tr><td colspan="19" style="text-align:center;padding:30px;">Tidak ada data yang cocok.</td></tr>`;
 
   document.getElementById('oloPageInfo').textContent = `Halaman ${oloCurrentPage} dari ${totalPages}`;
   document.getElementById('oloPrevPage').disabled = oloCurrentPage <= 1;
@@ -11659,6 +11661,7 @@ oloLoadDataAuto();
 <script src="pptxgen.bundle.js?v=20261103b"></script>
 <script src="ppt-rekap.js?v=20261104c"></script>
 <script src="monitor.js?v=20261103b"></script>
+<script src="kml-links.js?v=20261119a"></script>
 <script src="qe-recap.js?v=20261116a"></script>
 <script src="topo.js?v=20261111e"></script>
 <script src="kml.js?v=20261111h"></script>
