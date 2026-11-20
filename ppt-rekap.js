@@ -573,9 +573,13 @@ async function generate(){
   const say = (t,err)=>{ msg.textContent = t; msg.style.color = err ? '#B42318' : ''; };
   try{
     if(P.mode !== 'ytd' || document.getElementById('rpMode').value !== 'ytd'){ say('Membaca log komitmen…'); await loadKomLog(); refreshStatus(); }
+    if(!window.PPT_ASSETS){
+      say('Memuat aset PPT…');
+      await new Promise(res=>{ const el=document.createElement('script'); el.src='ppt-assets.js?v=20261103b'; el.onload=res; el.onerror=res; document.head.appendChild(el); });
+    }
     if(typeof PptxGenJS === 'undefined'){
       say('Memuat library PPT…');
-      const srcs = ['pptxgen.bundle.js','https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js','https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js','https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
+      const srcs = ['pptxgen.bundle.js?v=20261103b','https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js','https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js','https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js'];
       for(const src of srcs){
         if(typeof PptxGenJS !== 'undefined') break;
         await new Promise(res=>{ const el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = res; document.head.appendChild(el); });
