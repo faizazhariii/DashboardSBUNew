@@ -38,7 +38,7 @@
   /* ---------- factory ---------- */
   function makeWo(cfg){
     var p = cfg.prefix;
-    var S = { colF:{}, sortField:null, sortDir:'asc', pageSize:0, quick:'all', dense:false, hidden:new Set() };
+    var S = { colF:{}, sortField:null, sortDir:'asc', pageSize:100, quick:'all', dense:false, hidden:new Set() };
     try{ S.hidden = new Set(JSON.parse(localStorage.getItem(p + '_hidden_cols') || '[]')); }catch(e){}
     var $ = function(id){ return document.getElementById(p + id); };
     var cols = cfg.cols;
@@ -260,7 +260,7 @@
       '<div class="wo-summary" id="' + p + 'WoSummary"></div>' +
       '<div class="wo-quick" id="' + p + 'Quick"><span class="wo-ql">Tampilkan:</span><button type="button" class="on" data-q="all">Semua</button><button type="button" data-q="komit">✅ Berkomitmen</button><button type="button" data-q="nokomit">Belum Komitmen</button><span class="wo-sep"></span>' + qc + '<span class="wo-sep"></span><button type="button" data-q="late">⚠ Komitmen Terlewat</button><button type="button" data-q="stale">⏱ Belum Update &gt;' + STALE + ' hari</button></div>' +
       '<div class="wo-toolbar"><input type="text" id="' + p + 'SearchInput" placeholder="🔎 Cari ..."><span class="count" id="' + p + 'ResultCount"></span><div class="wo-chips" id="' + p + 'ColChips"></div>' +
-      '<div class="wo-tools"><select id="' + p + 'PageSizeSel" class="period-select" title="Baris per halaman"><option value="0" selected>Semua data</option><option value="25">25 baris</option><option value="50">50 baris</option><option value="100">100 baris</option></select>' +
+      '<div class="wo-tools"><select id="' + p + 'PageSizeSel" class="period-select" title="Baris per halaman"><option value="25">25 baris</option><option value="50">50 baris</option><option value="100" selected>100 baris</option><option value="250">250 baris</option><option value="0">Semua data (berat)</option></select>' +
       '<button type="button" class="wo-btn" id="' + p + 'ColsBtn">⚙ Kolom</button><button type="button" class="wo-btn" id="' + p + 'DensityBtn">↕ Rapat</button><button type="button" class="wo-btn" id="' + p + 'ResetFilterBtn">✕ Reset Filter</button>' +
       '<button type="button" class="download-btn" id="' + p + 'DownloadBtn" style="margin:0;">📥 Download CSV</button></div></div>' +
       '<div class="wo-scroll" id="' + p + 'WoScroll"><table class="wo-table" id="' + p + 'WoTable"><thead><tr id="' + p + 'TableHead"></tr></thead><tbody id="' + p + 'TableBody"></tbody></table></div>' +
