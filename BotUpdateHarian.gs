@@ -162,6 +162,18 @@ function bacaSnapshot_(ss){
   return { map: map, ada: ada };
 }
 
+/** Ringkas teks detail. PT3 FH: ambil dari BAWAH (update terbaru ada di akhir teks); sumber lain dari atas. */
+const DETAIL_DARI_BAWAH_ = ['PT3 FH'];
+function ringkasDetail_(src, teks, n){
+  const t = String(teks || '').replace(/\s+/g, ' ').trim();
+  if(t.length <= n) return t;
+  if(DETAIL_DARI_BAWAH_.indexOf(src) < 0) return t.slice(0, n);
+  let ekor = t.slice(-n);
+  const sp = ekor.indexOf(' ');
+  if(sp > 0 && sp < 25) ekor = ekor.slice(sp + 1);   // mulai di batas kata
+  return '… ' + ekor;
+}
+
 /* ---------- Deteksi perubahan ---------- */
 function norm0_(v){ return String(v == null ? '' : v); }
 function bandingkan_(lama, baru){
@@ -169,7 +181,7 @@ function bandingkan_(lama, baru){
   const tambah = function(r, jenis, dari, ke, cat){ const o = { src: r.src, id: r.id, nama: r.nama, branch: r.branch, jenis: jenis, dari: dari || '', ke: ke || '', catatan: cat || '', dr: '', kr: '' }; hasil.push(o); return o; };
   baru.forEach(function(r){
     const o = lama[r.key]; const o0 = o || {};
-    const awalBaru = String(r.detail || '').replace(/\s+/g, ' ').slice(0, 160);
+    const awalBaru = ringkasDetail_(r.src, r.detail, 160);
     if(!o){ tambah(r, 'BARU', '', strip_(r.status), awalBaru); return; }
     const jenisList = [];
     if(o.cat !== 'golive' && r.cat === 'golive') jenisList.push(['GOLIVE', strip_(o.status), strip_(r.status), '']);
@@ -196,7 +208,7 @@ function bandingkan_(lama, baru){
 function tulisSnapshot_(ss, records, sumberGagal, snapLama){
   const sh = ambilTab_(ss, TAB_SNAPSHOT, HDR_SNAP);
   const tgl = fmtTgl_(new Date());
-  const rows = records.map(function(r){ return [r.key, r.src, r.id, r.nama, r.branch, r.status, r.komit, r.cat, md5_(r.detail), String(r.detail || '').replace(/\s+/g, ' ').slice(0, 160), tgl]; });
+  const rows = records.map(function(r){ return [r.key, r.src, r.id, r.nama, r.branch, r.status, r.komit, r.cat, md5_(r.detail), ringkasDetail_(r.src, r.detail, 160), tgl]; });
   // sumber yang gagal dibaca: pertahankan baris lama supaya besok tidak muncul "perubahan palsu"
   Object.keys(snapLama).forEach(function(k){
     const o = snapLama[k]; if(sumberGagal.indexOf(o.src) >= 0) rows.push([k, o.src, o.id, o.nama, o.branch, o.status, o.komit, o.cat, o.hash, o.awal, tgl]);
@@ -294,7 +306,7 @@ function susunPesan_(perubahan, records, baseline, opsi){
   const upd = per('UPDATE');
   if(upd.length){
     t += judul('📝', 'UPDATE BARU', upd.length);
-    upd.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ t += kartu_(p, ['<i>' + esc_(String(p.catatan).slice(0, 90)) + '</i>']); });
+    upd.slice(0, MAX_BARIS_PER_BAGIAN).forEach(function(p){ t += kartu_(p, ['<i>' + esc_(ringkasDetail_(p.src, p.catatan, 90)) + '</i>']); });
     t += lebih(upd);
   }
   t += bagian('🆕', 'LoP BARU', 'BARU', function(p){ return kartu_(p, [esc_(p.ke)]); });
@@ -327,7 +339,7 @@ function susunRealtime_(perubahan){
     l.forEach(function(p){
       const ic = IKON_JENIS_[p.jenis] || '•', nm = NAMA_JENIS_[p.jenis] || p.jenis;
       if(p.jenis === 'KOMIT') t += '\n' + ic + ' <b>' + nm + '</b>\n    ' + esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>  <i>(' + esc_(p.catatan) + ')</i>\n';
-      else if(p.jenis === 'UPDATE') t += '\n' + ic + ' <b>' + nm + '</b>\n    <i>' + esc_(String(p.catatan).slice(0, 110)) + '</i>\n';
+      else if(p.jenis === 'UPDATE') t += '\n' + ic + ' <b>' + nm + '</b>\n    <i>' + esc_(ringkasDetail_(p.src, p.catatan, 110)) + '</i>\n';
       else if(p.jenis === 'BARU') t += '\n' + ic + ' <b>' + nm + '</b>\n    ' + esc_(p.ke) + '\n';
       else t += '\n' + ic + ' <b>' + nm + '</b>\n    ' + esc_(p.dari) + ' → <b>' + esc_(p.ke) + '</b>\n';
     });
